@@ -41,6 +41,7 @@ from .list.models import Candidate, Severity
 from .list.normalize import headword, normalize_key
 from .list.validation import validate_all
 from .pack import Pack
+from .pool import bounds_for
 
 FEHLER, WARNUNG, HINWEIS = "FEHLER", "WARNUNG", "HINWEIS"
 _RANK = {FEHLER: 0, WARNUNG: 1, HINWEIS: 2}
@@ -406,8 +407,8 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
                     f"Teil {teil}: Lücke '{english}' hat die Lösung '{answer}'.",
                 )
             pos_spec = entry.get("pos")
-            pos_liste = guess_pos(item.german)
-            if pos_spec and pos_spec != pos_liste:
+            pos_liste = pack.wortart(english) or guess_pos(item.german)
+            if pos_spec and pos_liste and pos_spec != pos_liste:
                 bericht.add(
                     HINWEIS, "loesungsschluessel",
                     f"Teil {teil}: '{english}' ist in der Prüfung als "
@@ -576,14 +577,15 @@ def pruefe_liste(pack: Pack, settings: Settings, bericht: Pruefbericht) -> None:
             if not entry.get("englisch"):
                 continue
             c = Candidate(english=entry["englisch"], german=entry.get("deutsch", ""))
-            score_candidate(c)
+            score_candidate(c, None, bounds)
             c.sentence = entry.get("satz", "")
             c.sentence_form = entry.get("form", "")
             out.append(c)
         return out
 
+    bounds = bounds_for(pack.niveau)
     test1, test2 = to_candidates("test1"), to_candidates("test2")
-    report = validate_all(test1, test2, settings.words_per_test)
+    report = validate_all(test1, test2, settings.words_per_test, bounds=bounds)
     for issue in report.issues:
         stufe = {
             Severity.ERROR: FEHLER,

@@ -1,0 +1,851 @@
+{
+  "schema": 1,
+  "unit": 1,
+  "unit_label": "Unit 1",
+  "titel": "Unit 1",
+  "thema": "Erinnerungen und Gegenstände",
+  "leitwoerter": [
+    "memory",
+    "remember",
+    "object",
+    "capsule",
+    "past",
+    "childhood",
+    "keep",
+    "container",
+    "damaged",
+    "festival"
+  ],
+  "niveau": "B",
+  "cefr": "A2.2-B1.1",
+  "zielgruppe": "Leistungsschwächere Gruppe, A2.2-B1.1: die zugänglicheren Wörter derselben Unit, kürzerer Lückentext mit kurzen Hauptsätzen.",
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 0,
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder Prüfung 'task2.text' schreiben: {1} bis {4} markieren die",
+    "Lücken, die Reihenfolge in 'gaps' ist die Reihenfolge im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "ländlich",
+        "englisch": "rural",
+        "satz": "My grandparents live in a small rural village.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 2,
+        "deutsch": "geheim",
+        "englisch": "secret",
+        "satz": "She kept the letters in a secret box.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Erscheinungsbild",
+        "englisch": "image",
+        "satz": "The image on the old poster is still clear.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Glück haben",
+        "englisch": "lucky",
+        "satz": "We were lucky to find the photo again.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 5,
+        "deutsch": "langsam",
+        "englisch": "slowly",
+        "satz": "He opened the old wooden box very slowly.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 6,
+        "deutsch": "zeichnen",
+        "englisch": "draw",
+        "satz": "My sister likes to draw houses and trees.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 7,
+        "deutsch": "metallisch",
+        "englisch": "metal",
+        "satz": "He found an old metal box in the garden.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 8,
+        "deutsch": "nützlich",
+        "englisch": "useful",
+        "satz": "This map was very useful on our trip.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 9,
+        "deutsch": "leicht",
+        "englisch": "easily",
+        "satz": "Old paper tears easily, so be careful.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Dokument",
+        "englisch": "document",
+        "satz": "She signed the document with her father's pen.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 11,
+        "deutsch": "akzeptieren",
+        "englisch": "accept",
+        "satz": "He did not want to accept the gift.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 12,
+        "deutsch": "verängstigt",
+        "englisch": "scared",
+        "satz": "The little girl was scared of the dark room.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Netz",
+        "englisch": "net",
+        "satz": "The children caught fish with a small net.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 14,
+        "deutsch": "adressieren",
+        "englisch": "address",
+        "satz": "Please address the parcel to my grandmother.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 15,
+        "deutsch": "reparieren",
+        "englisch": "repair",
+        "satz": "My uncle can repair the old clock.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 16,
+        "deutsch": "werfen",
+        "englisch": "throw",
+        "satz": "Do not throw those letters away.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 17,
+        "deutsch": "gemischt",
+        "englisch": "mixed",
+        "satz": "I have mixed feelings about that summer.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 18,
+        "deutsch": "schrecklich",
+        "englisch": "terrible",
+        "satz": "The weather on our holiday was terrible.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Eingang",
+        "englisch": "entrance",
+        "satz": "We waited for them near the entrance.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 20,
+        "deutsch": "auf etw. stoßen",
+        "englisch": "come across",
+        "satz": "I came across an old diary yesterday.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 16"
+      },
+      {
+        "nr": 21,
+        "deutsch": "vorsichtig",
+        "englisch": "careful",
+        "satz": "Be careful with the glass in that box.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Schusswaffe",
+        "englisch": "gun",
+        "satz": "The soldier carried an old gun.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Haken",
+        "englisch": "hook",
+        "satz": "His coat hangs on a hook behind the door.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 24,
+        "deutsch": "kämpfen",
+        "englisch": "fight",
+        "satz": "The brothers used to fight about small things.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 25,
+        "deutsch": "großartig",
+        "englisch": "awesome",
+        "satz": "The view from the old tower was awesome.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 26,
+        "deutsch": "schließlich, letztendlich",
+        "englisch": "eventually",
+        "satz": "We eventually found the key under the bed.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Gegenstand",
+        "englisch": "object",
+        "satz": "Every object in this room has a story.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Reise",
+        "englisch": "trip",
+        "satz": "Our trip to the coast lasted three days.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "erkennen",
+        "englisch": "recognize",
+        "satz": "I did not recognize my old school friend.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 30,
+        "deutsch": "spielen, auftreten",
+        "englisch": "perform",
+        "satz": "The class will perform a short play tonight.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "gefährlich",
+        "englisch": "dangerous",
+        "satz": "The old stairs are dangerous, so walk slowly.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 2,
+        "deutsch": "endlich",
+        "englisch": "finally",
+        "satz": "We finally found the missing photograph.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 3,
+        "deutsch": "abschließen",
+        "englisch": "lock",
+        "satz": "Please lock the door before you leave.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 4,
+        "deutsch": "suchen",
+        "englisch": "search",
+        "satz": "We had to search the whole house for it.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 5,
+        "deutsch": "an Bord",
+        "englisch": "on board",
+        "satz": "There were forty people on board the ship.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Handlung",
+        "englisch": "action",
+        "satz": "His quick action saved the old letters.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Kreis",
+        "englisch": "circle",
+        "satz": "The children sat in a circle on the floor.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 8,
+        "deutsch": "beschädigt",
+        "englisch": "damaged",
+        "satz": "The photo was damaged by the heavy rain.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 9,
+        "deutsch": "frisch",
+        "englisch": "fresh",
+        "satz": "She put fresh flowers on the table.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 10,
+        "deutsch": "widerstandsfähig",
+        "englisch": "tough",
+        "satz": "The leather bag is old but still tough.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 11,
+        "deutsch": "selten",
+        "englisch": "rare",
+        "satz": "This coin is quite rare today.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 12,
+        "deutsch": "plötzlich",
+        "englisch": "suddenly",
+        "satz": "Suddenly, the light in the room went out.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Ende",
+        "englisch": "ending",
+        "satz": "The ending of the story made me cry.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Freundin",
+        "englisch": "girlfriend",
+        "satz": "He showed the ring to his girlfriend.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 15,
+        "deutsch": "heiraten",
+        "englisch": "marry",
+        "satz": "They decided to marry in the same church.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Hintergrund",
+        "englisch": "background",
+        "satz": "You can see the sea in the background.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 14"
+      },
+      {
+        "nr": 17,
+        "deutsch": "direkt",
+        "englisch": "straight",
+        "satz": "We drove straight to the old farmhouse.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 18,
+        "deutsch": "definitiv",
+        "englisch": "definitely",
+        "satz": "That box definitely belonged to my father.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Kind",
+        "englisch": "kid",
+        "satz": "As a kid, I collected small stones.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 20,
+        "deutsch": "kaputtmachen",
+        "englisch": "break",
+        "satz": "Be careful, or you will break the cup.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 16"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Roman",
+        "englisch": "novel",
+        "satz": "She wrote a novel about her own childhood.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Waffe",
+        "englisch": "weapon",
+        "satz": "The museum shows an old weapon from 1850.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 23,
+        "deutsch": "überleben",
+        "englisch": "survive",
+        "satz": "Only a few letters survived the big fire.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 24,
+        "deutsch": "süß",
+        "englisch": "cute",
+        "satz": "My little brother looks cute in that photo.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 25,
+        "deutsch": "(für) immer",
+        "englisch": "forever",
+        "satz": "I will keep this ring forever.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 26,
+        "deutsch": "ärgerlich",
+        "englisch": "upset",
+        "satz": "She was upset about the broken plate.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Beschreibung",
+        "englisch": "description",
+        "satz": "His description of the house was very clear.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 28,
+        "deutsch": "engagieren",
+        "englisch": "engage",
+        "satz": "The teacher tried to engage the whole class.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Erinnerung",
+        "englisch": "memory",
+        "satz": "I have a happy memory of that day.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      },
+      {
+        "nr": 30,
+        "deutsch": "abdecken",
+        "englisch": "cover",
+        "satz": "Please cover the box with this cloth.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "meta": {
+        "titel": "Unit 1 Part I - Vokabelprüfung, Niveau B",
+        "niveau": "B",
+        "cefr": "A2.2-B1.1",
+        "quelle_liste": "Test 1"
+      },
+      "total_words": 12,
+      "header": {
+        "title": " Vocabulary",
+        "unit": "Unit 1 |Part I",
+        "name_label": "Name:",
+        "grade_label": "Grade :"
+      },
+      "task1": {
+        "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+        "items": [
+          {
+            "german": "spielen, auftreten",
+            "english": "perform",
+            "pos": "verb"
+          },
+          {
+            "german": "metallisch",
+            "english": "metal",
+            "pos": "adj"
+          },
+          {
+            "german": "Glück haben",
+            "english": "lucky",
+            "pos": "adj"
+          },
+          {
+            "german": "werfen",
+            "english": "throw",
+            "pos": "verb"
+          },
+          {
+            "german": "zeichnen",
+            "english": "draw",
+            "pos": "verb"
+          },
+          {
+            "german": "leicht",
+            "english": "easily",
+            "pos": "adv"
+          },
+          {
+            "german": "geheim",
+            "english": "secret",
+            "pos": "adj"
+          },
+          {
+            "german": "nützlich",
+            "english": "useful",
+            "pos": "adj"
+          }
+        ]
+      },
+      "task2": {
+        "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+        "word_bank_label": "Words:",
+        "word_bank": [
+          "großartig",
+          "schrecklich",
+          "langsam",
+          "akzeptieren"
+        ],
+        "gaps": [
+          {
+            "german": "akzeptieren",
+            "english": "accept",
+            "answer": "accept",
+            "pos": "verb"
+          },
+          {
+            "german": "großartig",
+            "english": "awesome",
+            "answer": "awesome",
+            "pos": "adj",
+            "unique_because": "Nach „and everybody clapped“ passt nur ein positives Urteil; ein negatives widerspräche dem Applaus."
+          },
+          {
+            "german": "langsam",
+            "english": "slowly",
+            "answer": "slowly",
+            "pos": "adv",
+            "unique_because": "„the singer walked ___ to the front“ beschreibt die Art des Gehens - dort steht ein Adverb, kein Adjektiv."
+          },
+          {
+            "german": "schrecklich",
+            "english": "terrible",
+            "answer": "terrible",
+            "pos": "adj",
+            "unique_because": "Der Nebensatz „because he forgot half of the words“ verlangt ein negatives Urteil; ein positives passt dort nicht."
+          }
+        ],
+        "text": "Last June our school held a concert in the old hall. At first my brother did not want to {1} the invitation. He said the seats were hard and the room was small. But the first song was really {2}, and everybody clapped. Then the singer walked {3} to the front of the stage. Sadly, the very last piece was {4}, because he forgot half of the words."
+      }
+    },
+    "teil2": {
+      "meta": {
+        "titel": "Unit 1 Part II - Vokabelprüfung, Niveau B",
+        "niveau": "B",
+        "cefr": "A2.2-B1.1",
+        "quelle_liste": "Test 2"
+      },
+      "total_words": 12,
+      "header": {
+        "title": " Vocabulary",
+        "unit": "Unit 1 |Part II",
+        "name_label": "Name:",
+        "grade_label": "Grade :"
+      },
+      "task1": {
+        "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+        "items": [
+          {
+            "german": "Hintergrund",
+            "english": "background",
+            "pos": "noun"
+          },
+          {
+            "german": "plötzlich",
+            "english": "suddenly",
+            "pos": "adv"
+          },
+          {
+            "german": "heiraten",
+            "english": "marry",
+            "pos": "verb"
+          },
+          {
+            "german": "abschließen",
+            "english": "lock",
+            "pos": "verb"
+          },
+          {
+            "german": "Erinnerung",
+            "english": "memory",
+            "pos": "noun"
+          },
+          {
+            "german": "gefährlich",
+            "english": "dangerous",
+            "pos": "adj"
+          },
+          {
+            "german": "suchen",
+            "english": "search",
+            "pos": "verb"
+          },
+          {
+            "german": "beschädigt",
+            "english": "damaged",
+            "pos": "adj"
+          }
+        ]
+      },
+      "task2": {
+        "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+        "word_bank_label": "Words:",
+        "word_bank": [
+          "endlich",
+          "Kreis",
+          "engagieren",
+          "süß"
+        ],
+        "gaps": [
+          {
+            "german": "engagieren",
+            "english": "engage",
+            "answer": "engage",
+            "pos": "verb",
+            "unique_because": "Nach „wanted to“ steht die Grundform eines Verbs."
+          },
+          {
+            "german": "Kreis",
+            "english": "circle",
+            "answer": "circle",
+            "pos": "noun",
+            "unique_because": "„drew a large ___ on the wall“ meint eine Form zum Zeichnen - nur das Nomen der Wortbank passt dorthin."
+          },
+          {
+            "german": "süß",
+            "english": "cute",
+            "answer": "cute",
+            "pos": "adj",
+            "unique_because": "„My rabbit looked very ___“ verlangt ein Adjektiv."
+          },
+          {
+            "german": "endlich",
+            "english": "finally",
+            "answer": "finally",
+            "pos": "adv",
+            "unique_because": "„the picture was ___ ready“ sagt, wann es so weit war - das leistet nur das Adverb."
+          }
+        ],
+        "text": "In May our art teacher wanted to {1} the whole class in one project. We drew a large {2} on the wall of the school hall. Inside it each of us painted an animal from home. My rabbit looked very {3}, and my friends laughed about its long ears. After four weeks the picture was {4} ready for the school party."
+      }
+    }
+  }
+}

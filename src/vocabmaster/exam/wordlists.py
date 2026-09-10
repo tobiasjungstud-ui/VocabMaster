@@ -52,7 +52,8 @@ def dictionary() -> frozenset[str]:
 
 
 # Regular inflections accepted when matching against the core list.
-INFLECTIONS = ("s", "es", "ed", "d", "ing", "er", "est", "ly", "ies", "ied")
+INFLECTIONS = ("s", "es", "ed", "d", "ing", "er", "est", "ly", "ies", "ied",
+               "ier", "iest", "ily")
 
 
 def _bases(word: str) -> set[str]:
@@ -62,6 +63,8 @@ def _bases(word: str) -> set[str]:
         if word.endswith(suffix) and len(word) - len(suffix) >= 3:
             base = word[: -len(suffix)]
             forms.update({base, base + "e", base + "y"})
+            if suffix in ("ier", "iest", "ily", "ies", "ied"):
+                forms.add(base + "y")         # earlier, easiest, happily
             if len(base) > 2 and base[-1] == base[-2]:
                 forms.add(base[:-1])          # stopped, running
     return forms

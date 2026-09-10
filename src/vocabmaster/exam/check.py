@@ -517,6 +517,16 @@ class ExamChecker:
 
     # -------------------------------------------------------------- gap checks
     def check_word_bank(self) -> None:
+        # The bank is printed as one comma-separated line, so a prompt that
+        # itself contains a comma splits into two on the sheet: four gaps but
+        # five words to choose from.  Alternatives belong behind a slash.
+        for word in self.task2.get("word_bank") or []:
+            if "," in str(word):
+                self.add(ERROR, "word-bank",
+                         f"the prompt {word!r} contains a comma - printed in "
+                         f"the bank it reads as two separate words. Write "
+                         f"alternatives with a slash ('spielen / auftreten').")
+
         bank = [normalise(w) for w in self.task2.get("word_bank") or []]
         wanted = [normalise(g.get("german", "")) for g in self.gaps]
         if sorted(bank) != sorted(wanted):

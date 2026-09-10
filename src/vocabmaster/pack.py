@@ -32,6 +32,7 @@ from typing import Any
 from .config import Settings
 from .database import Database
 from .exam.difficulty import score_item
+from .exam.select import _clashes as _exam_clashes
 from .exam.vocab import VocabItem, VocabTest, guess_pos
 from .niveau import NiveauProfile, profile
 from .pool import UnitPlan, plan_both
@@ -58,16 +59,29 @@ _TEIL = {1: ("Part I", "Test 1"), 2: ("Part II", "Test 2")}
 # Gerüst
 # ---------------------------------------------------------------------------
 def _list_entry(number: int, english: str, german: str, herkunft: str,
-                abschnitt: str = "") -> dict[str, Any]:
+                abschnitt: str = "", wortart: str = "") -> dict[str, Any]:
     return {
         "nr": number,
         "deutsch": german,
         "englisch": english,
         "satz": "",
         "form": "",
+        "wortart": wortart,
         "herkunft": herkunft,
         "abschnitt": abschnitt,
     }
+
+
+def wortart_von(entry: dict[str, Any]) -> str:
+    """Die Wortart eines Listeneintrags.
+
+    Vorrang hat die Angabe der Wortliste des Lehrmittels - sie steht dort in
+    einer eigenen Spalte und ist verlässlicher als jede Ableitung aus dem
+    deutschen Stichwort. Ohne Angabe (bei ergänzten Wörtern) wird sie aus dem
+    Deutschen geraten: Nomen werden grossgeschrieben, Verben enden auf -en.
+    Das trifft aber zum Beispiel bei "inzwischen" oder "hölzern" daneben.
+    """
+    return entry.get("wortart") or guess_pos(entry.get("deutsch", ""))
 
 
 def _placeholder(number: int) -> dict[str, Any]:
@@ -77,6 +91,15 @@ def _placeholder(number: int) -> dict[str, Any]:
         "Wort, das noch in keiner der beiden Listen dieser Unit steht."
     )
     return entry
+
+
+def _as_vocab_item(entry: dict[str, Any]) -> VocabItem:
+    return VocabItem(
+        number=int(entry.get("nr", 0)),
+        german=entry.get("deutsch", ""),
+        english=entry.get("englisch", ""),
+        example=entry.get("satz", ""),
+    )
 
 
 def _exam_scaffold(
@@ -95,16 +118,29 @@ def _exam_scaffold(
         usable,
         key=lambda i: -score_item(
             {"english": i["englisch"], "german": i["deutsch"],
-             "pos": guess_pos(i["deutsch"])}
+             "pos": wortart_von(i)}
         ).score,
     )
     take = settings.exam_words
     # Niveau A prüft von oben, Niveau B aus der Mitte: die schwersten Wörter
     # der eigenen Liste sind für die schwächere Gruppe der Frust, die
     # leichtesten prüfen nichts.
-    chosen = scored[:take] if prof.name == "A" else scored[len(scored) // 4 :][:take]
-    if len(chosen) < take:
-        chosen = scored[:take]
+    # Wie im VocabTestMaker: kein Wort, das der Checker anschliessend
+    # beanstanden würde - keine zwei Wörter einer Wortfamilie
+    # ("fashionable"/"old-fashioned"), keine Beinah-Synonyme, kein bekanntes
+    # Verwechslungspaar.
+    reihenfolge = scored if prof.name == "A" else scored[len(scored) // 4 :] + scored
+    chosen: list[dict[str, Any]] = []
+    for entry in reihenfolge:
+        if len(chosen) >= take:
+            break
+        if entry in chosen:
+            continue
+        if _exam_clashes(_as_vocab_item(entry), [_as_vocab_item(c) for c in chosen]):
+            continue
+        chosen.append(entry)
+    if len(chosen) < take:  # notfalls auffüllen, der Checker meldet es dann
+        chosen += [e for e in scored if e not in chosen][: take - len(chosen)]
 
     by_score = sorted(
         chosen,
@@ -113,15 +149,22 @@ def _exam_scaffold(
              "pos": guess_pos(i["deutsch"])}
         ).score,
     )
+    # Für die Wortbank taugt kein Stichwort mit Komma: Die Bank wird als eine
+    # Zeile gedruckt, ein Komma im Stichwort macht daraus zwei Wörter - vier
+    # Lücken, aber fünf Wörter zur Auswahl.
+    bankfaehig = [e for e in by_score if "," not in e.get("deutsch", "")]
+    # Je Lücke eine andere Wortart, damit sich zwei Lücken nicht schon von der
+    # Grammatik her vertauschen lassen. Adverbien zählen dabei mit - sie sind
+    # eine eigene Wortart und stehen an anderen Stellen im Satz als Adjektive.
     gaps: list[dict[str, Any]] = []
-    for pos in ("verb", "noun", "adj"):
-        for entry in by_score:
+    for pos in ("verb", "noun", "adj", "adv"):
+        for entry in bankfaehig:
             if len(gaps) >= settings.exam_gaps:
                 break
-            if guess_pos(entry["deutsch"]) == pos and entry not in gaps:
+            if wortart_von(entry) == pos and entry not in gaps:
                 gaps.append(entry)
                 break
-    for entry in by_score:
+    for entry in bankfaehig:
         if len(gaps) >= settings.exam_gaps:
             break
         if entry not in gaps:
@@ -153,7 +196,7 @@ def _exam_scaffold(
             "instruction": f"1) Translate using the vocabulary from {sentence_unit}.",
             "items": [
                 {"german": e["deutsch"], "english": e["englisch"],
-                 "pos": guess_pos(e["deutsch"])}
+                 "pos": wortart_von(e)}
                 for e in translation
             ],
         },
@@ -163,7 +206,7 @@ def _exam_scaffold(
             "word_bank": bank,
             "gaps": [
                 {"german": g["deutsch"], "english": g["englisch"],
-                 "answer": g["englisch"], "pos": guess_pos(g["deutsch"])}
+                 "answer": g["englisch"], "pos": wortart_von(g)}
                 for g in gaps
             ],
             "text": (
@@ -201,6 +244,7 @@ def scaffold(
                     "wortliste" if source else "ergänzt",
                     f"{source.section}, S. {source.page}" if source and source.page
                     else (source.section if source else ""),
+                    source.pos if source else "",
                 )
             )
         blocks[name] = rows
@@ -301,6 +345,14 @@ class Pack:
     @property
     def all_entries(self) -> list[dict[str, Any]]:
         return self.entries("test1") + self.entries("test2")
+
+    def wortart(self, english: str) -> str:
+        """Die Wortart eines Wortes, wie sie in der Liste dieses Pakets steht."""
+        needle = str(english).strip().lower()
+        for entry in self.all_entries:
+            if entry.get("englisch", "").strip().lower() == needle:
+                return wortart_von(entry)
+        return ""
 
     def exam(self, teil: int) -> dict[str, Any]:
         return dict(self.data.get("pruefungen", {}).get(f"teil{teil}", {}))

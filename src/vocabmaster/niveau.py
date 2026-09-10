@@ -125,7 +125,10 @@ _SELECTION_A = {
 #: Fassung. Eine Untergrenze bleibt trotzdem: Wörter, die man einfach aus
 #: dem deutschen Stichwort abschreibt, prüfen auch hier nichts.
 _SELECTION_B = {
-    "min_mean_difficulty": 1.6,
+    # Niveau-B-Wörter sind planmässig zugänglicher; die Untergrenze soll nur
+    # verhindern, dass eine Prüfung ausschliesslich aus abschreibbaren
+    # Kognaten besteht - dafür sorgt zusätzlich "max_easy_cognates".
+    "min_mean_difficulty": 1.4,
     "min_item_difficulty": 0.8,
     "max_easy_cognates": 3,
     "max_multiword_items": 2,

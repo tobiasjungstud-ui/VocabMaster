@@ -14,7 +14,7 @@ from __future__ import annotations
 from collections import Counter
 
 from .dedup import find_cross_overlaps, find_internal_overlaps
-from .leveling import ZIPF_TOO_EASY, ZIPF_TOO_RARE
+from .leveling import DEFAULT_BOUNDS, Bounds
 from .models import POS, Candidate, QualityReport, Severity
 from .normalize import normalize_key
 from .selection import balance_summary
@@ -87,7 +87,16 @@ def validate_overlaps(
                 seen[key] = c.headword
 
 
-def validate_level(items: list[Candidate], report: QualityReport) -> None:
+def validate_level(
+    items: list[Candidate], report: QualityReport, bounds: Bounds | None = None
+) -> None:
+    """Niveau der Wörter prüfen.
+
+    ``bounds`` ist das Häufigkeitsfenster des Niveaus. Ohne Angabe gilt das
+    Band für Niveau A - sonst würde jedes Wort der Niveau-B-Liste als
+    "zu einfach" gemeldet, obwohl es genau dort hingehört.
+    """
+    bounds = bounds or DEFAULT_BOUNDS
     for c in items:
         if "aufgefuellt" in c.flags:
             report.add(
@@ -99,19 +108,21 @@ def validate_level(items: list[Candidate], report: QualityReport) -> None:
                 stage="niveau",
             )
             continue
-        if c.zipf >= ZIPF_TOO_EASY:
+        if c.zipf >= bounds.too_easy:
             report.add(
                 "zu_einfach",
                 Severity.WARNING,
-                f"'{c.headword}' dürfte für B1.2 zu einfach sein (Zipf {c.zipf:.2f}).",
+                f"'{c.headword}' dürfte für {bounds.label} zu einfach sein "
+                f"(Zipf {c.zipf:.2f}).",
                 words=[c.headword],
                 stage="niveau",
             )
-        if c.zipf < ZIPF_TOO_RARE:
+        if c.zipf < bounds.too_rare:
             report.add(
                 "zu_selten",
                 Severity.WARNING,
-                f"'{c.headword}' ist im Englischen wenig gebräuchlich (Zipf {c.zipf:.2f}).",
+                f"'{c.headword}' ist für {bounds.label} zu selten "
+                f"(Zipf {c.zipf:.2f}).",
                 words=[c.headword],
                 stage="niveau",
             )
@@ -185,12 +196,13 @@ def validate_all(
     test2: list[Candidate],
     expected: int,
     report: QualityReport | None = None,
+    bounds: Bounds | None = None,
 ) -> QualityReport:
     """Führt alle regelbasierten Prüfungen aus."""
     report = report or QualityReport()
     validate_structure(test1, test2, expected, report)
     validate_overlaps(test1, test2, report)
-    validate_level(test1 + test2, report)
+    validate_level(test1 + test2, report, bounds)
     summary = validate_balance(test1, test2, report)
     validate_sentences(test1, report, "Test 1")
     validate_sentences(test2, report, "Test 2")

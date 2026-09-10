@@ -151,3 +151,52 @@ taken taught told thought threw understood wore won wrote written began begun
 broke broken built hung hurt laid lay led meant rode risen sang sank shook shot
 shown shut sung sat slid spread stuck struck swore swum tore thrown woke worn
 
+# --- Ergänzt: Grundwortschatz, der beim Prüfen echter Texte fehlte -----------
+# Zahlen und Mengen
+one two three four five six seven eight nine ten eleven twelve
+thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty
+thirty forty fifty sixty seventy eighty ninety hundred thousand million
+first second third half quarter dozen
+# Unregelmässige Plurale und Personen
+child children man men woman women person people foot feet tooth teeth
+mouse mice wife wives life lives knife knives leaf leaves
+# Familie und Menschen
+mother father parent parents brother sister uncle aunt cousin grandmother
+grandfather grandparents son daughter baby friend neighbour teacher student
+class classmate group team member visitor guest
+# Zeit
+day week month year hour minute morning afternoon evening night today
+yesterday tomorrow weekend holiday summer winter spring autumn season
+monday tuesday wednesday thursday friday saturday sunday early late soon
+already still yet ago again always never often sometimes usually
+# Ort und Weg
+house home room kitchen garden garage wall door window floor roof street
+road river lake sea beach hill mountain village town city country park
+school shop market station bridge church museum library hall building
+place area centre corner side top bottom front back inside outside
+# Alltagsdinge
+box bag paper photo photograph picture letter card book page pen pencil
+table chair bed desk shelf cup plate glass bottle key ring watch clock
+phone camera computer screen device machine tool ticket money price
+clothes shoe shirt coat hat dress flower tree grass stone wood metal
+# Verben
+be have do go come get make take give put keep find look see watch hear
+listen say tell ask answer think know understand remember forget learn
+teach read write draw paint play sing dance walk run drive ride travel
+visit stay leave arrive open close start stop finish begin end continue
+buy sell pay cost bring carry hold move turn send show help work live
+eat drink cook clean wash wear sleep wake laugh cry smile feel like love
+want need try use change build break repair lose win lend borrow choose
+decide agree hope wish believe explain describe repeat call clap
+# Adjektive und Adverbien
+good bad big small large little long short high low old new young
+happy sad angry tired hungry thirsty ill well strong weak fast slow
+easy hard difficult simple clear dark light heavy light warm cold hot
+cool dry wet clean dirty full empty open closed free busy important
+interesting boring funny nice kind friendly quiet loud safe real true
+false right wrong same different next last other another every
+really very quite rather almost enough together alone probably
+# Bindewörter und Kleinwörter
+because although while during before after until since between among
+through across around above below under over near beside instead
+however therefore also finally suddenly however perhaps maybe

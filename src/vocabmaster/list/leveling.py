@@ -71,13 +71,23 @@ _PROPER_NOUN = re.compile(r"^[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*$")
 
 @functools.lru_cache(maxsize=1)
 def _core_vocabulary() -> frozenset[str]:
-    """A1/A2-Grundwortschatz, der als bekannt vorausgesetzt wird."""
+    """Der als bekannt vorausgesetzte Wortschatz (A1 bis B1.1).
+
+    Eine Zeile ohne Komma wird an Leerzeichen zerlegt - so lassen sich viele
+    Einzelwörter kompakt notieren. Eine Zeile **mit** Komma wird an den Kommas
+    zerlegt; nur so kommen Mehrwortausdrücke wie ``wake up`` unzerteilt in die
+    Liste.
+    """
     words: set[str] = set()
     path = _DATA / "a1_a2_core.txt"
     if path.exists():
         for line in path.read_text(encoding="utf-8").splitlines():
             line = line.split("#")[0].strip().lower()
-            if line:
+            if not line:
+                continue
+            if "," in line:
+                words.update(t.strip() for t in line.split(",") if t.strip())
+            else:
                 words.update(t for t in line.split() if t)
     return frozenset(words)
 
@@ -135,15 +145,55 @@ class LevelContext:
         return cls(frozenset(words), frozenset(stems))
 
 
+#: Adverbien, deren Bedeutung sich **nicht** aus dem Adjektiv ergibt. Wer
+#: "hard" kennt, weiss damit noch nicht, was "hardly" heisst.
+_LY_AUSNAHMEN = frozenset({
+    "hardly", "lately", "shortly", "barely", "scarcely", "largely", "mostly",
+    "presently", "surely", "merely", "namely", "practically", "virtually",
+})
+
+#: Endungen, die eine Form nur beugen oder regelmässig ableiten. Wer das
+#: Grundwort kennt, kennt auch diese Form - sie ist kein eigener Lernstoff.
+_ABGELEITET = (
+    ("ly", ""), ("ily", "y"), ("ies", "y"), ("ied", "y"), ("ier", "y"),
+    ("iest", "y"), ("es", ""), ("s", ""), ("ed", ""), ("ing", ""),
+    ("er", ""), ("est", ""),
+)
+
+
+def _ist_abgeleitet_von_kern(word: str, core: frozenset[str]) -> bool:
+    """Ist das Wort die regelmässige Ableitung eines bekannten Wortes?
+
+    ``happily`` von ``happy``, ``actively`` von ``active``, ``houses`` von
+    ``house``. Solche Formen kosten keinen eigenen Lernaufwand und gehören
+    deshalb nicht in einen Test - auch wenn sie selbst selten sind.
+    """
+    if word in _LY_AUSNAHMEN:
+        return False
+    for suffix, ersatz in _ABGELEITET:
+        if not word.endswith(suffix) or len(word) - len(suffix) < 3:
+            continue
+        stamm = word[: -len(suffix)] + ersatz
+        for kandidat in (stamm, stamm + "e", stamm.rstrip(stamm[-1:]) if len(stamm) > 3
+                         and stamm[-1] == stamm[-2:-1] else stamm):
+            if kandidat in core:
+                return True
+    return False
+
+
 def is_core_vocabulary(word: str) -> bool:
-    """Steht das Wort im vorausgesetzten A1/A2-Grundwortschatz?"""
+    """Gilt das Wort als bekannt (A1 bis B1.1)?
+
+    Zielgruppe sind Lernende im sechsten Englischjahr. Erfasst werden die
+    Wörter der mitgelieferten Liste **und** ihre regelmässigen Ableitungen.
+    """
     hw = headword(word).lower()
     core = _core_vocabulary()
     if hw in core:
         return True
     tokens = hw.split()
-    if len(tokens) <= 1:
-        return False
+    if len(tokens) == 1:
+        return _ist_abgeleitet_von_kern(hw, core)
     # Eine Wendung gilt nur dann als trivial, wenn alle Bestandteile trivial
     # sind *und* die Wendung als Ganzes alltäglich bleibt. Sonst würden feste
     # Ausdrücke mit unauffälligen Bestandteilen ("box office",

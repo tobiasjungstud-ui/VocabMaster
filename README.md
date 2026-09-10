@@ -286,9 +286,10 @@ Reicht der Hauptteil nicht für 60 Wörter, gilt **genau diese** Reihenfolge:
 Über 40 % ist eine Ausnahme, kein Abbruch: Es wird gebaut, der Anteil aber
 als Warnung gemeldet.
 
-**Mit der aktuellen Wortliste kommt jede Unit allein aus ihrem Hauptteil auf
-60 Wörter** — weder Ergänzungen noch Zusatzteile werden gebraucht. Ein Test
-wacht darüber. `vocabmaster db pool <unit>` sagt es vorab.
+Mit der aktuellen Wortliste kommen Unit 1, 2, 3, 7 und 8 ohne Ergänzung
+aus; Unit 4 braucht 2 Wörter, Unit 5 vier, Unit 6 fünfzehn (25 %).
+Zusatzteile werden nirgends gebraucht. `vocabmaster db pool <unit>` sagt es
+vorab.
 
 ---
 
@@ -354,8 +355,12 @@ bleiben unberührt.
 **Passt eine Liste wirklich auf eine Seite?**
 Die Höhe wird vor der Ausgabe gerechnet; über 100 % gibt es einen Fehler.
 
-**Ich möchte ein Wort nie in einer Liste sehen.**
-In `src/vocabmaster/list/data/a1_a2_core.txt` eintragen.
+**Ein zu einfaches Wort ist durchgerutscht.**
+Eine Zeile in `src/vocabmaster/list/data/a1_a2_core.txt` ergänzen — dort steht
+der Wortschatz (rund 1500 Einträge, A1–B1.1), den eine Klasse im sechsten
+Englischjahr schon kann. Mehrwortausdrücke **kommagetrennt** schreiben
+(`wake up, get up, sit down`), sonst zerfallen sie in Einzelwörter.
+Ableitungen wie `happily` von `happy` brauchen keinen eigenen Eintrag.
 
 **Bekomme ich bei gleichem Vorgehen dieselbe Auswahl?**
 Ja — die Auswahl ist über `VM_SEED` reproduzierbar. Die Sätze schreibt das

@@ -29,11 +29,17 @@ from .list.leveling import Bounds
 
 NIVEAUS = ("A", "B")
 
-#: Häufigkeitsfenster der **gemeinsamen** Vokabelliste. Es spannt beide
-#: Niveaus zusammen: nach unten so weit wie Niveau A reicht, nach oben so
-#: weit wie Niveau B. Der A1/A2-Grundwortschatz und blosse Kognate bleiben
-#: unabhängig davon aussen vor.
-LIST_BOUNDS = Bounds(too_easy=5.35, too_rare=2.45, label="A2.2-B2.1")
+#: Häufigkeitsfenster der **gemeinsamen** Vokabelliste.
+#:
+#: Der Klassenschnitt liegt bei B1.1-B1.2, also ist die Obergrenze dieselbe
+#: wie im ursprünglichen VocabListMaker: Was häufiger vorkommt, kennen die
+#: Lernenden im sechsten Englischjahr längst.
+#:
+#: Häufigkeit ist dabei nur das grobe Sieb. Sie trennt "marry" (4.40) nicht
+#: von "fragile" (3.86), obwohl das eine bekannt und das andere Lernstoff
+#: ist. Die eigentliche Arbeit leistet der Grundwortschatz in
+#: ``list/data/a1_a2_core.txt`` samt seinen Ableitungsregeln.
+LIST_BOUNDS = Bounds(too_easy=4.75, too_rare=2.45, label="B1.1-B2.1")
 
 #: Höchstlänge eines Beispielsatzes in der Vokabelliste. Die Liste wird von
 #: beiden Gruppen gelernt, also gilt das engere Mass der schwächeren.

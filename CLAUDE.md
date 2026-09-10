@@ -96,9 +96,9 @@ Reihenfolge:
 Über 40 % ist eine Ausnahme, kein Fehler: Die Anwendung baut trotzdem, meldet
 den Anteil aber als Warnung. Dann besonders sorgfältig gegenlesen.
 
-Stand mit der aktuellen Wortliste: **Jede Unit kommt allein aus ihrem
-Hauptteil auf 60 Wörter.** Weder Ergänzungen noch Zusatzteile werden
-gebraucht. Ein Test wacht darüber.
+Stand mit der aktuellen Wortliste: Unit 1, 2, 3, 7 und 8 kommen ohne
+Ergänzung aus; Unit 4 braucht 2 Wörter, Unit 5 vier, Unit 6 fünfzehn (25 %).
+Zusatzteile werden nirgends gebraucht. Ein Test wacht darüber.
 
 ## Niveau A und Niveau B — eine Liste, zwei Prüfungen
 
@@ -112,6 +112,25 @@ Unterschieden wird erst bei der **Prüfung**:
 |---|---|---|---|
 | **A** | B1.2–B2.1 | leistungsstärkere Gruppe | die zwölf schwersten Wörter des Tests |
 | **B** | A2.2–B1.1 | leistungsschwächere Gruppe | die zwölf zugänglichsten Wörter desselben Tests |
+
+### Was als bekannt gilt
+
+Der Klassenschnitt liegt bei **B1.1–B1.2**, sechstes Englischjahr. Was eine
+solche Klasse schon kann, ist kein Prüfstoff — und Häufigkeit allein trennt
+das nicht: `happily` ist mit Zipf 4.11 **seltener** als `lock` mit 4.51, und
+beide sind längst bekannt.
+
+Die Arbeit leistet deshalb `src/vocabmaster/list/data/a1_a2_core.txt`
+(rund 1500 Einträge, A1 bis B1.1) samt zwei Regeln:
+
+* **Ableitungen sind gratis.** Wer `happy` kennt, kennt `happily`; wer
+  `active` kennt, kennt `actively`. Ausnahmen, bei denen sich die Bedeutung
+  verschiebt (`hardly`, `lately`), stehen in `_LY_AUSNAHMEN`.
+* **Häufigkeitsgrenze 4.75** — das grobe Sieb darüber.
+
+Ein Wort, das dennoch durchrutscht: eine Zeile in `a1_a2_core.txt`
+ergänzen. Mehrwortausdrücke dort **kommagetrennt** schreiben, sonst
+zerfallen sie in Einzelwörter.
 
 Ein **Überschnitt zwischen den beiden Prüfungen ist erlaubt** — es sind
 verschiedene Gruppen. Er wird vermerkt; ab der Hälfte gemeinsamer Wörter

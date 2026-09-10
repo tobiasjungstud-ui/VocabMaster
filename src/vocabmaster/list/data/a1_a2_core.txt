@@ -1,7 +1,17 @@
-# Core A1/A2 English vocabulary.
-# Words on this list are assumed to be known long before B1.2 and are therefore
-# rejected as test items ("zu einfach"). One entry per line, lowercase.
-# Multi-word entries are allowed. Lines starting with # are comments.
+# Wortschatz, der als bekannt vorausgesetzt wird - A1 bis B1.1.
+#
+# Zielgruppe sind Lernende im sechsten Englischjahr, Klassenschnitt B1.1-B1.2.
+# Was hier steht, kennen sie mit hoher Wahrscheinlichkeit schon; es taugt
+# deshalb nicht als Prüfstoff und wird als "zu einfach" abgelehnt - auch dann,
+# wenn eine Unit dadurch zu wenig Material hat. Dann wird lieber ergänzt.
+#
+# Häufigkeit allein trennt das nicht: "happily" ist mit Zipf 4.11 seltener als
+# "lock" mit 4.51, und beide sind längst bekannt. Deshalb diese Liste.
+#
+# Ein Eintrag pro Zeile oder mehrere durch Leerzeichen getrennt, klein
+# geschrieben. Mehrwortausdrücke sind erlaubt. Zeilen mit # sind Kommentare.
+# Abgeleitete Formen (-ly von einem Adjektiv, Plural, Steigerung) brauchen
+# keinen eigenen Eintrag - die erkennt `is_core_vocabulary` selbst.
 
 # --- people, family, body ---
 man woman boy girl child children baby people person friend family mother father
@@ -74,3 +84,156 @@ four five six seven eight nine ten hundred thousand million number half
 yes no not never nothing something anything everything nobody somebody
 everybody always sometimes often usually maybe perhaps please thank sorry
 hello goodbye okay
+
+
+# ===========================================================================
+# Nachtrag: was eine B1.1-Klasse im sechsten Englischjahr schon kann.
+# Die ursprüngliche Liste war auf A1/A2 geeicht und liess Wörter wie
+# "marry", "soldier", "lock", "wake up" oder "happily" durch.
+# ===========================================================================
+
+# --- Verben des Alltags ---------------------------------------------------
+accept add agree allow answer appear argue arrive ask attack avoid bake
+become begin believe belong bite blow boil book borrow bother break bring
+brush build burn buy call camp care carry catch cause celebrate change
+charge chase chat check choose clean clear climb close collect come compare
+complain complete contain continue control cook copy correct cost count
+cover crash cross cry cut dance decide deliver describe design die disagree
+discover discuss divide draw dream dress drink drive drop dry earn eat
+enjoy enter escape examine expect explain fail fall feed feel fight fill
+find finish fit fix fly fold follow forget forgive freeze fry get give go
+grow guess hang happen hate hear help hide hit hold hope hunt hurry hurt
+imagine improve include increase introduce invent invite join joke jump
+keep kick kill kiss knock know land last laugh lead learn leave lend let
+lie lift like listen live lock look lose love make marry matter mean meet
+melt mend mind miss mix move need notice offer open order own pack paint
+park pass pay phone pick plan plant play point post practise prefer prepare
+press pretend prevent print promise protect pull push put race rain reach
+read receive recognize recognise record recycle reduce refuse relax
+remember remind remove repair repeat reply report rescue rest return ride
+ring rise roll run save say search see seem sell send serve set shake share
+shine shoot shop shout show shut sing sit skate ski sleep slide smell smile
+smoke solve sound speak spell spend stand start stay steal stop study
+suggest support suppose surf surprise swim take talk taste teach tell thank
+think throw tidy tie touch train travel treat try turn understand use visit
+wait wake walk want warn wash waste wear welcome win wish wonder work worry
+write
+
+# --- Verben mit Partikel, deren Bedeutung sich von selbst ergibt ---------
+# Kommagetrennt, damit die Ausdrücke nicht in Einzelwörter zerfallen.
+wake up, get up, sit down, stand up, lie down, go out, go away, go back
+come in, come back, come home, take off, put on, put down, turn on, turn off
+turn round, get on, get off, grow up, find out, give up, pick up, run away
+throw away, tidy up, wash up, write down, clean up, look at, look for
+look like, switch on, switch off, get dressed, get ready, be born
+
+# --- Basiswörter, von denen sich häufige Formen ableiten -------------------
+active, care, colour, count, cover, direct, ease, effect, end, form, hand
+help, hope, interest, love, mind, name, need, note, order, pain, part
+peace, place, play, power, rest, sense, shape, sound, taste, thank, thought
+truth, use, value, wonder, worth
+
+# --- Nomen des Alltags ----------------------------------------------------
+accident activity address adult adventure advice age air airport animal
+answer apartment area argument army art article artist author baby ball
+band bank basket bath battery beach bear beard bed bee beginning bell
+bicycle bike bill bird birthday biscuit blanket blood boat bone boot border
+boss bottom bowl boy brain branch bread breakfast bridge brother brush
+building bus butter button cafe cake calendar camera camp candle cap
+capital car card care carpet carrot cartoon case cash castle cat cave
+ceiling cellar cent centre century chance change channel chapter cheese
+chess chicken chocolate choice church cinema circle city class classroom
+climate cloth clothes cloud club coach coast coat coffee coin cold college
+colour comedy company competition computer concert conversation cook cooker
+copy corner cost cotton country countryside couple course cousin cow cream
+crime crowd cup cupboard curtain customer dance danger date daughter day
+death degree dentist desert design desk dessert detail diary dictionary
+diet difference dinner direction director dirt dish distance doctor dog
+doll dollar door dream dress drink driver drum duck dust duty ear earth
+east edge egg elephant email end energy engine entrance envelope error
+event evening example exam exercise exit expert eye face fact factory
+family fan farm farmer fashion father fear feather feeling fence fever
+field fight file film finger fire fish flag flat flight floor flour flower
+fog food foot football forest fork form fox frame fridge friend frog fruit
+fun furniture future game gap garage garden gas gate gift girl glass glove
+goal goat gold golf grandfather grandmother grass ground group guest guide
+guitar gun guy hair half hall hand handbag hat head headache health heart
+heat height help hero hill history hobby hole holiday home homework honey
+hope horse hospital hotel hour house husband ice idea image information ink
+insect instrument interest internet interview island jacket jam jeans job
+joke journey juice jungle key kid kilo king kiss kitchen knee knife lab
+ladder lady lake lamp land language laptop laugh law lawyer leaf leather
+leg lesson letter level library life lift light line lion lip list litre
+lorry love luck lunch machine magazine mail man manager map market
+marriage match material maths meal meaning meat medicine meeting member
+memory menu message metal metre middle milk mind minute mirror mistake
+mobile model moment money monkey month moon morning mother motorbike
+mountain mouse mouth movie mud mum muscle museum mushroom music musician
+name neck needle neighbour nephew nest news newspaper night noise north
+nose note notebook novel number nurse nut ocean offer office officer oil
+onion opinion orange order owner page pain paint painting pair pan panic
+paper parcel parent park part partner party passenger passport past path
+patient pattern peace pen pencil penny people pepper person pet petrol
+phone photo piano picture pie piece pig pill pilot pin pipe pizza place
+plan plane planet plant plastic plate platform play player pocket poem
+point police policeman pool post poster pot potato pound powder power
+practice present price prince princess printer prison prize problem product
+professor programme project promise pupil purse queen question queue quiz
+rabbit race radio rail railway rain reader reason receipt recipe record
+region rent repair reply report reporter request rest restaurant result
+return rice ride ring risk river road rock roof room root rope rose route
+rubber rubbish rule ruler salad sale salt sandwich sauce sausage scene
+school science scientist scissors score screen season seat second secret
+secretary section seed sense sentence service shadow shampoo shape sheep
+sheet shelf shell ship shirt shock shoe shop shopping shore shot shoulder
+show shower side sight sign signal silence silk silver singer sink sister
+size skill skin skirt sky sleep slice smell smile smoke snack snake snow
+soap sock sofa soil soldier song sort sound soup south space speaker speech
+speed spelling spider spoon sport spot spring square stage stair stamp star
+start state station statue steel step stick stone stop store storm story
+street string student studio study stuff subject sugar suit suitcase summer
+sun supermarket supper surprise sweater sweet swimming switch table tail
+talk tap tape taste taxi tea teacher team teenager telephone television
+temperature tennis tent test text theatre thing thought throat thumb
+thunder ticket tie tiger time tin tip title toast toe toilet tomato tongue
+tool tooth top topic total touch tour tourist towel tower town toy track
+tractor traffic train trap travel tree trip trouble trousers truck truth
+tube turn twin type tyre umbrella uncle uniform university valley van
+vegetable video view village violin visit visitor voice waiter wall wallet
+war washing watch water wave way weather website wedding week weekend
+weight west wheel wife wind window wine wing winner winter wire wish woman
+wood wool word work worker world worm writer writing yard year zoo
+
+# --- Adjektive ------------------------------------------------------------
+able afraid alive alone angry asleep awake awful bad beautiful best better
+big bitter black blind blue boring born brave bright brilliant broken brown
+busy calm careful cheap cheerful clean clear clever close cloudy cold
+colourful comfortable common complete cool correct crazy cute damp
+dangerous dark dead deaf dear deep delicious different difficult dirty
+double dry early easy electric empty enough excellent excited exciting
+expensive extra fair false famous fantastic far fast fat favourite female
+few final fine first fit flat foreign free fresh friendly frightened full
+funny gentle glad golden good grateful great green grey guilty handsome
+happy hard healthy heavy helpful high honest hot huge hungry ill important
+impossible interested interesting kind large last late lazy left light
+little local lonely long loud lovely low lucky mad main male married medium
+middle modern narrow naughty near nearby neat necessary nervous new next
+nice noisy normal old open opposite pale patient perfect pink plain pleasant
+pleased polite poor possible pretty proud quick quiet rainy rare ready real
+red rich right rough round royal rude sad safe salty same scared second
+secret separate serious several sharp short shy sick silent silly similar
+simple single slim slow small smart smooth soft sorry sour special spicy
+square stormy straight strange strong stupid sudden sunny sure sweet tall
+tasty terrible thick thin thirsty tidy tight tiny tired top tough true ugly
+unhappy upset useful usual warm weak wet white whole wide wild windy wise
+wonderful wooden worried wrong yellow young
+
+# --- Adverbien ------------------------------------------------------------
+abroad again almost already also always anyway badly carefully certainly
+clearly completely definitely downstairs early easily else enough even ever
+exactly fast finally forward hard here however immediately inside instead
+just late later loudly luckily maybe nearly never next now often once only
+outside perhaps possibly probably quickly quietly quite rather really right
+sadly slowly sometimes soon still straight suddenly then there today
+together tomorrow tonight too twice unfortunately upstairs usually very
+well yesterday yet

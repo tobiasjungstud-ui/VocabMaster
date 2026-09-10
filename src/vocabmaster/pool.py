@@ -1,22 +1,30 @@
-"""Von der Datenbank zu zwei überschneidungsfreien Wortauswahlen je Unit.
+"""Von der Datenbank zur geprüften Wortauswahl - **eine Liste je Unit**.
 
-Beide Niveaus behandeln dieselbe Unit, aber kein Wort steht in beiden Listen.
-Möglich wird das durch die getrennten Häufigkeitsfenster aus
-:mod:`vocabmaster.niveau`:
+Beide Niveaus lernen dieselben 60 Wörter; unterschieden wird erst bei der
+Prüfung (siehe :mod:`vocabmaster.niveau`). Die Auswahl läuft immer gleich:
 
-* Wörter, die nur im Fenster von Niveau A liegen (selten, anspruchsvoll),
-  gehen an A.
-* Wörter, die nur im Fenster von Niveau B liegen (häufiger, alltagsnah, für
-  die stärkere Gruppe längst bekannt), gehen an B.
-* Wörter im Überlappungsbereich sind **strittig**. Sie werden so verteilt,
-  dass beide Listen möglichst gleich weit gefüllt sind - wer knapper dran
-  ist, bekommt zuerst, und innerhalb dessen entscheidet die Nähe zur Mitte
-  des jeweiligen Fensters.
+1. Alle Einträge des **Hauptteils** der Unit aus der Datenbank holen.
+2. Jeden Eintrag bewerten (Wortart, Häufigkeit, Niveau, Lernwert) und dabei
+   berücksichtigen, was in früheren Units schon vorkam.
+3. Doppelungen und Wortfamilien zusammenfassen.
+4. 60 Wörter wählen und auf zwei gleich schwere Hälften verteilen.
 
-Was danach noch fehlt, bleibt bewusst offen: Die Lücke wird im Chat mit
-thematisch passenden Wörtern gefüllt und in
-:mod:`vocabmaster.checks` gegen die 40-Prozent-Grenze geprüft. Die
-Anwendung dichtet nichts selbst dazu - sie sagt nur, wie viel fehlt.
+Woher die Wörter kommen dürfen, ist verbindlich geordnet:
+
+===  ====================================================================
+ 1.  **Hauptteil** ``Unit N``. Nur dieser Block, nicht Culture, nicht
+     Project, nicht Curriculum extra - auch wenn sie dieselbe Nummer tragen.
+ 2.  Reicht das nicht, bleiben die fehlenden Plätze offen und werden **im
+     Chat mit thematisch passenden Wörtern gefüllt**, höchstens 40 Prozent
+     der Liste.
+ 3.  Erst wenn selbst das nicht genügt, zieht die Anwendung so viele Wörter
+     aus den **Zusatzteilen derselben Unit** nach, wie nötig sind, um wieder
+     unter die 40 Prozent zu kommen - und weist jedes einzelne davon im
+     Bericht aus.
+===  ====================================================================
+
+Die Anwendung dichtet nichts selbst dazu. Sie sagt nur, wie viele Plätze
+offen sind und woher sie im Notfall nachgezogen hat.
 """
 
 from __future__ import annotations
@@ -26,15 +34,11 @@ from dataclasses import dataclass, field
 from .config import Settings
 from .database import Database
 from .importer import KIND_LABELS, Row
-from .list.dedup import deduplicate, overlap_reason
-from .list.leveling import Bounds, is_usable, score_candidate
+from .list.dedup import deduplicate
+from .list.leveling import LevelContext, is_usable, score_candidate
 from .list.models import Candidate, TestItem, TestPair
 from .list.selection import balance_summary, select_words, split_balanced
-from .niveau import PROFILES, NiveauProfile, profile
-
-
-def bounds_for(prof: NiveauProfile) -> Bounds:
-    return Bounds(too_easy=prof.zipf_max, too_rare=prof.zipf_min, label=prof.cefr)
+from .niveau import LIST_BOUNDS
 
 
 @dataclass
@@ -44,27 +48,32 @@ class PoolReport:
     unit: int = 0
     unit_label: str = ""
     thema: str = ""
-    niveau: str = "A"
-    cefr: str = ""
-    roh: int = 0
-    im_fenster: int = 0
-    zugeteilt: int = 0
+    hauptteil: int = 0
+    brauchbar: int = 0
     nach_dedup: int = 0
     gewaehlt: int = 0
+    aus_hauptteil: int = 0
+    aus_zusatzteilen: list[tuple[str, str]] = field(default_factory=list)
     fehlend: int = 0
-    nachgerueckt: list[str] = field(default_factory=list)
     doppelungen: list[str] = field(default_factory=list)
     aussortiert: dict[str, list[str]] = field(default_factory=dict)
-    abschnitte: dict[str, int] = field(default_factory=dict)
+    ausnahme: str = ""
+
+    @property
+    def ergaenzt_anteil(self) -> float:
+        return self.fehlend / (self.gewaehlt + self.fehlend) if self.gewaehlt + self.fehlend else 0.0
 
     def summary(self) -> str:
-        return (
-            f"{self.unit_label}, Niveau {self.niveau} ({self.cefr}): "
-            f"{self.roh} Wörter im Hauptteil, {self.im_fenster} im Niveaufenster, "
-            f"{self.zugeteilt} diesem Niveau zugeteilt, {self.nach_dedup} nach "
-            f"Zusammenfassung von Wortfamilien, {self.gewaehlt} gewählt"
-            + (f" - es fehlen {self.fehlend}" if self.fehlend else "")
+        text = (
+            f"{self.unit_label}: {self.hauptteil} Wörter im Hauptteil, "
+            f"{self.brauchbar} davon geeignet, {self.nach_dedup} nach "
+            f"Zusammenfassung von Wortfamilien, {self.aus_hauptteil} gewählt"
         )
+        if self.aus_zusatzteilen:
+            text += f", {len(self.aus_zusatzteilen)} aus Zusatzteilen nachgezogen"
+        if self.fehlend:
+            text += f", {self.fehlend} im Chat zu ergänzen ({self.ergaenzt_anteil:.0%})"
+        return text
 
 
 def _topic(row: Row) -> str:
@@ -90,99 +99,17 @@ def to_candidate(row: Row) -> Candidate:
     )
 
 
-def _bias(prof: NiveauProfile):
-    """Der Zuschlag, der die Reihenfolge innerhalb eines Niveaus bestimmt.
-
-    Er wirkt nur auf den Lernwert und verschiebt damit die Reihenfolge - ein
-    Wort, das die Prüfung ausgeschlossen hat, kommt dadurch nicht zurück.
-    """
-
-    def value(c: Candidate) -> float:
-        score = prof.difficulty_weight * (c.difficulty - 0.5) * 2.0
-        score -= 0.30 * abs(c.zipf - prof.zipf_centre)
-        if len(c.headword.split()) > 1:
-            score += 0.25 if prof.name == "A" else -0.35
-        return score
-
-    return value
+def _bewerten(rows: list[Row], context: LevelContext) -> list[Candidate]:
+    return [score_candidate(to_candidate(r), context, LIST_BOUNDS) for r in rows]
 
 
-# ---------------------------------------------------------------------------
-# Zuteilung
-# ---------------------------------------------------------------------------
-@dataclass
-class Allocation:
-    """Welches Wort der Unit gehört zu welchem Niveau?"""
-
-    unit: int
-    per_niveau: dict[str, list[Candidate]] = field(default_factory=dict)
-    nur_a: int = 0
-    nur_b: int = 0
-    strittig: int = 0
-    ungenutzt: list[Candidate] = field(default_factory=list)
-
-
-def allocate(db: Database, unit: int, settings: Settings | None = None) -> Allocation:
-    """Teilt den Hauptteil einer Unit überschneidungsfrei auf A und B auf."""
-    settings = settings or Settings()
-    db.require_unit(unit)
-    rows = db.unit_pool(unit, core_only=settings.core_sections_only)
-    earlier = db.earlier(unit)
-
-    from .list.leveling import LevelContext
-
-    context = LevelContext.from_entries(earlier)
-
-    scored: dict[str, dict[str, Candidate]] = {}
-    for name, prof in PROFILES.items():
-        scored[name] = {}
-        for row in rows:
-            c = score_candidate(to_candidate(row), context, bounds_for(prof))
-            scored[name][row.english] = c
-
-    allocation = Allocation(unit=unit, per_niveau={"A": [], "B": []})
-    contested: list[str] = []
-    for row in rows:
-        fits = {n: is_usable(scored[n][row.english]) for n in PROFILES}
-        if fits["A"] and fits["B"]:
-            contested.append(row.english)
-            allocation.strittig += 1
-        elif fits["A"]:
-            allocation.per_niveau["A"].append(scored["A"][row.english])
-            allocation.nur_a += 1
-        elif fits["B"]:
-            allocation.per_niveau["B"].append(scored["B"][row.english])
-            allocation.nur_b += 1
-        else:
-            allocation.ungenutzt.append(scored["A"][row.english])
-
-    # Strittige Wörter dorthin, wo sie am nötigsten gebraucht werden. Bei
-    # gleichem Bedarf entscheidet die Nähe zur Mitte des Niveaufensters.
-    target = settings.target_total
-    order = sorted(
-        contested,
-        key=lambda e: abs(scored["A"][e].zipf - PROFILES["A"].zipf_centre)
-        - abs(scored["B"][e].zipf - PROFILES["B"].zipf_centre),
-    )
-    for english in order:
-        need_a = target - len(allocation.per_niveau["A"])
-        need_b = target - len(allocation.per_niveau["B"])
-        pick = "A" if need_a >= need_b else "B"
-        allocation.per_niveau[pick].append(scored[pick][english])
-    return allocation
-
-
-# ---------------------------------------------------------------------------
-# Auswahl je Niveau
-# ---------------------------------------------------------------------------
 @dataclass
 class UnitPlan:
-    """Die fertige Wortauswahl einer Unit für ein Niveau."""
+    """Die fertige Wortauswahl einer Unit - für beide Niveaus dieselbe."""
 
     unit: int
     unit_label: str
     thema: str
-    niveau: NiveauProfile
     test1: list[Candidate] = field(default_factory=list)
     test2: list[Candidate] = field(default_factory=list)
     report: PoolReport = field(default_factory=PoolReport)
@@ -204,107 +131,123 @@ class UnitPlan:
 
 
 def plan_unit(
-    db: Database,
-    unit: int,
-    niveau: str | NiveauProfile = "A",
-    settings: Settings | None = None,
-    allocation: Allocation | None = None,
+    db: Database, unit: int, settings: Settings | None = None
 ) -> UnitPlan:
-    """Wählt die Wörter eines Niveaus und teilt sie auf Test 1 und Test 2 auf."""
+    """Wählt die 60 Wörter einer Unit und teilt sie auf Test 1 und Test 2 auf."""
     settings = settings or Settings()
-    prof = profile(niveau)
-    allocation = allocation or allocate(db, unit, settings)
-    mine = allocation.per_niveau[prof.name]
+    db.require_unit(unit)
     theme = db.theme(unit)
+    ziel = settings.target_total
 
-    rows = db.unit_pool(unit, core_only=settings.core_sections_only)
+    haupt = db.unit_pool(unit, core_only=True)
+    context = LevelContext.from_entries(db.earlier(unit))
+    kandidaten = _bewerten(haupt, context)
+
     report = PoolReport(
         unit=unit,
         unit_label=db.unit_label(unit),
         thema=theme.get("thema", ""),
-        niveau=prof.name,
-        cefr=prof.cefr,
-        roh=len(rows),
-        im_fenster=allocation.nur_a + allocation.nur_b + allocation.strittig,
-        zugeteilt=len(mine),
+        hauptteil=len(haupt),
     )
-    for row in rows:
-        label = KIND_LABELS.get(row.kind, row.kind)
-        report.abschnitte[label] = report.abschnitte.get(label, 0) + 1
-    for c in allocation.ungenutzt:
-        reason = c.notes[0] if c.notes else "ohne Begründung aussortiert"
-        report.aussortiert.setdefault(reason, []).append(c.headword or c.english)
+    for c in kandidaten:
+        if is_usable(c):
+            continue
+        grund = c.notes[0] if c.notes else "ohne Begründung aussortiert"
+        report.aussortiert.setdefault(grund, []).append(c.headword or c.english)
 
-    kept, dropped = deduplicate(mine)
+    brauchbar = [c for c in kandidaten if is_usable(c)]
+    report.brauchbar = len(brauchbar)
+
+    kept, dropped = deduplicate(brauchbar)
     report.nach_dedup = len(kept)
     report.doppelungen = [
         f"{loser.headword} (zugunsten von {winner.headword}: {why})"
         for loser, winner, why in dropped
     ]
 
-    # Kein Nachrücken aus dem anderen Niveau: das würde die Listen wieder
-    # vermischen. Fehlt etwas, wird es im Chat ergänzt und ausgewiesen.
-    selection = select_words(kept, fallback=None, target=settings.target_total,
-                             bias=_bias(prof))
-    report.gewaehlt = len(selection.chosen)
-    report.fehlend = selection.deficit
+    auswahl = select_words(kept, fallback=None, target=ziel)
+    gewaehlt = list(auswahl.chosen)
+    report.aus_hauptteil = len(gewaehlt)
+
+    # Ausnahme: Reichen Hauptteil und die erlaubten 40 Prozent Ergänzung
+    # zusammen nicht aus, werden Zusatzteile derselben Unit nachgezogen -
+    # nur so viele wie nötig, und jedes wird im Bericht genannt.
+    erlaubt_offen = int(ziel * settings.max_invented_share)
+    if len(gewaehlt) + erlaubt_offen < ziel:
+        gewaehlt = _aus_zusatzteilen_nachziehen(
+            db, unit, context, gewaehlt, ziel - erlaubt_offen, report
+        )
+
+    report.gewaehlt = len(gewaehlt)
+    report.fehlend = max(0, ziel - len(gewaehlt))
 
     plan = UnitPlan(
         unit=unit,
         unit_label=db.unit_label(unit),
         thema=theme.get("thema", ""),
-        niveau=prof,
         report=report,
     )
-    if selection.deficit:
-        plan.test1 = selection.chosen[: settings.words_per_test]
-        plan.test2 = selection.chosen[settings.words_per_test :]
+    if report.fehlend:
+        # Ohne 60 Wörter lässt sich nicht ausgewogen aufteilen; die offenen
+        # Plätze verteilt das Gerüst gleichmässig auf beide Tests.
+        plan.test1 = gewaehlt[: settings.words_per_test]
+        plan.test2 = gewaehlt[settings.words_per_test :]
     else:
         plan.test1, plan.test2 = split_balanced(
-            selection.chosen, settings.words_per_test, settings.seed
+            gewaehlt, settings.words_per_test, settings.seed
         )
 
-    by_headword = {r.headword.lower(): r for r in rows}
+    alle = {r.headword.lower(): r for r in db.unit_pool(unit, core_only=False)}
     plan.herkunft = {
-        c.headword.lower(): by_headword[c.headword.lower()]
+        c.headword.lower(): alle[c.headword.lower()]
         for c in plan.all_words
-        if c.headword.lower() in by_headword
+        if c.headword.lower() in alle
     }
     return plan
 
 
-def plan_both(
-    db: Database, unit: int, settings: Settings | None = None
-) -> dict[str, UnitPlan]:
-    """Beide Niveaus in einem Zug - so ist die Zuteilung garantiert dieselbe."""
-    settings = settings or Settings()
-    allocation = allocate(db, unit, settings)
-    return {
-        name: plan_unit(db, unit, name, settings, allocation) for name in PROFILES
-    }
+def _aus_zusatzteilen_nachziehen(
+    db: Database,
+    unit: int,
+    context: LevelContext,
+    gewaehlt: list[Candidate],
+    ziel: int,
+    report: PoolReport,
+) -> list[Candidate]:
+    """Letzte Reserve: Culture, Project, Curriculum extra derselben Unit.
 
-
-def shared_words(plans: dict[str, UnitPlan]) -> list[str]:
-    """Wörter, die trotz getrennter Zuteilung in beiden Listen stehen.
-
-    Sollte leer sein. Ist es das nicht, hat jemand von Hand eingegriffen -
-    :mod:`vocabmaster.checks` meldet das als Fehler.
+    Wird nur betreten, wenn der Hauptteil selbst mit der vollen erlaubten
+    Ergänzung keine Liste ergibt. Es werden so wenige Wörter wie möglich
+    nachgezogen, und jedes einzelne steht anschliessend im Bericht.
     """
-    a = {c.headword.lower() for c in plans["A"].all_words}
-    return sorted(c.headword for c in plans["B"].all_words if c.headword.lower() in a)
+    zusatz = [r for r in db.unit_pool(unit, core_only=False) if not r.is_core]
+    if not zusatz:
+        report.ausnahme = (
+            "Der Hauptteil reicht nicht, und die Unit hat keine Zusatzteile. "
+            "Die Liste bleibt unvollständig."
+        )
+        return gewaehlt
 
+    kandidaten = [c for c in _bewerten(zusatz, context) if is_usable(c)]
+    zusammen, _ = deduplicate(gewaehlt + kandidaten)
+    nachgezogen = [c for c in zusammen if c not in gewaehlt]
+    nachgezogen.sort(key=lambda c: (-c.learning_value, -c.difficulty))
 
-def near_duplicates(plans: dict[str, UnitPlan]) -> list[tuple[str, str, str]]:
-    """Wortfamilien, die sich über die beiden Niveaus verteilt haben.
+    von_kind = {r.headword.lower(): r.kind for r in zusatz}
+    ergebnis = list(gewaehlt)
+    for c in nachgezogen:
+        if len(ergebnis) >= ziel:
+            break
+        ergebnis.append(c)
+        kind = von_kind.get(c.headword.lower(), "")
+        report.aus_zusatzteilen.append((c.headword, KIND_LABELS.get(kind, kind)))
 
-    ``advertise`` in Liste A und ``advertisement`` in Liste B ist nicht
-    falsch - beide Gruppen lernen dasselbe Wortfeld -, aber es gehört in den
-    Bericht.
-    """
-    hits = []
-    for a in plans["A"].all_words:
-        for b in plans["B"].all_words:
-            why = overlap_reason(a, b)
-            if why:
-                hits.append((a.headword, b.headword, why))
-    return hits
+    report.ausnahme = (
+        f"Ausnahme: Der Hauptteil von {report.unit_label} gibt nur "
+        f"{report.aus_hauptteil} geeignete Wörter her. Das liegt über der "
+        f"Grenze von 40 Prozent eigener Ergänzungen, deshalb wurden "
+        f"{len(report.aus_zusatzteilen)} Wörter aus den Zusatzteilen derselben "
+        "Unit nachgezogen (Culture, Curriculum extra, Project). Sie stehen "
+        "einzeln im Bericht."
+    )
+    return ergebnis

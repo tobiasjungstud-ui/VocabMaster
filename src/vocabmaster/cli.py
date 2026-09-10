@@ -4,12 +4,12 @@
     vocabmaster db units                    Übersicht über die Units
     vocabmaster db suche "Publikum"         in der Wortliste suchen
 
-    vocabmaster gerüst 3                    Gerüste für Niveau A und B
-    vocabmaster gerüst 3 --niveau B         nur Niveau B
-    vocabmaster offen kuratiert/unit_03_A.json    was noch auszufüllen ist
-    vocabmaster prüfen kuratiert/unit_03_A.json   Selbstcheck ohne zu schreiben
-    vocabmaster bauen kuratiert/unit_03_A.json    prüfen und Dokumente schreiben
-    vocabmaster bauen … --nur test          nur die Prüfungen neu erzeugen
+    vocabmaster gerüst 3                    Gerüst für Unit 3 anlegen
+    vocabmaster offen kuratiert/unit_03.json      was noch auszufüllen ist
+    vocabmaster prüfen kuratiert/unit_03.json     Selbstcheck ohne zu schreiben
+    vocabmaster bauen kuratiert/unit_03.json      prüfen und alles schreiben
+    vocabmaster bauen … --nur test --niveau B     nur Prüfung B neu erzeugen
+    vocabmaster bauen … --nur liste               nur die Vokabelliste
 
 Der Rückgabewert ist 0, wenn keine Fehler gefunden wurden, sonst 1.
 """
@@ -20,14 +20,14 @@ import argparse
 import sys
 from pathlib import Path
 
-from .checks import FEHLER, WARNUNG, gegenstueck_pfad, pruefe_paket
+from .checks import FEHLER, WARNUNG, pruefe_paket
 from .config import Settings
 from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
-from .niveau import NIVEAUS, PROFILES, profile
-from .pack import Pack, pack_filename, scaffold
-from .pool import allocate, near_duplicates, plan_both
+from .niveau import NIVEAUS, PROFILES
+from .pack import Pack, pack_filename, scaffold, waehle_pruefungswoerter
+from .pool import plan_unit
 
 KURATIERT = Path("kuratiert")
 AUSGABE = Path("out")
@@ -37,8 +37,6 @@ def _settings(args) -> Settings:
     s = Settings()
     if getattr(args, "datenbank", None):
         s.database = Path(args.datenbank)
-    if getattr(args, "mit_zusatzteilen", False):
-        s.core_sections_only = False
     return s
 
 
@@ -103,38 +101,54 @@ def cmd_db_suche(args) -> int:
 
 
 def cmd_db_pool(args) -> int:
-    """Zeigt, wie die Unit auf die beiden Niveaus aufgeteilt wird."""
+    """Zeigt die Wortauswahl einer Unit und wie die Prüfungen daraus schöpfen."""
     db = _db(args)
     settings = _settings(args)
     unit = db.require_unit(args.unit)
-    verteilung = allocate(db, unit, settings)
-    plans = plan_both(db, unit, settings)
+    plan = plan_unit(db, unit, settings)
+    r = plan.report
     theme = db.theme(unit)
+
     print(f"{db.unit_label(unit)} - {theme.get('thema', '')}")
-    print(f"Hauptteil: {plans['A'].report.roh} Wörter"
-          f"{'' if settings.core_sections_only else ' (mit Zusatzteilen)'}\n")
-    print(f"  nur für Niveau A geeignet: {verteilung.nur_a}")
-    print(f"  nur für Niveau B geeignet: {verteilung.nur_b}")
-    print(f"  für beide geeignet (verteilt): {verteilung.strittig}")
-    print(f"  für keins geeignet: {len(verteilung.ungenutzt)}\n")
-    for name in NIVEAUS:
-        plan = plans[name]
-        bal = plan.balance
-        print(f"  Niveau {name} ({PROFILES[name].cefr}): {plan.report.gewaehlt}/60 "
-              f"gewählt, {plan.report.fehlend} zu ergänzen "
-              f"({plan.report.fehlend / 60:.0%}), Ø Schwierigkeit "
-              f"{(bal['schwierigkeit_test1'] + bal['schwierigkeit_test2']) / 2:.2f}, "
-              f"Ø Zipf {(bal['zipf_test1'] + bal['zipf_test2']) / 2:.2f}")
-    familien = near_duplicates(plans)
-    if familien:
-        print(f"\n  Wortfamilien über beide Niveaus verteilt ({len(familien)}):")
-        for a, b, why in familien[:8]:
-            print(f"    {a} (A) / {b} (B) - {why}")
-    if args.woerter:
+    print(f"{r.summary()}\n")
+    if r.aus_zusatzteilen:
+        print("  Ausnahme - aus Zusatzteilen nachgezogen:")
+        for wort, bereich in r.aus_zusatzteilen:
+            print(f"    {wort} ({bereich})")
+        print()
+    if r.ausnahme:
+        print(f"  {r.ausnahme}\n")
+
+    bal = plan.balance
+    print(f"  Test 1: Ø Schwierigkeit {bal['schwierigkeit_test1']:.2f}, "
+          f"Ø Zipf {bal['zipf_test1']:.2f}")
+    print(f"  Test 2: Ø Schwierigkeit {bal['schwierigkeit_test2']:.2f}, "
+          f"Ø Zipf {bal['zipf_test2']:.2f}\n")
+
+    # Wie die beiden Prüfungen aus derselben Liste schöpfen
+    from .pack import _schwierigkeit
+
+    for teil, words in ((1, plan.test1), (2, plan.test2)):
+        eintraege = [
+            {"englisch": c.headword or c.english, "deutsch": c.german,
+             "wortart": "", "nr": i}
+            for i, c in enumerate(words, 1)
+        ]
+        print(f"  Prüfung Teil {teil}:")
         for name in NIVEAUS:
-            print(f"\n--- Niveau {name} ---")
-            for label, words in (("Test 1", plans[name].test1), ("Test 2", plans[name].test2)):
-                print(f"  {label}: " + ", ".join(c.headword for c in words))
+            gewaehlt = waehle_pruefungswoerter(eintraege, PROFILES[name], settings)
+            schnitt = (
+                sum(_schwierigkeit(e) for e in gewaehlt) / len(gewaehlt)
+                if gewaehlt else 0.0
+            )
+            print(f"    Niveau {name} ({PROFILES[name].cefr}), "
+                  f"Ø {schnitt:.1f}/10: "
+                  + ", ".join(e["englisch"] for e in gewaehlt))
+        print()
+
+    if args.woerter:
+        for label, words in (("Test 1", plan.test1), ("Test 2", plan.test2)):
+            print(f"  {label}: " + ", ".join(c.headword for c in words))
     return 0
 
 
@@ -143,31 +157,30 @@ def cmd_geruest(args) -> int:
     db = _db(args)
     settings = _settings(args)
     unit = db.require_unit(args.unit)
-    ziel = Path(args.verzeichnis)
-    niveaus = [args.niveau] if args.niveau else list(NIVEAUS)
-    plans = plan_both(db, unit, settings)
+    pfad = Path(args.verzeichnis) / pack_filename(unit)
+    if pfad.exists() and not args.ueberschreiben:
+        print(f"{pfad} besteht bereits - mit --überschreiben neu erzeugen.")
+        return 1
 
-    for name in niveaus:
-        prof = profile(name)
-        pfad = ziel / pack_filename(unit, prof)
-        if pfad.exists() and not args.ueberschreiben:
-            print(f"{pfad} besteht bereits - mit --überschreiben neu erzeugen.")
-            continue
-        data = scaffold(db, unit, prof, settings, plans[prof.name])
-        Pack(data=data).save(pfad)
-        fehlt = data["fehlbestand"]
-        print(f"{pfad} geschrieben - Niveau {prof.name} ({prof.cefr}), "
-              f"{60 - fehlt} Wörter aus der Wortliste, {fehlt} zu ergänzen "
-              f"({fehlt / 60:.0%}).")
+    plan = plan_unit(db, unit, settings)
+    Pack(data=scaffold(db, unit, settings, plan)).save(pfad)
+    r = plan.report
+    print(f"{pfad} geschrieben - {db.unit_label(unit)}, {r.summary()}")
+    if r.aus_zusatzteilen:
+        print("\n  Ausnahme - aus Zusatzteilen derselben Unit nachgezogen:")
+        for wort, bereich in r.aus_zusatzteilen:
+            print(f"    {wort} ({bereich})")
+    if r.ausnahme:
+        print(f"\n  {r.ausnahme}")
     print("\nJetzt im Chat ausfüllen: die Felder 'satz', fehlende Wörter und "
-          "die beiden Lückentexte. Danach 'vocabmaster prüfen <datei>'.")
+          "die vier Lückentexte.\nDanach 'vocabmaster prüfen " + str(pfad) + "'.")
     return 0
 
 
 def cmd_offen(args) -> int:
     pack = Pack.load(args.paket)
     offen = pack.offen()
-    print(f"{pack.unit_label}, Niveau {pack.niveau.name} - {pack.thema}")
+    print(f"{pack.unit_label} - {pack.thema}")
     if not offen:
         print("Nichts offen. Das Paket ist vollständig.")
         return 0
@@ -193,14 +206,9 @@ def _bericht_zeigen(bericht, ausfuehrlich: bool) -> None:
           f"aus {len(bericht.gelaufen)} Prüfungen.")
 
 
-def _gegenstueck(args, pack: Pack) -> Pack | None:
-    pfad = gegenstueck_pfad(args.paket, pack.niveau.name)
-    return Pack.load(pfad) if Path(pfad).exists() else None
-
-
 def cmd_pruefen(args) -> int:
     pack = Pack.load(args.paket)
-    bericht = pruefe_paket(pack, _db(args), _settings(args), _gegenstueck(args, pack))
+    bericht = pruefe_paket(pack, _db(args), _settings(args))
     print(bericht.kennzahlen.get("_kopf", ""))
     _bericht_zeigen(bericht, args.ausfuehrlich)
     if args.streng and bericht.warnungen:
@@ -212,7 +220,7 @@ def cmd_bauen(args) -> int:
     pack = Pack.load(args.paket)
     settings = _settings(args)
     db = _db(args)
-    bericht = pruefe_paket(pack, db, settings, _gegenstueck(args, pack))
+    bericht = pruefe_paket(pack, db, settings)
     print(bericht.kennzahlen.get("_kopf", ""))
     _bericht_zeigen(bericht, args.ausfuehrlich)
 
@@ -225,7 +233,10 @@ def cmd_bauen(args) -> int:
         return 1
 
     teile = ("liste", "test") if args.nur == "alles" else (args.nur,)
-    ergebnis = baue_alles(pack, args.ausgabe, settings, teile, not args.ohne_loesung)
+    niveaus = (args.niveau,) if args.niveau else NIVEAUS
+    ergebnis = baue_alles(
+        pack, args.ausgabe, settings, teile, not args.ohne_loesung, niveaus
+    )
     print(f"\nGeschrieben nach {args.ausgabe}/:")
     for pfad in ergebnis.dateien:
         print(f"  {pfad.name}")
@@ -267,22 +278,15 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-n", "--limit", type=int, default=40)
     p.set_defaults(func=cmd_db_suche)
 
-    p = dbsub.add_parser("pool", help="zeigen, wie eine Unit auf A und B aufgeht")
+    p = dbsub.add_parser("pool", help="Wortauswahl einer Unit und die A/B-Prüfungen")
     p.add_argument("unit", type=_unit)
     p.add_argument("-w", "--woerter", action="store_true", help="alle Wörter zeigen")
-    p.add_argument("--mit-zusatzteilen", action="store_true",
-                   dest="mit_zusatzteilen",
-                   help="Culture, Curriculum extra, Project … mitzählen")
     p.set_defaults(func=cmd_db_pool)
 
     for name in ("gerüst", "geruest"):
         p = sub.add_parser(name, help="Gerüst für eine Unit erzeugen")
         p.add_argument("unit", type=_unit)
-        p.add_argument("--niveau", choices=list(NIVEAUS),
-                       help="nur dieses Niveau (Standard: beide)")
         p.add_argument("-o", "--verzeichnis", default=str(KURATIERT))
-        p.add_argument("--mit-zusatzteilen", action="store_true",
-                       dest="mit_zusatzteilen")
         p.add_argument("--überschreiben", "--ueberschreiben", action="store_true",
                        dest="ueberschreiben")
         p.set_defaults(func=cmd_geruest)
@@ -298,8 +302,6 @@ def build_parser() -> argparse.ArgumentParser:
                        help="auch Hinweise zeigen")
         p.add_argument("--streng", action="store_true",
                        help="Warnungen wie Fehler behandeln")
-        p.add_argument("--mit-zusatzteilen", action="store_true",
-                       dest="mit_zusatzteilen")
         p.set_defaults(func=cmd_pruefen)
 
     p = sub.add_parser("bauen", help="prüfen und die Word-Dateien schreiben")
@@ -307,12 +309,13 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("-o", "--ausgabe", default=str(AUSGABE))
     p.add_argument("--nur", choices=("alles", "liste", "test"), default="alles",
                    help="nur einen Teil neu erzeugen")
+    p.add_argument("--niveau", choices=list(NIVEAUS),
+                   help="nur die Prüfungen dieses Niveaus schreiben")
     p.add_argument("--ohne-loesung", action="store_true", dest="ohne_loesung")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")
     p.add_argument("--streng", action="store_true")
     p.add_argument("--trotzdem", action="store_true",
                    help="trotz Fehlern schreiben (Notausgang)")
-    p.add_argument("--mit-zusatzteilen", action="store_true", dest="mit_zusatzteilen")
     p.set_defaults(func=cmd_bauen)
     return parser
 

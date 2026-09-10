@@ -28,11 +28,11 @@ def settings() -> Settings:
 
 @pytest.fixture
 def pack(db, settings) -> Pack:
-    return Pack(data=fill(scaffold(db, 1, "A", settings)))
+    return Pack(data=fill(scaffold(db, 1, settings)))
 
 
 @pytest.fixture
 def pack_file(tmp_path, pack) -> Path:
-    target = tmp_path / "unit_01_A.json"
+    target = tmp_path / "unit_01.json"
     target.write_text(json.dumps(pack.data, ensure_ascii=False), encoding="utf-8")
     return target

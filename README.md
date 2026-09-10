@@ -1,8 +1,8 @@
 # VocabMaster
 
-Aus **einer** Wortliste entstehen für jede Unit und jedes Niveau vier fertige
-Word-Dateien: die Vokabelliste mit Test 1 und Test 2, und die beiden
-Prüfungen dazu — jeweils mit Lösungsblatt.
+Aus **einer** Wortliste entstehen für jede Unit neun fertige Word-Dateien:
+**eine** Vokabelliste mit Test 1 und Test 2 — für beide Gruppen dieselbe —
+und vier Prüfungen dazu, für Niveau A und Niveau B, jeweils mit Lösungsblatt.
 
 VocabMaster führt zwei bisher getrennte Anwendungen zusammen: den
 **VocabListMaker** (Wortauswahl, Beispielsätze, Vokabelliste) und den
@@ -17,11 +17,11 @@ Es wird **kein API-Schlüssel und kein Netzzugang** gebraucht.
 ## Der ganze Ablauf in vier Zeilen
 
 ```bash
-vocabmaster gerüst 3                        # Auswahl für Niveau A und B
-#   → kuratiert/unit_03_A.json, kuratiert/unit_03_B.json
-#   → die Felder 'satz' und die Lückentexte im Chat ausfüllen lassen
-vocabmaster prüfen kuratiert/unit_03_A.json # Selbstcheck, bis 0 Fehler
-vocabmaster bauen  kuratiert/unit_03_A.json # Dokumente schreiben und kontrollieren
+vocabmaster gerüst 3                      # die 60 Wörter der Unit auswählen
+#   → kuratiert/unit_03.json
+#   → die 60 Felder 'satz' und die vier Lückentexte im Chat ausfüllen lassen
+vocabmaster prüfen kuratiert/unit_03.json # Selbstcheck, bis 0 Fehler
+vocabmaster bauen  kuratiert/unit_03.json # Dokumente schreiben und kontrollieren
 ```
 
 Im Chat genügt: **„Generiere mir Test und Vocabulary List für Unit 3,
@@ -31,13 +31,15 @@ Niveau A und B.“**
 
 ## Was dabei herauskommt
 
-Je Unit und Niveau:
+Je Unit:
 
 | Datei | Inhalt |
 |---|---|
-| `Unit03_VocabularyList_NiveauA.docx` | Vokabelliste, Test 1 und Test 2 (je 30 Wörter) |
-| `Unit03_Test_PartI_NiveauA.docx` | Prüfung zu Test 1 (12 Punkte) |
-| `Unit03_Test_PartII_NiveauA.docx` | Prüfung zu Test 2 (12 Punkte) |
+| `Unit03_VocabularyList.docx` | Vokabelliste, Test 1 und Test 2 (je 30 Wörter) — für beide Gruppen |
+| `Unit03_Test_PartI_NiveauA.docx` | Prüfung zu Test 1, stärkere Gruppe (12 Punkte) |
+| `Unit03_Test_PartI_NiveauB.docx` | Prüfung zu Test 1, schwächere Gruppe (12 Punkte) |
+| `Unit03_Test_PartII_NiveauA.docx` | Prüfung zu Test 2, stärkere Gruppe |
+| `Unit03_Test_PartII_NiveauB.docx` | Prüfung zu Test 2, schwächere Gruppe |
 | `…_Loesung.docx` | je Prüfung ein Lösungsblatt |
 
 Jedes Dokument nennt in seinen Eigenschaften, aus welcher Fassung der
@@ -46,31 +48,41 @@ wurde.
 
 ---
 
-## Niveau A und Niveau B
+## Niveau A und Niveau B — eine Liste, zwei Prüfungen
 
-| Niveau | GER | Zielgruppe |
-|---|---|---|
-| **A** | B1.2 – B2.1 | leistungsstärkere Gruppe |
-| **B** | A2.2 – B1.1 | leistungsschwächere Gruppe |
+**Es gibt je Unit genau eine Vokabelliste.** Beide Gruppen lernen dieselben
+60 Wörter derselben Unit. Es gibt keinen Wortschatz, den nur eine Gruppe zu
+Gesicht bekommt, und keine zwei Listen, die man auseinanderhalten müsste.
 
-Beide Niveaus behandeln **dasselbe Unit-Thema**, aber die beiden Listen sind
-**überschneidungsfrei**: Kein Wort steht in beiden.
+Unterschieden wird erst bei der Prüfung:
 
-Das gelingt über getrennte Häufigkeitsfenster. Ein Wort wie *memory*
-(Zipf 4.9) ist für die stärkere Gruppe längst bekannt und damit kein
-Prüfstoff — für die schwächere Gruppe ist es genau richtig. Umgekehrt ist
-*memorize* (Zipf 3.4) für Niveau B zu weit weg und für Niveau A der
-eigentliche Zugewinn. Wörter im Überlappungsbereich werden so verteilt, dass
-beide Listen möglichst voll werden.
+| Niveau | GER | Zielgruppe | prüft |
+|---|---|---|---|
+| **A** | B1.2 – B2.1 | leistungsstärkere Gruppe | die zwölf **schwersten** Wörter des Tests |
+| **B** | A2.2 – B1.1 | leistungsschwächere Gruppe | die zwölf **zugänglichsten** Wörter desselben Tests |
 
-Was für **beide** gilt: kein A1/A2-Grundwortschatz, keine blossen Kognate
-(`Protein`/`protein`), nichts aus früheren Units, dieselben Kontrollen.
-Ein Niveau-B-Test ist kein schlechterer Test, sondern ein Test über die
-Wörter, an denen diese Gruppe wirklich etwas lernt.
+Für Unit 6 sieht das so aus:
+
+```
+Prüfung Teil I:
+  Niveau A (B1.2-B2.1), Ø 3.1/10: beneficial, socialize, voluntary, chill out,
+                                  nerd, chore, bully, brave, stand out …
+  Niveau B (A2.2-B1.1), Ø 1.6/10: leader, expect, involve, crowd, breathe,
+                                  extrovert, opposite, suitable …
+```
+
+Ein Überschnitt zwischen den beiden Prüfungen ist **erlaubt** — es sind
+verschiedene Gruppen. Er wird im Bericht vermerkt; ab der Hälfte gemeinsamer
+Wörter gibt es eine Warnung, weil sich die beiden Fassungen dann nicht mehr
+unterscheiden.
+
+Wörter, die man aus dem deutschen Stichwort einfach abschreibt („Anekdote" →
+`anecdote`), kommen in **keine** Prüfung — auch nicht in die für Niveau B.
+Sie prüfen nichts, auf keinem Niveau.
 
 Die **Prüfungsform** ist für beide gleich (8× Übersetzen + Lückentext mit
 4 Lücken und Wortbank, 12 Punkte) — so wie in der Vorlage. Unterschiedlich
-sind Wortauswahl und Lückentext:
+ist der Lückentext:
 
 | | Niveau A | Niveau B |
 |---|---|---|
@@ -80,7 +92,9 @@ sind Wortauswahl und Lückentext:
 | Flesch-Lesbarkeit | ≥ 55 | ≥ 70 |
 | Nebensätze je Satz | max. 2 | max. 1 |
 | Wörter ausserhalb des Grundwortschatzes | max. 3 | max. 1 |
-| Beispielsätze der Liste | max. 16 Wörter | max. 13 Wörter |
+
+Die Beispielsätze der Vokabelliste lernen **beide** Gruppen, deshalb gilt für
+sie das engere Mass: höchstens 13 Wörter je Satz.
 
 ---
 
@@ -90,36 +104,37 @@ Vor jeder Ausgabe laufen alle Kontrollen. Bei einem Fehler wird **nicht**
 geschrieben. Der Kurzbericht sieht so aus:
 
 ```
-Unit 3, Niveau A (B1.2-B2.1) - Werbung, Marketing und Konsum
+Unit 1 - Erinnerungen und Gegenstände (eine Liste, Prüfungen für Niveau A
+B1.2-B2.1 und Niveau B A2.2-B1.1)
 
 Selbstcheck
-  ✓ thema                12 ergänzte Wörter, 0 ohne Themenbezug
-  ✓ neuwoerter           12 von 60 = 20% (Grenze 40%)
-  ✓ cefr                 B1.2-B2.1: Sätze Ø 9.8 Wörter (max 14), Lesbarkeit 71
+  ✓ thema                0 ergänzte Wörter, 0 ohne Themenbezug
+  ✓ neuwoerter           0 von 60 ergänzt = 0% (Grenze 40%)
+  ✓ cefr                 Liste (A2.2-B2.1): Sätze Ø 8.7 Wörter (max 10), Lesbarkeit 74
   ✓ dubletten            60 verschiedene Wörter, 0 Doppelungen
   ✓ altbestand           Quelle english_plus_2e_level_4…xls, 0 nicht belegte Einträge
-  ✓ loesungsschluessel   24 Aufgaben gegen die Liste geprüft
-  ✓ niveau_konsistenz    Ø Schwierigkeit A 0.53 gegen B 0.25, 0 gemeinsame Wörter
+  ✓ loesungsschluessel   48 Aufgaben gegen die Liste geprüft
+  ✓ niveau_konsistenz    Teil 1: A 3.2/10 gegen B 1.6/10; Teil 2: A 3.0/10 gegen B 1.5/10
   ✓ vorlage              0 offene Felder, 0 Platzhalter
   ✓ herkunft             english_plus_2e_level_4…xls, importiert 2026-09-10
-  ✓ liste                30+30 Wörter, Schwierigkeitsdifferenz 0.004
-  ✓ pruefung             Teil 1: 96 Wörter, Lesbarkeit 74, Grad 5.9; Teil 2: …
-  ✓ dokument             5 Dateien geschrieben und nachkontrolliert
+  ✓ liste                30+30 Wörter, Schwierigkeitsdifferenz 0.000
+  ✓ pruefung             T1/A: 79 W., Lesbarkeit 79, Grad 6.1; T1/B: 54 W., …
+  ✓ dokument             9 Dateien geschrieben und nachkontrolliert
 ```
 
 | Kontrolle | findet |
 |---|---|
 | `thema` | ergänzte Wörter, die nicht zum Wortfeld der Unit gehören |
 | `neuwoerter` | mehr als 40 % selbst ergänzt |
-| `cefr` | Sätze und Lückentexte ausserhalb des Bandes des Niveaus |
+| `cefr` | Beispielsätze zu lang oder zu schwer für die gemeinsame Liste |
 | `dubletten` | dasselbe Wort zweimal, widersprüchliche Übersetzung oder Wortart |
 | `altbestand` | Wörter aus einer alten Wortliste, falsche Excel-Fassung |
 | `loesungsschluessel` | Prüfung und Liste sagen Verschiedenes; Wort in beiden Teilen geprüft |
-| `niveau_konsistenz` | gemeinsame Wörter, verschiedene Themen, A nicht schwerer als B |
+| `niveau_konsistenz` | Prüfungswort nicht aus der Liste, A nicht schwerer als B, zu grosser Überschnitt |
 | `vorlage` | offene Felder, `TODO`, falsche Zahl an Lückenmarkern |
 | `herkunft` | fehlende Quellangabe |
 | `liste` | die Kontrollen des VocabListMaker: Auswahl, Balance, Beispielsätze, A4-Seite |
-| `pruefung` | die zwanzig Kontrollen des VocabTestMaker, je Prüfungsteil |
+| `pruefung` | die zwanzig Kontrollen des VocabTestMaker, für jede der vier Prüfungen |
 | `dokument` | Nachkontrolle der geschriebenen Word-Datei gegen die Vorlage |
 
 Die Naht zwischen den beiden Anwendungen sitzt bei `loesungsschluessel`:
@@ -153,25 +168,22 @@ Wortliste gebraucht.
 vocabmaster db units                      # Übersicht über alle Units
 vocabmaster db units -a                   # mit allen Zusatzbereichen
 vocabmaster db suche "Publikum"           # in der Wortliste suchen
-vocabmaster db pool 3                     # wie Unit 3 auf A und B aufgeht
-vocabmaster db pool 3 --wörter            # mit allen gewählten Wörtern
+vocabmaster db pool 3                     # Auswahl und A/B-Prüfungen der Unit
+vocabmaster db pool 3 --wörter            # mit allen 60 Wörtern
 
-vocabmaster gerüst 3                      # Gerüste für A und B
-vocabmaster gerüst 3 --niveau B           # nur Niveau B
-vocabmaster gerüst 6 --mit-zusatzteilen   # Culture 6, Project 6 … mitzählen
+vocabmaster gerüst 3                      # Gerüst für Unit 3
 
-vocabmaster offen  kuratiert/unit_03_A.json   # was noch auszufüllen ist
-vocabmaster prüfen kuratiert/unit_03_A.json   # Selbstcheck ohne zu schreiben
+vocabmaster offen  kuratiert/unit_03.json     # was noch auszufüllen ist
+vocabmaster prüfen kuratiert/unit_03.json     # Selbstcheck ohne zu schreiben
 vocabmaster prüfen … -a                       # auch Hinweise zeigen
-vocabmaster bauen  kuratiert/unit_03_A.json   # prüfen und schreiben
-vocabmaster bauen  … --nur test               # nur die Prüfungen neu erzeugen
+vocabmaster bauen  kuratiert/unit_03.json     # prüfen und alles schreiben
+vocabmaster bauen  … --nur test --niveau B    # nur Prüfung B neu erzeugen
 vocabmaster bauen  … --nur liste              # nur die Vokabelliste
 ```
 
-`--nur test` und `--nur liste` sind der Weg für Teilanfragen: Sie schreiben
-nur, was verlangt ist, und lassen alles andere unberührt. Auch die Gerüste
-liegen je Niveau in einer eigenen Datei — Niveau B neu zu erzeugen ändert
-`unit_03_A.json` nicht.
+`--nur` und `--niveau` sind der Weg für Teilanfragen: Sie schreiben nur, was
+verlangt ist, und lassen alles andere unberührt. „Nur Test B für Unit 3 neu"
+rührt weder die Vokabelliste noch Niveau A an.
 
 Der Rückgabewert ist `0`, wenn keine Fehler gefunden wurden, sonst `1`.
 
@@ -184,10 +196,10 @@ pip install -e ".[ui]"
 streamlit run app.py
 ```
 
-Vier Bereiche: **Unit ansehen** (wie die Unit auf A und B aufgeht, mit allen
-Wörtern), **Gerüst erzeugen** (Download als JSON), **Paket prüfen und bauen**
-(Upload, vollständiger Selbstcheck, alle Dokumente als ZIP) und
-**Wortliste** (Suche über den ganzen Bestand).
+Vier Bereiche: **Unit ansehen** (die 60 Wörter und woraus die beiden
+Prüfungen schöpfen), **Gerüst erzeugen** (Download als JSON), **Paket prüfen
+und bauen** (Upload, vollständiger Selbstcheck, wahlweise nur Liste oder nur
+ein Niveau, alles als ZIP) und **Wortliste** (Suche über den ganzen Bestand).
 
 Sätze schreiben kann die Oberfläche nicht — die entstehen im Chat. Sie prüft
 sie und setzt sie.
@@ -263,13 +275,20 @@ Verbindlich zählt nur der **Hauptteil** `Unit N`. `Culture N`,
 `Curriculum extra N`, `Project N`, `Literature N` und `Extra Listening and
 Speaking Unit N` gehören nicht dazu.
 
-Reicht das für zwei überschneidungsfreie Listen nicht, gilt diese Reihenfolge:
+Reicht der Hauptteil nicht für 60 Wörter, gilt **genau diese** Reihenfolge:
 
-1. `--mit-zusatzteilen` — die Zusatzteile derselben Unit zulassen. Immer noch
-   Material des Lehrmittels.
-2. Erst danach im Chat ergänzen, höchstens 40 % je Liste.
+1. **Im Chat ergänzen** — thematisch passende, im Englischen gebräuchliche
+   Wörter, bis zu 40 % der Liste.
+2. **Erst wenn selbst das nicht reicht**, zieht die Anwendung Wörter aus den
+   Zusatzteilen derselben Unit nach — nur so viele wie nötig, und jedes
+   einzelne wird im Bericht mit seinem Bereich genannt.
 
-Wie viel jeweils fehlt, sagt `vocabmaster db pool <unit>` vorab.
+Über 40 % ist eine Ausnahme, kein Abbruch: Es wird gebaut, der Anteil aber
+als Warnung gemeldet.
+
+**Mit der aktuellen Wortliste kommt jede Unit allein aus ihrem Hauptteil auf
+60 Wörter** — weder Ergänzungen noch Zusatzteile werden gebraucht. Ein Test
+wacht darüber. `vocabmaster db pool <unit>` sagt es vorab.
 
 ---
 
@@ -279,14 +298,14 @@ Wie viel jeweils fehlt, sagt `vocabmaster db pool <unit>` vorab.
 VocabMaster/
 ├── app.py                        Weboberfläche (Streamlit)
 ├── data/                         die Excel-Wortliste des Lehrmittels
-├── kuratiert/                    ein Paket je Unit und Niveau
+├── kuratiert/                    ein Paket je Unit
 ├── src/vocabmaster/
 │   ├── config.py                 Einstellungen
 │   ├── niveau.py                 Niveau A und B: Bänder und Zielwerte
 │   ├── importer.py               Excel → Datenbank
 │   ├── database.py               Zugriff auf die Wortliste (JSON + SQLite)
-│   ├── pool.py                   Zuteilung auf A und B, Wortauswahl
-│   ├── pack.py                   das Unit-Paket: Gerüst, Lesen, Kennzahlen
+│   ├── pool.py                   Wortauswahl einer Unit (eine Liste)
+│   ├── pack.py                   das Unit-Paket: Gerüst, vier Prüfungen
 │   ├── checks.py                 der Selbstcheck
 │   ├── documents.py              die vier Word-Dateien
 │   ├── cli.py                    Kommandozeile
@@ -310,23 +329,27 @@ ruff check src app.py tests
 Die Tests bauen je genau einen klassischen Fehler ein und verlangen, dass der
 Selbstcheck ihn findet — ein Prüfmechanismus, der nur behauptet zu prüfen,
 fällt dort auf. Dazu kommen Tests für den Import (Seitenzahl-Falle,
-Sektionsformen), für die Überschneidungsfreiheit der Niveaus in **jeder**
-Unit und dafür, dass die erzeugte Prüfung die Vorlage byteweise übernimmt.
+Sektionsformen), dafür dass **kein** Wort aus Culture oder Project in eine
+Liste rutscht, dass die Prüfung für Niveau A in **jeder** Unit messbar
+schwerer ist als die für Niveau B, und dass die erzeugte Prüfung die Vorlage
+byteweise übernimmt.
 
 ---
 
 ## Häufige Fragen
 
-**Warum stehen in Liste A und Liste B verschiedene Wörter?**
-Weil beide Gruppen an verschiedenen Wörtern etwas lernen. Das Thema ist
-dasselbe; der Selbstcheck prüft das ausdrücklich.
+**Bekommen beide Gruppen dieselbe Vokabelliste?**
+Ja. Eine Liste je Unit, 60 Wörter, für alle gleich. Unterschiedlich ist nur,
+welche davon in der Prüfung abgefragt werden.
 
 **Eine Unit meldet zu wenig Material.**
-Der Hauptteil gibt keine 120 geeigneten Wörter her. Zuerst
-`--mit-zusatzteilen`, dann im Chat ergänzen (höchstens 40 %).
+Der Hauptteil gibt keine 60 geeigneten Wörter her. Dann im Chat ergänzen
+(bis 40 %); erst wenn auch das nicht reicht, greift die Anwendung auf die
+Zusatzteile derselben Unit zurück und weist sie einzeln aus.
 
-**Kann ich nur die Prüfung neu erzeugen?**
-`vocabmaster bauen … --nur test`. Die Vokabelliste bleibt unberührt.
+**Kann ich nur die Prüfung für Niveau B neu erzeugen?**
+`vocabmaster bauen … --nur test --niveau B`. Vokabelliste und Niveau A
+bleiben unberührt.
 
 **Passt eine Liste wirklich auf eine Seite?**
 Die Höhe wird vor der Ausgabe gerechnet; über 100 % gibt es einen Fehler.
@@ -347,7 +370,7 @@ Modell bei jedem Lauf neu.
 | `VM_DATABASE` | mitgeliefert | Verzeichnis der Wortlisten-Datenbank |
 | `VM_CORE_ONLY` | `true` | nur den Hauptteil einer Unit verwenden |
 | `VM_WORDS_PER_TEST` | `30` | Wörter je Test der Vokabelliste |
-| `VM_MAX_INVENTED` | `0.40` | Höchstanteil ergänzter Wörter |
+| `VM_MAX_INVENTED` | `0.40` | Anteil ergänzter Wörter, ab dem gewarnt wird |
 | `VM_EXAM_WORDS` | `12` | Wörter je Prüfung |
 | `VM_EXAM_GAPS` | `4` | Lücken im Lückentext |
 | `VM_FONT` | `Century Gothic` | Schriftart der Vokabelliste |

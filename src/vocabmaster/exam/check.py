@@ -38,6 +38,9 @@ from .vocab import VocabTest, guess_pos, normalise
 
 ERROR, WARN, INFO = "ERROR", "WARN", "INFO"
 
+#: Wortarten, die der Grammatikteil wirklich unterscheiden kann.
+KNOWN_POS = {"noun", "verb", "adj", "adv"}
+
 #: Default target band for the cloze text: Niveau A (B1.2-B2.1).
 #: :mod:`vocabmaster.niveau` passes a different band for Niveau B; these
 #: values stay the fallback when no profile is given.
@@ -677,6 +680,14 @@ class ExamChecker:
                            f"as far as word class goes")
                 if reason:
                     self.add(INFO, "uniqueness", f"{message} - accepted: {reason}")
+                elif pos_i != pos_j and pos_i in KNOWN_POS and pos_j in KNOWN_POS:
+                    # Different word classes and both of them recognised: a
+                    # swap would break the sentence, even where the trigger
+                    # before the gap says nothing.  Worth knowing, not worth
+                    # a warning.
+                    self.add(INFO, "uniqueness",
+                             f"{message}, but they are a {pos_i} and a "
+                             f"{pos_j} - a swap would not read")
                 else:
                     self.add(WARN, "uniqueness",
                              f"{message} - make the context decide, or record "

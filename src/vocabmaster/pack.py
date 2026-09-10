@@ -1,19 +1,22 @@
-"""Das Unit-Paket: eine Datei je Unit und Niveau, von der Auswahl bis zum Druck.
+"""Das Unit-Paket: eine Datei je Unit, von der Auswahl bis zum Druck.
 
-Ein Paket hält alles zusammen, was für **eine** Unit auf **einem** Niveau
-gebraucht wird: die 60 Wörter der Vokabelliste (Test 1 und Test 2), die
-Beispielsätze und die beiden Prüfungen (Teil I und Teil II). Getrennte
-Dateien je Unit und Niveau sind Absicht: ``Test B für Unit 3 neu erzeugen``
-rührt ``unit_03_A.json`` nicht an.
+Ein Paket hält alles zusammen, was für **eine** Unit gebraucht wird:
+
+* die 60 Wörter der Vokabelliste (Test 1 und Test 2) mit ihren
+  Beispielsätzen - für beide Gruppen dieselben,
+* vier Prüfungen: Teil I und Teil II, jeweils für Niveau A und Niveau B.
+
+Eine Datei je Unit ist Absicht: Wer nur die Prüfung für Niveau B neu bauen
+lässt, ändert an der Vokabelliste nichts - gebaut wird nur, was verlangt ist.
 
 Ablauf:
 
-1. ``vocabmaster gerüst 3 --niveau A`` schreibt ``kuratiert/unit_03_A.json``
-   mit der geprüften Wortauswahl und leeren Feldern für die Sätze.
-2. Die Felder ``satz`` und die beiden Lückentexte werden **im Chat**
+1. ``vocabmaster gerüst 3`` schreibt ``kuratiert/unit_03.json`` mit der
+   geprüften Wortauswahl und leeren Feldern für die Sätze.
+2. Die Felder ``satz`` und die vier Lückentexte werden **im Chat**
    geschrieben - vom Sprachmodell selbst, ohne Musterbausteine.
-3. ``vocabmaster bauen kuratiert/unit_03_A.json`` prüft alles und schreibt
-   die Word-Dateien.
+3. ``vocabmaster bauen kuratiert/unit_03.json`` prüft alles und schreibt die
+   Word-Dateien.
 
 Die Datei ist bewusst schlichtes JSON: sie lässt sich von Hand bearbeiten und
 ihr Diff im Git-Verlauf lesen.
@@ -34,25 +37,26 @@ from .database import Database
 from .exam.difficulty import score_item
 from .exam.select import _clashes as _exam_clashes
 from .exam.vocab import VocabItem, VocabTest, guess_pos
-from .niveau import NiveauProfile, profile
-from .pool import UnitPlan, plan_both
+from .niveau import NIVEAUS, PROFILES, NiveauProfile, profile
+from .pool import UnitPlan, plan_unit
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 ANLEITUNG = [
     "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
     "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
     "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
     "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
     "darf leer bleiben - sie wird dann selbst bestimmt.",
     "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
     "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
     "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
-    "In jeder Prüfung 'task2.text' schreiben: {1} bis {4} markieren die",
-    "Lücken, die Reihenfolge in 'gaps' ist die Reihenfolge im Text.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text.",
 ]
 
-_TEIL = {1: ("Part I", "Test 1"), 2: ("Part II", "Test 2")}
+TEIL_NAMEN = {1: ("Part I", "Test 1"), 2: ("Part II", "Test 2")}
 
 
 # ---------------------------------------------------------------------------
@@ -78,8 +82,7 @@ def wortart_von(entry: dict[str, Any]) -> str:
     Vorrang hat die Angabe der Wortliste des Lehrmittels - sie steht dort in
     einer eigenen Spalte und ist verlässlicher als jede Ableitung aus dem
     deutschen Stichwort. Ohne Angabe (bei ergänzten Wörtern) wird sie aus dem
-    Deutschen geraten: Nomen werden grossgeschrieben, Verben enden auf -en.
-    Das trifft aber zum Beispiel bei "inzwischen" oder "hölzern" daneben.
+    Deutschen geraten; das trifft bei "inzwischen" oder "hölzern" daneben.
     """
     return entry.get("wortart") or guess_pos(entry.get("deutsch", ""))
 
@@ -88,7 +91,7 @@ def _placeholder(number: int) -> dict[str, Any]:
     entry = _list_entry(number, "", "", "ergänzt")
     entry["hinweis"] = (
         "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches "
-        "Wort, das noch in keiner der beiden Listen dieser Unit steht."
+        "Wort, das noch nicht in dieser Liste steht."
     )
     return entry
 
@@ -102,60 +105,89 @@ def _as_vocab_item(entry: dict[str, Any]) -> VocabItem:
     )
 
 
+#: Ab dieser Ähnlichkeit zum deutschen Stichwort schreibt man das englische
+#: Wort einfach ab - geprüft wird damit nichts, auf keinem Niveau.
+ABSCHREIBBAR = 0.80
+
+
+def _bewertung(entry: dict[str, Any]):
+    return score_item(
+        {"english": entry.get("englisch", ""), "german": entry.get("deutsch", ""),
+         "pos": wortart_von(entry)}
+    )
+
+
+def _schwierigkeit(entry: dict[str, Any]) -> float:
+    return _bewertung(entry).score
+
+
+def _abschreibbar(entry: dict[str, Any]) -> bool:
+    return _bewertung(entry).similarity >= ABSCHREIBBAR
+
+
+def waehle_pruefungswoerter(
+    entries: list[dict[str, Any]],
+    prof: NiveauProfile,
+    settings: Settings | None = None,
+) -> list[dict[str, Any]]:
+    """Welche Wörter eines Tests dieses Niveau prüft.
+
+    Die 30 Wörter des Tests werden nach Schwierigkeit sortiert. Niveau A
+    prüft von oben - die zwölf schwersten -, Niveau B von unten - die zwölf
+    zugänglichsten. Beide schöpfen aus derselben Liste; dass sich die beiden
+    Auswahlen dabei berühren, ist erlaubt und bei 30 Wörtern selten.
+
+    Übersprungen wird, was der Checker anschliessend beanstanden würde: zwei
+    Wörter einer Wortfamilie, Beinah-Synonyme, bekannte Verwechslungspaare.
+    """
+    settings = settings or Settings()
+    take = settings.exam_words
+    brauchbar = [e for e in entries if e.get("englisch") and e.get("deutsch")]
+    # "Anekdote" -> "anecdote" schreibt man ab; das prüft nichts. Solche
+    # Wörter bleiben in der Liste (gelernt werden sie trotzdem), aber sie
+    # kommen zuletzt - auch für Niveau B.
+    ohne_kognate = [e for e in brauchbar if not _abschreibbar(e)]
+    if len(ohne_kognate) >= take:
+        brauchbar = ohne_kognate
+    reihenfolge = sorted(
+        brauchbar,
+        key=lambda e: -_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e),
+    )
+
+    gewaehlt: list[dict[str, Any]] = []
+    for entry in reihenfolge:
+        if len(gewaehlt) >= take:
+            break
+        if _exam_clashes(_as_vocab_item(entry),
+                         [_as_vocab_item(c) for c in gewaehlt]):
+            continue
+        gewaehlt.append(entry)
+    if len(gewaehlt) < take:  # notfalls auffüllen, der Checker meldet es dann
+        gewaehlt += [e for e in reihenfolge if e not in gewaehlt][
+            : take - len(gewaehlt)
+        ]
+    return gewaehlt
+
+
 def _exam_scaffold(
-    items: list[dict[str, Any]],
+    entries: list[dict[str, Any]],
     unit_label: str,
     teil: int,
     prof: NiveauProfile,
     settings: Settings,
     seed: int,
 ) -> dict[str, Any]:
-    """Wortauswahl für eine Prüfung: die schwersten Wörter, die sich nicht
-    in die Quere kommen - für Niveau B die zugänglicheren derselben Liste."""
-    part_label, source = _TEIL[teil]
-    usable = [i for i in items if i["englisch"] and i["deutsch"]]
-    scored = sorted(
-        usable,
-        key=lambda i: -score_item(
-            {"english": i["englisch"], "german": i["deutsch"],
-             "pos": wortart_von(i)}
-        ).score,
-    )
-    take = settings.exam_words
-    # Niveau A prüft von oben, Niveau B aus der Mitte: die schwersten Wörter
-    # der eigenen Liste sind für die schwächere Gruppe der Frust, die
-    # leichtesten prüfen nichts.
-    # Wie im VocabTestMaker: kein Wort, das der Checker anschliessend
-    # beanstanden würde - keine zwei Wörter einer Wortfamilie
-    # ("fashionable"/"old-fashioned"), keine Beinah-Synonyme, kein bekanntes
-    # Verwechslungspaar.
-    reihenfolge = scored if prof.name == "A" else scored[len(scored) // 4 :] + scored
-    chosen: list[dict[str, Any]] = []
-    for entry in reihenfolge:
-        if len(chosen) >= take:
-            break
-        if entry in chosen:
-            continue
-        if _exam_clashes(_as_vocab_item(entry), [_as_vocab_item(c) for c in chosen]):
-            continue
-        chosen.append(entry)
-    if len(chosen) < take:  # notfalls auffüllen, der Checker meldet es dann
-        chosen += [e for e in scored if e not in chosen][: take - len(chosen)]
+    part_label, source = TEIL_NAMEN[teil]
+    chosen = waehle_pruefungswoerter(entries, prof, settings)
+    by_score = sorted(chosen, key=lambda e: -_schwierigkeit(e))
 
-    by_score = sorted(
-        chosen,
-        key=lambda i: -score_item(
-            {"english": i["englisch"], "german": i["deutsch"],
-             "pos": guess_pos(i["deutsch"])}
-        ).score,
-    )
     # Für die Wortbank taugt kein Stichwort mit Komma: Die Bank wird als eine
     # Zeile gedruckt, ein Komma im Stichwort macht daraus zwei Wörter - vier
     # Lücken, aber fünf Wörter zur Auswahl.
     bankfaehig = [e for e in by_score if "," not in e.get("deutsch", "")]
+
     # Je Lücke eine andere Wortart, damit sich zwei Lücken nicht schon von der
-    # Grammatik her vertauschen lassen. Adverbien zählen dabei mit - sie sind
-    # eine eigene Wortart und stehen an anderen Stellen im Satz als Adjektive.
+    # Grammatik her vertauschen lassen. Adverbien zählen als eigene Wortart.
     gaps: list[dict[str, Any]] = []
     for pos in ("verb", "noun", "adj", "adv"):
         for entry in bankfaehig:
@@ -171,9 +203,14 @@ def _exam_scaffold(
             gaps.append(entry)
 
     translation = [e for e in chosen if e not in gaps]
-    rng = random.Random(seed + teil)
-    bank = [g["deutsch"] for g in gaps]
-    while len(bank) > 1 and bank == [g["deutsch"] for g in gaps]:
+    rng = random.Random(seed + teil + (0 if prof.name == "A" else 97))
+    reihenfolge = [g["deutsch"] for g in gaps]
+    bank = list(reihenfolge)
+    # Weder die Lückenreihenfolge noch ihre Umkehrung: beides liesse die
+    # Aufgabe lösen, ohne den Text zu lesen.
+    for _ in range(50):
+        if bank != reihenfolge and bank != list(reversed(reihenfolge)):
+            break
         rng.shuffle(bank)
 
     sentence_unit = f"{unit_label.lower()} {part_label.lower()}"
@@ -220,17 +257,15 @@ def _exam_scaffold(
 def scaffold(
     db: Database,
     unit: int,
-    niveau: str | NiveauProfile,
     settings: Settings | None = None,
     plan: UnitPlan | None = None,
 ) -> dict[str, Any]:
-    """Das leere Paket einer Unit für ein Niveau."""
+    """Das leere Paket einer Unit: eine Liste, vier Prüfungen."""
     settings = settings or Settings()
-    prof = profile(niveau)
-    if plan is None:
-        plan = plan_both(db, unit, settings)[prof.name]
-
+    plan = plan or plan_unit(db, unit, settings)
     theme = db.theme(unit)
+
+    zusatz = {w.lower() for w, _ in plan.report.aus_zusatzteilen}
     blocks: dict[str, list[dict[str, Any]]] = {}
     for name, words in (("test1", plan.test1), ("test2", plan.test2)):
         rows = []
@@ -241,7 +276,8 @@ def scaffold(
                     number,
                     c.headword or c.english,
                     c.german,
-                    "wortliste" if source else "ergänzt",
+                    "zusatzteil" if c.headword.lower() in zusatz
+                    else ("wortliste" if source else "ergänzt"),
                     f"{source.section}, S. {source.page}" if source and source.page
                     else (source.section if source else ""),
                     source.pos if source else "",
@@ -251,8 +287,7 @@ def scaffold(
 
     # Fehlbestand gleichmässig auf beide Tests verteilen, damit die Lücke
     # nicht ganz am Ende von Test 2 klebt.
-    missing = settings.target_total - len(plan.all_words)
-    for _ in range(missing):
+    for _ in range(settings.target_total - len(plan.all_words)):
         target = "test1" if len(blocks["test1"]) <= len(blocks["test2"]) else "test2"
         blocks[target].append(_placeholder(len(blocks[target]) + 1))
     for rows in blocks.values():
@@ -260,6 +295,17 @@ def scaffold(
             row["nr"] = number
 
     unit_label = db.unit_label(unit)
+    pruefungen = {
+        f"teil{teil}": {
+            name: _exam_scaffold(
+                blocks[f"test{teil}"], unit_label, teil, PROFILES[name],
+                settings, settings.seed,
+            )
+            for name in NIVEAUS
+        }
+        for teil in (1, 2)
+    }
+
     return {
         "schema": SCHEMA_VERSION,
         "unit": unit,
@@ -267,20 +313,20 @@ def scaffold(
         "titel": theme.get("titel", unit_label),
         "thema": theme.get("thema", ""),
         "leitwoerter": theme.get("leitwoerter", []),
-        "niveau": prof.name,
-        "cefr": prof.cefr,
-        "zielgruppe": prof.beschreibung,
         "quelle": dict(db.quelle),
         "erzeugt": date.today().isoformat(),
-        "fehlbestand": missing,
+        "fehlbestand": plan.report.fehlend,
+        "herkunft_uebersicht": {
+            "hauptteil": plan.report.aus_hauptteil,
+            "zusatzteile": [
+                {"englisch": w, "bereich": b} for w, b in plan.report.aus_zusatzteilen
+            ],
+            "zu_ergaenzen": plan.report.fehlend,
+            "ausnahme": plan.report.ausnahme,
+        },
         "anleitung": ANLEITUNG,
         "liste": blocks,
-        "pruefungen": {
-            "teil1": _exam_scaffold(blocks["test1"], unit_label, 1, prof, settings,
-                                    settings.seed),
-            "teil2": _exam_scaffold(blocks["test2"], unit_label, 2, prof, settings,
-                                    settings.seed),
-        },
+        "pruefungen": pruefungen,
     }
 
 
@@ -308,6 +354,14 @@ class Pack:
         target = Path(path)
         data = json.loads(target.read_text(encoding="utf-8"),
                           object_pairs_hook=_no_duplicate_keys)
+        if int(data.get("schema", 0)) < SCHEMA_VERSION:
+            raise ValueError(
+                f"{target.name} stammt aus einer älteren Fassung "
+                f"(Schema {data.get('schema')}, erwartet {SCHEMA_VERSION}). "
+                "Damals gab es zwei Wortlisten je Unit; heute ist es eine. "
+                "Bitte das Gerüst neu erzeugen: vocabmaster gerüst "
+                f"{data.get('unit', '<n>')}"
+            )
         return cls(data=data, pfad=target)
 
     def save(self, path: str | Path | None = None) -> Path:
@@ -326,10 +380,6 @@ class Pack:
     @property
     def unit_label(self) -> str:
         return str(self.data.get("unit_label") or f"Unit {self.unit}")
-
-    @property
-    def niveau(self) -> NiveauProfile:
-        return profile(self.data.get("niveau", "A"))
 
     @property
     def thema(self) -> str:
@@ -354,15 +404,25 @@ class Pack:
                 return wortart_von(entry)
         return ""
 
-    def exam(self, teil: int) -> dict[str, Any]:
-        return dict(self.data.get("pruefungen", {}).get(f"teil{teil}", {}))
+    # ------------------------------------------------------------- Prüfungen
+    def exam(self, teil: int, niveau: str | NiveauProfile) -> dict[str, Any]:
+        prof = profile(niveau)
+        return dict(self.data.get("pruefungen", {}).get(f"teil{teil}", {})
+                    .get(prof.name, {}))
 
     @property
-    def exams(self) -> dict[int, dict[str, Any]]:
-        return {t: self.exam(t) for t in (1, 2) if self.exam(t)}
+    def exams(self) -> dict[tuple[int, str], dict[str, Any]]:
+        """Alle vier Prüfungen, angesprochen über ``(teil, niveau)``."""
+        out = {}
+        for teil in (1, 2):
+            for name in NIVEAUS:
+                spec = self.exam(teil, name)
+                if spec:
+                    out[(teil, name)] = spec
+        return out
 
     def vocab_test(self, teil: int) -> VocabTest:
-        """Die Vokabelliste als Prüfgrundlage für die Prüfung dieses Teils.
+        """Die Vokabelliste als Prüfgrundlage für die Prüfungen dieses Teils.
 
         Das ist die Naht zwischen den beiden ursprünglichen Anwendungen: Der
         Prüfungs-Checker vergleicht nicht mehr gegen ein separat gelesenes
@@ -371,7 +431,7 @@ class Pack:
         ausgeschlossen.
         """
         block = "test1" if teil == 1 else "test2"
-        name = _TEIL[teil][1]
+        name = TEIL_NAMEN[teil][1]
         return VocabTest(
             name=name,
             items=[
@@ -394,8 +454,13 @@ class Pack:
     # ------------------------------------------------------------- Kennzahlen
     @property
     def ergaenzt(self) -> list[dict[str, Any]]:
-        """Alle Wörter, die nicht aus der Wortliste des Lehrmittels stammen."""
-        return [e for e in self.all_entries if e.get("herkunft") != "wortliste"]
+        """Wörter, die nicht aus der Wortliste des Lehrmittels stammen."""
+        return [e for e in self.all_entries if e.get("herkunft") == "ergänzt"]
+
+    @property
+    def aus_zusatzteilen(self) -> list[dict[str, Any]]:
+        """Wörter aus Culture, Project oder Curriculum extra derselben Unit."""
+        return [e for e in self.all_entries if e.get("herkunft") == "zusatzteil"]
 
     @property
     def ergaenzt_anteil(self) -> float:
@@ -404,13 +469,13 @@ class Pack:
 
     @property
     def vollstaendig(self) -> bool:
-        """Sind alle Wörter und alle Sätze eingetragen?"""
+        """Sind alle Wörter, alle Sätze und alle vier Lückentexte da?"""
         if any(not e.get("englisch") or not e.get("deutsch") or not e.get("satz")
                for e in self.all_entries):
             return False
         return all(
-            not re.search(r"TODO", exam.get("task2", {}).get("text", ""))
-            for exam in self.exams.values()
+            not re.search(r"TODO", spec.get("task2", {}).get("text", ""))
+            for spec in self.exams.values()
         )
 
     def offen(self) -> list[str]:
@@ -423,12 +488,12 @@ class Pack:
                     out.append(f"{where}: Wort fehlt ({e.get('hinweis', 'zu ergänzen')})")
                 elif not e.get("satz"):
                     out.append(f"{where}: Beispielsatz für '{e['englisch']}' fehlt")
-        for teil, exam in self.exams.items():
-            text = exam.get("task2", {}).get("text", "")
+        for (teil, name), spec in sorted(self.exams.items()):
+            text = spec.get("task2", {}).get("text", "")
             if not text or "TODO" in text:
-                out.append(f"Prüfung Teil {teil}: Lückentext fehlt")
+                out.append(f"Prüfung Teil {teil}, Niveau {name}: Lückentext fehlt")
         return out
 
 
-def pack_filename(unit: int, niveau: str | NiveauProfile) -> str:
-    return f"unit_{unit:02d}_{profile(niveau).name}.json"
+def pack_filename(unit: int) -> str:
+    return f"unit_{unit:02d}.json"

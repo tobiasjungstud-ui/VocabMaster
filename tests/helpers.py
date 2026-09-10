@@ -17,15 +17,17 @@ def fill(data: dict, satz: str = "The class talked about {} in the lesson.") -> 
                 entry["deutsch"] = "Platzhalter"
             entry["satz"] = satz.format(entry["englisch"])
     for teil in ("teil1", "teil2"):
-        exam = data["pruefungen"][teil]
-        gaps = exam["task2"]["gaps"]
-        exam["task2"]["text"] = (
-            "Last week the whole class went to the old museum near the river. "
-            + " ".join(
-                f"Our teacher showed us one {{{i + 1}}} and asked us to write about it."
-                for i in range(len(gaps))
+        for niveau in ("A", "B"):
+            exam = data["pruefungen"][teil][niveau]
+            gaps = exam["task2"]["gaps"]
+            exam["task2"]["text"] = (
+                "Last week the whole class went to the old museum near the river. "
+                + " ".join(
+                    f"Our teacher showed us one {{{i + 1}}} and asked us to "
+                    "write about it."
+                    for i in range(len(gaps))
+                )
             )
-        )
     return data
 
 

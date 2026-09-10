@@ -1,26 +1,21 @@
-"""Niveau A und Niveau B - zwei Fassungen desselben Unterrichtsstoffs.
+"""Niveau A und Niveau B - eine Liste, zwei Prüfungen.
 
-Beide Gruppen lernen dieselbe Unit, aber nicht dieselbe Auswahl:
+Beide Gruppen lernen **dieselbe** Vokabelliste der Unit: 60 Wörter, Test 1
+und Test 2. Es gibt keine zwei Wortlisten und keinen Wortschatz, den nur
+eine Gruppe zu Gesicht bekommt.
 
-* **Niveau A** (leistungsstärkere Gruppe), Zielband **B1.2-B2.1**: die
-  anspruchsvolleren Wörter der Unit - seltener, abstrakter, mehrteilig,
-  weiter vom deutschen Wort entfernt.
-* **Niveau B** (leistungsschwächere Gruppe), Zielband **A2.2-B1.1**: die
-  zugänglicheren Wörter derselben Unit - häufiger, konkreter, meist
-  einteilig - und ein kürzerer, klarer gebauter Lückentext.
+Unterschieden wird erst bei der **Prüfung**:
 
-Die beiden Listen sind **überschneidungsfrei**: Ein Wort steht entweder in
-der Liste für Niveau A oder in der für Niveau B, nie in beiden. Das ist der
-Grund für die getrennten Häufigkeitsfenster. Ein Wort mit Zipf 4.9 ist für
-die stärkere Gruppe längst bekannt und deshalb kein Prüfstoff; für die
-schwächere Gruppe ist es genau richtig. Umgekehrt ist ein Wort mit Zipf 2.8
-für Niveau B zu exotisch und für Niveau A der eigentliche Zugewinn.
+* **Niveau A** (leistungsstärkere Gruppe, B1.2-B2.1) wird über die
+  anspruchsvolleren Wörter der Liste geprüft und bekommt einen längeren
+  Lückentext mit Nebensätzen.
+* **Niveau B** (leistungsschwächere Gruppe, A2.2-B1.1) wird über die
+  zugänglicheren Wörter derselben Liste geprüft und bekommt einen kürzeren
+  Text mit kurzen Hauptsätzen.
 
-Wichtig ist, was **nicht** unterschieden wird: Beide Fassungen ziehen aus
-demselben Hauptteil derselben Unit, beide schliessen den A1/A2-Grund\
-wortschatz und blosse Kognate aus, und beide durchlaufen dieselben
-Kontrollen. Ein Niveau-B-Test ist kein schlechterer Test, sondern ein Test
-über die Wörter, an denen diese Gruppe wirklich etwas lernt.
+Die beiden Prüfungen eines Teils sind überschneidungsfrei: Aus den 30
+Wörtern eines Tests nimmt Niveau A die zwölf schwersten, Niveau B die
+nächsten zwölf. Die sechs leichtesten bleiben ungeprüft.
 
 Die Zahlen unten sind Zielbänder, keine harten Grenzen; die Prüfungen melden
 Abweichungen als Warnung, damit sie bewusst entschieden werden.
@@ -30,52 +25,47 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from .list.leveling import Bounds
+
 NIVEAUS = ("A", "B")
+
+#: Häufigkeitsfenster der **gemeinsamen** Vokabelliste. Es spannt beide
+#: Niveaus zusammen: nach unten so weit wie Niveau A reicht, nach oben so
+#: weit wie Niveau B. Der A1/A2-Grundwortschatz und blosse Kognate bleiben
+#: unabhängig davon aussen vor.
+LIST_BOUNDS = Bounds(too_easy=5.35, too_rare=2.45, label="A2.2-B2.1")
+
+#: Höchstlänge eines Beispielsatzes in der Vokabelliste. Die Liste wird von
+#: beiden Gruppen gelernt, also gilt das engere Mass der schwächeren.
+SENTENCE_MAX_WORDS = 13
 
 
 @dataclass(frozen=True)
 class NiveauProfile:
-    """Alles, was ein Niveau von dem anderen unterscheidet."""
+    """Alles, was die Prüfung eines Niveaus von der anderen unterscheidet."""
 
     name: str
     label: str
-    beschreibung: str
-    #: Zielband nach GER, so wie es auf dem Deckblatt steht.
     cefr: str
+    beschreibung: str
 
-    # --- Wortauswahl ------------------------------------------------------
-    #: Gewicht der Schwierigkeit bei der Auswahl. Positiv = schwere Wörter
-    #: zuerst, negativ = zugängliche Wörter zuerst.
-    difficulty_weight: float
-    #: Häufigkeitsfenster (Zipf, wordfreq: 7 = "the", 1 = sehr selten).
-    #: Oberhalb von ``zipf_max`` gilt ein Wort für dieses Niveau als längst
-    #: bekannt, unterhalb von ``zipf_min`` als zu exotisch. Die Fenster der
-    #: beiden Niveaus überlappen sich in der Mitte; welche Fassung ein Wort
-    #: aus dem Überlappungsbereich bekommt, entscheidet die Zuteilung in
-    #: :mod:`vocabmaster.pool`.
-    zipf_min: float
-    zipf_max: float
-    #: Mitte des Fensters - Massstab für die Zuteilung strittiger Wörter.
-    zipf_centre: float
-    #: Höchstanteil mehrteiliger Ausdrücke an einer Liste.
-    max_multiword_share: float
-    #: Höchstzahl Wörter, deren englische Form fast der deutschen gleicht.
-    max_cognate_share: float
+    #: Aus welchem Teil der nach Schwierigkeit sortierten 30 Wörter eines
+    #: Tests die Prüfung schöpft: Niveau A von Rang 1 an, Niveau B von dort,
+    #: wo Niveau A aufgehört hat.
+    zuerst: bool
 
-    # --- Beispielsätze der Vokabelliste ----------------------------------
-    sentence_max_words: int
-
-    # --- Lückentext der Prüfung ------------------------------------------
+    #: Zielband des Lückentextes.
     level_targets: dict = field(default_factory=dict)
+    #: Zielband der Wortauswahl innerhalb der Prüfung.
     selection_targets: dict = field(default_factory=dict)
 
     @property
     def dateisuffix(self) -> str:
-        return f"Niv_{self.name}"
+        return f"Niveau{self.name}"
 
 
-#: Zielband des Lückentextes für Niveau A: B1.2-B2.1, mittlere bis gehobene
-#: Anforderung. Entspricht dem bisherigen Zielband des VocabTestMaker.
+#: Zielband des Lückentextes für Niveau A: B1.2-B2.1. Entspricht dem
+#: bisherigen Zielband des VocabTestMaker.
 _LEVEL_A = {
     "min_words": 70,
     "max_words": 130,
@@ -94,7 +84,7 @@ _LEVEL_A = {
 }
 
 #: Zielband für Niveau B: kürzer, kürzere Sätze, mehr Kontext um jede Lücke,
-#: klar über der Lesbarkeitsschwelle. Weniger Nebensätze, weniger Wörter
+#: klar über der Lesbarkeitsschwelle, weniger Nebensätze und weniger Wörter
 #: ausserhalb des Grundwortschatzes.
 _LEVEL_B = {
     "min_words": 50,
@@ -122,14 +112,15 @@ _SELECTION_A = {
 }
 
 #: Für Niveau B darf der Durchschnitt tiefer liegen - das ist der Zweck der
-#: Fassung. Eine Untergrenze bleibt trotzdem: Wörter, die man einfach aus
-#: dem deutschen Stichwort abschreibt, prüfen auch hier nichts.
+#: Fassung. Eine Untergrenze je Einzelwort gibt es hier nicht: Ein Wort wie
+#: "repair", das im A1-B1-Grundwortschatz steht, ist für die stärkere Gruppe
+#: kein Prüfstoff mehr, für die schwächere sehr wohl. Was auch hier nichts
+#: prüft, sind Wörter zum Abschreiben ("Anekdote" -> "anecdote"); die hält
+#: schon die Auswahl in `vocabmaster.pack` heraus, und `max_easy_cognates`
+#: fängt den Rest.
 _SELECTION_B = {
-    # Niveau-B-Wörter sind planmässig zugänglicher; die Untergrenze soll nur
-    # verhindern, dass eine Prüfung ausschliesslich aus abschreibbaren
-    # Kognaten besteht - dafür sorgt zusätzlich "max_easy_cognates".
     "min_mean_difficulty": 1.4,
-    "min_item_difficulty": 0.8,
+    "min_item_difficulty": 0.0,
     "max_easy_cognates": 3,
     "max_multiword_items": 2,
     "max_share_one_word_class": 0.7,
@@ -140,36 +131,26 @@ PROFILES: dict[str, NiveauProfile] = {
     "A": NiveauProfile(
         name="A",
         label="Niveau A",
-        beschreibung=(
-            "Leistungsstärkere Gruppe, B1.2-B2.1: die anspruchsvolleren Wörter "
-            "der Unit, längerer Lückentext mit mehr Nebensätzen."
-        ),
         cefr="B1.2-B2.1",
-        difficulty_weight=+0.55,
-        zipf_min=2.45,
-        zipf_max=4.60,
-        zipf_centre=3.55,
-        max_multiword_share=0.30,
-        max_cognate_share=0.10,
-        sentence_max_words=16,
+        beschreibung=(
+            "Leistungsstärkere Gruppe: geprüft werden die anspruchsvolleren "
+            "Wörter der Liste, der Lückentext ist länger und darf Nebensätze "
+            "enthalten."
+        ),
+        zuerst=True,
         level_targets=_LEVEL_A,
         selection_targets=_SELECTION_A,
     ),
     "B": NiveauProfile(
         name="B",
         label="Niveau B",
-        beschreibung=(
-            "Leistungsschwächere Gruppe, A2.2-B1.1: die zugänglicheren Wörter "
-            "derselben Unit, kürzerer Lückentext mit kurzen Hauptsätzen."
-        ),
         cefr="A2.2-B1.1",
-        difficulty_weight=-0.45,
-        zipf_min=3.20,
-        zipf_max=5.35,
-        zipf_centre=4.35,
-        max_multiword_share=0.15,
-        max_cognate_share=0.15,
-        sentence_max_words=13,
+        beschreibung=(
+            "Leistungsschwächere Gruppe: geprüft werden die zugänglicheren "
+            "Wörter derselben Liste, der Lückentext ist kürzer und besteht "
+            "aus kurzen Hauptsätzen."
+        ),
+        zuerst=False,
         level_targets=_LEVEL_B,
         selection_targets=_SELECTION_B,
     ),
@@ -184,7 +165,7 @@ def profile(name: str | NiveauProfile | None) -> NiveauProfile:
         return PROFILES["A"]
     key = str(name).strip().upper()
     for candidate in NIVEAUS:
-        if key == candidate or key.endswith(f" {candidate}") or key.endswith(f".{candidate}"):
+        if key == candidate or key.endswith((f" {candidate}", f".{candidate}")):
             return PROFILES[candidate]
     raise ValueError(
         f"Unbekanntes Niveau {name!r}. Erlaubt sind 'A' (stärkere Gruppe) "

@@ -1,11 +1,14 @@
 """Aus einem geprüften Paket werden die Word-Dateien.
 
-Je Unit und Niveau entstehen vier Dokumente:
+Je Unit entstehen neun Dokumente: **eine** Vokabelliste für beide Gruppen
+und vier Prüfungen mit ihren Lösungsblättern.
 
 ============================================  ==========================================
-``Unit03_VocabularyList_NiveauA.docx``        Vokabelliste, Test 1 und Test 2
-``Unit03_Test_PartI_NiveauA.docx``            Prüfung zu Test 1
-``Unit03_Test_PartII_NiveauA.docx``           Prüfung zu Test 2
+``Unit03_VocabularyList.docx``                Vokabelliste, Test 1 und Test 2
+``Unit03_Test_PartI_NiveauA.docx``            Prüfung zu Test 1, stärkere Gruppe
+``Unit03_Test_PartI_NiveauB.docx``            Prüfung zu Test 1, schwächere Gruppe
+``Unit03_Test_PartII_NiveauA.docx``           Prüfung zu Test 2, stärkere Gruppe
+``Unit03_Test_PartII_NiveauB.docx``           Prüfung zu Test 2, schwächere Gruppe
 ``…_Loesung.docx``                            je Prüfung ein Lösungsblatt
 ============================================  ==========================================
 
@@ -31,18 +34,23 @@ from .config import Settings
 from .exam.builder import build_answer_key, build_docx
 from .exam.verify import verify_document
 from .list.docx_writer import build_document
+from .niveau import NIVEAUS, PROFILES
 from .pack import Pack
 
 TEIL_NAMEN = {1: "PartI", 2: "PartII"}
 
 
-def dateiname(unit: int, niveau: str, art: str, teil: int | None = None,
-              loesung: bool = False) -> str:
-    """Einheitliche Benennung: ``Unit03_Test_PartI_NiveauB_Loesung.docx``."""
+def dateiname(unit: int, art: str, teil: int | None = None,
+              niveau: str | None = None, loesung: bool = False) -> str:
+    """Einheitliche Benennung: ``Unit03_Test_PartI_NiveauB_Loesung.docx``.
+
+    Die Vokabelliste trägt kein Niveau im Namen - es gibt nur eine.
+    """
     parts = [f"Unit{unit:02d}", art]
     if teil:
         parts.append(TEIL_NAMEN[teil])
-    parts.append(f"Niveau{niveau}")
+    if niveau:
+        parts.append(f"Niveau{niveau}")
     if loesung:
         parts.append("Loesung")
     return "_".join(parts) + ".docx"
@@ -60,14 +68,14 @@ class Ergebnis:
         return self.bericht.ok
 
 
-def _herkunftszeile(pack: Pack) -> str:
+def _herkunftszeile(pack: Pack, niveau: str | None = None) -> str:
     q = pack.quelle
     return (
         f"Quelle: {q.get('datei', 'unbekannt')} "
         f"(Import {q.get('importiert', '?')}, "
         f"SHA-256 {str(q.get('pruefsumme_sha256', ''))[:12]}) · "
-        f"erzeugt {date.today().isoformat()} · "
-        f"{pack.unit_label}, Niveau {pack.niveau.name} ({pack.niveau.cefr})"
+        f"erzeugt {date.today().isoformat()} · {pack.unit_label}"
+        + (f" · Niveau {niveau} ({PROFILES[niveau].cefr})" if niveau else "")
     )
 
 
@@ -77,7 +85,7 @@ def _stempeln_python_docx(document, pack: Pack, titel: str) -> None:
     props.title = titel
     props.subject = f"{pack.unit_label} - {pack.thema}"
     props.comments = _herkunftszeile(pack)
-    props.category = f"Niveau {pack.niveau.name} ({pack.niveau.cefr})"
+    props.category = "Vokabelliste für Niveau A und Niveau B"
 
 
 def schreibe_liste(pack: Pack, ziel: Path, settings: Settings | None = None) -> Path:
@@ -85,38 +93,34 @@ def schreibe_liste(pack: Pack, ziel: Path, settings: Settings | None = None) -> 
     settings = settings or Settings()
     pair = _pair_from_pack(pack)
     document = build_document(pair, settings)
-    _stempeln_python_docx(
-        document,
-        pack,
-        f"Vocabulary {pack.unit_label} - Niveau {pack.niveau.name}",
-    )
+    _stempeln_python_docx(document, pack, f"Vocabulary {pack.unit_label}")
     ziel.parent.mkdir(parents=True, exist_ok=True)
     document.save(str(ziel))
     return ziel
 
 
-def _spec_mit_herkunft(pack: Pack, teil: int) -> dict:
-    spec = pack.exam(teil)
+def _spec_mit_herkunft(pack: Pack, teil: int, niveau: str) -> dict:
+    spec = pack.exam(teil, niveau)
     meta = dict(spec.get("meta", {}))
     meta["title"] = meta.get(
-        "titel", f"{pack.unit_label} Teil {teil} - Niveau {pack.niveau.name}"
+        "titel", f"{pack.unit_label} Teil {teil} - Niveau {niveau}"
     )
-    meta["herkunft"] = _herkunftszeile(pack)
+    meta["herkunft"] = _herkunftszeile(pack, niveau)
     return {**spec, "meta": meta}
 
 
 def schreibe_pruefung(
-    pack: Pack, teil: int, ziel: Path, settings: Settings | None = None,
-    mit_loesung: bool = True,
+    pack: Pack, teil: int, niveau: str, ziel: Path,
+    settings: Settings | None = None, mit_loesung: bool = True,
 ) -> list[Path]:
     """Prüfung und Lösungsblatt, byteweise im Layout der Referenzprüfung."""
     settings = settings or Settings()
-    spec = _spec_mit_herkunft(pack, teil)
+    spec = _spec_mit_herkunft(pack, teil, niveau)
     ziel.parent.mkdir(parents=True, exist_ok=True)
     geschrieben = [Path(build_docx(spec, str(settings.exam_template), str(ziel)))]
     if mit_loesung:
         loesung = ziel.with_name(
-            dateiname(pack.unit, pack.niveau.name, "Test", teil, loesung=True)
+            dateiname(pack.unit, "Test", teil, niveau, loesung=True)
         )
         geschrieben.append(
             Path(build_answer_key(spec, str(settings.exam_template), str(loesung)))
@@ -130,11 +134,13 @@ def baue_alles(
     settings: Settings | None = None,
     teile: tuple[str, ...] = ("liste", "test"),
     mit_loesung: bool = True,
+    niveaus: tuple[str, ...] = NIVEAUS,
 ) -> Ergebnis:
     """Schreibt die gewünschten Dokumente und kontrolliert sie danach.
 
-    ``teile`` erlaubt Teilanfragen: ``("test",)`` erzeugt nur die beiden
-    Prüfungen und lässt die Vokabelliste unberührt.
+    ``teile`` und ``niveaus`` erlauben Teilanfragen: ``teile=("test",)`` mit
+    ``niveaus=("B",)`` erzeugt nur die beiden Prüfungen für Niveau B und
+    lässt Vokabelliste und Niveau A unberührt.
     """
     settings = settings or Settings()
     ziel = Path(verzeichnis)
@@ -142,16 +148,20 @@ def baue_alles(
     ergebnis.bericht.gelaufen.append("dokument")
 
     if "liste" in teile:
-        pfad = ziel / dateiname(pack.unit, pack.niveau.name, "VocabularyList")
+        pfad = ziel / dateiname(pack.unit, "VocabularyList")
         ergebnis.dateien.append(schreibe_liste(pack, pfad, settings))
 
     if "test" in teile:
-        for teil in sorted(pack.exams):
-            pfad = ziel / dateiname(pack.unit, pack.niveau.name, "Test", teil)
-            geschrieben = schreibe_pruefung(pack, teil, pfad, settings, mit_loesung)
+        for teil, niveau in sorted(pack.exams):
+            if niveau not in niveaus:
+                continue
+            pfad = ziel / dateiname(pack.unit, "Test", teil, niveau)
+            geschrieben = schreibe_pruefung(
+                pack, teil, niveau, pfad, settings, mit_loesung
+            )
             ergebnis.dateien.extend(geschrieben)
             # Nachkontrolle des geschriebenen Dokuments gegen die Vorlage.
-            spec = _spec_mit_herkunft(pack, teil)
+            spec = _spec_mit_herkunft(pack, teil, niveau)
             for pfad_geschrieben in geschrieben:
                 ist_loesung = pfad_geschrieben.name.endswith("_Loesung.docx")
                 for finding in verify_document(

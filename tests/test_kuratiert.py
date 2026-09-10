@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from vocabmaster.checks import gegenstueck_pfad, pruefe_paket
+from vocabmaster.checks import pruefe_paket
 from vocabmaster.documents import baue_alles
 from vocabmaster.pack import Pack
 
@@ -21,11 +21,7 @@ PAKETE = sorted(KURATIERT.glob("unit_*.json"))
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")
 @pytest.mark.parametrize("pfad", PAKETE, ids=lambda p: p.stem)
 def test_paket_ist_fehlerfrei(pfad, db, settings):
-    pack = Pack.load(pfad)
-    gegen = gegenstueck_pfad(pfad, pack.niveau.name)
-    bericht = pruefe_paket(
-        pack, db, settings, Pack.load(gegen) if gegen.exists() else None
-    )
+    bericht = pruefe_paket(Pack.load(pfad), db, settings)
     assert not bericht.fehler, "\n".join(str(b) for b in bericht.fehler)
     assert not bericht.warnungen, "\n".join(str(b) for b in bericht.warnungen)
 
@@ -36,29 +32,28 @@ def test_paket_ist_vollstaendig(pfad):
     pack = Pack.load(pfad)
     assert pack.vollstaendig, f"noch offen: {pack.offen()[:5]}"
     assert len(pack.all_entries) == 60
-    assert len(pack.exams) == 2
+    assert len(pack.exams) == 4, "je Unit vier Prüfungen: Teil I/II mal Niveau A/B"
 
 
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")
 @pytest.mark.parametrize("pfad", PAKETE, ids=lambda p: p.stem)
 def test_dokumente_lassen_sich_bauen(pfad, tmp_path, settings):
     ergebnis = baue_alles(Pack.load(pfad), tmp_path, settings)
-    assert len(ergebnis.dateien) == 5
+    assert len(ergebnis.dateien) == 9  # 1 Liste + 4 Prüfungen + 4 Lösungen
     assert ergebnis.ok, "\n".join(str(b) for b in ergebnis.bericht.fehler)
 
 
-@pytest.mark.skipif(len(PAKETE) < 2, reason="beide Niveaus nötig")
-def test_die_beiden_niveaus_einer_unit_sind_ueberschneidungsfrei():
-    from vocabmaster.list.normalize import headword
-
-    nach_unit: dict[int, dict[str, set[str]]] = {}
-    for pfad in PAKETE:
-        pack = Pack.load(pfad)
-        nach_unit.setdefault(pack.unit, {})[pack.niveau.name] = {
-            headword(e["englisch"]).lower() for e in pack.all_entries
-        }
-    for unit, niveaus in nach_unit.items():
-        if len(niveaus) < 2:
+@pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")
+@pytest.mark.parametrize("pfad", PAKETE, ids=lambda p: p.stem)
+def test_nur_woerter_aus_dem_hauptteil(pfad, db):
+    """Culture, Project und Curriculum extra dürfen nicht stillschweigend
+    hineinrutschen - und wenn doch, dann ausgewiesen."""
+    pack = Pack.load(pfad)
+    haupt = {r.headword.lower() for r in db.unit_pool(pack.unit, core_only=True)}
+    for entry in pack.all_entries:
+        if entry.get("herkunft") != "wortliste":
             continue
-        gemeinsam = niveaus["A"] & niveaus["B"]
-        assert not gemeinsam, f"Unit {unit}: {sorted(gemeinsam)} steht in beiden Listen"
+        assert entry["englisch"].lower() in haupt, (
+            f"{entry['englisch']} ist als 'wortliste' geführt, steht aber nicht "
+            f"im Hauptteil von Unit {pack.unit}"
+        )

@@ -59,6 +59,10 @@ INFLECTIONS = ("s", "es", "ed", "d", "ing", "er", "est", "ly", "ies", "ied",
 def _bases(word: str) -> set[str]:
     """The word plus every plausible base after stripping one regular ending."""
     forms = {word}
+    # Possessives: "grandmother's" is known as soon as "grandmother" is.
+    if word.endswith(("'s", "\u2019s")):
+        forms.add(word[:-2])
+        word = word[:-2]
     for suffix in INFLECTIONS:
         if word.endswith(suffix) and len(word) - len(suffix) >= 3:
             base = word[: -len(suffix)]

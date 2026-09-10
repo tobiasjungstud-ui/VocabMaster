@@ -30,7 +30,6 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
-from . import niveau as niveau_mod
 from .config import Settings
 from .database import Database
 from .exam import english as exam_english
@@ -40,8 +39,8 @@ from .list.leveling import score_candidate
 from .list.models import Candidate, Severity
 from .list.normalize import headword, normalize_key
 from .list.validation import validate_all
+from .niveau import LIST_BOUNDS, NIVEAUS, PROFILES, SENTENCE_MAX_WORDS
 from .pack import Pack
-from .pool import bounds_for
 
 FEHLER, WARNUNG, HINWEIS = "FEHLER", "WARNUNG", "HINWEIS"
 _RANK = {FEHLER: 0, WARNUNG: 1, HINWEIS: 2}
@@ -211,19 +210,22 @@ def pruefe_thema(pack: Pack, db: Database, bericht: Pruefbericht) -> None:
 # 2  Neuwort-Limite
 # ---------------------------------------------------------------------------
 def pruefe_neuwoerter(pack: Pack, settings: Settings, bericht: Pruefbericht) -> None:
+    """Höchstens 40 Prozent selbst ergänzt - und Zusatzteile immer ausweisen."""
     bericht.gelaufen.append("neuwoerter")
     anteil = pack.ergaenzt_anteil
     grenze = settings.max_invented_share
+    zusatz = pack.aus_zusatzteilen
     bericht.kennzahlen["neuwoerter"] = (
-        f"{len(pack.ergaenzt)} von {len(pack.all_entries)} = {anteil:.0%} "
+        f"{len(pack.ergaenzt)} von {len(pack.all_entries)} ergänzt = {anteil:.0%} "
         f"(Grenze {grenze:.0%})"
+        + (f", {len(zusatz)} aus Zusatzteilen" if zusatz else "")
     )
     if anteil > grenze + 1e-9:
         bericht.add(
-            FEHLER, "neuwoerter",
-            f"{anteil:.0%} der Wörter sind ergänzt, erlaubt sind {grenze:.0%}. "
-            "Zuerst die Zusatzteile derselben Unit zulassen "
-            "(--mit-zusatzteilen), bevor weiter ergänzt wird.",
+            WARNUNG, "neuwoerter",
+            f"Ausnahme: {anteil:.0%} der Wörter sind ergänzt, vorgesehen sind "
+            f"höchstens {grenze:.0%}. Der Hauptteil dieser Unit gibt nicht mehr "
+            "her. Bitte die ergänzten Wörter besonders sorgfältig gegenlesen.",
         )
     elif anteil > grenze * 0.75:
         bericht.add(
@@ -231,14 +233,36 @@ def pruefe_neuwoerter(pack: Pack, settings: Settings, bericht: Pruefbericht) -> 
             f"{anteil:.0%} ergänzt - nahe an der Grenze von {grenze:.0%}.",
         )
 
+    # Culture, Project und Curriculum extra sind die letzte Reserve. Wenn sie
+    # gezogen wurde, muss das sichtbar sein - jedes Wort einzeln.
+    if zusatz:
+        bereiche = ", ".join(
+            f"{e['englisch']} ({e.get('abschnitt', 'Zusatzteil')})" for e in zusatz
+        )
+        bericht.add(
+            WARNUNG, "neuwoerter",
+            f"Ausnahme: {len(zusatz)} Wörter stammen nicht aus dem Hauptteil, "
+            f"sondern aus Zusatzteilen derselben Unit - {bereiche}. Das geschieht "
+            "nur, wenn Hauptteil und erlaubte Ergänzung zusammen keine Liste "
+            "ergeben.",
+        )
+    hinweis = pack.data.get("herkunft_uebersicht", {}).get("ausnahme")
+    if hinweis:
+        bericht.add(WARNUNG, "neuwoerter", str(hinweis))
+
 
 # ---------------------------------------------------------------------------
 # 3  CEFR-Konformität
 # ---------------------------------------------------------------------------
 def pruefe_cefr(pack: Pack, bericht: Pruefbericht) -> None:
-    """Sätze und Lückentexte müssen im Band des Niveaus liegen."""
+    """Beispielsätze und Lückentexte müssen zum Zielband passen.
+
+    Die Vokabelliste lernen **beide** Gruppen, deshalb gilt für ihre
+    Beispielsätze das engere Mass der schwächeren Gruppe. Die Lückentexte
+    werden je Prüfung gegen das Band ihres eigenen Niveaus geprüft; das
+    besorgt :func:`pruefe_pruefungen`.
+    """
     bericht.gelaufen.append("cefr")
-    prof = pack.niveau
     saetze = [e["satz"] for e in pack.all_entries if e.get("satz")]
     if not saetze:
         bericht.kennzahlen["cefr"] = "keine Sätze vorhanden"
@@ -248,28 +272,29 @@ def pruefe_cefr(pack: Pack, bericht: Pruefbericht) -> None:
     schnitt = sum(laengen) / len(laengen)
     stats = exam_english.readability(" ".join(saetze))
     bericht.kennzahlen["cefr"] = (
-        f"{prof.cefr}: Sätze Ø {schnitt:.1f} Wörter (max {max(laengen)}), "
+        f"Liste (A2.2-B2.1): Sätze Ø {schnitt:.1f} Wörter (max {max(laengen)}), "
         f"Lesbarkeit {stats['flesch_reading_ease']:.0f}"
     )
 
-    zu_lang = [s for s in saetze if len(s.split()) > prof.sentence_max_words]
+    zu_lang = [s for s in saetze if len(s.split()) > SENTENCE_MAX_WORDS]
     if zu_lang:
         bericht.add(
             WARNUNG if len(zu_lang) <= 3 else FEHLER, "cefr",
             f"{len(zu_lang)} Beispielsätze sind länger als "
-            f"{prof.sentence_max_words} Wörter (Niveau {prof.name} = {prof.cefr}). "
-            f"Zum Beispiel: „{max(zu_lang, key=lambda s: len(s.split()))}“",
+            f"{SENTENCE_MAX_WORDS} Wörter. Die Liste lernen auch die "
+            "schwächeren Schülerinnen und Schüler. Zum Beispiel: "
+            f"„{max(zu_lang, key=lambda s: len(s.split()))}“",
         )
-    untergrenze = prof.level_targets["min_flesch_ease"]
+    untergrenze = PROFILES["B"].level_targets["min_flesch_ease"]
     if stats["flesch_reading_ease"] < untergrenze:
         bericht.add(
             WARNUNG, "cefr",
             f"Die Beispielsätze erreichen Lesbarkeit "
-            f"{stats['flesch_reading_ease']:.0f}, für {prof.cefr} sind "
-            f"mindestens {untergrenze:.0f} vorgesehen.",
+            f"{stats['flesch_reading_ease']:.0f}; für die gemeinsame Liste "
+            f"sind mindestens {untergrenze:.0f} vorgesehen.",
         )
     ueber = exam_english.structures_above_level(" ".join(saetze))
-    if ueber and prof.name == "B":
+    if ueber:
         bericht.add(
             WARNUNG, "cefr",
             f"Strukturen über dem Zielband in den Beispielsätzen: "
@@ -371,7 +396,8 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
     """Jede Prüfungsaufgabe muss zur Vokabelliste desselben Pakets passen."""
     bericht.gelaufen.append("loesungsschluessel")
     geprueft = 0
-    for teil, spec in pack.exams.items():
+    for (teil, niveau), spec in sorted(pack.exams.items()):
+        wo = f"Teil {teil}, Niveau {niveau}"
         liste = pack.vocab_test(teil)
         eintraege = list(spec.get("task1", {}).get("items", [])) + list(
             spec.get("task2", {}).get("gaps", [])
@@ -384,133 +410,144 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
             if item is None:
                 bericht.add(
                     FEHLER, "loesungsschluessel",
-                    f"Teil {teil}: '{german}' / '{english}' steht nicht in "
+                    f"{wo}: '{german}' / '{english}' steht nicht in "
                     f"{liste.name} der Vokabelliste dieses Pakets.",
                 )
                 continue
             if normalise(item.english) != normalise(english):
                 bericht.add(
                     FEHLER, "loesungsschluessel",
-                    f"Teil {teil}: Die Liste schreibt „{german}“ als "
+                    f"{wo}: Die Liste schreibt „{german}“ als "
                     f"'{item.english}', die Prüfung als '{english}'.",
                 )
             if normalise(item.german) != normalise(german):
                 bericht.add(
                     FEHLER, "loesungsschluessel",
-                    f"Teil {teil}: Die Liste schreibt '{english}' als "
+                    f"{wo}: Die Liste schreibt '{english}' als "
                     f"„{item.german}“, die Prüfung als „{german}“.",
                 )
             answer = entry.get("answer")
             if answer is not None and normalise(answer) != normalise(english):
                 bericht.add(
                     FEHLER, "loesungsschluessel",
-                    f"Teil {teil}: Lücke '{english}' hat die Lösung '{answer}'.",
+                    f"{wo}: Lücke '{english}' hat die Lösung '{answer}'.",
                 )
             pos_spec = entry.get("pos")
             pos_liste = pack.wortart(english) or guess_pos(item.german)
             if pos_spec and pos_liste and pos_spec != pos_liste:
                 bericht.add(
                     HINWEIS, "loesungsschluessel",
-                    f"Teil {teil}: '{english}' ist in der Prüfung als "
+                    f"{wo}: '{english}' ist in der Prüfung als "
                     f"'{pos_spec}' geführt, aus der Liste ergäbe sich "
                     f"'{pos_liste}'.",
                 )
-    # Kein Wort darf in beiden Prüfungsteilen vorkommen.
-    seen: dict[str, int] = {}
-    for teil, spec in pack.exams.items():
-        for entry in list(spec.get("task1", {}).get("items", [])) + list(
-            spec.get("task2", {}).get("gaps", [])
-        ):
-            key = normalise(entry.get("english", ""))
-            if key and key in seen:
-                bericht.add(
-                    FEHLER, "loesungsschluessel",
-                    f"'{entry.get('english')}' wird in Teil {seen[key]} und in "
-                    f"Teil {teil} geprüft.",
-                )
-            elif key:
-                seen[key] = teil
+    # Innerhalb eines Niveaus darf kein Wort zweimal geprüft werden. Zwischen
+    # den Niveaus ist das kein Fehler - es sind verschiedene Gruppen -, aber
+    # die Auswahl soll es trotzdem vermeiden; das prüft `niveau_konsistenz`.
+    for niveau in NIVEAUS:
+        seen: dict[str, int] = {}
+        for (teil, n), spec in sorted(pack.exams.items()):
+            if n != niveau:
+                continue
+            for entry in list(spec.get("task1", {}).get("items", [])) + list(
+                spec.get("task2", {}).get("gaps", [])
+            ):
+                key = normalise(entry.get("english", ""))
+                if key and key in seen:
+                    bericht.add(
+                        FEHLER, "loesungsschluessel",
+                        f"Niveau {niveau}: '{entry.get('english')}' wird in "
+                        f"Teil {seen[key]} und in Teil {teil} geprüft.",
+                    )
+                elif key:
+                    seen[key] = teil
     bericht.kennzahlen["loesungsschluessel"] = f"{geprueft} Aufgaben gegen die Liste geprüft"
 
 
 # ---------------------------------------------------------------------------
 # 7  Konsistenz zwischen den Niveaus
 # ---------------------------------------------------------------------------
-def pruefe_niveau_konsistenz(
-    pack: Pack, gegenstueck: Pack | None, bericht: Pruefbericht
-) -> None:
-    """A und B: dieselbe Unit, dasselbe Thema, andere Komplexität."""
+def pruefe_niveau_konsistenz(pack: Pack, bericht: Pruefbericht) -> None:
+    """Beide Prüfungen eines Teils: dieselbe Liste, aber andere Schwierigkeit.
+
+    Da beide Niveaus aus **einer** Vokabelliste geprüft werden, ist das Thema
+    per Bauart dasselbe. Zu prüfen bleibt zweierlei: Jede Aufgabe stammt aus
+    der Liste dieses Teils, und die Prüfung für Niveau A ist tatsächlich die
+    schwerere. Ein Überschnitt zwischen den beiden Auswahlen ist erlaubt - es
+    sind verschiedene Gruppen - und wird nur vermerkt.
+    """
     bericht.gelaufen.append("niveau_konsistenz")
-    if gegenstueck is None:
-        bericht.kennzahlen["niveau_konsistenz"] = (
-            "das andere Niveau liegt nicht vor - Vergleich übersprungen"
-        )
-        bericht.add(
-            HINWEIS, "niveau_konsistenz",
-            "Nur ein Niveau vorhanden. Der Vergleich läuft erst, wenn beide "
-            "Pakete der Unit existieren.",
-        )
-        return
 
-    if pack.unit != gegenstueck.unit:
-        bericht.add(FEHLER, "niveau_konsistenz",
-                    "Die beiden Pakete gehören zu verschiedenen Units.")
-        return
-    if pack.thema != gegenstueck.thema:
-        bericht.add(
-            FEHLER, "niveau_konsistenz",
-            f"Niveau {pack.niveau.name} behandelt „{pack.thema}“, Niveau "
-            f"{gegenstueck.niveau.name} „{gegenstueck.thema}“.",
+    def woerter(teil: int, niveau: str) -> list[dict]:
+        spec = pack.exam(teil, niveau)
+        return list(spec.get("task1", {}).get("items", [])) + list(
+            spec.get("task2", {}).get("gaps", [])
         )
 
-    hier = {headword(e["englisch"]).lower() for e in pack.all_entries if e.get("englisch")}
-    dort = {headword(e["englisch"]).lower() for e in gegenstueck.all_entries if e.get("englisch")}
-    beide = sorted(hier & dort)
-    if beide:
-        bericht.add(
-            FEHLER, "niveau_konsistenz",
-            f"{len(beide)} Wörter stehen in beiden Niveaulisten: "
-            f"{', '.join(beide[:8])}{' …' if len(beide) > 8 else ''}. Die "
-            "Listen sollen überschneidungsfrei sein.",
+    kennzahlen = []
+    for teil in (1, 2):
+        a, b = woerter(teil, "A"), woerter(teil, "B")
+        if not a or not b:
+            continue
+
+        erlaubt = {
+            normalise(e.get("englisch", "")) for e in pack.entries(f"test{teil}")
+        }
+        for niveau, eintraege in (("A", a), ("B", b)):
+            fremd = [
+                e.get("english") for e in eintraege
+                if normalise(e.get("english", "")) not in erlaubt
+            ]
+            if fremd:
+                bericht.add(
+                    FEHLER, "niveau_konsistenz",
+                    f"Teil {teil}, Niveau {niveau}: {fremd} steht nicht in "
+                    f"Test {teil} der Vokabelliste. Beide Niveaus müssen aus "
+                    "derselben Liste geprüft werden.",
+                )
+
+        gemeinsam = sorted(
+            {normalise(e.get("english", "")) for e in a}
+            & {normalise(e.get("english", "")) for e in b}
         )
+        if gemeinsam:
+            # Erlaubt: Es sind verschiedene Gruppen, und beide lernen dieselbe
+            # Liste. Vermerkt wird es trotzdem - wächst der Überschnitt, prüfen
+            # die beiden Fassungen am Ende dasselbe.
+            bericht.add(
+                WARNUNG if len(gemeinsam) > len(a) // 2 else HINWEIS,
+                "niveau_konsistenz",
+                f"Teil {teil}: {len(gemeinsam)} von {len(a)} Wörtern werden in "
+                f"beiden Niveaus geprüft ({', '.join(gemeinsam[:6])}). Das ist "
+                "zulässig; ab der Hälfte lohnt ein Blick, ob sich die beiden "
+                "Fassungen noch unterscheiden.",
+            )
 
-    def mittel(p: Pack) -> float:
-        werte = []
-        for e in p.all_entries:
-            if not e.get("englisch"):
-                continue
-            c = Candidate(english=e["englisch"], german=e.get("deutsch", ""))
-            score_candidate(c)
-            werte.append(c.difficulty)
-        return sum(werte) / len(werte) if werte else 0.0
-
-    a, b = (pack, gegenstueck) if pack.niveau.name == "A" else (gegenstueck, pack)
-    ma, mb = mittel(a), mittel(b)
+        ma = _mittlere_schwierigkeit(a)
+        mb = _mittlere_schwierigkeit(b)
+        kennzahlen.append(f"Teil {teil}: A {ma:.1f}/10 gegen B {mb:.1f}/10")
+        if ma <= mb:
+            bericht.add(
+                FEHLER, "niveau_konsistenz",
+                f"Teil {teil}: Die Prüfung für Niveau A ist mit Ø {ma:.1f}/10 "
+                f"nicht schwerer als die für Niveau B (Ø {mb:.1f}/10).",
+            )
+        elif ma - mb < 0.5:
+            bericht.add(
+                WARNUNG, "niveau_konsistenz",
+                f"Teil {teil}: Der Abstand zwischen den Niveaus ist gering "
+                f"(A {ma:.1f}/10 gegen B {mb:.1f}/10).",
+            )
     bericht.kennzahlen["niveau_konsistenz"] = (
-        f"Ø Schwierigkeit A {ma:.2f} gegen B {mb:.2f}, "
-        f"{len(beide)} gemeinsame Wörter"
+        "; ".join(kennzahlen) or "keine Prüfungen im Paket"
     )
-    if ma <= mb:
-        bericht.add(
-            FEHLER, "niveau_konsistenz",
-            f"Niveau A ist mit Ø {ma:.2f} nicht schwerer als Niveau B "
-            f"(Ø {mb:.2f}). Die Zuteilung stimmt nicht.",
-        )
-    elif ma - mb < 0.08:
-        bericht.add(
-            WARNUNG, "niveau_konsistenz",
-            f"Der Abstand zwischen den Niveaus ist gering "
-            f"(A {ma:.2f} gegen B {mb:.2f}).",
-        )
-    # Gemeinsames Wortfeld: beide Listen sollen dieselbe Unit abbilden.
-    felder_a = {e.get("abschnitt", "") for e in a.all_entries if e.get("abschnitt")}
-    felder_b = {e.get("abschnitt", "") for e in b.all_entries if e.get("abschnitt")}
-    if felder_a and felder_b and not (felder_a & felder_b):
-        bericht.add(
-            WARNUNG, "niveau_konsistenz",
-            "Die beiden Niveaus schöpfen aus völlig verschiedenen Abschnitten "
-            "der Unit - inhaltlich sollten sie sich überlappen.",
-        )
+
+
+def _mittlere_schwierigkeit(eintraege: list[dict]) -> float:
+    from .exam.difficulty import score_item
+
+    werte = [score_item(e).score for e in eintraege if e.get("english")]
+    return sum(werte) / len(werte) if werte else 0.0
 
 
 # ---------------------------------------------------------------------------
@@ -521,15 +558,16 @@ def pruefe_platzhalter(pack: Pack, bericht: Pruefbericht) -> None:
     bericht.gelaufen.append("vorlage")
     offen = pack.offen()
     reste = []
-    for teil, spec in pack.exams.items():
+    for (teil, niveau), spec in sorted(pack.exams.items()):
+        wo = f"Teil {teil}, Niveau {niveau}"
         text = spec.get("task2", {}).get("text", "")
         if "TODO" in text:
-            reste.append(f"Teil {teil}: Lückentext ist noch der Platzhalter")
+            reste.append(f"{wo}: Lückentext ist noch der Platzhalter")
         marker = re.findall(r"\{(\d*)\}", text)
         erwartet = len(spec.get("task2", {}).get("gaps", []))
         if text and "TODO" not in text and len(marker) != erwartet:
             reste.append(
-                f"Teil {teil}: {len(marker)} Lückenmarker im Text, "
+                f"{wo}: {len(marker)} Lückenmarker im Text, "
                 f"aber {erwartet} Lücken"
             )
     for entry in pack.all_entries:
@@ -583,7 +621,7 @@ def pruefe_liste(pack: Pack, settings: Settings, bericht: Pruefbericht) -> None:
             out.append(c)
         return out
 
-    bounds = bounds_for(pack.niveau)
+    bounds = LIST_BOUNDS
     test1, test2 = to_candidates("test1"), to_candidates("test2")
     report = validate_all(test1, test2, settings.words_per_test, bounds=bounds)
     for issue in report.issues:
@@ -651,30 +689,34 @@ def _pair_from_pack(pack: Pack):
 
 
 def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
-    """Die zwanzig Prüfungen aus dem VocabTestMaker, je Prüfungsteil.
+    """Die zwanzig Prüfungen aus dem VocabTestMaker, für jede der vier Prüfungen.
 
     Die Zielbänder für Lückentext und Auswahl kommen aus dem Niveauprofil -
-    das ist die einzige Änderung gegenüber der Ursprungsanwendung.
+    das ist die einzige Änderung gegenüber der Ursprungsanwendung. Der
+    Lückentext für Niveau B wird damit gegen ein anderes Band gemessen als
+    der für Niveau A, obwohl beide aus derselben Vokabelliste stammen.
     """
     bericht.gelaufen.append("pruefung")
-    prof = pack.niveau
     zusammen = []
-    for teil, spec in pack.exams.items():
-        checker = ExamChecker(
+    for (teil, niveau), spec in sorted(pack.exams.items()):
+        prof = PROFILES[niveau]
+        report = ExamChecker(
             spec,
             vocab=pack.vocab_test(teil),
             all_tests=pack.all_vocab_tests,
             level_targets=prof.level_targets,
             selection_targets=prof.selection_targets,
-        )
-        report = checker.run()
+        ).run()
         for finding in report.findings:
             stufe = {"ERROR": FEHLER, "WARN": WARNUNG, "INFO": HINWEIS}[finding.level]
-            bericht.add(stufe, "pruefung", f"Teil {teil} - {finding.check}: {finding.message}")
+            bericht.add(
+                stufe, "pruefung",
+                f"Teil {teil} Niveau {niveau} - {finding.check}: {finding.message}",
+            )
         stats = report.stats.get("readability", {})
         if stats:
             zusammen.append(
-                f"Teil {teil}: {stats['words']} Wörter, Lesbarkeit "
+                f"T{teil}/{niveau}: {stats['words']} W., Lesbarkeit "
                 f"{stats['flesch_reading_ease']:.0f}, Grad "
                 f"{stats['flesch_kincaid_grade']:.1f}"
             )
@@ -688,14 +730,14 @@ def pruefe_paket(
     pack: Pack,
     db: Database,
     settings: Settings | None = None,
-    gegenstueck: Pack | None = None,
 ) -> Pruefbericht:
     """Der vollständige Selbstcheck eines Pakets."""
     settings = settings or Settings()
     bericht = Pruefbericht()
     bericht.kennzahlen["_kopf"] = (
-        f"{pack.unit_label}, Niveau {pack.niveau.name} ({pack.niveau.cefr}) - "
-        f"{pack.thema}"
+        f"{pack.unit_label} - {pack.thema} "
+        f"(eine Liste, Prüfungen für Niveau A {PROFILES['A'].cefr} und "
+        f"Niveau B {PROFILES['B'].cefr})"
     )
     pruefe_thema(pack, db, bericht)
     pruefe_neuwoerter(pack, settings, bericht)
@@ -703,18 +745,9 @@ def pruefe_paket(
     pruefe_dubletten(pack, bericht)
     pruefe_altbestand(pack, db, bericht)
     pruefe_loesungsschluessel(pack, bericht)
-    pruefe_niveau_konsistenz(pack, gegenstueck, bericht)
+    pruefe_niveau_konsistenz(pack, bericht)
     pruefe_platzhalter(pack, bericht)
     pruefe_herkunft(pack, bericht)
     pruefe_liste(pack, settings, bericht)
     pruefe_pruefungen(pack, bericht)
     return bericht.sortieren()
-
-
-def gegenstueck_pfad(pfad, niveau_name: str):
-    """Der Pfad zum Paket des anderen Niveaus derselben Unit."""
-    from pathlib import Path
-
-    p = Path(pfad)
-    other = niveau_mod.other(niveau_name).name
-    return p.with_name(re.sub(r"_[AB](\.json)$", f"_{other}\\1", p.name))

@@ -12,7 +12,6 @@ import pytest
 
 from vocabmaster.checks import FEHLER, pruefe_paket
 from vocabmaster.pack import Pack, scaffold
-from vocabmaster.pool import plan_both
 
 from .helpers import fill
 
@@ -25,19 +24,9 @@ def fehler_von(bericht, pruefung):
     return [b for b in befunde(bericht, pruefung) if b.stufe == FEHLER]
 
 
-@pytest.fixture
-def paare(db, settings):
-    """Beide Niveaus einer Unit, vollständig ausgefüllt."""
-    plans = plan_both(db, 1, settings)
-    return {
-        name: Pack(data=fill(scaffold(db, 1, name, settings, plans[name])))
-        for name in ("A", "B")
-    }
-
-
 # --- 0  Der Normalfall ------------------------------------------------------
-def test_vollstaendiges_paket_hat_keine_strukturfehler(db, settings, paare):
-    bericht = pruefe_paket(paare["A"], db, settings, paare["B"])
+def test_vollstaendiges_paket_hat_keine_strukturfehler(db, settings, pack):
+    bericht = pruefe_paket(pack, db, settings)
     for pruefung in ("thema", "neuwoerter", "dubletten", "altbestand",
                      "loesungsschluessel", "niveau_konsistenz", "herkunft", "vorlage"):
         assert not fehler_von(bericht, pruefung), (
@@ -86,15 +75,28 @@ def test_begruendung_hebt_den_fehler_auf(db, settings, pack):
 
 
 # --- 2  Neuwort-Limite ------------------------------------------------------
-def test_zu_viele_neuwoerter_werden_abgelehnt(db, settings, pack):
+def test_zu_viele_neuwoerter_werden_gemeldet(db, settings, pack):
+    """Über 40 Prozent ist eine Ausnahme - sie wird gemeldet, nicht verboten."""
     data = copy.deepcopy(pack.data)
     for entry in data["liste"]["test1"]:
         entry["herkunft"] = "ergänzt"
     for entry in data["liste"]["test2"][:5]:
         entry["herkunft"] = "ergänzt"
     bericht = pruefe_paket(Pack(data=data), db, settings)
-    assert fehler_von(bericht, "neuwoerter")
+    treffer = befunde(bericht, "neuwoerter")
+    assert any("Ausnahme" in b.text for b in treffer)
     assert "58%" in bericht.kennzahlen["neuwoerter"]
+
+
+def test_woerter_aus_zusatzteilen_werden_einzeln_ausgewiesen(db, settings, pack):
+    """Culture und Project sind die letzte Reserve - das muss man sehen."""
+    data = copy.deepcopy(pack.data)
+    data["liste"]["test1"][0]["herkunft"] = "zusatzteil"
+    data["liste"]["test1"][0]["abschnitt"] = "Culture 1"
+    bericht = pruefe_paket(Pack(data=data), db, settings)
+    treffer = befunde(bericht, "neuwoerter")
+    assert any("Zusatzteilen" in b.text and "Culture 1" in b.text for b in treffer)
+    assert "1 aus Zusatzteilen" in bericht.kennzahlen["neuwoerter"]
 
 
 def test_anteil_unter_der_grenze_ist_in_ordnung(db, settings, pack):
@@ -107,9 +109,8 @@ def test_anteil_unter_der_grenze_ist_in_ordnung(db, settings, pack):
 
 # --- 3  CEFR ----------------------------------------------------------------
 def test_zu_lange_saetze_fallen_auf(db, settings):
-    plans = plan_both(db, 1, settings)
     data = fill(
-        scaffold(db, 1, "B", settings, plans["B"]),
+        scaffold(db, 1, settings),
         satz=(
             "Although the weather had already become considerably worse during "
             "the afternoon, the visitors who had travelled from abroad decided "
@@ -170,7 +171,7 @@ def test_andere_excel_fassung_wird_abgelehnt(db, settings, pack):
 # --- 6  Lösungsschlüssel ----------------------------------------------------
 def test_prueffrage_ohne_wort_in_der_liste(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["task1"]["items"][0] = {
+    data["pruefungen"]["teil1"]["A"]["task1"]["items"][0] = {
         "german": "Zahnrad", "english": "cogwheel", "pos": "noun",
     }
     bericht = pruefe_paket(Pack(data=data), db, settings)
@@ -179,22 +180,22 @@ def test_prueffrage_ohne_wort_in_der_liste(db, settings, pack):
 
 def test_abweichende_loesung_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["task2"]["gaps"][0]["answer"] = "somethingelse"
+    data["pruefungen"]["teil1"]["A"]["task2"]["gaps"][0]["answer"] = "somethingelse"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert fehler_von(bericht, "loesungsschluessel")
 
 
 def test_uebersetzung_darf_nicht_driften(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["task1"]["items"][0]["german"] = "eine andere Bedeutung"
+    data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]["german"] = "eine andere Bedeutung"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert fehler_von(bericht, "loesungsschluessel")
 
 
 def test_wort_darf_nicht_in_beiden_teilen_geprueft_werden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil2"]["task1"]["items"][0] = copy.deepcopy(
-        data["pruefungen"]["teil1"]["task1"]["items"][0]
+    data["pruefungen"]["teil2"]["A"]["task1"]["items"][0] = copy.deepcopy(
+        data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]
     )
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert any("Teil 1 und in Teil 2" in b.text
@@ -202,26 +203,54 @@ def test_wort_darf_nicht_in_beiden_teilen_geprueft_werden(db, settings, pack):
 
 
 # --- 7  Konsistenz zwischen den Niveaus -------------------------------------
-def test_gemeinsame_woerter_zwischen_den_niveaus_werden_gemeldet(db, settings, paare):
-    data = copy.deepcopy(paare["A"].data)
-    data["liste"]["test1"][0]["englisch"] = paare["B"].all_entries[0]["englisch"]
-    data["liste"]["test1"][0]["deutsch"] = paare["B"].all_entries[0]["deutsch"]
-    bericht = pruefe_paket(Pack(data=data), db, settings, paare["B"])
-    assert any("beiden Niveaulisten" in b.text
+def test_gemeinsame_pruefungswoerter_werden_vermerkt(db, settings, pack):
+    """Ein Überschnitt ist erlaubt - aber er wird ausgewiesen, nicht verschwiegen."""
+    data = copy.deepcopy(pack.data)
+    data["pruefungen"]["teil1"]["B"]["task1"]["items"][0] = copy.deepcopy(
+        data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]
+    )
+    bericht = pruefe_paket(Pack(data=data), db, settings)
+    assert not fehler_von(bericht, "niveau_konsistenz")
+    assert any("in beiden Niveaus geprüft" in b.text
+               for b in befunde(bericht, "niveau_konsistenz"))
+
+
+def test_deckungsgleiche_pruefungen_werden_gewarnt(db, settings, pack):
+    """Ab der Hälfte gemeinsamer Wörter sind es keine zwei Fassungen mehr."""
+    data = copy.deepcopy(pack.data)
+    data["pruefungen"]["teil1"]["B"] = copy.deepcopy(data["pruefungen"]["teil1"]["A"])
+    data["pruefungen"]["teil1"]["B"]["meta"]["niveau"] = "B"
+    bericht = pruefe_paket(Pack(data=data), db, settings)
+    treffer = befunde(bericht, "niveau_konsistenz")
+    assert any(b.stufe == "WARNUNG" and "in beiden Niveaus" in b.text for b in treffer)
+
+
+def test_pruefungswort_ausserhalb_der_liste_wird_gemeldet(db, settings, pack):
+    data = copy.deepcopy(pack.data)
+    data["pruefungen"]["teil1"]["B"]["task1"]["items"][0] = {
+        "german": "Zahnrad", "english": "cogwheel", "pos": "noun",
+    }
+    bericht = pruefe_paket(Pack(data=data), db, settings)
+    assert any("steht nicht in Test 1" in b.text
                for b in fehler_von(bericht, "niveau_konsistenz"))
 
 
-def test_verschiedene_themen_werden_gemeldet(db, settings, paare):
-    data = copy.deepcopy(paare["B"].data)
-    data["thema"] = "Ein völlig anderes Thema"
-    bericht = pruefe_paket(paare["A"], db, settings, Pack(data=data))
-    assert fehler_von(bericht, "niveau_konsistenz")
+def test_pruefung_a_muss_schwerer_sein(db, settings, pack):
+    """Werden die beiden Prüfungen vertauscht, fällt das auf."""
+    data = copy.deepcopy(pack.data)
+    data["pruefungen"]["teil1"]["A"], data["pruefungen"]["teil1"]["B"] = (
+        copy.deepcopy(data["pruefungen"]["teil1"]["B"]),
+        copy.deepcopy(data["pruefungen"]["teil1"]["A"]),
+    )
+    bericht = pruefe_paket(Pack(data=data), db, settings)
+    assert any("nicht schwerer" in b.text
+               for b in fehler_von(bericht, "niveau_konsistenz"))
 
 
-def test_ohne_gegenstueck_wird_der_vergleich_uebersprungen(db, settings, pack):
-    bericht = pruefe_paket(pack, db, settings, None)
+def test_beide_niveaus_pruefen_dieselbe_unit(db, settings, pack):
+    bericht = pruefe_paket(pack, db, settings)
     assert not fehler_von(bericht, "niveau_konsistenz")
-    assert "übersprungen" in bericht.kennzahlen["niveau_konsistenz"]
+    assert "Teil 1" in bericht.kennzahlen["niveau_konsistenz"]
 
 
 # --- 8  Platzhalter und Vorlage ---------------------------------------------
@@ -234,14 +263,14 @@ def test_offener_platzhalter_verhindert_den_bau(db, settings, pack):
 
 def test_stehengebliebenes_todo_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["task2"]["text"] = "TODO: Lückentext {1} {2} {3} {4}"
+    data["pruefungen"]["teil1"]["A"]["task2"]["text"] = "TODO: Lückentext {1} {2} {3} {4}"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert any("Platzhalter" in b.text for b in fehler_von(bericht, "vorlage"))
 
 
 def test_falsche_zahl_an_luecken_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["task2"]["text"] = (
+    data["pruefungen"]["teil1"]["A"]["task2"]["text"] = (
         "The class went to the museum and looked at one {1} for a long time."
     )
     bericht = pruefe_paket(Pack(data=data), db, settings)
@@ -257,28 +286,38 @@ def test_fehlende_herkunft_wird_gemeldet(db, settings, pack):
 
 
 def test_herkunft_steht_im_geruest(db, settings):
-    data = scaffold(db, 1, "A", settings)
+    data = scaffold(db, 1, settings)
     for key in ("datei", "importiert", "pruefsumme_sha256"):
         assert data["quelle"].get(key)
 
 
 # --- 10  Unabhängigkeit von Teilanfragen ------------------------------------
-def test_geruest_je_niveau_liegt_in_einer_eigenen_datei(db, settings, tmp_path):
+def test_nur_ein_paket_je_unit(db, settings, tmp_path):
     from vocabmaster.pack import pack_filename
 
-    a = pack_filename(3, "A")
-    b = pack_filename(3, "B")
-    assert a != b
-    Pack(data=scaffold(db, 3, "A", settings)).save(tmp_path / a)
-    inhalt_a = (tmp_path / a).read_bytes()
-    Pack(data=scaffold(db, 3, "B", settings)).save(tmp_path / b)
-    assert (tmp_path / a).read_bytes() == inhalt_a, (
-        "Das Erzeugen von Niveau B hat die Datei von Niveau A verändert"
-    )
+    assert pack_filename(3) == "unit_03.json"
+    Pack(data=scaffold(db, 3, settings)).save(tmp_path / pack_filename(3))
+    assert (tmp_path / "unit_03.json").exists()
+    assert not list(tmp_path.glob("unit_03_*.json"))
 
 
-def test_gegenstueck_pfad_zeigt_auf_das_andere_niveau():
-    from vocabmaster.checks import gegenstueck_pfad
+def test_teilanfrage_laesst_die_liste_unberuehrt(tmp_path, pack, settings):
+    from vocabmaster.documents import baue_alles, dateiname
 
-    assert gegenstueck_pfad("kuratiert/unit_03_A.json", "A").name == "unit_03_B.json"
-    assert gegenstueck_pfad("kuratiert/unit_03_B.json", "B").name == "unit_03_A.json"
+    baue_alles(pack, tmp_path, settings, teile=("liste",))
+    liste = tmp_path / dateiname(pack.unit, "VocabularyList")
+    vorher = liste.read_bytes()
+    baue_alles(pack, tmp_path, settings, teile=("test",), niveaus=("B",))
+    assert liste.read_bytes() == vorher
+    assert (tmp_path / dateiname(pack.unit, "Test", 1, "B")).exists()
+    assert not (tmp_path / dateiname(pack.unit, "Test", 1, "A")).exists()
+
+
+def test_altes_paketformat_wird_abgelehnt(tmp_path):
+    """Aus der Zeit mit zwei Listen je Unit darf nichts überleben."""
+    import json
+
+    alt = tmp_path / "unit_01_A.json"
+    alt.write_text(json.dumps({"schema": 1, "unit": 1}), encoding="utf-8")
+    with pytest.raises(ValueError, match="älteren Fassung"):
+        Pack.load(alt)

@@ -1,0 +1,1052 @@
+{
+  "schema": 2,
+  "unit": 7,
+  "unit_label": "Unit 7",
+  "titel": "Unit 7",
+  "thema": "Bauwerke und Wahrzeichen",
+  "leitwoerter": [
+    "building",
+    "structure",
+    "monument",
+    "landmark",
+    "construct",
+    "design",
+    "bridge",
+    "stadium",
+    "city",
+    "architecture"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 0,
+  "herkunft_uebersicht": {
+    "hauptteil": 60,
+    "zusatzteile": [],
+    "zu_ergaenzen": 0,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "erhöht",
+        "englisch": "elevated",
+        "satz": "The elevated path runs above the old railway.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Freizeiteinrichtungen",
+        "englisch": "leisure facilities",
+        "satz": "The new quarter has excellent leisure facilities.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Oase",
+        "englisch": "oasis",
+        "satz": "The little park is an oasis in the noise.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Fußgängerweg",
+        "englisch": "pedestrian walkway",
+        "satz": "A wide pedestrian walkway crosses the motorway.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 5,
+        "deutsch": "verwandeln",
+        "englisch": "transform",
+        "satz": "They plan to transform the factory into flats.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Fahrradweg",
+        "englisch": "bike lane",
+        "satz": "A new bike lane runs beside the river.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Stadtmitte",
+        "englisch": "city centre",
+        "satz": "Cars are no longer allowed in the city centre.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Sportstadion",
+        "englisch": "sports stadium",
+        "satz": "The sports stadium holds sixty thousand people.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 9,
+        "deutsch": "alte Ruine",
+        "englisch": "ancient ruin",
+        "satz": "Tourists climb over the ancient ruin every summer.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 10,
+        "deutsch": "gesprächig",
+        "englisch": "chatty",
+        "satz": "Our guide was chatty and full of stories.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Bogen",
+        "englisch": "arch",
+        "satz": "The stone arch has stood for four hundred years.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Kapazität",
+        "englisch": "capacity",
+        "satz": "The hall has a capacity of two thousand.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 13,
+        "deutsch": "ersetzen",
+        "englisch": "replace",
+        "satz": "They will replace the wooden bridge next year.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 14,
+        "deutsch": "verscheuchen",
+        "englisch": "scare away",
+        "satz": "The lights scare away the birds at night.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 71"
+      },
+      {
+        "nr": 15,
+        "deutsch": "dichter Verkehr",
+        "englisch": "heavy traffic",
+        "satz": "Heavy traffic damaged the old stone gate.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 71"
+      },
+      {
+        "nr": 16,
+        "deutsch": "zufällig",
+        "englisch": "accidental",
+        "satz": "The find was completely accidental.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Kneipe",
+        "englisch": "pub",
+        "satz": "The oldest pub in town dates from 1560.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Skelett",
+        "englisch": "skeleton",
+        "satz": "Workers found a skeleton under the car park.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Verfahren",
+        "englisch": "technique",
+        "satz": "The builders used a technique from Roman times.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 20,
+        "deutsch": "vergraben",
+        "englisch": "bury",
+        "satz": "They used to bury coins beneath the doorstep.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 21,
+        "deutsch": "abreißen",
+        "englisch": "demolish",
+        "satz": "The council voted to demolish the tower.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 22,
+        "deutsch": "prüfen",
+        "englisch": "inspect",
+        "satz": "Engineers inspect the bridge twice a year.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 23,
+        "deutsch": "finden",
+        "englisch": "locate",
+        "satz": "It took months to locate the old plans.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 24,
+        "deutsch": "wiederherstellen",
+        "englisch": "restore",
+        "satz": "A local firm will restore the painted ceiling.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Krug",
+        "englisch": "jug",
+        "satz": "A clay jug stood on the kitchen shelf.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 73"
+      },
+      {
+        "nr": 26,
+        "deutsch": "spekulieren",
+        "englisch": "speculate",
+        "satz": "Historians still speculate about the missing wall.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 74"
+      },
+      {
+        "nr": 27,
+        "deutsch": "zeitgenössisch",
+        "englisch": "contemporary",
+        "satz": "A contemporary glass roof covers the old courtyard.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 28,
+        "deutsch": "erhellt",
+        "englisch": "lit up",
+        "satz": "The whole front was lit up in blue.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Verkündigung",
+        "englisch": "proclamation",
+        "satz": "The king read the proclamation from this balcony.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Vororte",
+        "englisch": "suburbs",
+        "satz": "Most families now live in the suburbs.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 76"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "lebendig",
+        "englisch": "vibrant",
+        "satz": "The old harbour has become a vibrant quarter.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Grünfläche",
+        "englisch": "green space",
+        "satz": "Every new building needs some green space.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Wandgemälde",
+        "englisch": "mural",
+        "satz": "A huge mural covers the side of the school.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Bahnlinie",
+        "englisch": "railway line",
+        "satz": "The old railway line is now a footpath.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 68"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Industriestandort",
+        "englisch": "industrial site",
+        "satz": "The industrial site closed thirty years ago.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Veranstaltungsort für Musik",
+        "englisch": "music venue",
+        "satz": "The church became a popular music venue.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Freilichtkino",
+        "englisch": "open-air cinema",
+        "satz": "In July the square becomes an open-air cinema.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Vorschlag",
+        "englisch": "proposal",
+        "satz": "The proposal for a new library was accepted.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 9,
+        "deutsch": "öffentlicher Raum",
+        "englisch": "public space",
+        "satz": "Benches turn a car park into public space.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 69"
+      },
+      {
+        "nr": 10,
+        "deutsch": "unverwechselbar",
+        "englisch": "distinctive",
+        "satz": "The tower has a distinctive green roof.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 11,
+        "deutsch": "einziehbar",
+        "englisch": "retractable",
+        "satz": "The stadium has a retractable roof.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 12,
+        "deutsch": "spektakulär",
+        "englisch": "spectacular",
+        "satz": "The view from the bridge is spectacular.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 13,
+        "deutsch": "zum Teil",
+        "englisch": "partially",
+        "satz": "The wall was partially destroyed in the fire.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 70"
+      },
+      {
+        "nr": 14,
+        "deutsch": "(breite) Straße",
+        "englisch": "avenue",
+        "satz": "A wide avenue leads to the palace.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 71"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Falke",
+        "englisch": "hawk",
+        "satz": "A hawk nests on the cathedral tower.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 71"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Abfall",
+        "englisch": "litter",
+        "satz": "Volunteers collect litter along the canal.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 71"
+      },
+      {
+        "nr": 17,
+        "deutsch": "unglaublich",
+        "englisch": "incredible",
+        "satz": "The amount of stone is incredible.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Wikingerschiff",
+        "englisch": "Viking ship",
+        "satz": "A Viking ship was buried under the field.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 19,
+        "deutsch": "bestätigen",
+        "englisch": "confirm",
+        "satz": "Tests confirm the age of the timber.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 20,
+        "deutsch": "bauen",
+        "englisch": "construct",
+        "satz": "They will construct the roof from local wood.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 21,
+        "deutsch": "zerstören",
+        "englisch": "destroy",
+        "satz": "A single fire can destroy centuries of work.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 22,
+        "deutsch": "rekonstruieren",
+        "englisch": "reconstruct",
+        "satz": "Architects will reconstruct the missing wing.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 23,
+        "deutsch": "renovieren",
+        "englisch": "renovate",
+        "satz": "The city wants to renovate the market hall.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 24,
+        "deutsch": "aufdecken",
+        "englisch": "uncover",
+        "satz": "Builders uncover something old almost every week.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 25,
+        "deutsch": "ausgraben",
+        "englisch": "unearth",
+        "satz": "Students helped to unearth a Roman floor.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 72"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Denkmal",
+        "englisch": "monument",
+        "satz": "A small monument stands beside the station.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 74"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Einschussloch",
+        "englisch": "bullet hole",
+        "satz": "You can still see one bullet hole here.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Turmspitze",
+        "englisch": "spire",
+        "satz": "The spire is visible from the whole valley.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 29,
+        "deutsch": "installieren",
+        "englisch": "install",
+        "satz": "Workers install new lights along the path.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 75"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Nachbau",
+        "englisch": "replica",
+        "satz": "The replica took two years to finish.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 7, S. 76"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 7 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 7 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 7 part i.",
+          "items": [
+            {
+              "german": "alte Ruine",
+              "english": "ancient ruin",
+              "pos": "noun"
+            },
+            {
+              "german": "dichter Verkehr",
+              "english": "heavy traffic",
+              "pos": "noun"
+            },
+            {
+              "german": "zeitgenössisch",
+              "english": "contemporary",
+              "pos": "adj"
+            },
+            {
+              "german": "Kapazität",
+              "english": "capacity",
+              "pos": "noun"
+            },
+            {
+              "german": "Verfahren",
+              "english": "technique",
+              "pos": "noun"
+            },
+            {
+              "german": "gesprächig",
+              "english": "chatty",
+              "pos": "adj"
+            },
+            {
+              "german": "erhöht",
+              "english": "elevated",
+              "pos": "adj"
+            },
+            {
+              "german": "vergraben",
+              "english": "bury",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 7 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Freizeiteinrichtungen",
+            "Verkündigung",
+            "zufällig",
+            "wiederherstellen"
+          ],
+          "gaps": [
+            {
+              "german": "wiederherstellen",
+              "english": "restore",
+              "answer": "restore",
+              "pos": "verb"
+            },
+            {
+              "german": "Freizeiteinrichtungen",
+              "english": "leisure facilities",
+              "answer": "leisure facilities",
+              "pos": "noun",
+              "unique_because": "„adds a library and several ___ on the upper floor“ meint Räume für die Freizeit."
+            },
+            {
+              "german": "zufällig",
+              "english": "accidental",
+              "answer": "accidental",
+              "pos": "adj"
+            },
+            {
+              "german": "Verkündigung",
+              "english": "proclamation",
+              "answer": "proclamation",
+              "pos": "noun",
+              "unique_because": "„a copy of the king's ___ from 1642“ meint ein Schriftstück."
+            }
+          ],
+          "text": "The council decided to {1} the old market hall instead of pulling it down. The new plan adds a library and several {2} on the upper floor. The discovery of a Roman floor under the stage was completely {3}. A copy of the king's {4} from 1642 now hangs beside the entrance. Visitors come from the whole county at weekends. The coffee shop opens at nine every day. School classes book the guided tour weeks ahead."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 7 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 7 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 7 part i.",
+          "items": [
+            {
+              "german": "Skelett",
+              "english": "skeleton",
+              "pos": "noun"
+            },
+            {
+              "german": "Sportstadion",
+              "english": "sports stadium",
+              "pos": "noun"
+            },
+            {
+              "german": "Oase",
+              "english": "oasis",
+              "pos": "noun"
+            },
+            {
+              "german": "Krug",
+              "english": "jug",
+              "pos": "noun"
+            },
+            {
+              "german": "ersetzen",
+              "english": "replace",
+              "pos": "verb"
+            },
+            {
+              "german": "spekulieren",
+              "english": "speculate",
+              "pos": "verb"
+            },
+            {
+              "german": "Kneipe",
+              "english": "pub",
+              "pos": "noun"
+            },
+            {
+              "german": "Vororte",
+              "english": "suburbs",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 7 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "erhellt",
+            "Bogen",
+            "verwandeln",
+            "abreißen"
+          ],
+          "gaps": [
+            {
+              "german": "verwandeln",
+              "english": "transform",
+              "answer": "transform",
+              "pos": "verb",
+              "unique_because": "„___ the old station into a museum“ meint den Umbau; abreissen kann man nicht in ein Museum."
+            },
+            {
+              "german": "Bogen",
+              "english": "arch",
+              "answer": "arch",
+              "pos": "noun"
+            },
+            {
+              "german": "erhellt",
+              "english": "lit up",
+              "answer": "lit up",
+              "pos": "adj"
+            },
+            {
+              "german": "abreißen",
+              "english": "demolish",
+              "answer": "demolish",
+              "pos": "verb",
+              "unique_because": "„nobody wants to ___ the building any more“ meint das Gegenteil des Umbaus."
+            }
+          ],
+          "text": "The city wants to {1} the old station into a museum. Local people voted for the plan in March. Workers cleaned the stone {2} above the main door. At night the whole front is {3} in a soft yellow light. Nobody wants to {4} the building any more. The work will take about two years."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 7 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 7 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 7 part ii.",
+          "items": [
+            {
+              "german": "unglaublich",
+              "english": "incredible",
+              "pos": "adj"
+            },
+            {
+              "german": "Einschussloch",
+              "english": "bullet hole",
+              "pos": "noun"
+            },
+            {
+              "german": "Wandgemälde",
+              "english": "mural",
+              "pos": "noun"
+            },
+            {
+              "german": "Freilichtkino",
+              "english": "open-air cinema",
+              "pos": "noun"
+            },
+            {
+              "german": "Vorschlag",
+              "english": "proposal",
+              "pos": "noun"
+            },
+            {
+              "german": "Denkmal",
+              "english": "monument",
+              "pos": "noun"
+            },
+            {
+              "german": "unverwechselbar",
+              "english": "distinctive",
+              "pos": "adj"
+            },
+            {
+              "german": "Abfall",
+              "english": "litter",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 7 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "zum Teil",
+            "Veranstaltungsort für Musik",
+            "ausgraben",
+            "einziehbar"
+          ],
+          "gaps": [
+            {
+              "german": "ausgraben",
+              "english": "unearth",
+              "answer": "unearth",
+              "pos": "verb"
+            },
+            {
+              "german": "Veranstaltungsort für Musik",
+              "english": "music venue",
+              "answer": "music venue",
+              "pos": "noun"
+            },
+            {
+              "german": "einziehbar",
+              "english": "retractable",
+              "answer": "retractable",
+              "pos": "adj"
+            },
+            {
+              "german": "zum Teil",
+              "english": "partially",
+              "answer": "partially",
+              "pos": "adv"
+            }
+          ],
+          "text": "Builders beside the canal often {1} something older than the city itself. The old gasworks reopened last spring as a busy {2}. The building had stood empty for thirty years. Its roof is {3} and opens in ninety seconds. In summer the hall stands {4} open to the evening air. Tickets for July sold out in four days. The owners plan a second stage for next year. Neighbours complained about the noise only twice."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 7 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 7 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 7 part ii.",
+          "items": [
+            {
+              "german": "installieren",
+              "english": "install",
+              "pos": "verb"
+            },
+            {
+              "german": "zerstören",
+              "english": "destroy",
+              "pos": "verb"
+            },
+            {
+              "german": "spektakulär",
+              "english": "spectacular",
+              "pos": "adj"
+            },
+            {
+              "german": "renovieren",
+              "english": "renovate",
+              "pos": "verb"
+            },
+            {
+              "german": "Turmspitze",
+              "english": "spire",
+              "pos": "noun"
+            },
+            {
+              "german": "Nachbau",
+              "english": "replica",
+              "pos": "noun"
+            },
+            {
+              "german": "Industriestandort",
+              "english": "industrial site",
+              "pos": "noun"
+            },
+            {
+              "german": "Falke",
+              "english": "hawk",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 7 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "lebendig",
+            "rekonstruieren",
+            "(breite) Straße",
+            "Grünfläche"
+          ],
+          "gaps": [
+            {
+              "german": "rekonstruieren",
+              "english": "reconstruct",
+              "answer": "reconstruct",
+              "pos": "verb"
+            },
+            {
+              "german": "(breite) Straße",
+              "english": "avenue",
+              "answer": "avenue",
+              "pos": "noun",
+              "unique_because": "„a wide ___ will lead from the station to the river“ meint eine Strasse."
+            },
+            {
+              "german": "lebendig",
+              "english": "vibrant",
+              "answer": "vibrant",
+              "pos": "adj"
+            },
+            {
+              "german": "Grünfläche",
+              "english": "green space",
+              "answer": "green space",
+              "pos": "noun",
+              "unique_because": "„create a new ___ with trees and benches“ meint eine bepflanzte Fläche."
+            }
+          ],
+          "text": "The city plans to {1} the old wooden bridge next year. A wide {2} will lead from the station to the river. The whole quarter has become quite {3} since the market reopened. Families walk there on Sunday afternoons. Beside the water they will create a new {4} with trees and benches."
+        }
+      }
+    }
+  }
+}

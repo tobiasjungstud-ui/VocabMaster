@@ -1,0 +1,1052 @@
+{
+  "schema": 2,
+  "unit": 2,
+  "unit_label": "Unit 2",
+  "titel": "Unit 2",
+  "thema": "Entscheidungen, Zukunft und Engagement",
+  "leitwoerter": [
+    "decision",
+    "choose",
+    "option",
+    "advice",
+    "career",
+    "future",
+    "citizen",
+    "charity",
+    "volunteer",
+    "lifestyle"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 0,
+  "herkunft_uebersicht": {
+    "hauptteil": 60,
+    "zusatzteile": [],
+    "zu_ergaenzen": 0,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "Subkultur",
+        "englisch": "subculture",
+        "satz": "Skateboarding began as a small subculture in California.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 105"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Fragebogen",
+        "englisch": "questionnaire",
+        "satz": "Please fill in the questionnaire before you leave.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 18"
+      },
+      {
+        "nr": 3,
+        "deutsch": "entschlossen",
+        "englisch": "decisive",
+        "satz": "She was quick and decisive at the meeting.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 18"
+      },
+      {
+        "nr": 4,
+        "deutsch": "sich Optionen offen halten",
+        "englisch": "keep my options open",
+        "satz": "I want to keep my options open for now.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Küste",
+        "englisch": "seaside",
+        "satz": "We often spent our holidays at the seaside.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 6,
+        "deutsch": "ausscheiden",
+        "englisch": "drop out",
+        "satz": "Two runners had to drop out after ten kilometres.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 7,
+        "deutsch": "überstürzen",
+        "englisch": "rush into",
+        "satz": "Do not rush into a contract you have not read.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 8,
+        "deutsch": "(nicht) zögern",
+        "englisch": "think twice",
+        "satz": "You should think twice before signing that.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 9,
+        "deutsch": "elektronisch",
+        "englisch": "electronic",
+        "satz": "The shop only accepts electronic payment now.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 10,
+        "deutsch": "schädlich",
+        "englisch": "harmful",
+        "satz": "Too much sugar is harmful to your teeth.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 11,
+        "deutsch": "dankbar",
+        "englisch": "thankful",
+        "satz": "We were thankful for the warm soup.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 12,
+        "deutsch": "verschwenderisch",
+        "englisch": "wasteful",
+        "satz": "Printing every email is wasteful and slow.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 13,
+        "deutsch": "auf etw. hinweisen",
+        "englisch": "indicate",
+        "satz": "These numbers indicate a change in the weather.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 14,
+        "deutsch": "wieder verwenden",
+        "englisch": "reuse",
+        "satz": "You can reuse the glass jars for jam.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 15,
+        "deutsch": "abhängig",
+        "englisch": "dependent",
+        "satz": "Young children are dependent on their parents.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Fazit",
+        "englisch": "conclusion",
+        "satz": "At the end she read out her conclusion.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 17,
+        "deutsch": "anhalten",
+        "englisch": "pause",
+        "satz": "Let us pause here and look at the map.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 18,
+        "deutsch": "gewöhnt (an etw.)",
+        "englisch": "accustomed",
+        "satz": "He soon grew accustomed to the early mornings.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 19,
+        "deutsch": "obdachlos",
+        "englisch": "homeless",
+        "satz": "The charity cooks a hot meal for homeless people.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Übergang",
+        "englisch": "transition",
+        "satz": "The transition from school to work takes time.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 21,
+        "deutsch": "sich melden",
+        "englisch": "get in touch",
+        "satz": "I will get in touch as soon as I know.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 22,
+        "deutsch": "sich engagieren",
+        "englisch": "get involved with",
+        "satz": "She wants to get involved with the local club.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 23,
+        "deutsch": "vorschlagen",
+        "englisch": "propose",
+        "satz": "May I propose a shorter route for tomorrow?",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Detektiv(in)",
+        "englisch": "detective",
+        "satz": "A detective came to ask us about the noise.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 23"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Kriminaltechniker(in)",
+        "englisch": "forensic scientist",
+        "satz": "A forensic scientist checked the room for fingerprints.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 23"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Roller",
+        "englisch": "scooter",
+        "satz": "He rides his scooter to school every day.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 24"
+      },
+      {
+        "nr": 27,
+        "deutsch": "im Zweifel sein",
+        "englisch": "be in two minds",
+        "satz": "We were in two minds about the whole plan.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 24"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Parlamentswahlen",
+        "englisch": "general election",
+        "satz": "The general election takes place every four years.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 25"
+      },
+      {
+        "nr": 29,
+        "deutsch": "unentschieden",
+        "englisch": "undecided",
+        "satz": "Half of the class is still undecided.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 25"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Geschoss",
+        "englisch": "projectile",
+        "satz": "The museum shows a stone projectile from Roman times.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 27"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "teilnehmen",
+        "englisch": "participate",
+        "satz": "Every pupil may participate in the school concert.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 18"
+      },
+      {
+        "nr": 2,
+        "deutsch": "verschieben",
+        "englisch": "postpone",
+        "satz": "We had to postpone the match because of rain.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 18"
+      },
+      {
+        "nr": 3,
+        "deutsch": "offen gesagt",
+        "englisch": "frankly",
+        "satz": "Frankly, I would rather stay at home.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 4,
+        "deutsch": "sich verpflichten",
+        "englisch": "commit",
+        "satz": "Do not commit to anything before Friday.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 5,
+        "deutsch": "zögern",
+        "englisch": "hesitate",
+        "satz": "Please do not hesitate to ask for help.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 6,
+        "deutsch": "sich keine Mühe machen",
+        "englisch": "not bother",
+        "satz": "He did not bother to answer my letter.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 7,
+        "deutsch": "treu bleiben",
+        "englisch": "stick with",
+        "satz": "I will stick with my first answer.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 19"
+      },
+      {
+        "nr": 8,
+        "deutsch": "unvorsichtig",
+        "englisch": "careless",
+        "satz": "One careless moment can ruin the whole photo.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 9,
+        "deutsch": "furchtlos",
+        "englisch": "fearless",
+        "satz": "The young climber was fearless on the steep rock.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 10,
+        "deutsch": "geschmackvoll",
+        "englisch": "tasteful",
+        "satz": "The room was simple but very tasteful.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 11,
+        "deutsch": "aufmerksam",
+        "englisch": "thoughtful",
+        "satz": "It was thoughtful of you to bring flowers.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Umweltforschung",
+        "englisch": "environmental studies",
+        "satz": "She wants to take environmental studies at university.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 13,
+        "deutsch": "zum Wegwerfen",
+        "englisch": "disposable",
+        "satz": "The cafe no longer uses disposable cups.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 20"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Wohnwagen",
+        "englisch": "caravan",
+        "satz": "They travelled through Wales in an old caravan.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Haarschnitt",
+        "englisch": "haircut",
+        "satz": "My brother got a very short haircut yesterday.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Schutz",
+        "englisch": "shelter",
+        "satz": "We found shelter under a wide tree.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 21"
+      },
+      {
+        "nr": 17,
+        "deutsch": "vielseitig",
+        "englisch": "varied",
+        "satz": "The work is hard but pleasantly varied.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Berufsberatung",
+        "englisch": "careers advice",
+        "satz": "The school offers careers advice in the last year.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Zertifikat",
+        "englisch": "certificate",
+        "satz": "You get a certificate at the end of the course.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Prospekt",
+        "englisch": "leaflet",
+        "satz": "A leaflet about the museum lay on the table.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 21,
+        "deutsch": "organisieren",
+        "englisch": "organize",
+        "satz": "The pupils will organize the summer party.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 22"
+      },
+      {
+        "nr": 22,
+        "deutsch": "exakt",
+        "englisch": "exact",
+        "satz": "Nobody knows the exact number of visitors.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 23"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Vortrag",
+        "englisch": "lecture",
+        "satz": "The lecture on climate lasted almost two hours.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 23"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Nachteil",
+        "englisch": "disadvantage",
+        "satz": "Living far from town has one big disadvantage.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 24"
+      },
+      {
+        "nr": 25,
+        "deutsch": "zu etw. neigen/tendieren",
+        "englisch": "lean towards",
+        "satz": "I lean towards the cheaper of the two.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 24"
+      },
+      {
+        "nr": 26,
+        "deutsch": "meinen",
+        "englisch": "reckon",
+        "satz": "I reckon we can finish before lunch.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 24"
+      },
+      {
+        "nr": 27,
+        "deutsch": "ausrechnen",
+        "englisch": "calculate",
+        "satz": "Can you calculate the cost for twenty people?",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 25"
+      },
+      {
+        "nr": 28,
+        "deutsch": "dafür sein",
+        "englisch": "in favour",
+        "satz": "Most of the class voted in favour.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 25"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Stiftung",
+        "englisch": "charity",
+        "satz": "The money goes to a charity for animals.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 26"
+      },
+      {
+        "nr": 30,
+        "deutsch": "abgehalten werden",
+        "englisch": "be held",
+        "satz": "The meeting will be held in the library.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 2, S. 27"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 2 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 2 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 2 part i.",
+          "items": [
+            {
+              "german": "Fazit",
+              "english": "conclusion",
+              "pos": "noun"
+            },
+            {
+              "german": "Übergang",
+              "english": "transition",
+              "pos": "noun"
+            },
+            {
+              "german": "auf etw. hinweisen",
+              "english": "indicate",
+              "pos": "verb"
+            },
+            {
+              "german": "wieder verwenden",
+              "english": "reuse",
+              "pos": "verb"
+            },
+            {
+              "german": "Geschoss",
+              "english": "projectile",
+              "pos": "noun"
+            },
+            {
+              "german": "Fragebogen",
+              "english": "questionnaire",
+              "pos": "noun"
+            },
+            {
+              "german": "obdachlos",
+              "english": "homeless",
+              "pos": "adj"
+            },
+            {
+              "german": "unentschieden",
+              "english": "undecided",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 2 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Parlamentswahlen",
+            "Kriminaltechniker(in)",
+            "gewöhnt (an etw.)",
+            "sich engagieren"
+          ],
+          "gaps": [
+            {
+              "german": "sich engagieren",
+              "english": "get involved with",
+              "answer": "get involved with",
+              "pos": "verb"
+            },
+            {
+              "german": "Parlamentswahlen",
+              "english": "general election",
+              "answer": "general election",
+              "pos": "noun",
+              "unique_because": "„shortly before the ___ and spoke to three candidates“ meint einen Termin, keinen Menschen."
+            },
+            {
+              "german": "gewöhnt (an etw.)",
+              "english": "accustomed",
+              "answer": "accustomed",
+              "pos": "adj"
+            },
+            {
+              "german": "Kriminaltechniker(in)",
+              "english": "forensic scientist",
+              "answer": "forensic scientist",
+              "pos": "noun",
+              "unique_because": "„a ___ even came to explain how a case is built“ meint eine Person, die vor der Klasse steht."
+            }
+          ],
+          "text": "Last year our school started a project about town politics. Students from every class could {1} the work in their free time. Some of them spent two afternoons a week at the town hall. We went there again shortly before the {2} and spoke to three candidates. By the end of the month we had grown {3} to long evenings and slow discussions. One Friday a {4} even came to explain how a case is built. Nobody in the room asked to leave early."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 2 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 2 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 2 part i.",
+          "items": [
+            {
+              "german": "Detektiv(in)",
+              "english": "detective",
+              "pos": "noun"
+            },
+            {
+              "german": "elektronisch",
+              "english": "electronic",
+              "pos": "adj"
+            },
+            {
+              "german": "Roller",
+              "english": "scooter",
+              "pos": "noun"
+            },
+            {
+              "german": "ausscheiden",
+              "english": "drop out",
+              "pos": "verb"
+            },
+            {
+              "german": "überstürzen",
+              "english": "rush into",
+              "pos": "verb"
+            },
+            {
+              "german": "abhängig",
+              "english": "dependent",
+              "pos": "adj"
+            },
+            {
+              "german": "dankbar",
+              "english": "thankful",
+              "pos": "adj"
+            },
+            {
+              "german": "schädlich",
+              "english": "harmful",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 2 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "entschlossen",
+            "Küste",
+            "anhalten",
+            "vorschlagen"
+          ],
+          "gaps": [
+            {
+              "german": "anhalten",
+              "english": "pause",
+              "answer": "pause",
+              "pos": "verb",
+              "unique_because": "„let us ___ and think for ten minutes“ meint das Innehalten; ein Vorschlag wäre kein Gegensatz zum Nachdenken."
+            },
+            {
+              "german": "Küste",
+              "english": "seaside",
+              "answer": "seaside",
+              "pos": "noun"
+            },
+            {
+              "german": "entschlossen",
+              "english": "decisive",
+              "answer": "decisive",
+              "pos": "adj"
+            },
+            {
+              "german": "vorschlagen",
+              "english": "propose",
+              "answer": "propose",
+              "pos": "verb",
+              "unique_because": "„the first to ___ a picnic“ verlangt ein Verb mit Objekt; innehalten kann man nicht ein Picknick."
+            }
+          ],
+          "text": "Our class had to plan a day trip in June. The teacher let us {1} and think for ten minutes. Half of the group wanted to go to the {2}. Others preferred a long walk in the hills. Anna was quick and {3} about the whole plan. In the end she was the first to {4} a picnic in the park."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 2 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 2 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 2 part ii.",
+          "items": [
+            {
+              "german": "Umweltforschung",
+              "english": "environmental studies",
+              "pos": "noun"
+            },
+            {
+              "german": "Stiftung",
+              "english": "charity",
+              "pos": "noun"
+            },
+            {
+              "german": "sich verpflichten",
+              "english": "commit",
+              "pos": "verb"
+            },
+            {
+              "german": "aufmerksam",
+              "english": "thoughtful",
+              "pos": "adj"
+            },
+            {
+              "german": "Berufsberatung",
+              "english": "careers advice",
+              "pos": "noun"
+            },
+            {
+              "german": "Vortrag",
+              "english": "lecture",
+              "pos": "noun"
+            },
+            {
+              "german": "dafür sein",
+              "english": "in favour",
+              "pos": "verb"
+            },
+            {
+              "german": "zögern",
+              "english": "hesitate",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 2 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "offen gesagt",
+            "Nachteil",
+            "teilnehmen",
+            "zum Wegwerfen"
+          ],
+          "gaps": [
+            {
+              "german": "teilnehmen",
+              "english": "participate",
+              "answer": "participate",
+              "pos": "verb"
+            },
+            {
+              "german": "Nachteil",
+              "english": "disadvantage",
+              "answer": "disadvantage",
+              "pos": "noun"
+            },
+            {
+              "german": "zum Wegwerfen",
+              "english": "disposable",
+              "answer": "disposable",
+              "pos": "adj"
+            },
+            {
+              "german": "offen gesagt",
+              "english": "frankly",
+              "answer": "frankly",
+              "pos": "adv"
+            }
+          ],
+          "text": "Every summer the town runs a clean-up week along the canal. Anybody over fourteen may {1} without paying a fee. The only real {2} is that the work starts at seven in the morning. Volunteers collect plastic bottles and other {3} packaging from the water. Most of them, {4}, would rather sleep until nine. Coffee and cake at eleven keep the group together. The town still finds two hundred helpers every year."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 2 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 2 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 2 part ii.",
+          "items": [
+            {
+              "german": "Zertifikat",
+              "english": "certificate",
+              "pos": "noun"
+            },
+            {
+              "german": "organisieren",
+              "english": "organize",
+              "pos": "verb"
+            },
+            {
+              "german": "Haarschnitt",
+              "english": "haircut",
+              "pos": "noun"
+            },
+            {
+              "german": "Schutz",
+              "english": "shelter",
+              "pos": "noun"
+            },
+            {
+              "german": "Prospekt",
+              "english": "leaflet",
+              "pos": "noun"
+            },
+            {
+              "german": "verschieben",
+              "english": "postpone",
+              "pos": "verb"
+            },
+            {
+              "german": "geschmackvoll",
+              "english": "tasteful",
+              "pos": "adj"
+            },
+            {
+              "german": "ausrechnen",
+              "english": "calculate",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 2 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "unvorsichtig",
+            "abgehalten werden",
+            "Wohnwagen",
+            "furchtlos"
+          ],
+          "gaps": [
+            {
+              "german": "abgehalten werden",
+              "english": "be held",
+              "answer": "be held",
+              "pos": "verb"
+            },
+            {
+              "german": "Wohnwagen",
+              "english": "caravan",
+              "answer": "caravan",
+              "pos": "noun"
+            },
+            {
+              "german": "unvorsichtig",
+              "english": "careless",
+              "answer": "careless",
+              "pos": "adj",
+              "unique_because": "„was very ___ with a small fire“ erklärt, wie das Feuer entstand - ein Lob passt dort nicht."
+            },
+            {
+              "german": "furchtlos",
+              "english": "fearless",
+              "answer": "fearless",
+              "pos": "adj",
+              "unique_because": "„stayed ___ and put it out“ lobt die Frau; wer unvorsichtig ist, löscht kein Feuer."
+            }
+          ],
+          "text": "The village fair will {1} on the last Sunday in June. My uncle sleeps in his old {2} during the whole weekend. Last year a visitor was very {3} with a small fire near the tents. A young woman stayed {4} and put it out with two buckets. Since then the fair has its own fire watch."
+        }
+      }
+    }
+  }
+}

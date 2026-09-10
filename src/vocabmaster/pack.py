@@ -144,24 +144,44 @@ def waehle_pruefungswoerter(
     take = settings.exam_words
     brauchbar = [e for e in entries if e.get("englisch") and e.get("deutsch")]
     # "Anekdote" -> "anecdote" schreibt man ab; das prüft nichts. Solche
-    # Wörter bleiben in der Liste (gelernt werden sie trotzdem), aber sie
-    # kommen zuletzt - auch für Niveau B.
-    ohne_kognate = [e for e in brauchbar if not _abschreibbar(e)]
-    if len(ohne_kognate) >= take:
-        brauchbar = ohne_kognate
+    # Wörter bleiben in der Liste (gelernt werden sie trotzdem), rutschen in
+    # der Prüfung aber ans Ende - auch für Niveau B. In einer Unit wie
+    # "Wissenschaft", die zu einem grossen Teil aus Internationalismen
+    # besteht, kommen sie dennoch dran; der Checker meldet das dann.
     reihenfolge = sorted(
         brauchbar,
-        key=lambda e: -_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e),
+        key=lambda e: (
+            _abschreibbar(e),
+            -_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e),
+        ),
     )
+
+    # Zwei Obergrenzen, die der Checker anschliessend ohnehin einfordert:
+    # zu viele Mehrwortausdrücke kosten in der Prüfung nur Schreibzeit, und
+    # zwölf Nomen hintereinander prüfen immer dieselbe Struktur.
+    max_mehrwort = prof.selection_targets["max_multiword_items"]
+    max_anteil = prof.selection_targets["max_share_one_word_class"]
+    grenze_wortart = int(take * max_anteil)
+
+    def passt(entry: dict[str, Any], gewaehlt: list[dict[str, Any]]) -> bool:
+        if _exam_clashes(_as_vocab_item(entry),
+                         [_as_vocab_item(c) for c in gewaehlt]):
+            return False
+        if len(entry["englisch"].split()) > 1:
+            mehrwort = sum(1 for c in gewaehlt if len(c["englisch"].split()) > 1)
+            if mehrwort >= max_mehrwort:
+                return False
+        pos = wortart_von(entry)
+        if sum(1 for c in gewaehlt if wortart_von(c) == pos) >= grenze_wortart:
+            return False
+        return True
 
     gewaehlt: list[dict[str, Any]] = []
     for entry in reihenfolge:
         if len(gewaehlt) >= take:
             break
-        if _exam_clashes(_as_vocab_item(entry),
-                         [_as_vocab_item(c) for c in gewaehlt]):
-            continue
-        gewaehlt.append(entry)
+        if passt(entry, gewaehlt):
+            gewaehlt.append(entry)
     if len(gewaehlt) < take:  # notfalls auffüllen, der Checker meldet es dann
         gewaehlt += [e for e in reihenfolge if e not in gewaehlt][
             : take - len(gewaehlt)
@@ -396,6 +416,25 @@ class Pack:
     def all_entries(self) -> list[dict[str, Any]]:
         return self.entries("test1") + self.entries("test2")
 
+    @property
+    def akzeptierte_warnungen(self) -> list[dict[str, Any]]:
+        """Warnungen, die bewusst stehen bleiben - mit Begründung.
+
+        Manche Warnungen beschreiben keine Nachlässigkeit, sondern eine
+        Eigenschaft der Unit: In einer Wissenschafts-Unit besteht die
+        zugängliche Worthälfte nun einmal überwiegend aus Internationalismen.
+        Solche Fälle werden hier benannt, statt die Schwelle stillschweigend
+        zu senken. Der Prüfbericht zeigt sie weiterhin an.
+        """
+        return list(self.data.get("akzeptierte_warnungen", []))
+
+    def ist_akzeptiert(self, befund_text: str) -> str:
+        """Die Begründung, falls diese Warnung bewusst hingenommen wird."""
+        for eintrag in self.akzeptierte_warnungen:
+            if str(eintrag.get("enthaelt", "")) in befund_text:
+                return str(eintrag.get("grund", ""))
+        return ""
+
     def wortart(self, english: str) -> str:
         """Die Wortart eines Wortes, wie sie in der Liste dieses Pakets steht."""
         needle = str(english).strip().lower()
@@ -497,3 +536,72 @@ class Pack:
 
 def pack_filename(unit: int) -> str:
     return f"unit_{unit:02d}.json"
+
+
+def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
+    """Verteilt die 60 Wörter neu auf Test 1 und Test 2.
+
+    Nötig, sobald im Chat Wörter ergänzt wurden: Das Gerüst konnte sie beim
+    Aufteilen noch nicht kennen und hat die offenen Plätze nur hinten
+    angehängt. Danach sind die beiden Tests unterschiedlich schwer und die
+    Wortarten ungleich verteilt.
+
+    Sätze, Herkunft und Wortart bleiben an ihrem Eintrag; neu ist nur, in
+    welchem Test er steht. Die vier Prüfungen werden anschliessend neu
+    aufgesetzt - sie schöpfen ja aus genau diesen Tests. Bereits
+    geschriebene Lückentexte bleiben erhalten, soweit ihre Wörter im selben
+    Teil bleiben; sonst meldet der Selbstcheck es.
+    """
+    from .list.leveling import score_candidate
+    from .list.models import Candidate
+    from .list.selection import split_balanced
+    from .niveau import LIST_BOUNDS
+
+    settings = settings or Settings()
+    eintraege = [e for e in pack.all_entries if e.get("englisch")]
+    if len(eintraege) != settings.target_total:
+        raise ValueError(
+            f"Zum Ausgleichen werden {settings.target_total} vollständige "
+            f"Einträge gebraucht, vorhanden sind {len(eintraege)}."
+        )
+
+    nach_wort: dict[str, dict[str, Any]] = {}
+    kandidaten: list[Candidate] = []
+    for eintrag in eintraege:
+        c = Candidate(
+            english=eintrag["englisch"],
+            german=eintrag.get("deutsch", ""),
+            section=eintrag.get("abschnitt", ""),
+        )
+        score_candidate(c, None, LIST_BOUNDS)
+        kandidaten.append(c)
+        nach_wort[c.headword.lower()] = eintrag
+
+    a, b = split_balanced(kandidaten, settings.words_per_test, settings.seed)
+    for name, haelfte in (("test1", a), ("test2", b)):
+        rows = []
+        for nummer, c in enumerate(haelfte, 1):
+            eintrag = dict(nach_wort[c.headword.lower()])
+            eintrag["nr"] = nummer
+            rows.append(eintrag)
+        pack.data["liste"][name] = rows
+
+    unit_label = pack.unit_label
+    alte_texte = {
+        (teil, niveau): spec.get("task2", {}).get("text", "")
+        for (teil, niveau), spec in pack.exams.items()
+    }
+    pack.data["pruefungen"] = {
+        f"teil{teil}": {
+            niveau: _exam_scaffold(
+                pack.entries(f"test{teil}"), unit_label, teil,
+                PROFILES[niveau], settings, settings.seed,
+            )
+            for niveau in NIVEAUS
+        }
+        for teil in (1, 2)
+    }
+    for (teil, niveau), text in alte_texte.items():
+        if text and "TODO" not in text:
+            pack.data["pruefungen"][f"teil{teil}"][niveau]["task2"]["text"] = text
+    return pack

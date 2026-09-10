@@ -1024,7 +1024,7 @@
               "english": "campsite",
               "answer": "campsite",
               "pos": "noun",
-              "unique_because": "„Our ___ stood between the trees“ meint den Platz, auf dem die Zelte standen; ein Mensch könnte dort nicht stehen."
+              "unique_because": "„Our ___ stood between the trees“ meint den Platz, auf dem die Zelte standen."
             },
             {
               "german": "zerbrechlich",
@@ -1037,7 +1037,7 @@
               "english": "sailor",
               "answer": "sailor",
               "pos": "noun",
-              "unique_because": "„had been a ___ on a large ship“ meint einen Beruf an Bord; ein Zeltplatz kann nicht auf einem Schiff sein."
+              "unique_because": "„had been a ___ on a large ship“ meint einen Beruf an Bord."
             }
           ],
           "text": "Last summer we spent a week beside a big lake. Only two of our old tents {1} the heavy autumn storm. We put the rest away and walked back. Our {2} stood between the trees near the water. My uncle kept an old map in his bag. The paper was brown and very {3}. He found it in an old wooden box. His grandfather had been a {4} on a large ship."

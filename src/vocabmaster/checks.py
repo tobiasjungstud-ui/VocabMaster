@@ -553,12 +553,17 @@ def _mittlere_schwierigkeit(eintraege: list[dict]) -> float:
 # ---------------------------------------------------------------------------
 # 8  Vorlagenintegrität (vor dem Schreiben)
 # ---------------------------------------------------------------------------
-def pruefe_platzhalter(pack: Pack, bericht: Pruefbericht) -> None:
+def pruefe_platzhalter(
+    pack: Pack, bericht: Pruefbericht, mit_pruefungen: bool = True
+) -> None:
     """Kein Platzhalter darf ins fertige Dokument gelangen."""
     bericht.gelaufen.append("vorlage")
-    offen = pack.offen()
+    offen = [
+        text for text in pack.offen()
+        if mit_pruefungen or not text.startswith("Prüfung ")
+    ]
     reste = []
-    for (teil, niveau), spec in sorted(pack.exams.items()):
+    for (teil, niveau), spec in (sorted(pack.exams.items()) if mit_pruefungen else []):
         wo = f"Teil {teil}, Niveau {niveau}"
         text = spec.get("task2", {}).get("text", "")
         if "TODO" in text:
@@ -730,9 +735,16 @@ def pruefe_paket(
     pack: Pack,
     db: Database,
     settings: Settings | None = None,
+    teile: tuple[str, ...] = ("liste", "test"),
 ) -> Pruefbericht:
-    """Der vollständige Selbstcheck eines Pakets."""
+    """Der Selbstcheck eines Pakets.
+
+    ``teile`` sagt, was gebaut werden soll. Wer nur die Vokabelliste braucht,
+    bekommt auch nur deren Kontrollen - die Prüfungen bleiben dann ungeprüft
+    und ungebaut, statt mit leeren Lückentexten den Bau zu blockieren.
+    """
     settings = settings or Settings()
+    mit_pruefungen = "test" in teile
     bericht = Pruefbericht()
     bericht.kennzahlen["_kopf"] = (
         f"{pack.unit_label} - {pack.thema} "
@@ -744,10 +756,12 @@ def pruefe_paket(
     pruefe_cefr(pack, bericht)
     pruefe_dubletten(pack, bericht)
     pruefe_altbestand(pack, db, bericht)
-    pruefe_loesungsschluessel(pack, bericht)
-    pruefe_niveau_konsistenz(pack, bericht)
-    pruefe_platzhalter(pack, bericht)
+    if mit_pruefungen:
+        pruefe_loesungsschluessel(pack, bericht)
+        pruefe_niveau_konsistenz(pack, bericht)
+    pruefe_platzhalter(pack, bericht, mit_pruefungen)
     pruefe_herkunft(pack, bericht)
     pruefe_liste(pack, settings, bericht)
-    pruefe_pruefungen(pack, bericht)
+    if mit_pruefungen:
+        pruefe_pruefungen(pack, bericht)
     return bericht.sortieren()

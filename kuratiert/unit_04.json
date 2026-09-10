@@ -1,0 +1,1056 @@
+{
+  "schema": 2,
+  "unit": 4,
+  "unit_label": "Unit 4",
+  "titel": "Unit 4",
+  "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+  "leitwoerter": [
+    "feeling",
+    "emotion",
+    "anger",
+    "calm",
+    "communicate",
+    "animal",
+    "behaviour",
+    "therapy",
+    "sense",
+    "express"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 2,
+  "herkunft_uebersicht": {
+    "hauptteil": 58,
+    "zusatzteile": [],
+    "zu_ergaenzen": 2,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "mürrisch",
+        "englisch": "grumpy",
+        "satz": "My uncle gets grumpy when he is hungry.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Beschreibt eine Stimmung wie 'fed up' und 'bored', die in der Unit behandelt werden."
+      },
+      {
+        "nr": 2,
+        "deutsch": "gelangweilt",
+        "englisch": "bored",
+        "satz": "The children looked bored after ten minutes.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 3,
+        "deutsch": "angewidert",
+        "englisch": "disgusted",
+        "satz": "She looked disgusted at the smell.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 4,
+        "deutsch": "stressig",
+        "englisch": "stressful",
+        "satz": "The last week before the exam was stressful.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Stimmung",
+        "englisch": "mood",
+        "satz": "A short walk always improves my mood.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Psychologe, Psychologin",
+        "englisch": "psychologist",
+        "satz": "A psychologist visits the school twice a month.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Entspannung",
+        "englisch": "relaxation",
+        "satz": "Music is pure relaxation after a long day.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Lehrer(in)",
+        "englisch": "instructor",
+        "satz": "Our riding instructor is very patient.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Wespe",
+        "englisch": "wasp",
+        "satz": "A wasp flew into the classroom.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 10,
+        "deutsch": "lecken",
+        "englisch": "lick",
+        "satz": "The dog began to lick my hand.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Verhalten",
+        "englisch": "behaviour",
+        "satz": "The dog changed its behaviour after the move.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Intelligenz",
+        "englisch": "intelligence",
+        "satz": "Crows show a surprising kind of intelligence.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Säugetier",
+        "englisch": "mammal",
+        "satz": "A whale is the largest mammal on earth.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Hai",
+        "englisch": "shark",
+        "satz": "A small shark swam past the boat.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 15,
+        "deutsch": "beobachten",
+        "englisch": "observe",
+        "satz": "We observe the birds from behind the glass.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 16,
+        "deutsch": "durchsetzungsfähig",
+        "englisch": "assertive",
+        "satz": "You need to be more assertive in meetings.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 17,
+        "deutsch": "offensichtlich",
+        "englisch": "obvious",
+        "satz": "It was obvious that he had cried.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 18,
+        "deutsch": "in Gefangenschaft halten",
+        "englisch": "captive",
+        "satz": "Wild birds should never be kept captive.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 19,
+        "deutsch": "dynamisch",
+        "englisch": "energetic",
+        "satz": "The puppy is energetic from morning to night.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Kopf hoch!",
+        "englisch": "cheer up",
+        "satz": "We tried to cheer up our sad neighbour.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Tonfall",
+        "englisch": "tone",
+        "satz": "Her tone told me she was not pleased.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 22,
+        "deutsch": "sich beruhigen",
+        "englisch": "calm down",
+        "satz": "It took him an hour to calm down.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 23,
+        "deutsch": "konzentrieren",
+        "englisch": "concentrate",
+        "satz": "I cannot concentrate with the radio on.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 24,
+        "deutsch": "mitsingen",
+        "englisch": "sing along",
+        "satz": "The whole hall began to sing along.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 25,
+        "deutsch": "friedlich",
+        "englisch": "peaceful",
+        "satz": "The garden feels peaceful in the evening.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 43"
+      },
+      {
+        "nr": 26,
+        "deutsch": "genervt",
+        "englisch": "fed up",
+        "satz": "By Friday I was completely fed up.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 44"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Spaß haben",
+        "englisch": "have a laugh with",
+        "satz": "We always have a laugh with our neighbours.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 45"
+      },
+      {
+        "nr": 28,
+        "deutsch": "mit jdm. rumhängen",
+        "englisch": "hang out with",
+        "satz": "I like to hang out with my cousins.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 45"
+      },
+      {
+        "nr": 29,
+        "deutsch": "beeinflussen",
+        "englisch": "affect",
+        "satz": "Weather can affect how we feel.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 46"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Heizkessel",
+        "englisch": "furnace",
+        "satz": "The old furnace warms the whole building.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 47"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "Trauer",
+        "englisch": "grief",
+        "satz": "Grief can last much longer than people expect.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Gefühlswortschatz der Unit: die Gegenreaktion zu 'sadness', aber stärker und dauerhafter."
+      },
+      {
+        "nr": 2,
+        "deutsch": "beängstigend",
+        "englisch": "frightening",
+        "satz": "The storm was frightening but short.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Wut",
+        "englisch": "anger",
+        "satz": "He walked out of the room in anger.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Ärgernis",
+        "englisch": "annoyance",
+        "satz": "The noise was a daily annoyance.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Langeweile",
+        "englisch": "boredom",
+        "satz": "Long car journeys fill me with boredom.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Verlegenheit",
+        "englisch": "embarrassment",
+        "satz": "His face went red with embarrassment.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Aufregung",
+        "englisch": "excitement",
+        "satz": "There was great excitement before the trip.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 38"
+      },
+      {
+        "nr": 8,
+        "deutsch": "mitleidig",
+        "englisch": "sympathetic",
+        "satz": "The nurse gave me a sympathetic look.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Führerscheinprüfung",
+        "englisch": "driving test",
+        "satz": "My sister passed her driving test yesterday.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Autofahrer(in)",
+        "englisch": "motorist",
+        "satz": "One motorist stopped and offered us help.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Ampel",
+        "englisch": "traffic light",
+        "satz": "Wait at the traffic light until it turns green.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 39"
+      },
+      {
+        "nr": 12,
+        "deutsch": "untröstlich",
+        "englisch": "broken-hearted",
+        "satz": "She was broken-hearted when the dog ran away.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 13,
+        "deutsch": "kaltblütig",
+        "englisch": "cold-blooded",
+        "satz": "Snakes are cold-blooded and need the sun.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 14,
+        "deutsch": "linkshändig",
+        "englisch": "left-handed",
+        "satz": "My father is left-handed like me.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 15,
+        "deutsch": "mechanisch",
+        "englisch": "mechanical",
+        "satz": "Her answer sounded flat and mechanical.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Philosoph(in)",
+        "englisch": "philosopher",
+        "satz": "A Greek philosopher wrote about friendship.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Traurigkeit",
+        "englisch": "sadness",
+        "satz": "There was real sadness in his voice.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 40"
+      },
+      {
+        "nr": 18,
+        "deutsch": "rücksichtsvoll",
+        "englisch": "considerate",
+        "satz": "It was considerate of him to phone first.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 19,
+        "deutsch": "umarmen",
+        "englisch": "hug",
+        "satz": "She gave her grandmother a long hug.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 20,
+        "deutsch": "aufgeschlossen",
+        "englisch": "open-minded",
+        "satz": "Our teacher is open-minded about new ideas.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 41"
+      },
+      {
+        "nr": 21,
+        "deutsch": "melodisch",
+        "englisch": "melodic",
+        "satz": "Whale songs are strangely melodic.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Angst",
+        "englisch": "anxiety",
+        "satz": "Exams cause anxiety for many pupils.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Therapie",
+        "englisch": "therapy",
+        "satz": "Riding is used as therapy for some children.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 24,
+        "deutsch": "ablenken",
+        "englisch": "distract",
+        "satz": "Loud music can distract you while driving.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 25,
+        "deutsch": "beschleunigen",
+        "englisch": "speed up",
+        "satz": "The music began to speed up.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 26,
+        "deutsch": "etw. leise stellen",
+        "englisch": "turn down",
+        "satz": "Please turn down the television.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 42"
+      },
+      {
+        "nr": 27,
+        "deutsch": "allergisch",
+        "englisch": "allergic",
+        "satz": "He is allergic to cats and horses.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 43"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Sonnenseite",
+        "englisch": "bright side",
+        "satz": "Try to look on the bright side.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 44"
+      },
+      {
+        "nr": 29,
+        "deutsch": "vermitteln",
+        "englisch": "convey",
+        "satz": "A photo can convey more than a long text.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 44"
+      },
+      {
+        "nr": 30,
+        "deutsch": "necken",
+        "englisch": "tease",
+        "satz": "My brothers tease me about my hair.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 4, S. 45"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 4 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 4 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 4 part i.",
+          "items": [
+            {
+              "german": "mit jdm. rumhängen",
+              "english": "hang out with",
+              "pos": "verb"
+            },
+            {
+              "german": "sich beruhigen",
+              "english": "calm down",
+              "pos": "verb"
+            },
+            {
+              "german": "durchsetzungsfähig",
+              "english": "assertive",
+              "pos": "adj"
+            },
+            {
+              "german": "in Gefangenschaft halten",
+              "english": "captive",
+              "pos": "adj"
+            },
+            {
+              "german": "beeinflussen",
+              "english": "affect",
+              "pos": "verb"
+            },
+            {
+              "german": "Lehrer(in)",
+              "english": "instructor",
+              "pos": "noun"
+            },
+            {
+              "german": "dynamisch",
+              "english": "energetic",
+              "pos": "adj"
+            },
+            {
+              "german": "konzentrieren",
+              "english": "concentrate",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 4 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Entspannung",
+            "Säugetier",
+            "offensichtlich",
+            "Spaß haben"
+          ],
+          "gaps": [
+            {
+              "german": "Spaß haben",
+              "english": "have a laugh with",
+              "answer": "have a laugh with",
+              "pos": "verb"
+            },
+            {
+              "german": "Entspannung",
+              "english": "relaxation",
+              "answer": "relaxation",
+              "pos": "noun",
+              "unique_because": "„the work is pure ___ after a long day“ meint einen Zustand, kein Lebewesen."
+            },
+            {
+              "german": "offensichtlich",
+              "english": "obvious",
+              "answer": "obvious",
+              "pos": "adj"
+            },
+            {
+              "german": "Säugetier",
+              "english": "mammal",
+              "answer": "mammal",
+              "pos": "noun",
+              "unique_because": "„a small ___ with very quick paws“ meint ein Tier."
+            }
+          ],
+          "text": "Every Thursday after school I {1} the other volunteers at the animal park. For most of us the work is pure {2} after a long day. It soon becomes {3} which animals enjoy company and which prefer to be alone. The otter, a small {4} with very quick paws, always comes to the fence first. Visitors often stay there for thirty minutes. Nobody wants to leave before the last feeding."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 4 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 4 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 4 part i.",
+          "items": [
+            {
+              "german": "stressig",
+              "english": "stressful",
+              "pos": "adj"
+            },
+            {
+              "german": "Wespe",
+              "english": "wasp",
+              "pos": "noun"
+            },
+            {
+              "german": "gelangweilt",
+              "english": "bored",
+              "pos": "adj"
+            },
+            {
+              "german": "Stimmung",
+              "english": "mood",
+              "pos": "noun"
+            },
+            {
+              "german": "Verhalten",
+              "english": "behaviour",
+              "pos": "noun"
+            },
+            {
+              "german": "Tonfall",
+              "english": "tone",
+              "pos": "noun"
+            },
+            {
+              "german": "lecken",
+              "english": "lick",
+              "pos": "verb"
+            },
+            {
+              "german": "genervt",
+              "english": "fed up",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 4 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "mürrisch",
+            "Hai",
+            "mitsingen",
+            "angewidert"
+          ],
+          "gaps": [
+            {
+              "german": "mitsingen",
+              "english": "sing along",
+              "answer": "sing along",
+              "pos": "verb"
+            },
+            {
+              "german": "Hai",
+              "english": "shark",
+              "answer": "shark",
+              "pos": "noun"
+            },
+            {
+              "german": "mürrisch",
+              "english": "grumpy",
+              "answer": "grumpy",
+              "pos": "adj",
+              "unique_because": "„looked ___ because he had missed breakfast“ erklärt Hunger, nicht Ekel."
+            },
+            {
+              "german": "angewidert",
+              "english": "disgusted",
+              "answer": "disgusted",
+              "pos": "adj",
+              "unique_because": "„completely ___ by the smell“ ist die Reaktion auf den Geruch; Hunger passt dort nicht."
+            }
+          ],
+          "text": "Last week our class went to the big sea life centre. A guide let us {1} the fish for a whole hour. The largest {2} swam slowly past the glass. My friend Tom looked {3} because he had missed breakfast. When the guide opened a bucket of dead fish, he was completely {4} by the smell."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 4 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 4 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 4 part ii.",
+          "items": [
+            {
+              "german": "Ärgernis",
+              "english": "annoyance",
+              "pos": "noun"
+            },
+            {
+              "german": "aufgeschlossen",
+              "english": "open-minded",
+              "pos": "adj"
+            },
+            {
+              "german": "untröstlich",
+              "english": "broken-hearted",
+              "pos": "adj"
+            },
+            {
+              "german": "Traurigkeit",
+              "english": "sadness",
+              "pos": "noun"
+            },
+            {
+              "german": "rücksichtsvoll",
+              "english": "considerate",
+              "pos": "adj"
+            },
+            {
+              "german": "kaltblütig",
+              "english": "cold-blooded",
+              "pos": "adj"
+            },
+            {
+              "german": "linkshändig",
+              "english": "left-handed",
+              "pos": "adj"
+            },
+            {
+              "german": "Ampel",
+              "english": "traffic light",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 4 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Aufregung",
+            "Verlegenheit",
+            "etw. leise stellen",
+            "mitleidig"
+          ],
+          "gaps": [
+            {
+              "german": "etw. leise stellen",
+              "english": "turn down",
+              "answer": "turn down",
+              "pos": "verb"
+            },
+            {
+              "german": "Verlegenheit",
+              "english": "embarrassment",
+              "answer": "embarrassment",
+              "pos": "noun",
+              "unique_because": "„her face went red with ___“ meint das peinliche Gefühl beim Fehler."
+            },
+            {
+              "german": "mitleidig",
+              "english": "sympathetic",
+              "answer": "sympathetic",
+              "pos": "adj"
+            },
+            {
+              "german": "Aufregung",
+              "english": "excitement",
+              "answer": "excitement",
+              "pos": "noun",
+              "unique_because": "„finished the last verse in complete ___“ meint die Hochstimmung am Ende."
+            }
+          ],
+          "text": "My cousin sang at a school concert for the first time in April. Halfway through the song someone forgot to {1} the microphone. Her face went red with {2} and she stopped for several seconds. The audience stayed quiet and {3}, and one teacher began to clap. She finished the last verse in complete {4} and everybody stood up. Her mother filmed the whole evening from the back row. The video still makes the family laugh."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 4 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 4 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 4 part ii.",
+          "items": [
+            {
+              "german": "melodisch",
+              "english": "melodic",
+              "pos": "adj"
+            },
+            {
+              "german": "Therapie",
+              "english": "therapy",
+              "pos": "noun"
+            },
+            {
+              "german": "beängstigend",
+              "english": "frightening",
+              "pos": "adj"
+            },
+            {
+              "german": "Wut",
+              "english": "anger",
+              "pos": "noun"
+            },
+            {
+              "german": "Langeweile",
+              "english": "boredom",
+              "pos": "noun"
+            },
+            {
+              "german": "Autofahrer(in)",
+              "english": "motorist",
+              "pos": "noun"
+            },
+            {
+              "german": "Sonnenseite",
+              "english": "bright side",
+              "pos": "noun"
+            },
+            {
+              "german": "vermitteln",
+              "english": "convey",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 4 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "mechanisch",
+            "ablenken",
+            "Angst",
+            "beschleunigen"
+          ],
+          "gaps": [
+            {
+              "german": "ablenken",
+              "english": "distract",
+              "answer": "distract",
+              "pos": "verb",
+              "unique_because": "„not to ___ the other drivers“ braucht ein Objekt; schneller werden kann man niemanden."
+            },
+            {
+              "german": "Angst",
+              "english": "anxiety",
+              "answer": "anxiety",
+              "pos": "noun"
+            },
+            {
+              "german": "mechanisch",
+              "english": "mechanical",
+              "answer": "mechanical",
+              "pos": "adj"
+            },
+            {
+              "german": "beschleunigen",
+              "english": "speed up",
+              "answer": "speed up",
+              "pos": "verb",
+              "unique_because": "„began to ___ a little more“ steht ohne Objekt und meint das Tempo."
+            }
+          ],
+          "text": "My brother took his first driving lesson last month. The teacher told him not to {1} the other drivers. Before the lesson he felt real {2} about the traffic. His movements were stiff and {3} at the start. After twenty minutes he began to {4} a little more. His teacher smiled and said nothing."
+        }
+      }
+    }
+  }
+}

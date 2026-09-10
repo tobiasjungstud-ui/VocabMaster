@@ -1,0 +1,1069 @@
+{
+  "schema": 2,
+  "unit": 6,
+  "unit_label": "Unit 6",
+  "titel": "Unit 6",
+  "thema": "Persönlichkeit und soziale Rollen",
+  "leitwoerter": [
+    "personality",
+    "character",
+    "leader",
+    "follower",
+    "group",
+    "confident",
+    "sociable",
+    "behave",
+    "friend",
+    "belong"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 15,
+  "herkunft_uebersicht": {
+    "hauptteil": 45,
+    "zusatzteile": [],
+    "zu_ergaenzen": 15,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "ehrgeizig",
+        "englisch": "ambitious",
+        "satz": "The new captain is young and ambitious.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Beschreibt Antrieb wie 'determined' und 'challenging' - Wortfeld Persönlichkeit."
+      },
+      {
+        "nr": 2,
+        "deutsch": "ungeduldig",
+        "englisch": "impatient",
+        "satz": "Drivers grow impatient in the morning queue.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft, Gegenstück zum in der Unit geforderten 'patience'."
+      },
+      {
+        "nr": 3,
+        "deutsch": "stur",
+        "englisch": "stubborn",
+        "satz": "My little sister can be incredibly stubborn.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft im Wortfeld von 'rebellious' und 'conform'."
+      },
+      {
+        "nr": 4,
+        "deutsch": "vertrauenswürdig",
+        "englisch": "trustworthy",
+        "satz": "You need trustworthy people around you.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft im Wortfeld von 'reliable', das in der Unit steht."
+      },
+      {
+        "nr": 5,
+        "deutsch": "Vorbild",
+        "englisch": "role model",
+        "satz": "Her older sister is her role model.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Soziale Rolle wie 'leader' und 'follower' aus den Leitwörtern der Unit."
+      },
+      {
+        "nr": 6,
+        "deutsch": "bewundern",
+        "englisch": "admire",
+        "satz": "I admire people who admit their mistakes.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Beschreibt die Haltung zu einem 'role model' - soziale Beziehungen der Unit."
+      },
+      {
+        "nr": 7,
+        "deutsch": "entschlossen",
+        "englisch": "determined",
+        "satz": "She was determined to finish the race.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft im Wortfeld von 'challenging' und 'independence'."
+      },
+      {
+        "nr": 8,
+        "deutsch": "Teamplayer, teamfähig sein",
+        "englisch": "team player",
+        "satz": "The coach wants a real team player.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 58"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Stubenhocker(in)",
+        "englisch": "couch potato",
+        "satz": "My brother is a couch potato at weekends.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Extravertierte(r)",
+        "englisch": "extrovert",
+        "satz": "An extrovert is not always a good listener.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Einzelgänger(in)",
+        "englisch": "loner",
+        "satz": "Being a loner does not mean being unhappy.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Naturliebhaber(in)",
+        "englisch": "nature-lover",
+        "satz": "As a nature-lover she walks every weekend.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 13,
+        "deutsch": "sich an etw. anpassen",
+        "englisch": "conform",
+        "satz": "Not everybody wants to conform.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 14,
+        "deutsch": "verwirrt",
+        "englisch": "confused",
+        "satz": "I was confused by the two different answers.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 60"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Angeber(in)",
+        "englisch": "poser",
+        "satz": "Nobody likes a poser at the gym.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 60"
+      },
+      {
+        "nr": 16,
+        "deutsch": "hervorstechen",
+        "englisch": "stand out",
+        "satz": "Her yellow coat made her stand out.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 60"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Tyrann(in)",
+        "englisch": "bully",
+        "satz": "Nobody in our class is a bully.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 61"
+      },
+      {
+        "nr": 18,
+        "deutsch": "abenteuerlich",
+        "englisch": "adventurous",
+        "satz": "My grandmother is more adventurous than me.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 19,
+        "deutsch": "anspruchsvoll",
+        "englisch": "challenging",
+        "satz": "The course is challenging but never boring.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 20,
+        "deutsch": "bereichernd",
+        "englisch": "rewarding",
+        "satz": "Helping younger pupils is rewarding.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 21,
+        "deutsch": "geeignet",
+        "englisch": "suitable",
+        "satz": "That film is not suitable for small children.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Arbeit, Pflicht",
+        "englisch": "chore",
+        "satz": "Washing up is my least favourite chore.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Wildtiere",
+        "englisch": "wildlife",
+        "satz": "The group protects wildlife near the river.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 24,
+        "deutsch": "scharf sein auf",
+        "englisch": "keen",
+        "satz": "She is very keen on climbing.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 63"
+      },
+      {
+        "nr": 25,
+        "deutsch": "zuverlässig",
+        "englisch": "reliable",
+        "satz": "She is the most reliable person I know.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 64"
+      },
+      {
+        "nr": 26,
+        "deutsch": "freiwillig, ehrenamtlich",
+        "englisch": "voluntary",
+        "satz": "The Sunday work is completely voluntary.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 64"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Kindergarten",
+        "englisch": "nursery",
+        "satz": "He works two mornings in a nursery.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 65"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Einsamkeit",
+        "englisch": "loneliness",
+        "satz": "Loneliness is common in the first term.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 66"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Sonnenschein",
+        "englisch": "sunshine",
+        "satz": "She is the sunshine of the whole team.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 67"
+      },
+      {
+        "nr": 30,
+        "deutsch": "atmen",
+        "englisch": "breathe",
+        "satz": "Try to breathe slowly before you speak.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 67"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "herrisch",
+        "englisch": "bossy",
+        "satz": "Nobody enjoys working with a bossy partner.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Beschreibt eine soziale Rolle in der Gruppe, Gegenstück zu 'team player'."
+      },
+      {
+        "nr": 2,
+        "deutsch": "neugierig",
+        "englisch": "curious",
+        "satz": "Small children are naturally curious.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft, passt zu 'adventurous' und 'open-minded' der Unit."
+      },
+      {
+        "nr": 3,
+        "deutsch": "großzügig",
+        "englisch": "generous",
+        "satz": "He was generous with both time and money.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft, Gegenstück zum 'selfish' der Nachbarunit; passt zu 'voluntary'."
+      },
+      {
+        "nr": 4,
+        "deutsch": "launisch",
+        "englisch": "moody",
+        "satz": "He gets moody when he sleeps badly.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Beschreibt wechselnde Stimmung - Persönlichkeitswortschatz wie 'confused' der Unit."
+      },
+      {
+        "nr": 5,
+        "deutsch": "kontaktfreudig",
+        "englisch": "outgoing",
+        "satz": "Her outgoing manner makes new pupils feel welcome.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Persönlichkeitsmerkmal, direktes Gegenstück zu 'introvert' und 'loner' aus der Unit."
+      },
+      {
+        "nr": 6,
+        "deutsch": "vernünftig",
+        "englisch": "sensible",
+        "satz": "Taking a map was a sensible idea.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft und zugleich klassischer falscher Freund (nicht 'sensibel')."
+      },
+      {
+        "nr": 7,
+        "deutsch": "Gruppenzwang",
+        "englisch": "peer pressure",
+        "satz": "Peer pressure made him buy the same shoes.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Der Fachbegriff für den Druck, der zu 'conform' führt - dem Kernverb der Unit."
+      },
+      {
+        "nr": 8,
+        "deutsch": "bescheiden",
+        "englisch": "modest",
+        "satz": "She stayed modest after winning the prize.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Charaktereigenschaft, Gegenstück zu 'poser' und 'stand out' aus der Unit."
+      },
+      {
+        "nr": 9,
+        "deutsch": "Tagträumen",
+        "englisch": "day dreaming",
+        "satz": "The teacher caught me day dreaming again.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 58"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Introvertierte(r)",
+        "englisch": "introvert",
+        "satz": "An introvert can lead a team very well.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 58"
+      },
+      {
+        "nr": 11,
+        "deutsch": "kompliziert",
+        "englisch": "complicated",
+        "satz": "Friendship can be more complicated than school.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 12,
+        "deutsch": "rebellisch",
+        "englisch": "rebellious",
+        "satz": "Teenagers are not always rebellious.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Hippie",
+        "englisch": "hippy",
+        "satz": "His uncle still dresses like an old hippy.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Einstellung",
+        "englisch": "outlook",
+        "satz": "Her outlook on life is refreshingly positive.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 15,
+        "deutsch": "sich entspannen",
+        "englisch": "chill out",
+        "satz": "We chill out in the park after school.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 59"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Streber(in), Sonderling",
+        "englisch": "nerd",
+        "satz": "He calls himself a happy nerd.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 60"
+      },
+      {
+        "nr": 17,
+        "deutsch": "widerspiegeln",
+        "englisch": "reflect",
+        "satz": "Your clothes often reflect the group you join.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 60"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Landschaft",
+        "englisch": "landscape",
+        "satz": "He paints the landscape around his village.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 61"
+      },
+      {
+        "nr": 19,
+        "deutsch": "vorteilhaft",
+        "englisch": "beneficial",
+        "satz": "A short break is beneficial for all of us.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 20,
+        "deutsch": "selbstsicher",
+        "englisch": "confident",
+        "satz": "He sounded confident during the presentation.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Selbstständigkeit",
+        "englisch": "independence",
+        "satz": "Moving out gave her a new independence.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Bewohner(in)",
+        "englisch": "inhabitant",
+        "satz": "Every inhabitant of the village was invited.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Aufgabe",
+        "englisch": "task",
+        "satz": "Each group gets a different task.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 24,
+        "deutsch": "unter Leute kommen",
+        "englisch": "socialize",
+        "satz": "He finds it hard to socialize in class.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 62"
+      },
+      {
+        "nr": 25,
+        "deutsch": "außergewöhnlich",
+        "englisch": "extraordinary",
+        "satz": "She has an extraordinary memory for names.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 63"
+      },
+      {
+        "nr": 26,
+        "deutsch": "einbeziehen",
+        "englisch": "involve",
+        "satz": "Good leaders involve everybody in the plan.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 64"
+      },
+      {
+        "nr": 27,
+        "deutsch": "freie Stelle",
+        "englisch": "vacancy",
+        "satz": "The cafe has a vacancy for Saturdays.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 64"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Anforderung",
+        "englisch": "requirement",
+        "satz": "Patience is the first requirement for the job.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 65"
+      },
+      {
+        "nr": 29,
+        "deutsch": "praktische Erfahrung",
+        "englisch": "hands-on experience",
+        "satz": "Two weeks in a garage gave hands-on experience.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 65"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Rakete",
+        "englisch": "rocket",
+        "satz": "His model rocket flew over the roof.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 6, S. 67"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 6 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 6 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 6 part i.",
+          "items": [
+            {
+              "german": "freiwillig, ehrenamtlich",
+              "english": "voluntary",
+              "pos": "adj"
+            },
+            {
+              "german": "entschlossen",
+              "english": "determined",
+              "pos": "adj"
+            },
+            {
+              "german": "Stubenhocker(in)",
+              "english": "couch potato",
+              "pos": "noun"
+            },
+            {
+              "german": "Naturliebhaber(in)",
+              "english": "nature-lover",
+              "pos": "noun"
+            },
+            {
+              "german": "Arbeit, Pflicht",
+              "english": "chore",
+              "pos": "noun"
+            },
+            {
+              "german": "Tyrann(in)",
+              "english": "bully",
+              "pos": "noun"
+            },
+            {
+              "german": "ehrgeizig",
+              "english": "ambitious",
+              "pos": "adj"
+            },
+            {
+              "german": "ungeduldig",
+              "english": "impatient",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 6 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Einsamkeit",
+            "abenteuerlich",
+            "vertrauenswürdig",
+            "sich an etw. anpassen"
+          ],
+          "gaps": [
+            {
+              "german": "sich an etw. anpassen",
+              "english": "conform",
+              "answer": "conform",
+              "pos": "verb"
+            },
+            {
+              "german": "Einsamkeit",
+              "english": "loneliness",
+              "answer": "loneliness",
+              "pos": "noun"
+            },
+            {
+              "german": "vertrauenswürdig",
+              "english": "trustworthy",
+              "answer": "trustworthy",
+              "pos": "adj",
+              "unique_because": "„a partner who is patient and ___“ beschreibt Verlässlichkeit, nicht Unternehmungslust."
+            },
+            {
+              "german": "abenteuerlich",
+              "english": "adventurous",
+              "answer": "adventurous",
+              "pos": "adj",
+              "unique_because": "„the more ___ pupils on every school trip“ meint die, die gern etwas wagen."
+            }
+          ],
+          "text": "In every new class a few pupils quietly {1} within the first week. Others need longer and feel real {2} until they find one good friend. What helps most is a partner who is patient and {3}. Our teacher puts the quiet ones with the more {4} pupils on every school trip. The plan has worked for eleven years now. Parents mention it at every meeting with the head. Only one family has ever asked for a change."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 6 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 6 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 6 part i.",
+          "items": [
+            {
+              "german": "Wildtiere",
+              "english": "wildlife",
+              "pos": "noun"
+            },
+            {
+              "german": "verwirrt",
+              "english": "confused",
+              "pos": "adj"
+            },
+            {
+              "german": "Extravertierte(r)",
+              "english": "extrovert",
+              "pos": "noun"
+            },
+            {
+              "german": "geeignet",
+              "english": "suitable",
+              "pos": "adj"
+            },
+            {
+              "german": "zuverlässig",
+              "english": "reliable",
+              "pos": "adj"
+            },
+            {
+              "german": "stur",
+              "english": "stubborn",
+              "pos": "adj"
+            },
+            {
+              "german": "Sonnenschein",
+              "english": "sunshine",
+              "pos": "noun"
+            },
+            {
+              "german": "Angeber(in)",
+              "english": "poser",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 6 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "bereichernd",
+            "Vorbild",
+            "atmen",
+            "Kindergarten"
+          ],
+          "gaps": [
+            {
+              "german": "atmen",
+              "english": "breathe",
+              "answer": "breathe",
+              "pos": "verb"
+            },
+            {
+              "german": "Vorbild",
+              "english": "role model",
+              "answer": "role model",
+              "pos": "noun",
+              "unique_because": "„she has become a real ___“ meint eine Person, an der sich Kinder orientieren."
+            },
+            {
+              "german": "bereichernd",
+              "english": "rewarding",
+              "answer": "rewarding",
+              "pos": "adj"
+            },
+            {
+              "german": "Kindergarten",
+              "english": "nursery",
+              "answer": "nursery",
+              "pos": "noun",
+              "unique_because": "„train at a bigger ___ in the next town“ meint einen Ort."
+            }
+          ],
+          "text": "My older sister helps with small children every Wednesday afternoon. She teaches them to {1} slowly when they are upset. For many of them she has become a real {2}. The work is tiring but very {3}. She has done it since she was fifteen. Next year she wants to train at a bigger {4} in the next town."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 6 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 6 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 6 part ii.",
+          "items": [
+            {
+              "german": "Anforderung",
+              "english": "requirement",
+              "pos": "noun"
+            },
+            {
+              "german": "neugierig",
+              "english": "curious",
+              "pos": "adj"
+            },
+            {
+              "german": "Gruppenzwang",
+              "english": "peer pressure",
+              "pos": "noun"
+            },
+            {
+              "german": "freie Stelle",
+              "english": "vacancy",
+              "pos": "noun"
+            },
+            {
+              "german": "vernünftig",
+              "english": "sensible",
+              "pos": "adj"
+            },
+            {
+              "german": "außergewöhnlich",
+              "english": "extraordinary",
+              "pos": "adj"
+            },
+            {
+              "german": "sich entspannen",
+              "english": "chill out",
+              "pos": "verb"
+            },
+            {
+              "german": "Bewohner(in)",
+              "english": "inhabitant",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 6 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Selbstständigkeit",
+            "praktische Erfahrung",
+            "unter Leute kommen",
+            "vorteilhaft"
+          ],
+          "gaps": [
+            {
+              "german": "unter Leute kommen",
+              "english": "socialize",
+              "answer": "socialize",
+              "pos": "verb"
+            },
+            {
+              "german": "praktische Erfahrung",
+              "english": "hands-on experience",
+              "answer": "hands-on experience",
+              "pos": "noun",
+              "unique_because": "„return with real ___ and a much clearer plan“ meint das, was man beim Arbeiten gelernt hat."
+            },
+            {
+              "german": "vorteilhaft",
+              "english": "beneficial",
+              "answer": "beneficial",
+              "pos": "adj"
+            },
+            {
+              "german": "Selbstständigkeit",
+              "english": "independence",
+              "answer": "independence",
+              "pos": "noun",
+              "unique_because": "„a new sense of ___ that lasts for years“ meint das Gefühl, allein zurechtzukommen."
+            }
+          ],
+          "text": "Two weeks in a local firm teach more than a whole term of theory. Pupils learn to {1} with adults they have never met before. Most of them return with real {2} and a much clearer plan. Even a short placement is {3} for anybody who is unsure about the future. The greatest gain is a new sense of {4} that lasts for years. Our school has done this since 2009."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 6 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 6 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 6 part ii.",
+          "items": [
+            {
+              "german": "Landschaft",
+              "english": "landscape",
+              "pos": "noun"
+            },
+            {
+              "german": "Introvertierte(r)",
+              "english": "introvert",
+              "pos": "noun"
+            },
+            {
+              "german": "selbstsicher",
+              "english": "confident",
+              "pos": "adj"
+            },
+            {
+              "german": "rebellisch",
+              "english": "rebellious",
+              "pos": "adj"
+            },
+            {
+              "german": "Hippie",
+              "english": "hippy",
+              "pos": "noun"
+            },
+            {
+              "german": "kompliziert",
+              "english": "complicated",
+              "pos": "adj"
+            },
+            {
+              "german": "Rakete",
+              "english": "rocket",
+              "pos": "noun"
+            },
+            {
+              "german": "Aufgabe",
+              "english": "task",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 6 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "großzügig",
+            "einbeziehen",
+            "Einstellung",
+            "bescheiden"
+          ],
+          "gaps": [
+            {
+              "german": "einbeziehen",
+              "english": "involve",
+              "answer": "involve",
+              "pos": "verb"
+            },
+            {
+              "german": "Einstellung",
+              "english": "outlook",
+              "answer": "outlook",
+              "pos": "noun"
+            },
+            {
+              "german": "großzügig",
+              "english": "generous",
+              "answer": "generous",
+              "pos": "adj",
+              "unique_because": "„was very ___ and paid for new shirts“ erklärt die Spende."
+            },
+            {
+              "german": "bescheiden",
+              "english": "modest",
+              "answer": "modest",
+              "pos": "adj",
+              "unique_because": "„stayed ___ when the newspaper wrote about her“ beschreibt, wie sie mit Lob umging."
+            }
+          ],
+          "text": "Our football coach likes to {1} every player in the plan. She has a positive {2} even after a bad match. Nobody on the team sits on the bench all season. Last winter a local shop was very {3} and paid for new shirts. The captain stayed {4} when the newspaper wrote about her."
+        }
+      }
+    }
+  }
+}

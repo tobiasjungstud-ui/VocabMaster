@@ -5,6 +5,7 @@
     vocabmaster db suche "Publikum"         in der Wortliste suchen
 
     vocabmaster gerüst 3                    Gerüst für Unit 3 anlegen
+    vocabmaster ausgleichen kuratiert/unit_03.json  nach dem Ergänzen neu aufteilen
     vocabmaster offen kuratiert/unit_03.json      was noch auszufüllen ist
     vocabmaster prüfen kuratiert/unit_03.json     Selbstcheck ohne zu schreiben
     vocabmaster bauen kuratiert/unit_03.json      prüfen und alles schreiben
@@ -26,7 +27,13 @@ from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
 from .niveau import NIVEAUS, PROFILES
-from .pack import Pack, pack_filename, scaffold, waehle_pruefungswoerter
+from .pack import (
+    Pack,
+    ausgleichen,
+    pack_filename,
+    scaffold,
+    waehle_pruefungswoerter,
+)
 from .pool import plan_unit
 
 KURATIERT = Path("kuratiert")
@@ -206,9 +213,27 @@ def _bericht_zeigen(bericht, ausfuehrlich: bool) -> None:
           f"aus {len(bericht.gelaufen)} Prüfungen.")
 
 
+def cmd_ausgleichen(args) -> int:
+    """Nach dem Ergänzen: die 60 Wörter neu auf beide Tests verteilen."""
+    pack = Pack.load(args.paket)
+    settings = _settings(args)
+    vorher = [e["englisch"] for e in pack.entries("test1")]
+    ausgleichen(pack, settings)
+    pack.save()
+    nachher = [e["englisch"] for e in pack.entries("test1")]
+    gewechselt = sorted(set(vorher) ^ set(nachher))
+    print(f"{args.paket} ausgeglichen.")
+    print(f"  {len(gewechselt)} Wörter haben den Test gewechselt"
+          + (f": {', '.join(gewechselt[:10])}" if gewechselt else ""))
+    print("  Die vier Prüfungen wurden neu aufgesetzt; vorhandene Lückentexte "
+          "sind erhalten.")
+    return 0
+
+
 def cmd_pruefen(args) -> int:
     pack = Pack.load(args.paket)
-    bericht = pruefe_paket(pack, _db(args), _settings(args))
+    teile = ("liste", "test") if args.nur == "alles" else (args.nur,)
+    bericht = pruefe_paket(pack, _db(args), _settings(args), teile)
     print(bericht.kennzahlen.get("_kopf", ""))
     _bericht_zeigen(bericht, args.ausfuehrlich)
     if args.streng and bericht.warnungen:
@@ -220,7 +245,8 @@ def cmd_bauen(args) -> int:
     pack = Pack.load(args.paket)
     settings = _settings(args)
     db = _db(args)
-    bericht = pruefe_paket(pack, db, settings)
+    teile = ("liste", "test") if args.nur == "alles" else (args.nur,)
+    bericht = pruefe_paket(pack, db, settings, teile)
     print(bericht.kennzahlen.get("_kopf", ""))
     _bericht_zeigen(bericht, args.ausfuehrlich)
 
@@ -232,7 +258,6 @@ def cmd_bauen(args) -> int:
         print("\n--streng: es wird nichts geschrieben, solange Warnungen offen sind.")
         return 1
 
-    teile = ("liste", "test") if args.nur == "alles" else (args.nur,)
     niveaus = (args.niveau,) if args.niveau else NIVEAUS
     ergebnis = baue_alles(
         pack, args.ausgabe, settings, teile, not args.ohne_loesung, niveaus
@@ -291,6 +316,12 @@ def build_parser() -> argparse.ArgumentParser:
                        dest="ueberschreiben")
         p.set_defaults(func=cmd_geruest)
 
+    p = sub.add_parser(
+        "ausgleichen",
+        help="nach dem Ergänzen die 60 Wörter neu auf beide Tests verteilen")
+    p.add_argument("paket")
+    p.set_defaults(func=cmd_ausgleichen)
+
     p = sub.add_parser("offen", help="zeigen, was im Paket noch fehlt")
     p.add_argument("paket")
     p.set_defaults(func=cmd_offen)
@@ -302,6 +333,9 @@ def build_parser() -> argparse.ArgumentParser:
                        help="auch Hinweise zeigen")
         p.add_argument("--streng", action="store_true",
                        help="Warnungen wie Fehler behandeln")
+        p.add_argument("--nur", choices=("alles", "liste", "test"),
+                       default="alles",
+                       help="nur die Kontrollen dieses Teils laufen lassen")
         p.set_defaults(func=cmd_pruefen)
 
     p = sub.add_parser("bauen", help="prüfen und die Word-Dateien schreiben")

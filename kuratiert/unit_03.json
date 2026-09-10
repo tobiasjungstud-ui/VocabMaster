@@ -1,0 +1,1050 @@
+{
+  "schema": 2,
+  "unit": 3,
+  "unit_label": "Unit 3",
+  "titel": "Unit 3",
+  "thema": "Werbung, Marketing und Konsum",
+  "leitwoerter": [
+    "advertising",
+    "marketing",
+    "shop",
+    "customer",
+    "price",
+    "brand",
+    "influencer",
+    "buy",
+    "product",
+    "value"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 0,
+  "herkunft_uebersicht": {
+    "hauptteil": 60,
+    "zusatzteile": [],
+    "zu_ergaenzen": 0,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "gleichwertig",
+        "englisch": "equivalent",
+        "satz": "One pound is roughly equivalent to nine francs.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Schnäppchen",
+        "englisch": "bargain",
+        "satz": "The winter coat was a real bargain.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Dosis",
+        "englisch": "dose",
+        "satz": "The bottle says one dose after every meal.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Gewürz",
+        "englisch": "spice",
+        "satz": "This spice comes from a tree in Asia.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 5,
+        "deutsch": "etw. wert sein",
+        "englisch": "be worth",
+        "satz": "The old stamps must be worth a fortune.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 6,
+        "deutsch": "medizinisches Problem",
+        "englisch": "medical problem",
+        "satz": "Ask a doctor if you have a medical problem.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Zeremonie",
+        "englisch": "ceremony",
+        "satz": "The prize ceremony starts at seven.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Parfüm",
+        "englisch": "perfume",
+        "satz": "The whole shop smells of expensive perfume.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Verschmutzung",
+        "englisch": "pollution",
+        "satz": "Traffic causes most of the pollution in our town.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Abzocke",
+        "englisch": "rip-off",
+        "satz": "Ten pounds for a small coffee is a rip-off.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 11,
+        "deutsch": "werben",
+        "englisch": "promote",
+        "satz": "The band used videos to promote their new song.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Einflussperson, Beeinflusser(in)",
+        "englisch": "influencer",
+        "satz": "An influencer showed the trainers to two million people.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 30"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Verkäufer(in)",
+        "englisch": "shop assistant",
+        "satz": "A friendly shop assistant found my size.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 30"
+      },
+      {
+        "nr": 14,
+        "deutsch": "enorm",
+        "englisch": "massive",
+        "satz": "The queue outside the shop was massive.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 15,
+        "deutsch": "aufrichtig",
+        "englisch": "sincere",
+        "satz": "Her thanks sounded honest and sincere.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Modehändler",
+        "englisch": "clothes retailer",
+        "satz": "The clothes retailer opened three new branches.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 17,
+        "deutsch": "über Nacht",
+        "englisch": "overnight",
+        "satz": "The video became famous overnight.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Strichcode",
+        "englisch": "bar code",
+        "satz": "The machine reads the bar code in a second.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Umkleideraum",
+        "englisch": "changing room",
+        "satz": "There was a queue outside the changing room.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Kasse",
+        "englisch": "checkout",
+        "satz": "Please pay for the jacket at the checkout.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Gesichtserkennung",
+        "englisch": "facial recognition",
+        "satz": "Some shops now use facial recognition at the door.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 22,
+        "deutsch": "erkennen",
+        "englisch": "detect",
+        "satz": "The camera can detect movement in the dark.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 23,
+        "deutsch": "messen",
+        "englisch": "measure",
+        "satz": "They measure how long people look at the poster.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Einkaufswagen",
+        "englisch": "trolley",
+        "satz": "My trolley was full before I reached the bread.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 33"
+      },
+      {
+        "nr": 25,
+        "deutsch": "portabel",
+        "englisch": "portable",
+        "satz": "She bought a small portable speaker for the beach.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 34"
+      },
+      {
+        "nr": 26,
+        "deutsch": "böse",
+        "englisch": "nasty",
+        "satz": "He left a nasty comment under the video.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 27,
+        "deutsch": "gewalttätig",
+        "englisch": "violent",
+        "satz": "The film was too violent for younger children.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 28,
+        "deutsch": "gelegentlich",
+        "englisch": "occasionally",
+        "satz": "We occasionally buy clothes in the market.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Geisterhaus",
+        "englisch": "haunted house",
+        "satz": "The fair had a haunted house with loud music.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 30,
+        "deutsch": "schätzen",
+        "englisch": "appreciate",
+        "satz": "Customers appreciate honest and friendly advice.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "exotisch",
+        "englisch": "exotic",
+        "satz": "The market sells exotic fruit from many countries.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 2,
+        "deutsch": "etwa",
+        "englisch": "approximately",
+        "satz": "The shop has approximately four hundred customers a day.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Ananas",
+        "englisch": "pineapple",
+        "satz": "She cut the pineapple into thin slices.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Platz",
+        "englisch": "pitch",
+        "satz": "The company put an advert beside the football pitch.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Rätsel",
+        "englisch": "puzzle",
+        "satz": "The advert was a puzzle nobody could solve.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Gift",
+        "englisch": "venom",
+        "satz": "The venom of that spider is used in medicine.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 7,
+        "deutsch": "sich etw. leisten",
+        "englisch": "afford",
+        "satz": "We cannot afford a second holiday this year.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 28"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Anzeige",
+        "englisch": "advertisement",
+        "satz": "A whole page of the paper was one advertisement.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Duft",
+        "englisch": "fragrance",
+        "satz": "The fragrance of the soap fills the room.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Angewohnheit",
+        "englisch": "habit",
+        "satz": "Buying online has become a habit for many.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Hersteller",
+        "englisch": "producer",
+        "satz": "The producer sells the jam directly to shops.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 12,
+        "deutsch": "keine Rolle (spielen)",
+        "englisch": "no object",
+        "satz": "For her, money was no object.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 29"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Komiker(in)",
+        "englisch": "comedian",
+        "satz": "A famous comedian speaks in the radio advert.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 30"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Abonnent(in)",
+        "englisch": "subscriber",
+        "satz": "The channel lost a thousand subscribers in one week.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 30"
+      },
+      {
+        "nr": 15,
+        "deutsch": "empfehlen",
+        "englisch": "recommend",
+        "satz": "Would you recommend this shop to a friend?",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 30"
+      },
+      {
+        "nr": 16,
+        "deutsch": "minimal",
+        "englisch": "minimum",
+        "satz": "The minimum order is twenty pounds.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 17,
+        "deutsch": "wirklich",
+        "englisch": "genuinely",
+        "satz": "She was genuinely surprised by the price.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Bergkette",
+        "englisch": "mountain range",
+        "satz": "The poster shows a mountain range at sunrise.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 31"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Etikett",
+        "englisch": "label",
+        "satz": "Always read the label before you buy food.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Sonderangebot",
+        "englisch": "special offer",
+        "satz": "The bread was half price as a special offer.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Schaufensterbummel",
+        "englisch": "window shopping",
+        "satz": "We went window shopping in the old town.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 22,
+        "deutsch": "scannen",
+        "englisch": "scan",
+        "satz": "The app lets you scan the price yourself.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 23,
+        "deutsch": "virtueller Laden",
+        "englisch": "virtual store",
+        "satz": "You can walk through the virtual store at home.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 32"
+      },
+      {
+        "nr": 24,
+        "deutsch": "geeignet",
+        "englisch": "convenient",
+        "satz": "Shopping late is convenient for busy parents.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 34"
+      },
+      {
+        "nr": 25,
+        "deutsch": "vielseitig",
+        "englisch": "versatile",
+        "satz": "This jacket is light and surprisingly versatile.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 34"
+      },
+      {
+        "nr": 26,
+        "deutsch": "realistisch",
+        "englisch": "realistic",
+        "satz": "The picture on the box was not very realistic.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Nachteil",
+        "englisch": "downside",
+        "satz": "Long delivery times are the downside of that shop.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Hausschuh",
+        "englisch": "slipper",
+        "satz": "He wore one slipper and one shoe.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Urteil",
+        "englisch": "verdict",
+        "satz": "Our verdict on the new shop is positive.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      },
+      {
+        "nr": 30,
+        "deutsch": "gefallen",
+        "englisch": "appeal",
+        "satz": "Bright colours appeal to younger customers.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 3, S. 35"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 3 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 3 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 3 part i.",
+          "items": [
+            {
+              "german": "Verkäufer(in)",
+              "english": "shop assistant",
+              "pos": "noun"
+            },
+            {
+              "german": "Modehändler",
+              "english": "clothes retailer",
+              "pos": "noun"
+            },
+            {
+              "german": "Verschmutzung",
+              "english": "pollution",
+              "pos": "noun"
+            },
+            {
+              "german": "Abzocke",
+              "english": "rip-off",
+              "pos": "noun"
+            },
+            {
+              "german": "Einkaufswagen",
+              "english": "trolley",
+              "pos": "noun"
+            },
+            {
+              "german": "enorm",
+              "english": "massive",
+              "pos": "adj"
+            },
+            {
+              "german": "Gewürz",
+              "english": "spice",
+              "pos": "noun"
+            },
+            {
+              "german": "werben",
+              "english": "promote",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 3 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Gesichtserkennung",
+            "gelegentlich",
+            "gleichwertig",
+            "schätzen"
+          ],
+          "gaps": [
+            {
+              "german": "schätzen",
+              "english": "appreciate",
+              "answer": "appreciate",
+              "pos": "verb"
+            },
+            {
+              "german": "Gesichtserkennung",
+              "english": "facial recognition",
+              "answer": "facial recognition",
+              "pos": "noun"
+            },
+            {
+              "german": "gleichwertig",
+              "english": "equivalent",
+              "answer": "equivalent",
+              "pos": "adj"
+            },
+            {
+              "german": "gelegentlich",
+              "english": "occasionally",
+              "answer": "occasionally",
+              "pos": "adv"
+            }
+          ],
+          "text": "In small shops most buyers still {1} a friendly welcome more than a clever screen. In some large stores a camera with {2} counts how long you stand in front of a shelf. The data it collects is roughly {3} to a short interview with every customer. Shops promise that the pictures are deleted at the end of the day. Customers {4} notice the small sign beside the door. Most people walk straight past it."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 3 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 3 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 3 part i.",
+          "items": [
+            {
+              "german": "portabel",
+              "english": "portable",
+              "pos": "adj"
+            },
+            {
+              "german": "Dosis",
+              "english": "dose",
+              "pos": "noun"
+            },
+            {
+              "german": "Parfüm",
+              "english": "perfume",
+              "pos": "noun"
+            },
+            {
+              "german": "Zeremonie",
+              "english": "ceremony",
+              "pos": "noun"
+            },
+            {
+              "german": "Einflussperson, Beeinflusser(in)",
+              "english": "influencer",
+              "pos": "noun"
+            },
+            {
+              "german": "Strichcode",
+              "english": "bar code",
+              "pos": "noun"
+            },
+            {
+              "german": "gewalttätig",
+              "english": "violent",
+              "pos": "adj"
+            },
+            {
+              "german": "Geisterhaus",
+              "english": "haunted house",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 3 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "böse",
+            "Kasse",
+            "messen",
+            "Schnäppchen"
+          ],
+          "gaps": [
+            {
+              "german": "messen",
+              "english": "measure",
+              "answer": "measure",
+              "pos": "verb"
+            },
+            {
+              "german": "Kasse",
+              "english": "checkout",
+              "answer": "checkout",
+              "pos": "noun",
+              "unique_because": "„the longest queue forms at the ___“ meint den Ort im Laden."
+            },
+            {
+              "german": "böse",
+              "english": "nasty",
+              "answer": "nasty",
+              "pos": "adj"
+            },
+            {
+              "german": "Schnäppchen",
+              "english": "bargain",
+              "answer": "bargain",
+              "pos": "noun",
+              "unique_because": "„found a real ___ in the sale“ meint einen günstigen Kauf, keinen Ort."
+            }
+          ],
+          "text": "Our class visited a big clothes shop last Tuesday. A worker showed us how they {1} the shelves every morning. The longest queue of the day forms at the {2}. Two machines were broken on Tuesday. One customer was quite {3} about the waiting time. In the end she still found a real {4} in the sale."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 3 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 3 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 3 part ii.",
+          "items": [
+            {
+              "german": "Sonderangebot",
+              "english": "special offer",
+              "pos": "noun"
+            },
+            {
+              "german": "Schaufensterbummel",
+              "english": "window shopping",
+              "pos": "noun"
+            },
+            {
+              "german": "Anzeige",
+              "english": "advertisement",
+              "pos": "noun"
+            },
+            {
+              "german": "Bergkette",
+              "english": "mountain range",
+              "pos": "noun"
+            },
+            {
+              "german": "Ananas",
+              "english": "pineapple",
+              "pos": "noun"
+            },
+            {
+              "german": "Rätsel",
+              "english": "puzzle",
+              "pos": "noun"
+            },
+            {
+              "german": "wirklich",
+              "english": "genuinely",
+              "pos": "adv"
+            },
+            {
+              "german": "Abonnent(in)",
+              "english": "subscriber",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 3 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "etwa",
+            "Duft",
+            "gefallen",
+            "geeignet"
+          ],
+          "gaps": [
+            {
+              "german": "gefallen",
+              "english": "appeal",
+              "answer": "appeal",
+              "pos": "verb"
+            },
+            {
+              "german": "Duft",
+              "english": "fragrance",
+              "answer": "fragrance",
+              "pos": "noun"
+            },
+            {
+              "german": "geeignet",
+              "english": "convenient",
+              "answer": "convenient",
+              "pos": "adj"
+            },
+            {
+              "german": "etwa",
+              "english": "approximately",
+              "answer": "approximately",
+              "pos": "adv"
+            }
+          ],
+          "text": "Bright colours and short videos {1} to younger buyers more than long texts. One famous soap company built its whole campaign around a single {2}. Buying the bottle online was quick and {3}, and the parcel arrived within two days. The firm sold {4} half a million bottles in the first month. Nobody in the office had expected such a result. Sales dropped again as soon as the videos stopped."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 3 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 3 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 3 part ii.",
+          "items": [
+            {
+              "german": "exotisch",
+              "english": "exotic",
+              "pos": "adj"
+            },
+            {
+              "german": "Angewohnheit",
+              "english": "habit",
+              "pos": "noun"
+            },
+            {
+              "german": "scannen",
+              "english": "scan",
+              "pos": "verb"
+            },
+            {
+              "german": "Hersteller",
+              "english": "producer",
+              "pos": "noun"
+            },
+            {
+              "german": "empfehlen",
+              "english": "recommend",
+              "pos": "verb"
+            },
+            {
+              "german": "virtueller Laden",
+              "english": "virtual store",
+              "pos": "noun"
+            },
+            {
+              "german": "Etikett",
+              "english": "label",
+              "pos": "noun"
+            },
+            {
+              "german": "Urteil",
+              "english": "verdict",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 3 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "minimal",
+            "sich etw. leisten",
+            "Gift",
+            "Komiker(in)"
+          ],
+          "gaps": [
+            {
+              "german": "sich etw. leisten",
+              "english": "afford",
+              "answer": "afford",
+              "pos": "verb"
+            },
+            {
+              "german": "Gift",
+              "english": "venom",
+              "answer": "venom",
+              "pos": "noun",
+              "unique_because": "„a drop of bee ___ from Turkey“ meint einen Stoff im Glas."
+            },
+            {
+              "german": "minimal",
+              "english": "minimum",
+              "answer": "minimum",
+              "pos": "adj"
+            },
+            {
+              "german": "Komiker(in)",
+              "english": "comedian",
+              "answer": "comedian",
+              "pos": "noun",
+              "unique_because": "„a well-known ___ tells a short joke“ meint eine Person, die spricht."
+            }
+          ],
+          "text": "A small company sells face cream in green bottles. Not many families can {1} the highest price. The cream contains a drop of bee {2} from Turkey. They keep the price low but set a strict {3} order of two pots. In the advert a well-known {4} tells a short joke."
+        }
+      }
+    }
+  }
+}

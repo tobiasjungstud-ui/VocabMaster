@@ -21,9 +21,13 @@ PAKETE = sorted(KURATIERT.glob("unit_*.json"))
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")
 @pytest.mark.parametrize("pfad", PAKETE, ids=lambda p: p.stem)
 def test_paket_ist_fehlerfrei(pfad, db, settings):
-    bericht = pruefe_paket(Pack.load(pfad), db, settings)
+    pack = Pack.load(pfad)
+    bericht = pruefe_paket(pack, db, settings)
     assert not bericht.fehler, "\n".join(str(b) for b in bericht.fehler)
-    assert not bericht.warnungen, "\n".join(str(b) for b in bericht.warnungen)
+    # Warnungen dürfen nur stehen bleiben, wenn das Paket sie ausdrücklich
+    # begründet - siehe Pack.akzeptierte_warnungen.
+    unbegruendet = [b for b in bericht.warnungen if not pack.ist_akzeptiert(b.text)]
+    assert not unbegruendet, "\n".join(str(b) for b in unbegruendet)
 
 
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")

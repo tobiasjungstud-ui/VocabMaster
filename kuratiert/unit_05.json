@@ -1,0 +1,1068 @@
+{
+  "schema": 2,
+  "unit": 5,
+  "unit_label": "Unit 5",
+  "titel": "Unit 5",
+  "thema": "Wissenschaft, Forschung und Biomimikry",
+  "leitwoerter": [
+    "science",
+    "research",
+    "species",
+    "nature",
+    "design",
+    "solution",
+    "experiment",
+    "discover",
+    "technology",
+    "body"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 4,
+  "herkunft_uebersicht": {
+    "hauptteil": 56,
+    "zusatzteile": [],
+    "zu_ergaenzen": 4,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "langlebig",
+        "englisch": "durable",
+        "satz": "Spider silk is thin but extremely durable.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Materialeigenschaft wie 'resistant' und 'flexibility', die beide in der Unit stehen."
+      },
+      {
+        "nr": 2,
+        "deutsch": "Durchbruch",
+        "englisch": "breakthrough",
+        "satz": "The team hopes for a breakthrough this winter.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Standardbegriff für Forschungsergebnisse - passt zu 'discovery' und 'invention' der Unit."
+      },
+      {
+        "nr": 3,
+        "deutsch": "Entdeckung",
+        "englisch": "discovery",
+        "satz": "The discovery changed how we treat wounds.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Feind(in)",
+        "englisch": "enemy",
+        "satz": "The beetle has one natural enemy.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Mikrochip",
+        "englisch": "microchip",
+        "satz": "A microchip smaller than a coin runs the machine.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Apotheker(in)",
+        "englisch": "pharmacist",
+        "satz": "The pharmacist explained how to take the pills.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 7,
+        "deutsch": "riskant",
+        "englisch": "risky",
+        "satz": "Testing the boat alone was risky.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 8,
+        "deutsch": "anpassen",
+        "englisch": "adapt",
+        "satz": "Plants adapt slowly to a drier climate.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 9,
+        "deutsch": "aussterben",
+        "englisch": "become extinct",
+        "satz": "Many frogs may become extinct within fifty years.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 10,
+        "deutsch": "effizient",
+        "englisch": "efficient",
+        "satz": "The new engine is quieter and more efficient.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 11,
+        "deutsch": "elitär",
+        "englisch": "elite",
+        "satz": "Only an elite group joined the first flight.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Anatomie",
+        "englisch": "anatomy",
+        "satz": "The anatomy of a bat wing is remarkable.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Flexibilität",
+        "englisch": "flexibility",
+        "satz": "The flexibility of the material surprised everyone.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Diashow",
+        "englisch": "slide show",
+        "satz": "She ended her talk with a short slide show.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Zoologie",
+        "englisch": "zoology",
+        "satz": "He gave up zoology after one year.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 16,
+        "deutsch": "imitieren",
+        "englisch": "imitate",
+        "satz": "Engineers imitate the skin of sharks.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 17,
+        "deutsch": "inspirieren",
+        "englisch": "inspire",
+        "satz": "Birds inspire the shape of fast trains.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 18,
+        "deutsch": "nachahmen",
+        "englisch": "mimic",
+        "satz": "Some insects mimic the leaves around them.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 19,
+        "deutsch": "voraussagen",
+        "englisch": "predict",
+        "satz": "Nobody can predict the weather a month ahead.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 20,
+        "deutsch": "sinnvoll sein",
+        "englisch": "make sense",
+        "satz": "Those numbers do not make sense.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 51"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Vulkan",
+        "englisch": "volcano",
+        "satz": "The volcano last erupted in 1980.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 51"
+      },
+      {
+        "nr": 22,
+        "deutsch": "widerstandsfähig",
+        "englisch": "resistant",
+        "satz": "The new glass is resistant to heat.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Außerirdische(r)",
+        "englisch": "alien",
+        "satz": "The film shows an alien who cannot speak.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Wolkenkratzer",
+        "englisch": "skyscraper",
+        "satz": "The skyscraper was built to sway in the wind.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Universum",
+        "englisch": "universe",
+        "satz": "The universe is far older than our planet.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Linse",
+        "englisch": "lens",
+        "satz": "A tiny lens sits behind the glass.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 53"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Fernrohr",
+        "englisch": "telescope",
+        "satz": "We looked at Saturn through a small telescope.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 53"
+      },
+      {
+        "nr": 28,
+        "deutsch": "grausam",
+        "englisch": "cruel",
+        "satz": "Keeping birds in tiny cages is cruel.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 54"
+      },
+      {
+        "nr": 29,
+        "deutsch": "gutherzig",
+        "englisch": "kind-hearted",
+        "satz": "Our kind-hearted neighbour feeds every stray cat.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 57"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Duell",
+        "englisch": "duel",
+        "satz": "The two teams fought a long duel of ideas.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 57"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "hohl",
+        "englisch": "hollow",
+        "satz": "Bird bones are light because they are hollow.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Hohle Vogelknochen sind das Lehrbuchbeispiel der Biomimikry; passt zu 'beak' und 'aerodynamic'."
+      },
+      {
+        "nr": 2,
+        "deutsch": "klebrig",
+        "englisch": "sticky",
+        "satz": "The feet of a gecko are surprisingly sticky.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "im Chat ergänzt",
+        "begruendung": "Klebrige Gecko-Füsse sind das bekannteste Beispiel der Biomimikry; passt zu 'imitate' und 'beak'."
+      },
+      {
+        "nr": 3,
+        "deutsch": "telepathisch",
+        "englisch": "telepathic",
+        "satz": "Twins sometimes seem almost telepathic.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Vorstellungskraft",
+        "englisch": "imagination",
+        "satz": "Good science needs imagination as well as facts.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Erfindung",
+        "englisch": "invention",
+        "satz": "The wheel is the oldest invention we know.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 6,
+        "deutsch": "heilen, Heilung",
+        "englisch": "cure",
+        "satz": "Scientists hope to cure the illness by 2040.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 48"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Klinik",
+        "englisch": "clinic",
+        "satz": "The new clinic opens in the spring.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Versuchskaninchen",
+        "englisch": "guinea pig",
+        "satz": "The first pupils were the guinea pigs.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Einhorn",
+        "englisch": "unicorn",
+        "satz": "No one has ever seen a real unicorn.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 10,
+        "deutsch": "implantieren",
+        "englisch": "implant",
+        "satz": "Doctors can implant a small chip under the skin.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 49"
+      },
+      {
+        "nr": 11,
+        "deutsch": "aerodynamisch",
+        "englisch": "aerodynamic",
+        "satz": "The car has a smooth aerodynamic shape.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 12,
+        "deutsch": "kreativ",
+        "englisch": "creative",
+        "satz": "Research needs creative minds, not only money.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 13,
+        "deutsch": "logisch",
+        "englisch": "logical",
+        "satz": "There is a logical reason for the result.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 14,
+        "deutsch": "praktisch",
+        "englisch": "practical",
+        "satz": "Her idea was clever but not very practical.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Schnabel",
+        "englisch": "beak",
+        "satz": "The bird opens its beak to cool down.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Schöpfung",
+        "englisch": "creation",
+        "satz": "The creation of the vaccine took ten months.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Robotik",
+        "englisch": "robotics",
+        "satz": "She studies robotics at a Scottish university.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 18,
+        "deutsch": "zirkulieren",
+        "englisch": "circulate",
+        "satz": "Warm air must circulate through the whole building.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 19,
+        "deutsch": "innovieren",
+        "englisch": "innovate",
+        "satz": "Small firms often innovate faster than big ones.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 20,
+        "deutsch": "unter Wasser",
+        "englisch": "underwater",
+        "satz": "The camera can film underwater for an hour.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 50"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Ehrgeiz",
+        "englisch": "aspiration",
+        "satz": "Her greatest aspiration is to study medicine.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 51"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Antibiotikum",
+        "englisch": "antibiotics",
+        "satz": "Doctors give antibiotics only when they must.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Schwerkraft",
+        "englisch": "gravity",
+        "satz": "Without gravity the water would float away.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Bedrohung",
+        "englisch": "threat",
+        "satz": "Warm seas are a threat to coral.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 25,
+        "deutsch": "beschleunigen",
+        "englisch": "accelerate",
+        "satz": "The train began to accelerate out of the station.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 52"
+      },
+      {
+        "nr": 26,
+        "deutsch": "egoistisch",
+        "englisch": "selfish",
+        "satz": "Taking the last seat was selfish.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 53"
+      },
+      {
+        "nr": 27,
+        "deutsch": "unentbehrlich",
+        "englisch": "essential",
+        "satz": "Clean water is essential for every animal.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 54"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Erforschung",
+        "englisch": "exploration",
+        "satz": "Space exploration costs a great deal of money.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 54"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Solarkollektor",
+        "englisch": "solar panel",
+        "satz": "A solar panel on the roof heats the water.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 55"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Dummkopf",
+        "englisch": "fool",
+        "satz": "Only a fool would touch that wire.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 5, S. 57"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 5 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 5 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 5 part i.",
+          "items": [
+            {
+              "german": "Außerirdische(r)",
+              "english": "alien",
+              "pos": "noun"
+            },
+            {
+              "german": "Wolkenkratzer",
+              "english": "skyscraper",
+              "pos": "noun"
+            },
+            {
+              "german": "langlebig",
+              "english": "durable",
+              "pos": "adj"
+            },
+            {
+              "german": "anpassen",
+              "english": "adapt",
+              "pos": "verb"
+            },
+            {
+              "german": "nachahmen",
+              "english": "mimic",
+              "pos": "verb"
+            },
+            {
+              "german": "voraussagen",
+              "english": "predict",
+              "pos": "verb"
+            },
+            {
+              "german": "sinnvoll sein",
+              "english": "make sense",
+              "pos": "verb"
+            },
+            {
+              "german": "widerstandsfähig",
+              "english": "resistant",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 5 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Durchbruch",
+            "Apotheker(in)",
+            "gutherzig",
+            "aussterben"
+          ],
+          "gaps": [
+            {
+              "german": "aussterben",
+              "english": "become extinct",
+              "answer": "become extinct",
+              "pos": "verb"
+            },
+            {
+              "german": "Durchbruch",
+              "english": "breakthrough",
+              "answer": "breakthrough",
+              "pos": "noun",
+              "unique_because": "„hope for a ___ in the next few years“ meint ein Ergebnis der Forschung."
+            },
+            {
+              "german": "gutherzig",
+              "english": "kind-hearted",
+              "answer": "kind-hearted",
+              "pos": "adj"
+            },
+            {
+              "german": "Apotheker(in)",
+              "english": "pharmacist",
+              "answer": "pharmacist",
+              "pos": "noun",
+              "unique_because": "„his neighbour, a retired ___“ meint einen Beruf."
+            }
+          ],
+          "text": "Several kinds of frog may {1} before the end of this century. Scientists in Australia hope for a {2} in the next few years. The farmer who owns the land is {3} and very patient. He has already turned two of his fields into small ponds. His neighbour, a retired {4}, tests the water every Sunday morning. Together they have counted more than nine hundred young frogs. The university now pays for the equipment."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 5 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 5 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 5 part i.",
+          "items": [
+            {
+              "german": "Universum",
+              "english": "universe",
+              "pos": "noun"
+            },
+            {
+              "german": "Zoologie",
+              "english": "zoology",
+              "pos": "noun"
+            },
+            {
+              "german": "elitär",
+              "english": "elite",
+              "pos": "adj"
+            },
+            {
+              "german": "Anatomie",
+              "english": "anatomy",
+              "pos": "noun"
+            },
+            {
+              "german": "Linse",
+              "english": "lens",
+              "pos": "noun"
+            },
+            {
+              "german": "Diashow",
+              "english": "slide show",
+              "pos": "noun"
+            },
+            {
+              "german": "inspirieren",
+              "english": "inspire",
+              "pos": "verb"
+            },
+            {
+              "german": "Vulkan",
+              "english": "volcano",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 5 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "riskant",
+            "Entdeckung",
+            "imitieren",
+            "Feind(in)"
+          ],
+          "gaps": [
+            {
+              "german": "imitieren",
+              "english": "imitate",
+              "answer": "imitate",
+              "pos": "verb"
+            },
+            {
+              "german": "Entdeckung",
+              "english": "discovery",
+              "answer": "discovery",
+              "pos": "noun",
+              "unique_because": "„a famous ___ from 1928“ meint ein Ereignis in der Forschung."
+            },
+            {
+              "german": "riskant",
+              "english": "risky",
+              "answer": "risky",
+              "pos": "adj"
+            },
+            {
+              "german": "Feind(in)",
+              "english": "enemy",
+              "answer": "enemy",
+              "pos": "noun",
+              "unique_because": "„its only natural ___ in this country“ meint ein Lebewesen."
+            }
+          ],
+          "text": "Our science teacher likes to {1} the sound of a rocket. Last week he told us about a famous {2} from 1928. He warned us twice that looking straight at the sun is {3}. Nobody laughed at that moment. Then he showed a photo of a moth and its only natural {4} in this country."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 5 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 5 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 5 part ii.",
+          "items": [
+            {
+              "german": "Erforschung",
+              "english": "exploration",
+              "pos": "noun"
+            },
+            {
+              "german": "heilen, Heilung",
+              "english": "cure",
+              "pos": "noun"
+            },
+            {
+              "german": "Erfindung",
+              "english": "invention",
+              "pos": "noun"
+            },
+            {
+              "german": "Schöpfung",
+              "english": "creation",
+              "pos": "noun"
+            },
+            {
+              "german": "Solarkollektor",
+              "english": "solar panel",
+              "pos": "noun"
+            },
+            {
+              "german": "Schwerkraft",
+              "english": "gravity",
+              "pos": "noun"
+            },
+            {
+              "german": "unter Wasser",
+              "english": "underwater",
+              "pos": "adj"
+            },
+            {
+              "german": "klebrig",
+              "english": "sticky",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 5 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Ehrgeiz",
+            "Vorstellungskraft",
+            "beschleunigen",
+            "unentbehrlich"
+          ],
+          "gaps": [
+            {
+              "german": "beschleunigen",
+              "english": "accelerate",
+              "answer": "accelerate",
+              "pos": "verb"
+            },
+            {
+              "german": "Vorstellungskraft",
+              "english": "imagination",
+              "answer": "imagination",
+              "pos": "noun",
+              "unique_because": "„needed both patience and ___“ meint eine Fähigkeit beim Entwerfen."
+            },
+            {
+              "german": "unentbehrlich",
+              "english": "essential",
+              "answer": "essential",
+              "pos": "adj"
+            },
+            {
+              "german": "Ehrgeiz",
+              "english": "aspiration",
+              "answer": "aspiration",
+              "pos": "noun",
+              "unique_because": "„the greatest ___ is to build something“ meint ein Ziel."
+            }
+          ],
+          "text": "The fastest modern trains {1} far more quietly than the models of thirty years ago. The first engineers needed both patience and {2} to reach that point. Careful testing in a wind tunnel is still {3} before any new design leaves the factory. For many young engineers the greatest {4} is to build something nobody has built before. Their teachers say the next ten years will be busy. Three of the class have already found a placement."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 5 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 5 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 5 part ii.",
+          "items": [
+            {
+              "german": "kreativ",
+              "english": "creative",
+              "pos": "adj"
+            },
+            {
+              "german": "Robotik",
+              "english": "robotics",
+              "pos": "noun"
+            },
+            {
+              "german": "Klinik",
+              "english": "clinic",
+              "pos": "noun"
+            },
+            {
+              "german": "Antibiotikum",
+              "english": "antibiotics",
+              "pos": "noun"
+            },
+            {
+              "german": "implantieren",
+              "english": "implant",
+              "pos": "verb"
+            },
+            {
+              "german": "praktisch",
+              "english": "practical",
+              "pos": "adj"
+            },
+            {
+              "german": "Einhorn",
+              "english": "unicorn",
+              "pos": "noun"
+            },
+            {
+              "german": "egoistisch",
+              "english": "selfish",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 5 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "hohl",
+            "innovieren",
+            "Versuchskaninchen",
+            "Schnabel"
+          ],
+          "gaps": [
+            {
+              "german": "innovieren",
+              "english": "innovate",
+              "answer": "innovate",
+              "pos": "verb"
+            },
+            {
+              "german": "Versuchskaninchen",
+              "english": "guinea pig",
+              "answer": "guinea pig",
+              "pos": "noun",
+              "unique_because": "„our class was the first ___ for a new app“ meint die Testgruppe."
+            },
+            {
+              "german": "hohl",
+              "english": "hollow",
+              "answer": "hollow",
+              "pos": "adj"
+            },
+            {
+              "german": "Schnabel",
+              "english": "beak",
+              "answer": "beak",
+              "pos": "noun",
+              "unique_because": "„uses its strong ___ to open hard seeds“ meint einen Körperteil."
+            }
+          ],
+          "text": "Very small companies often {1} faster than big ones. Our class was the first {2} for a new science app. The app shows animals in three dimensions. The bones of a bird are light and {3}. That is why they can fly so far. A small bird uses its strong {4} to open hard seeds."
+        }
+      }
+    }
+  },
+  "akzeptierte_warnungen": [
+    {
+      "enthaelt": "Teil 1 Niveau B - difficulty: average word difficulty",
+      "grund": "Die zugängliche Hälfte dieser Unit besteht fast nur aus Internationalismen (universe, zoology, anatomy, volcano, elite). Für Niveau B bleibt deshalb kein Wortschatz mit höherem Schwierigkeitswert übrig, ohne die Gruppe zu überfordern. Die Auswahl nimmt bereits alle Nicht-Kognate zuerst."
+    },
+    {
+      "enthaelt": "Teil 2 Niveau B - difficulty: average word difficulty",
+      "grund": "Gleicher Grund wie in Teil 1: Wissenschaftswortschatz ist zu grossen Teilen international. Der Wert liegt mit 1.4 genau an der Schwelle."
+    }
+  ]
+}

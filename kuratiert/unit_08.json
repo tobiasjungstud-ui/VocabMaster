@@ -1,0 +1,1054 @@
+{
+  "schema": 2,
+  "unit": 8,
+  "unit_label": "Unit 8",
+  "titel": "Unit 8",
+  "thema": "Verbrechen, Sicherheit und Krimis",
+  "leitwoerter": [
+    "crime",
+    "criminal",
+    "police",
+    "steal",
+    "security",
+    "prison",
+    "detective",
+    "investigate",
+    "evidence",
+    "suspect"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "erzeugt": "2026-09-10",
+  "fehlbestand": 0,
+  "herkunft_uebersicht": {
+    "hauptteil": 60,
+    "zusatzteile": [],
+    "zu_ergaenzen": 0,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "hart",
+        "englisch": "harsh",
+        "satz": "Ten years seemed a harsh sentence for that.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Einbrecher(in)",
+        "englisch": "burglar",
+        "satz": "The burglar left through the kitchen window.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Straftäter(in)",
+        "englisch": "offender",
+        "satz": "A young offender may get community service.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Taschendieb(in)",
+        "englisch": "pickpocket",
+        "satz": "A pickpocket works best in a thick crowd.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Strafe",
+        "englisch": "punishment",
+        "satz": "The punishment did not fit the crime.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Culture 8, S. 111"
+      },
+      {
+        "nr": 6,
+        "deutsch": "Dieb(in)",
+        "englisch": "thief",
+        "satz": "The thief took only the small painting.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 7,
+        "deutsch": "berüchtigt",
+        "englisch": "infamous",
+        "satz": "The infamous case filled the papers for weeks.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 8,
+        "deutsch": "bedrohend",
+        "englisch": "threatening",
+        "satz": "He sent threatening messages for months.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Internetkriminalität",
+        "englisch": "cybercrime",
+        "satz": "Cybercrime costs banks billions each year.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Hacken",
+        "englisch": "hacking",
+        "satz": "Hacking a school account is still a crime.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Juwel",
+        "englisch": "jewel",
+        "satz": "One jewel was missing from the crown.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Geheimnis",
+        "englisch": "mystery",
+        "satz": "The mystery of the empty room was never solved.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 13,
+        "deutsch": "verhaften",
+        "englisch": "arrest",
+        "satz": "Police may arrest you without a warrant here.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 14,
+        "deutsch": "unverantwortlich",
+        "englisch": "irresponsible",
+        "satz": "Sharing that photo was irresponsible.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 15,
+        "deutsch": "unglaublich",
+        "englisch": "unbelievable",
+        "satz": "His story sounded completely unbelievable.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Zutaten",
+        "englisch": "ingredient",
+        "satz": "Patience is the main ingredient of good police work.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 17,
+        "deutsch": "unerwartet",
+        "englisch": "unexpected",
+        "satz": "The ending was totally unexpected.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Ruhm",
+        "englisch": "fame",
+        "satz": "He wanted fame more than money.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 19,
+        "deutsch": "überzeugen",
+        "englisch": "convince",
+        "satz": "She could not convince the jury.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 20,
+        "deutsch": "ruinieren",
+        "englisch": "ruin",
+        "satz": "One bad decision can ruin a career.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Wächter(in)",
+        "englisch": "guard",
+        "satz": "A guard watches the entrance all night.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Nachrichtensprecher(in)",
+        "englisch": "newsreader",
+        "satz": "The newsreader announced the arrest at six.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Bankschließfach",
+        "englisch": "safety deposit box",
+        "satz": "The letters lay in a safety deposit box.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Tresor",
+        "englisch": "vault",
+        "satz": "Nobody could open the vault without two keys.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Vorschlag",
+        "englisch": "suggestion",
+        "satz": "Her suggestion led the police to the flat.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 83"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Verbot",
+        "englisch": "ban",
+        "satz": "The city introduced a ban on loud fireworks.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Internetmobbing",
+        "englisch": "cyberbullying",
+        "satz": "The school held a lesson about cyberbullying.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 28,
+        "deutsch": "stören",
+        "englisch": "disturb",
+        "satz": "Please do not disturb the crime scene.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Domino",
+        "englisch": "dominoes",
+        "satz": "The old men play dominoes outside the cafe.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 87"
+      },
+      {
+        "nr": 30,
+        "deutsch": "schwimmen",
+        "englisch": "float",
+        "satz": "The empty case began to float down the river.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 87"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "Straßenräuber(in)",
+        "englisch": "mugger",
+        "satz": "A mugger took his phone near the station.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Haftstrafe",
+        "englisch": "prison sentence",
+        "satz": "He received a short prison sentence.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Räuber(in)",
+        "englisch": "robber",
+        "satz": "The robber wore a blue mask.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 4,
+        "deutsch": "Ladendiebstahl",
+        "englisch": "shoplifting",
+        "satz": "Shoplifting rose during the winter.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 5,
+        "deutsch": "Opfer",
+        "englisch": "victim",
+        "satz": "The victim could not remember the face.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 78"
+      },
+      {
+        "nr": 6,
+        "deutsch": "beleidigend",
+        "englisch": "abusive",
+        "satz": "He was banned for abusive comments.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Jahrzehnt",
+        "englisch": "decade",
+        "satz": "The case stayed open for a decade.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Betrug",
+        "englisch": "fraud",
+        "satz": "The email was a simple fraud.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Kampfsport",
+        "englisch": "martial art",
+        "satz": "She learns a martial art on Thursdays.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 10,
+        "deutsch": "Raubüberfall",
+        "englisch": "mugging",
+        "satz": "There was a mugging outside the cinema.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Straftat",
+        "englisch": "offence",
+        "satz": "Riding without a light is a minor offence.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Trollen",
+        "englisch": "trolling",
+        "satz": "Trolling made her leave the platform.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 13,
+        "deutsch": "unreif/kindisch",
+        "englisch": "immature",
+        "satz": "His reaction was childish and immature.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 14,
+        "deutsch": "treu",
+        "englisch": "loyal",
+        "satz": "A loyal friend never repeats your secrets.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 15,
+        "deutsch": "unglücklich",
+        "englisch": "unfortunate",
+        "satz": "It was an unfortunate mistake, not a crime.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 16,
+        "deutsch": "unehrlich",
+        "englisch": "dishonest",
+        "satz": "Being dishonest about the money cost him the job.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Krone",
+        "englisch": "crown",
+        "satz": "The crown was returned three years later.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Gefängniszelle",
+        "englisch": "jail cell",
+        "satz": "The jail cell had one narrow window.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Sicherheitssystem",
+        "englisch": "security system",
+        "satz": "The security system failed for six minutes.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 20,
+        "deutsch": "entriegeln",
+        "englisch": "unlock",
+        "satz": "Only two people could unlock the door.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Bankdirektor(in)",
+        "englisch": "bank manager",
+        "satz": "The bank manager called the police at once.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Ersparnisse",
+        "englisch": "life savings",
+        "satz": "She lost her life savings in the scam.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 23,
+        "deutsch": "durchsagen",
+        "englisch": "announce",
+        "satz": "The court will announce the verdict tomorrow.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 24,
+        "deutsch": "bestreiten",
+        "englisch": "deny",
+        "satz": "He continued to deny everything.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 25,
+        "deutsch": "bohren",
+        "englisch": "drill",
+        "satz": "They used a drill to reach the vault.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Befehl",
+        "englisch": "command",
+        "satz": "The officer gave a short command.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 83"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Ärgernis",
+        "englisch": "nuisance",
+        "satz": "The alarm became a nuisance for the neighbours.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 28,
+        "deutsch": "zugeben",
+        "englisch": "admit",
+        "satz": "It took him two days to admit the theft.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Taucherglocke",
+        "englisch": "diving bell",
+        "satz": "A diving bell was used to reach the wreck.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 87"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Raumfahrer",
+        "englisch": "spaceman",
+        "satz": "The thief was dressed as a spaceman.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 87"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 8 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+          "items": [
+            {
+              "german": "Strafe",
+              "english": "punishment",
+              "pos": "noun"
+            },
+            {
+              "german": "Internetmobbing",
+              "english": "cyberbullying",
+              "pos": "noun"
+            },
+            {
+              "german": "Bankschließfach",
+              "english": "safety deposit box",
+              "pos": "noun"
+            },
+            {
+              "german": "Zutaten",
+              "english": "ingredient",
+              "pos": "noun"
+            },
+            {
+              "german": "Taschendieb(in)",
+              "english": "pickpocket",
+              "pos": "noun"
+            },
+            {
+              "german": "Nachrichtensprecher(in)",
+              "english": "newsreader",
+              "pos": "noun"
+            },
+            {
+              "german": "Internetkriminalität",
+              "english": "cybercrime",
+              "pos": "noun"
+            },
+            {
+              "german": "bedrohend",
+              "english": "threatening",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Vorschlag",
+            "unglaublich",
+            "unverantwortlich",
+            "verhaften"
+          ],
+          "gaps": [
+            {
+              "german": "verhaften",
+              "english": "arrest",
+              "answer": "arrest",
+              "pos": "verb"
+            },
+            {
+              "german": "Vorschlag",
+              "english": "suggestion",
+              "answer": "suggestion",
+              "pos": "noun"
+            },
+            {
+              "german": "unverantwortlich",
+              "english": "irresponsible",
+              "answer": "irresponsible",
+              "pos": "adj",
+              "unique_because": "„had been ___ rather than criminal“ bewertet das Verhalten der Bewohner."
+            },
+            {
+              "german": "unglaublich",
+              "english": "unbelievable",
+              "answer": "unbelievable",
+              "pos": "adj",
+              "unique_because": "„the final explanation sounded ___“ bewertet die Geschichte, nicht das Verhalten."
+            }
+          ],
+          "text": "The police could not {1} anybody in the first three weeks. Then a neighbour made one simple {2} that changed the whole case. Leaving the back door open all night had been {3} rather than criminal. The final explanation sounded {4} to everyone in the small courtroom. The trial lasted only two afternoons. Local papers wrote about it for a week. Nobody in the town has forgotten the story. The window is now closed every evening."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 8 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+          "items": [
+            {
+              "german": "Domino",
+              "english": "dominoes",
+              "pos": "noun"
+            },
+            {
+              "german": "Hacken",
+              "english": "hacking",
+              "pos": "noun"
+            },
+            {
+              "german": "hart",
+              "english": "harsh",
+              "pos": "adj"
+            },
+            {
+              "german": "berüchtigt",
+              "english": "infamous",
+              "pos": "adj"
+            },
+            {
+              "german": "Ruhm",
+              "english": "fame",
+              "pos": "noun"
+            },
+            {
+              "german": "Wächter(in)",
+              "english": "guard",
+              "pos": "noun"
+            },
+            {
+              "german": "Tresor",
+              "english": "vault",
+              "pos": "noun"
+            },
+            {
+              "german": "Verbot",
+              "english": "ban",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "unerwartet",
+            "Geheimnis",
+            "ruinieren",
+            "Einbrecher(in)"
+          ],
+          "gaps": [
+            {
+              "german": "ruinieren",
+              "english": "ruin",
+              "answer": "ruin",
+              "pos": "verb"
+            },
+            {
+              "german": "Geheimnis",
+              "english": "mystery",
+              "answer": "mystery",
+              "pos": "noun",
+              "unique_because": "„the open window was a real ___“ meint die ungelöste Frage."
+            },
+            {
+              "german": "unerwartet",
+              "english": "unexpected",
+              "answer": "unexpected",
+              "pos": "adj"
+            },
+            {
+              "german": "Einbrecher(in)",
+              "english": "burglar",
+              "answer": "burglar",
+              "pos": "noun",
+              "unique_because": "„a young ___ had left his gloves“ meint eine Person."
+            }
+          ],
+          "text": "One wet night in March something strange happened at the museum. Rain can {1} old paintings in a few hours. For two days the open window was a real {2}. The staff checked every room twice. Then a completely {3} phone call reached the police. A young {4} had left his gloves on the stairs."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 8 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+          "items": [
+            {
+              "german": "Ärgernis",
+              "english": "nuisance",
+              "pos": "noun"
+            },
+            {
+              "german": "treu",
+              "english": "loyal",
+              "pos": "adj"
+            },
+            {
+              "german": "unglücklich",
+              "english": "unfortunate",
+              "pos": "adj"
+            },
+            {
+              "german": "Taucherglocke",
+              "english": "diving bell",
+              "pos": "noun"
+            },
+            {
+              "german": "Ladendiebstahl",
+              "english": "shoplifting",
+              "pos": "noun"
+            },
+            {
+              "german": "Straßenräuber(in)",
+              "english": "mugger",
+              "pos": "noun"
+            },
+            {
+              "german": "Gefängniszelle",
+              "english": "jail cell",
+              "pos": "noun"
+            },
+            {
+              "german": "entriegeln",
+              "english": "unlock",
+              "pos": "verb"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Straftat",
+            "Haftstrafe",
+            "bohren",
+            "unreif/kindisch"
+          ],
+          "gaps": [
+            {
+              "german": "bohren",
+              "english": "drill",
+              "answer": "drill",
+              "pos": "verb"
+            },
+            {
+              "german": "Haftstrafe",
+              "english": "prison sentence",
+              "answer": "prison sentence",
+              "pos": "noun",
+              "unique_because": "„the court gave them a short ___“ meint die Strafe."
+            },
+            {
+              "german": "unreif/kindisch",
+              "english": "immature",
+              "answer": "immature",
+              "pos": "adj"
+            },
+            {
+              "german": "Straftat",
+              "english": "offence",
+              "answer": "offence",
+              "pos": "noun",
+              "unique_because": "„counts as a serious ___ here“ meint die Tat selbst, nicht ihre Folge."
+            }
+          ],
+          "text": "The two brothers used a heavy machine to {1} through the shop wall. In November the court gave them a short {2}. The judge called their behaviour {3} rather than truly dangerous. Breaking into an empty building still counts as a serious {4} here. Both of them now clean the park on Saturdays. The mayor says the arrangement works well. Nobody has tried the same thing since. The shop installed a new alarm in spring."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 8 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+          "items": [
+            {
+              "german": "Räuber(in)",
+              "english": "robber",
+              "pos": "noun"
+            },
+            {
+              "german": "Trollen",
+              "english": "trolling",
+              "pos": "noun"
+            },
+            {
+              "german": "Opfer",
+              "english": "victim",
+              "pos": "noun"
+            },
+            {
+              "german": "Sicherheitssystem",
+              "english": "security system",
+              "pos": "noun"
+            },
+            {
+              "german": "durchsagen",
+              "english": "announce",
+              "pos": "verb"
+            },
+            {
+              "german": "Krone",
+              "english": "crown",
+              "pos": "noun"
+            },
+            {
+              "german": "Betrug",
+              "english": "fraud",
+              "pos": "noun"
+            },
+            {
+              "german": "unehrlich",
+              "english": "dishonest",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "beleidigend",
+            "zugeben",
+            "Kampfsport",
+            "Jahrzehnt"
+          ],
+          "gaps": [
+            {
+              "german": "zugeben",
+              "english": "admit",
+              "answer": "admit",
+              "pos": "verb"
+            },
+            {
+              "german": "Kampfsport",
+              "english": "martial art",
+              "answer": "martial art",
+              "pos": "noun",
+              "unique_because": "„he had learned a ___ many years before“ meint einen Sport."
+            },
+            {
+              "german": "beleidigend",
+              "english": "abusive",
+              "answer": "abusive",
+              "pos": "adj"
+            },
+            {
+              "german": "Jahrzehnt",
+              "english": "decade",
+              "answer": "decade",
+              "pos": "noun",
+              "unique_because": "„for almost a ___ of quiet work“ meint einen Zeitraum."
+            }
+          ],
+          "text": "The man took two days to {1} what he had done. He had learned a {2} many years before. Online he had written {3} messages to three young players. His trainer spoke for him in court. The judge listened carefully to both sides. The club had known him for almost a {4} of quiet work."
+        }
+      }
+    }
+  }
+}

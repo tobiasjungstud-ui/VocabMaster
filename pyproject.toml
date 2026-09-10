@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vocabmaster"
+version = "1.0.0"
+description = "Vokabellisten und Vokabelprüfungen aus einer Wortliste - Niveau A und B, geprüft und druckfertig."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Tobias Jung" }]
+keywords = ["vocabulary", "english", "teaching", "docx", "cefr", "exam"]
+
+dependencies = [
+    "python-docx>=1.1",
+    "openpyxl>=3.1",
+    "xlrd>=2.0",
+    "wordfreq>=3.1",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.32"]
+dev = ["pytest>=8.0", "ruff>=0.5", "streamlit>=1.32"]
+
+[project.scripts]
+vocabmaster = "vocabmaster.cli:main"
+
+[project.urls]
+Repository = "https://github.com/tobiasjungstud-ui/VocabMaster"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"vocabmaster" = ["data/*.json", "data/wortliste/*.json", "templates/*.docx"]
+"vocabmaster.list" = ["data/*.txt"]
+"vocabmaster.exam" = ["data/*.txt", "data/*.gz"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]

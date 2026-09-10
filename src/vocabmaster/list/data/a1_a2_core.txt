@@ -1,0 +1,76 @@
+# Core A1/A2 English vocabulary.
+# Words on this list are assumed to be known long before B1.2 and are therefore
+# rejected as test items ("zu einfach"). One entry per line, lowercase.
+# Multi-word entries are allowed. Lines starting with # are comments.
+
+# --- people, family, body ---
+man woman boy girl child children baby people person friend family mother father
+mum dad mom parent parents sister brother son daughter grandmother grandfather
+aunt uncle cousin husband wife name age year old young
+body head hair eye eyes ear ears nose mouth tooth teeth face neck arm hand finger
+leg foot feet back heart skin
+
+# --- home and everyday objects ---
+house home flat room kitchen bedroom bathroom living room garden door window wall
+floor roof stairs table chair bed sofa lamp light key clock watch mirror
+cup glass plate bowl spoon fork pot pan bag box bottle paper pen pencil book
+newspaper letter card photo picture phone telephone computer television tv radio
+camera money purse wallet ticket
+
+# --- clothes ---
+clothes shirt t-shirt trousers jeans dress skirt shoe shoes sock socks coat jacket
+hat cap jumper sweater scarf glove gloves belt pocket
+
+# --- food and drink ---
+food drink water milk juice tea coffee bread butter cheese egg eggs meat chicken
+fish rice pasta potato potatoes tomato salad soup fruit apple banana orange lemon
+vegetable carrot onion sugar salt pepper cake biscuit chocolate ice cream
+breakfast lunch dinner supper meal menu restaurant cafe shop supermarket
+
+# --- animals and nature ---
+animal dog cat bird horse cow pig sheep mouse fish rabbit bear lion elephant
+monkey insect spider tree flower grass leaf leaves plant forest wood field
+mountain hill river lake sea ocean beach sand island sky sun moon star cloud rain
+snow wind ice fire stone rock earth world nature weather
+
+# --- time ---
+time day night morning afternoon evening today tomorrow yesterday week weekend
+month year hour minute second date birthday holiday summer winter spring autumn
+fall monday tuesday wednesday thursday friday saturday sunday january february
+march april may june july august september october november december
+now then soon early late later always never often sometimes usually again
+
+# --- places and travel ---
+place city town village street road way station airport bus train car bike
+bicycle plane boat ship taxi shop school class classroom teacher student pupil
+lesson homework university hospital doctor nurse police office bank post office
+church park museum cinema theatre library hotel farm factory shop market
+country map north south east west left right
+
+# --- basic verbs ---
+be am is are was were been have has had do does did go goes went gone come came
+get got give gave take took make made say said tell told ask answer know knew
+think thought see saw look watch hear listen speak talk read write learn teach
+study work play run walk swim jump sit stand sleep wake eat drink cook buy sell
+pay cost open close start begin stop finish help want need like love hate
+live die feel find lose win put keep let leave stay wait meet call visit send
+bring carry hold turn move show wear wash clean drive ride fly swim try use
+understand remember forget change happen become seem look like
+
+# --- basic adjectives ---
+good bad big small large little long short tall high low new old young fast slow
+hot cold warm cool wet dry clean dirty easy difficult hard soft loud quiet
+happy sad angry tired hungry thirsty ill sick well fine nice kind friendly
+beautiful pretty ugly funny boring interesting important different same
+right wrong true false free busy full empty cheap expensive rich poor
+strong weak heavy light dark bright red blue green yellow black white brown
+grey gray pink orange purple first last next best better worse worst
+
+# --- function and quantity words ---
+a an the this that these those here there where when what who why how which
+and or but so because if then than also too very much many more most less
+few some any all every each other another both either neither one two three
+four five six seven eight nine ten hundred thousand million number half
+yes no not never nothing something anything everything nobody somebody
+everybody always sometimes often usually maybe perhaps please thank sorry
+hello goodbye okay

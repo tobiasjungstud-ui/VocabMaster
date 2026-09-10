@@ -1,0 +1,87 @@
+{
+ "schema": 1,
+ "quelle": {
+  "datei": "english_plus_2e_level_4_german_wordlist.xls",
+  "tabellenblatt": "Sheet1",
+  "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+  "importiert": "2026-09-10"
+ },
+ "eintraege": 1722,
+ "units": [
+  {
+   "unit": 0,
+   "datei": "unit_00.json",
+   "titel": "Starter Unit",
+   "thema": "Medien, Geräte und Online-Leben",
+   "anzahl": 65,
+   "anzahl_hauptteil": 65
+  },
+  {
+   "unit": 1,
+   "datei": "unit_01.json",
+   "titel": "Unit 1",
+   "thema": "Erinnerungen und Gegenstände",
+   "anzahl": 294,
+   "anzahl_hauptteil": 213
+  },
+  {
+   "unit": 2,
+   "datei": "unit_02.json",
+   "titel": "Unit 2",
+   "thema": "Entscheidungen, Zukunft und Engagement",
+   "anzahl": 277,
+   "anzahl_hauptteil": 186
+  },
+  {
+   "unit": 3,
+   "datei": "unit_03.json",
+   "titel": "Unit 3",
+   "thema": "Werbung, Marketing und Konsum",
+   "anzahl": 200,
+   "anzahl_hauptteil": 133
+  },
+  {
+   "unit": 4,
+   "datei": "unit_04.json",
+   "titel": "Unit 4",
+   "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+   "anzahl": 205,
+   "anzahl_hauptteil": 136
+  },
+  {
+   "unit": 5,
+   "datei": "unit_05.json",
+   "titel": "Unit 5",
+   "thema": "Wissenschaft, Forschung und Biomimikry",
+   "anzahl": 187,
+   "anzahl_hauptteil": 128
+  },
+  {
+   "unit": 6,
+   "datei": "unit_06.json",
+   "titel": "Unit 6",
+   "thema": "Persönlichkeit und soziale Rollen",
+   "anzahl": 151,
+   "anzahl_hauptteil": 88
+  },
+  {
+   "unit": 7,
+   "datei": "unit_07.json",
+   "titel": "Unit 7",
+   "thema": "Bauwerke und Wahrzeichen",
+   "anzahl": 162,
+   "anzahl_hauptteil": 100
+  },
+  {
+   "unit": 8,
+   "datei": "unit_08.json",
+   "titel": "Unit 8",
+   "thema": "Verbrechen, Sicherheit und Krimis",
+   "anzahl": 181,
+   "anzahl_hauptteil": 119
+  }
+ ],
+ "hinweise": [
+  "43 Einträge: Blocküberschrift und Spalte 'Section' nennen unterschiedliche Units. Es gilt 'Section'. Beispiele: Zeile 34 ('intelligent'): Block 0, Spalte 4; Zeile 59 ('style'): Block 0, Spalte 3; Zeile 224 ('professor'): Block 1, Spalte 4"
+ ]
+}

@@ -1,0 +1,153 @@
+# Core English vocabulary up to roughly B1.
+# Anything in a cloze text that is NOT in this list, NOT in the vocabulary list
+# being tested and NOT a name is reported as a possibly unknown word.
+# One word per line, lower case, base forms; the checker also matches regular
+# inflections (-s, -es, -ed, -ing, -er, -est, -ly).
+a about above abroad accept accident according account across act active activity
+actor actually add address adult advantage adventure advertisement advice afford
+afraid after afternoon again against age ago agree air airport all allow almost
+alone along already also although always amazing ambulance among amount and angry
+animal announce annoy another answer any anybody anymore anyone anything anyway
+anywhere apartment apologise appear apple application apply appointment area argue
+argument arm army around arrange arrive art article artist as ask asleep at
+athlete attack attend attention attitude attract audience aunt autumn available
+average avoid away awful baby back background bad bag bake balcony ball banana
+band bank bar baseball basic basket basketball bath bathroom be beach bear
+beautiful because become bed bedroom beer before begin beginning behave behind
+believe bell belong below belt bench beside best better between bicycle big bike
+bill biology bird birth birthday biscuit bit bite black blanket blind block blond
+blood blouse blue board boat body boil book boot border bored boring born borrow
+boss both bother bottle bottom bowl box boy brain branch brave bread break
+breakfast breath breathe bridge bright bring broken brother brown brush build
+building bus business busy but butter button buy by cake calendar call calm camera
+camp can cancel candle cap capital car card care career careful carpet carrot
+carry cartoon case cash cat catch cause ceiling celebrate cell cent centre century
+certain chair challenge championship chance change channel character charge chat
+cheap check cheese chemistry chicken child childhood chips chocolate choice choose
+church cinema circle city class classroom clean clear clever climate climb clock
+close clothes cloud club coach coast coat coffee coin cold collect college colour
+come comfortable comment common communicate community company compare competition
+complain complete complicated computer concert condition confident confuse connect
+consider contact contain continue control conversation cook cool copy corner
+correct cost cotton cough could count country countryside couple courage course
+court cousin cover crash crazy cream create creative credit crime criminal cross
+crowd cry culture cup cupboard curtain customer cut cycle dad damage dance danger
+dangerous dark date daughter day dead deal dear death decide decision deep degree
+delay deliver dentist depend describe desert design desk dessert destroy detail
+develop dictionary die diet difference different difficult dinner direct direction
+director dirty disagree disappear disappointed discover discuss disease dish
+distance divide do doctor document dog dollar door double doubt down download
+downstairs draw drawer dream dress drink drive driver drop drug dry duck during
+duty each ear early earn earth easily east easy eat economy edge education effect
+effort egg either electric electricity elephant else email embarrassed emergency
+emotion employ empty encourage end enemy energy engine engineer enjoy enough enter
+entertainment entrance environment equal equipment escape especially essay even
+evening event ever every everybody everyone everything everywhere exact exam
+example excellent except exchange excited exciting excuse exercise exhibition exist
+exit expect expensive experience experiment expert explain explore express extra
+extremely eye face fact factory fail fair fall false familiar family famous fan
+fantastic far farm fashion fast fat father fault favourite fear feed feel feeling
+festival few field fight file fill film final finally find fine finger finish fire
+first fish fit fix flag flat flight floor flower fly focus fold follow food foot
+football for force foreign forest forget fork form former forward free freedom
+freeze fresh fridge friend friendly frighten from front fruit full fun funny
+furniture further future game garage garden gas gate general generation gentle get
+gift girl give glad glass global glove go goal god gold good goodbye government
+grade grandfather grandmother grass great green grey ground group grow guess guest
+guide guitar gun guy habit hair half hall hand handle happen happy hard hardly hat
+hate have he head headache health healthy hear heart heat heavy height hello help
+her here hero hers herself hi hide high hill him himself his history hit hobby
+hold hole holiday home homework honest hope horrible horse hospital hot hotel hour
+house how however huge human hungry hurry hurt husband ice idea identify if ill
+illness imagine immediately import important impossible impress improve in
+include increase independent indeed industry influence inform information injury
+inside instead instruction instrument intelligent interest interested interesting
+international internet interview into introduce invent invitation invite involve
+iron island issue it item its itself jacket jam jeans job join joke journalist
+journey joy judge juice jump just keep key kick kid kill kilometre kind king
+kitchen knee knife knock know knowledge lab lady lake lamp land language large
+last late later laugh law lawyer lay lazy lead leader leaf learn least leather
+leave left leg legal lemon lend length less lesson let letter level library lie
+life lift light like likely limit line lion lip list listen little live local lock
+lonely long look lose loss lost lot loud love low luck lucky lunch machine
+magazine mail main major make man manage manager many map march mark market
+marriage marry match material mathematics matter maybe me meal mean meaning
+measure meat medicine medium meet meeting member memory mention menu message metal
+method metre middle midnight might mild milk million mind mine minute mirror miss
+missing mistake mix mobile model modern moment money monkey month mood moon more
+morning most mother motorbike mountain mouse mouth move movie much mud mum museum
+music musician must my myself nail name narrow national natural nature near nearly
+necessary neck need negative neighbour neither nervous net never new news
+newspaper next nice night no nobody noise noisy none normal north nose not note
+nothing notice novel now nowhere number nurse object ocean of off offer office
+officer official often oil ok old on once one onion online only open operate
+opinion opportunity opposite option or orange order ordinary organise other our
+ours ourselves out outdoor outside oven over own owner pack package page pain
+paint painting pair palace pale paper parent park part particular partner party
+pass passenger passport past path patient pattern pay peace pen pencil people
+pepper per percent perfect perform performance perhaps period permission person
+personal pet phone photo photograph physical piano pick picture piece pig pillow
+pilot pink pipe pity pizza place plan plane plant plastic plate platform play
+player pleasant please pleasure plenty plus pocket poem point police policy polite
+politics pollution pool poor pop popular population port position positive possess
+possible post potato pound pour power practical practise prefer pregnant prepare
+present president press pressure pretend pretty prevent previous price primary
+prince print prison private prize probably problem process produce product
+professional professor profit program programme progress project promise
+pronounce proper protect proud prove provide public pull punish pupil pure purple
+purpose push put quality quantity quarter queen question queue quick quiet quite
+race radio railway rain raise rare rather reach react read ready real realise
+reason receive recent recipe recognise recommend record red reduce refuse regard
+region regular relate relationship relative relax release reliable religion
+remain remember remind remove rent repair repeat replace reply report represent
+request require rescue research reserve respect responsible rest restaurant result
+return rice rich ride right ring rise risk river road rob rock role roll roof room
+root rope round route row rubbish rude rule run rush sad safe safety sail salad
+salary sale salt same sand sandwich satisfied sauce save say scared scene school
+science scissors score scream screen sea search season seat second secret
+secretary section see seem select sell send sense sentence separate serious serve
+service set several sew shake shall shame shape share sharp she sheep sheet shelf
+shine ship shirt shock shoe shoot shop shopping short should shoulder shout show
+shower shut shy sick side sight sign signal silent silly silver similar simple
+since sing singer single sink sister sit site situation size skill skin skirt sky
+sleep slice slow small smart smell smile smoke snow so soap social sock sofa soft
+soil soldier solve some somebody someone something sometimes somewhere son song
+soon sorry sort sound soup south space speak special speech speed spell spend
+spider spoon sport spot spread spring square stadium staff stage stairs stamp
+stand standard star start state station stay steal steel step stick still stomach
+stone stop store storm story straight strange stranger street stress stretch
+strict strong structure student study stupid style subject succeed success such
+sudden suffer sugar suggest suit suitable summer sun supermarket supply support
+suppose sure surface surprise surround survive sweet swim switch symbol system
+table tail take talk tall tape taste tax taxi tea teach teacher team tear
+technology telephone television tell temperature temporary tennis tent term
+terrible test text than thank that the theatre their theirs them themselves then
+there therefore these they thick thin thing think third thirsty this those though
+thought thousand throat through throw thumb thunder ticket tidy tie tiger tight
+till time tiny tip tired title to today together toilet tomato tomorrow tongue
+tonight too tool tooth top topic total touch tour tourist towards towel tower town
+toy track trade traditional traffic train training translate transport travel treat
+tree trip trouble trousers true trust truth try turn twice twin type typical ugly
+umbrella uncle under understand underground unfortunately unhappy uniform union
+unit university unless until unusual up upset upstairs us use useful user usual
+usually vacation valley valuable value van variety various vegetable vehicle very
+victim video view village visit visitor voice volunteer vote wait wake walk wall
+want war warm warn wash waste watch water wave way we weak wear weather website
+wedding week weekend weigh weight welcome well west wet what wheel when where
+whether which while white who whole whom whose why wide wife wild will win wind
+window wine wing winner winter wire wise wish with within without woman wonder
+wonderful wood wool word work worker world worried worry worse worst worth would
+wrap write writer wrong yard year yellow yes yesterday yet you young your yours
+yourself youth zero zone zoo
+# added while checking real cloze texts
+studio series actress comedy drama horror documentary trailer sequence
+cinema screen stage applause classmate
+# irregular forms, so the core-list check does not trip over them
+was were been had did done went gone came become brought bought caught chose
+drew drank drove ate fell felt fought found flew forgot forgotten got gave given
+grew heard held kept knew known left lent lost made met paid put ran read rang
+rose said saw seen sold sent sat slept spoke spoken spent stood stolen swam took
+taken taught told thought threw understood wore won wrote written began begun
+broke broken built hung hurt laid lay led meant rode risen sang sank shook shot
+shown shut sung sat slid spread stuck struck swore swum tore thrown woke worn
+

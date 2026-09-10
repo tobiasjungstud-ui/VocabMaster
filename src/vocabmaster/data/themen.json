@@ -1,0 +1,67 @@
+{
+  "_hinweis": [
+    "Thema und Titel je Unit. Die Wortliste des Lehrmittels enthält keine",
+    "Titelspalte, deshalb stehen sie hier. Diese Datei darf von Hand",
+    "geändert werden - sie wird beim Import gelesen, nicht überschrieben.",
+    "'leitwoerter' sind der Massstab der Themenkongruenz-Prüfung: ein",
+    "selbst ergänztes Wort muss zum Wortfeld der Unit passen, gemessen an",
+    "den Beispielsätzen der Unit und an diesen Leitwörtern."
+  ],
+  "quelle": "English Plus 2nd edition, Level 4 (German wordlist)",
+  "themen": {
+    "0": {
+      "titel": "Starter Unit",
+      "thema": "Medien, Geräte und Online-Leben",
+      "seiten": "4-7",
+      "leitwoerter": ["media", "device", "online", "social", "internet", "post", "account", "screen", "app", "connect"]
+    },
+    "1": {
+      "titel": "Unit 1",
+      "thema": "Erinnerungen und Gegenstände",
+      "seiten": "8-17",
+      "leitwoerter": ["memory", "remember", "object", "capsule", "past", "childhood", "keep", "container", "damaged", "festival"]
+    },
+    "2": {
+      "titel": "Unit 2",
+      "thema": "Entscheidungen, Zukunft und Engagement",
+      "seiten": "18-27",
+      "leitwoerter": ["decision", "choose", "option", "advice", "career", "future", "citizen", "charity", "volunteer", "lifestyle"]
+    },
+    "3": {
+      "titel": "Unit 3",
+      "thema": "Werbung, Marketing und Konsum",
+      "seiten": "28-37",
+      "leitwoerter": ["advertising", "marketing", "shop", "customer", "price", "brand", "influencer", "buy", "product", "value"]
+    },
+    "4": {
+      "titel": "Unit 4",
+      "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+      "seiten": "38-47",
+      "leitwoerter": ["feeling", "emotion", "anger", "calm", "communicate", "animal", "behaviour", "therapy", "sense", "express"]
+    },
+    "5": {
+      "titel": "Unit 5",
+      "thema": "Wissenschaft, Forschung und Biomimikry",
+      "seiten": "48-57",
+      "leitwoerter": ["science", "research", "species", "nature", "design", "solution", "experiment", "discover", "technology", "body"]
+    },
+    "6": {
+      "titel": "Unit 6",
+      "thema": "Persönlichkeit und soziale Rollen",
+      "seiten": "58-67",
+      "leitwoerter": ["personality", "character", "leader", "follower", "group", "confident", "sociable", "behave", "friend", "belong"]
+    },
+    "7": {
+      "titel": "Unit 7",
+      "thema": "Bauwerke und Wahrzeichen",
+      "seiten": "68-77",
+      "leitwoerter": ["building", "structure", "monument", "landmark", "construct", "design", "bridge", "stadium", "city", "architecture"]
+    },
+    "8": {
+      "titel": "Unit 8",
+      "thema": "Verbrechen, Sicherheit und Krimis",
+      "seiten": "78-87",
+      "leitwoerter": ["crime", "criminal", "police", "steal", "security", "prison", "detective", "investigate", "evidence", "suspect"]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# Laufzeitabhängigkeiten. Kein API-Schlüssel, kein Netz nötig.
+python-docx>=1.1    # Vokabelliste als Word-Datei
+openpyxl>=3.1       # Wortlisten im Format .xlsx lesen
+xlrd>=2.0           # Wortlisten im alten Format .xls lesen
+wordfreq>=3.1       # Häufigkeiten - nur beim Import der Datenbank gebraucht

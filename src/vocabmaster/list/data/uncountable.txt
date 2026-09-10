@@ -1,0 +1,14 @@
+# Häufige unzählbare englische Nomen. Sie erhalten im regelbasierten
+# Beispielsatz keinen unbestimmten Artikel ("We talked about rubbish", nicht
+# "a rubbish"). Eine Zeile pro Wort, Kleinschreibung.
+rubbish waste litter pollution recycling plastic aluminium cardboard packaging
+water air energy electricity fuel petrol gas oil coal power heat light
+food fruit rice pasta bread butter cheese meat sugar salt pepper chocolate
+cocoa milk juice coffee tea soup shampoo toothpaste soap
+information advice knowledge research evidence progress feedback news
+homework housework work employment training education
+furniture equipment machinery luggage baggage clothing jewellery money cash
+traffic transport weather climate nature scenery countryside farming
+health fitness stress anxiety happiness sadness anger fun humour laughter
+music jazz software hardware technology internet data content
+help support access permission behaviour attention effort damage

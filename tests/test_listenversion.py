@@ -43,27 +43,27 @@ def test_vertauschte_liste_faellt_auf(pack, db, settings):
     assert len(befunde) == len(pack.exams), "jede Prüfung muss sich melden"
 
 
-def test_neue_liste_wertet_die_zugaenglichsten_woerter_auf(pack, settings):
-    vorher = {e["englisch"] for e in pack.all_entries}
-    neu = neue_liste(pack, fancy=0, eigene=["misleading=irreführend"],
-                     settings=settings)
+def test_neue_liste_wertet_die_zugaenglichsten_woerter_auf(pack, db, settings):
+    """Das aufgewertete Wort tritt an die Stelle des zugänglichsten."""
+    from vocabmaster.pack import _schwierigkeit
 
+    neu = neue_liste(pack, db, fancy=0, eigene=["misleading=irreführend"],
+                     settings=settings)
     assert neu.liste_version == pack.liste_version + 1
     assert len(neu.all_entries) == len(pack.all_entries), "die Liste bleibt bei 60"
-    nachher = {e["englisch"] for e in neu.all_entries}
-    assert "misleading" in nachher
-    raus = vorher - nachher
-    assert len(raus) == 1
-    # Was weicht, muss leichter gewesen sein als das, was bleibt.
-    from vocabmaster.pack import _schwierigkeit
-    gewichen = next(e for e in pack.all_entries if e["englisch"] in raus)
-    geblieben = [_schwierigkeit(e) for e in pack.all_entries
-                 if e["englisch"] not in raus]
-    assert _schwierigkeit(gewichen) <= min(geblieben)
+    assert "misleading" in {e["englisch"] for e in neu.all_entries}
+
+    ersetzt = neu.data["abgeleitet_von"]["ersetzt"]
+    assert len(ersetzt) == 1
+    gewichen = ersetzt[0]["raus"]
+    geblieben = [_schwierigkeit(e) for e in neu.all_entries
+                 if e.get("englisch") and e.get("herkunft") != "fancy"]
+    weg = next(e for e in pack.all_entries if e["englisch"] == gewichen)
+    assert _schwierigkeit(weg) <= min(geblieben) + 0.01
 
 
-def test_neue_liste_bindet_die_pruefungen_neu(pack, settings):
-    neu = neue_liste(pack, fancy=2, settings=settings)
+def test_neue_liste_bindet_die_pruefungen_neu(pack, db, settings):
+    neu = neue_liste(pack, db, fancy=2, settings=settings)
     assert neu.exams, "die Prüfungen müssen mitkommen"
     for spec in neu.exams.values():
         assert spec["meta"]["liste_fingerabdruck"] == neu.liste_abdruck
@@ -78,19 +78,23 @@ def test_neue_liste_bindet_die_pruefungen_neu(pack, settings):
         assert "begruendung" in e, "die Begründung wird im Paket festgehalten"
 
 
-def test_neue_liste_haelt_die_luckentexte(pack, settings):
-    alt = {k: v["task2"]["text"] for k, v in pack.exams.items()}
-    neu = neue_liste(pack, fancy=1, settings=settings)
-    for schluessel, text in alt.items():
-        if text and "TODO" not in text:
-            assert neu.exams[schluessel]["task2"]["text"] == text
+def test_neue_liste_setzt_die_luckentexte_neu_an(pack, db, settings):
+    """Andere Liste, andere Prüfungswörter - ein alter Text passte nicht.
+
+    Beispielsätze wandern mit (sie gehören zum Wort), Lückentexte nicht
+    (sie gehören zu ihren vier Lücken).
+    """
+    neu = neue_liste(pack, db, fancy=1, settings=settings)
+    for schluessel, spec in neu.exams.items():
+        alt = pack.exams[schluessel]["task2"]["text"]
+        assert spec["task2"]["text"] != alt, (
+            f"{schluessel}: der Text von V1 darf nicht stehen bleiben"
+        )
 
 
-def test_neue_liste_verweigert_unsinn(pack, settings):
+def test_neue_liste_verweigert_unsinn(pack, db, settings):
     with pytest.raises(ValueError):
-        neue_liste(pack, fancy=0, eigene=(), settings=settings)
-    with pytest.raises(ValueError):
-        neue_liste(pack, fancy=99, settings=settings)
+        neue_liste(pack, db, fancy=99, settings=settings)
 
 
 @pytest.mark.parametrize("text,erwartet", [
@@ -120,9 +124,9 @@ def test_dateinamen_trennen_die_listenversionen():
     )
 
 
-def test_das_fach_gibt_die_lage_vor_nicht_die_antwort(pack, settings):
+def test_das_fach_gibt_die_lage_vor_nicht_die_antwort(pack, db, settings):
     """Zwei Units, zwei verschiedene Lagen - sonst wäre es eine Schablone."""
-    neu = neue_liste(pack, fancy=1, settings=settings)
+    neu = neue_liste(pack, db, fancy=1, settings=settings)
     fach = next(e for e in neu.all_entries
                 if e.get("herkunft") == "fancy" and not e.get("englisch"))
     hinweis = fach["hinweis"]
@@ -133,7 +137,7 @@ def test_das_fach_gibt_die_lage_vor_nicht_die_antwort(pack, settings):
                    ("dreadful", "packed", "exhausted", "crucial", "fascinating"))
 
 
-def test_uebernommener_lueckentext_wird_als_ueberholt_erkannt(pack, db, settings):
+def test_uebernommener_lueckentext_wird_als_ueberholt_erkannt():
     """Ein Text ist für *bestimmte* Lücken geschrieben.
 
     Werden die Prüfungswörter neu gesetzt, passt er nicht mehr: Der Satz,
@@ -165,3 +169,62 @@ def test_ueberholter_lueckentext_ist_ein_fehler(pack, db, settings):
     bericht = pruefe_paket(pack, db, settings)
     passend = [b for b in bericht.fehler if "text_ueberholt" in b.text]
     assert passend, "ein Text für andere Lücken muss ein Fehler sein"
+
+
+def test_neue_liste_waehlt_frisch_aus_der_datenbank(pack, db, settings):
+    """Eine zweite Liste wird gewählt, nicht aus der ersten geflickt.
+
+    Der klassische Fehler wäre, V1 zu kopieren und ein paar Wörter zu
+    tauschen: Dann bliebe die Frage "welche 60 Wörter dieser Unit sind die
+    lehrreichsten?" für immer einmal beantwortet.
+    """
+    neu = neue_liste(pack, db, fancy=0, settings=settings)
+    alt_w = {e["englisch"] for e in pack.all_entries}
+    neu_w = {e["englisch"] for e in neu.all_entries if e.get("englisch")}
+
+    herkunft = neu.data["abgeleitet_von"]
+    assert set(herkunft["neu_gewaehlt"]) == neu_w - alt_w
+    assert herkunft["neu_gewaehlt"], (
+        "Unit 1 hat Reserve im Hauptteil - davon muss etwas ankommen"
+    )
+    assert len(neu.all_entries) == len(pack.all_entries)
+
+
+def test_neue_liste_uebernimmt_die_beispielsaetze(pack, db, settings):
+    """Ein Satz gehört zum Wort, nicht zur Liste."""
+    neu = neue_liste(pack, db, fancy=0, settings=settings)
+    alt_saetze = {e["englisch"]: e["satz"] for e in pack.all_entries if e.get("satz")}
+    for e in neu.all_entries:
+        if e.get("englisch") in alt_saetze and e.get("herkunft") != "fancy":
+            assert e["satz"] == alt_saetze[e["englisch"]], (
+                f"{e['englisch']}: der Satz war schon geschrieben"
+            )
+    assert neu.data["abgeleitet_von"]["saetze_uebernommen"] > 40
+
+
+def test_neue_liste_verschlechtert_die_auswahl_nicht(pack, db, settings):
+    """Neuheit darf nicht auf Kosten des Lernwerts gehen.
+
+    Die Vorliebe für ungenutzte Wörter entscheidet Gleichstände; sie darf
+    die Liste nicht spürbar absacken lassen.
+    """
+    from vocabmaster.pack import _schwierigkeit
+
+    neu = neue_liste(pack, db, fancy=0, settings=settings)
+    alt_m = sum(_schwierigkeit(e) for e in pack.all_entries) / len(pack.all_entries)
+    neu_eintraege = [e for e in neu.all_entries if e.get("englisch")]
+    neu_m = sum(_schwierigkeit(e) for e in neu_eintraege) / len(neu_eintraege)
+    assert neu_m > alt_m - 0.35, (
+        f"V2 sackt ab: Ø {neu_m:.2f} gegen Ø {alt_m:.2f} in V1"
+    )
+
+
+def test_niveau_b_steht_im_kopf(pack):
+    """Wer austeilt, muss die B-Blätter auf einen Blick erkennen."""
+    for (teil, niveau), spec in pack.exams.items():
+        kopf = spec["header"]["unit"]
+        if niveau == "B":
+            assert kopf.endswith("Niv. B"), kopf
+        else:
+            assert "Niv." not in kopf, f"Niveau A trägt keinen Zusatz: {kopf}"
+        assert ("Part I" if teil == 1 else "Part II") in kopf

@@ -140,6 +140,11 @@ unterscheiden.
 Wörter, die man aus dem deutschen Stichwort abschreibt („Anekdote" →
 `anecdote`), kommen in **keine** Prüfung — auch nicht in die für Niveau B.
 
+Das **Blatt für Niveau B trägt „Niv. B" im Kopf**, neben `Part I`
+beziehungsweise `Part II`; das für Niveau A trägt keinen Zusatz. Es ist die
+Normalform, dieselbe Klasse bekommt nie beide zu sehen, und wer austeilt,
+muss die B-Blätter auf einen Blick erkennen.
+
 Die Prüfungsform ist für beide dieselbe (8× Übersetzen + 4 Lücken,
 12 Punkte), wie in der Vorlage. Unterschiedlich sind Wortauswahl,
 Satzlänge, Textlänge und Nebensatzdichte des Lückentextes.
@@ -172,29 +177,51 @@ sonst erst beim Korrigieren auf.
 vocabmaster listen        # welche Listen es je Unit gibt, mit Abdruck
 ```
 
-## Aufgewertete Wörter („fancy")
-
-Eine neue Liste entsteht nicht aus dem Nichts, sondern durch **Aufwertung**:
+## Eine neue Vokabelliste — frisch gewählt, nicht geflickt
 
 ```bash
-vocabmaster liste-neu kuratiert/unit_01.json --fancy 3 \
-    --wort "englisch=deutsch"
+vocabmaster liste-neu kuratiert/unit_01.json --fancy 8
 ```
 
-Das schreibt `kuratiert/unit_01_v2.json`. Die Liste bleibt bei **60 Wörtern**
-— sie muss auf eine A4-Seite passen —, also tritt jedes aufgewertete Wort an
-die Stelle eines zu einfachen. Es weichen die **zugänglichsten** zuerst, und
-welche das sind, hängt an der Unit: in Unit 3 `exotic` und `realistic`, in
-Unit 7 `sports stadium` und `skeleton`.
+Das schreibt `kuratiert/unit_01_v2.json`. Entscheidend: Die Auswahl wird
+**neu aus der Datenbank getroffen**. Würde stattdessen V1 kopiert und ein
+paar Wörter getauscht, bliebe die Frage „welche 60 Wörter dieser Unit sind
+die lehrreichsten?" für immer einmal beantwortet.
+
+Wörter, die in einer früheren Liste der Unit schon vorkamen, werden dabei
+leicht abgewertet (`pool._NEUHEITS_BONUS`) — **abgewertet, nicht
+ausgeschlossen**. Denn der Hauptteil gibt selten viel mehr her als die 60
+gebrauchten Wörter:
+
+| Unit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|---|---|---|---|---|---|---|---|---|
+| **Reserve im Hauptteil** | 8 | 17 | 8 | 0 | 0 | 0 | 1 | 0 |
+
+In Unit 4, 5, 6 und 8 ist er ausgeschöpft: Dort unterscheidet sich eine
+zweite Liste **nur** durch die aufgewerteten Wörter. Der Befehl schreibt
+hin, wie viele Wörter tatsächlich neu sind.
+
+Der Zuschlag ist gemessen, nicht geraten — 0.50 löst die Reserve
+grösstenteils ein und kostet rund zwei Prozent Lernwert; darüber wird es
+rasch teurer, ohne viel mehr zu bringen. Die Tabelle steht im Quelltext.
+
+**Beispielsätze wandern mit**, wo dasselbe Wort schon einen hatte: Ein Satz
+gehört zum Wort, nicht zur Liste. In Unit 1 sind das rund 53 von 60.
+**Lückentexte wandern nicht mit** — sie gehören zu ihren vier Lücken, und
+die sind bei einer anderen Liste andere.
+
+## Aufgewertete Wörter („fancy")
+
+Die Liste bleibt bei **60 Wörtern** — sie muss auf eine A4-Seite passen —,
+also tritt jedes aufgewertete Wort an die Stelle des zugänglichsten der
+frischen Auswahl. Das sind zuverlässig die Abschreibwörter: in Unit 1
+`document`, `anecdote`, `theme park`, `picnic`, `romantic`.
 
 ### Der Massstab steht nicht im Programm
 
-`--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Das Fach liefert
-die **Lage**, nicht das Ergebnis:
-
-* das Wortfeld der Unit und ihre Leitwörter,
-* das Niveauband der Liste,
-* welches Wort gewichen ist und mit welcher Prüfnote.
+`--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Das Fach
+liefert die **Lage**, nicht das Ergebnis: Wortfeld der Unit, Leitwörter,
+Niveauband, und welches Wort mit welcher Prüfnote gewichen ist.
 
 Wonach ausgewählt wird, gehört ausdrücklich **nicht** in den Quelltext.
 Steht dort erst einmal ein Kriterienkatalog mit Musterwörtern, bekommt jede
@@ -203,41 +230,30 @@ Bauwerke. Was ein Wort hier verdient, entscheidet sich am Wortfeld dieser
 Unit, an dem, was schon in der Liste steht, und daran, was der Klasse an
 Ausdruck wirklich fehlt. Das ist eine Überlegung, keine Tabelle.
 
-Ein Test wacht darüber (`tests/test_keine_schablonen.py`): Sobald fertige
-Beispielvokabeln in `src/` oder in der Oberfläche auftauchen, schlägt er an.
-Er hat schon einmal angeschlagen.
+Ein Test wacht darüber (`tests/test_keine_schablonen.py`). Er hat schon
+einmal angeschlagen.
 
 Die Begründung je Wort gehört ins Feld `begruendung` — die Themenkontrolle
-liest sie, und sie bleibt im Paket nachlesbar. Im Chat gehört sie ohnehin in
-die Antwort (siehe „Pflicht: Herkunft immer im Chat berichten").
+liest sie, und sie bleibt im Paket nachlesbar.
 
 `--wort` nimmt die Angabe in beiden Richtungen (`englisch=deutsch` wie
-`deutsch=englisch`); erkannt wird sie an der Schreibung — Umlaute und
-typische Endungen sprechen für Deutsch, `th` oder `-ness` für Englisch. Wo
-das nicht reicht (`rot=red`), wird **nicht geraten**, sondern zurückgefragt;
-eindeutig ist `en:<wort>=<Wort>`.
+`deutsch=englisch`); erkannt wird sie an der Schreibung. Wo das nicht reicht
+(`rot=red`), wird **nicht geraten**, sondern zurückgefragt; eindeutig ist
+`en:<wort>=<Wort>`.
 
-Die vier Prüfungen werden gegen die neue Liste neu aufgesetzt; die
-handgeschriebenen Lückentexte bleiben erhalten. Fällt eines ihrer
-Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel` —
-lieber ein klarer Fehler als stillschweigend weggeworfene Arbeit.
+## Der Bestand als Ganzes
 
-### Ein übernommener Lückentext ist nicht automatisch gültig
+`vocabmaster prüfen` sieht immer nur **ein** Paket. Was sich erst im
+Nebeneinander zeigt, fällt dort durch. `vocabmaster listen` prüft deshalb
+den ganzen Ordner:
 
-Ein Lückentext ist für **bestimmte** Lücken geschrieben. Werden die
-Prüfungswörter neu gesetzt — durch `liste-neu` oder durch `ausgleichen` —,
-passt er nicht mehr: Der Satz, der `checkout` erschliessbar machte, steht
-dann über der Lösung `downside`.
-
-Genau das lief lange still durch, und der Selbstcheck hat es nicht bemerkt:
-`loesungsschluessel` prüft nur, dass die Lückenwörter *in der Liste stehen*,
-nicht, dass der Text sie *meint*. Deshalb merkt sich `task2.text_ueberholt`
-jetzt, für welche Lücken ein übernommener Text einmal geschrieben wurde.
-Stimmen sie nicht mehr mit den heutigen überein, ist das ein **Fehler** —
-auszuräumen nur durch Neuschreiben, danach das Feld löschen.
-
-Der Text wird trotzdem übernommen und nicht verworfen: Er ist Handarbeit
-und die bessere Grundlage für die neue Fassung als ein leeres Feld.
+* zwei Pakete, die auf dieselben Word-Dateien zielen (**Fehler** — sie
+  überschreiben sich),
+* eine Fassung zu einer Liste, die es nicht gibt (**Fehler**),
+* eine Prüfung, die am Abdruck einer anderen Liste hängt (**Fehler**),
+* zwei Listen einer Unit mit identischem Inhalt (**Warnung** — keine zwei
+  Listen),
+* eine Lücke in der Versionsnummerierung (**Warnung**).
 
 ## Fassungen einer Prüfung
 

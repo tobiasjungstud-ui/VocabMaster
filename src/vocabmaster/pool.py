@@ -29,6 +29,7 @@ offen sind und woher sie im Notfall nachgezogen hat.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 
 from .config import Settings
@@ -130,11 +131,44 @@ class UnitPlan:
         return pair
 
 
+#: Zuschlag, mit dem ein noch nie verwendetes Wort gegenüber einem bereits
+#: gelisteten bevorzugt wird - gemessen, nicht geraten.
+#:
+#: Der Hauptteil einer Unit gibt kaum mehr her als die 60 gebrauchten Wörter;
+#: die Reserve beträgt in Unit 1 acht Wörter, in Unit 2 siebzehn, in Unit 4
+#: bis 8 gar keine. Der Zuschlag bestimmt, wieviel davon eine zweite Liste
+#: tatsächlich austauscht, und was das an Lernwert kostet:
+#:
+#: =======  ==================  ===========================
+#: Zuschlag  ausgetauscht (U1)  Lernwert gegenüber V1
+#: =======  ==================  ===========================
+#: 0.25      4 Wörter           -0.014  (-1 %)
+#: **0.50**  **7 Wörter**       **-0.034  (-2 %)**
+#: 1.00      8 Wörter           -0.043  (-3 %)
+#: =======  ==================  ===========================
+#:
+#: 0.50 löst die Reserve grösstenteils ein und kostet dabei rund zwei
+#: Prozent Lernwert. Darüber wird es rasch teurer, ohne viel mehr zu bringen.
+_NEUHEITS_BONUS = 0.50
+
+
 def plan_unit(
-    db: Database, unit: int, settings: Settings | None = None
+    db: Database,
+    unit: int,
+    settings: Settings | None = None,
+    schon_verwendet: Iterable[str] = (),
 ) -> UnitPlan:
-    """Wählt die 60 Wörter einer Unit und teilt sie auf Test 1 und Test 2 auf."""
+    """Wählt die 60 Wörter einer Unit und teilt sie auf Test 1 und Test 2 auf.
+
+    ``schon_verwendet`` nennt die Wörter, die in einer früheren Vokabelliste
+    dieser Unit schon vorkamen. Sie werden **nicht ausgeschlossen** - der
+    Hauptteil einer Unit gibt oft kaum mehr her als die 60, die gebraucht
+    werden -, sondern nur leicht abgewertet. Eine zweite Liste soll aus
+    demselben Stoff eine andere sinnvolle Auswahl treffen, nicht eine
+    schlechtere.
+    """
     settings = settings or Settings()
+    frueher = {w.strip().lower() for w in schon_verwendet if w}
     db.require_unit(unit)
     theme = db.theme(unit)
     ziel = settings.target_total
@@ -165,7 +199,13 @@ def plan_unit(
         for loser, winner, why in dropped
     ]
 
-    auswahl = select_words(kept, fallback=None, target=ziel)
+    vorliebe = None
+    if frueher:
+        def vorliebe(c: Candidate) -> float:
+            bekannt = (c.headword or c.english or "").strip().lower()
+            return 0.0 if bekannt in frueher else _NEUHEITS_BONUS
+
+    auswahl = select_words(kept, fallback=None, target=ziel, bias=vorliebe)
     gewaehlt = list(auswahl.chosen)
     report.aus_hauptteil = len(gewaehlt)
 

@@ -114,15 +114,6 @@ def _placeholder(number: int) -> dict[str, Any]:
     return entry
 
 
-def _as_vocab_item(entry: dict[str, Any]) -> VocabItem:
-    return VocabItem(
-        number=int(entry.get("nr", 0)),
-        german=entry.get("deutsch", ""),
-        english=entry.get("englisch", ""),
-        example=entry.get("satz", ""),
-    )
-
-
 #: Ab dieser Ähnlichkeit zum deutschen Stichwort schreibt man das englische
 #: Wort einfach ab - geprüft wird damit nichts, auf keinem Niveau.
 ABSCHREIBBAR = 0.80
@@ -147,6 +138,29 @@ def _bewertung(entry: dict[str, Any]):
 
 def _schwierigkeit(entry: dict[str, Any]) -> float:
     return _bewertung(entry).score
+
+
+@lru_cache(maxsize=8192)
+def _unvertraeglich_roh(a_en: str, a_de: str, b_en: str, b_de: str) -> bool:
+    return bool(_exam_clashes(
+        VocabItem(number=0, german=a_de, english=a_en, example=""),
+        [VocabItem(number=0, german=b_de, english=b_en, example="")],
+    ))
+
+
+def _unvertraeglich(a: dict[str, Any], b: dict[str, Any]) -> bool:
+    """Schliessen sich zwei Wörter in einer Prüfung gegenseitig aus?
+
+    Wortfamilie, Beinah-Synonym, bekanntes Verwechslungspaar. Das Ergebnis
+    hängt nur am Paar und wird gemerkt - die Auswahl fragt dieselben Paare
+    für vier Prüfungen derselben Unit wieder und wieder ab. Gefragt wird
+    aber erst, wenn es darauf ankommt: Die ganze Paarmatrix vorzurechnen
+    kostete mehr als die Auswahl selbst.
+    """
+    return _unvertraeglich_roh(
+        a.get("englisch", ""), a.get("deutsch", ""),
+        b.get("englisch", ""), b.get("deutsch", ""),
+    )
 
 
 def _abschreibbar(entry: dict[str, Any]) -> bool:
@@ -204,15 +218,8 @@ def waehle_pruefungswoerter(
     max_anteil = prof.selection_targets["max_share_one_word_class"]
     grenze_wortart = int(take * max_anteil)
 
-    vokabeln = {id(e): _as_vocab_item(e) for e in brauchbar}
-    unvertraeglich: dict[int, set[int]] = {id(e): set() for e in brauchbar}
-    for a in brauchbar:
-        for b in brauchbar:
-            if a is not b and _exam_clashes(vokabeln[id(a)], [vokabeln[id(b)]]):
-                unvertraeglich[id(a)].add(id(b))
-
     def passt(entry: dict[str, Any], gewaehlt: list[dict[str, Any]]) -> bool:
-        if unvertraeglich[id(entry)].intersection(id(c) for c in gewaehlt):
+        if any(_unvertraeglich(entry, c) for c in gewaehlt):
             return False
         if len(entry["englisch"].split()) > 1:
             mehrwort = sum(1 for c in gewaehlt if len(c["englisch"].split()) > 1)
@@ -317,7 +324,12 @@ def _exam_scaffold(
         "total_words": settings.exam_words,
         "header": {
             "title": " Vocabulary",
-            "unit": f"Unit {number} |{part_label}",
+            # Niveau B steht im Kopf neben dem Prüfungsteil. Das Blatt für
+            # Niveau A trägt keinen Zusatz: Es ist die Normalform, und
+            # dieselbe Klasse bekommt nie beide Fassungen zu sehen. Wer
+            # austeilt, muss die B-Blätter auf einen Blick erkennen.
+            "unit": f"Unit {number} |{part_label}"
+                    + ("" if prof.name == "A" else f" Niv. {prof.name}"),
             "name_label": "Name:",
             "grade_label": "Grade :",
         },
@@ -776,97 +788,123 @@ def _wortangabe(text: str) -> tuple[str, str]:
 
 def neue_liste(
     pack: Pack,
+    db: Database,
     fancy: int = 0,
     eigene: Iterable[str] = (),
     settings: Settings | None = None,
+    weitere: Iterable[Pack] = (),
 ) -> Pack:
     """Eine neue Fassung der **Vokabelliste** - V2, V3, ...
 
-    Die Liste bleibt bei 60 Wörtern; sie muss auf eine A4-Seite passen. Ein
-    aufgewertetes Wort tritt deshalb an die Stelle eines zu einfachen: Die
-    zugänglichsten Wörter der Liste weichen zuerst, weil genau sie für eine
-    Klasse auf B1.1-B1.2 am wenigsten Lernstoff sind.
+    Die Auswahl wird **neu aus der Datenbank getroffen**, nicht aus der alten
+    Liste geflickt. Sonst wäre eine zweite Liste die erste mit ein paar
+    ausgetauschten Wörtern, und die Frage "welche 60 Wörter dieser Unit sind
+    die lehrreichsten?" würde nur einmal beantwortet.
+
+    Wörter, die in einer früheren Liste dieser Unit schon vorkamen, werden
+    dabei leicht abgewertet (siehe ``pool._NEUHEITS_BONUS``) - abgewertet,
+    nicht ausgeschlossen: Der Hauptteil einer Unit gibt oft kaum mehr her
+    als die 60 gebrauchten Wörter. Wieviel Spielraum bleibt, steht danach im
+    Bericht.
 
     ``eigene`` sind selbst angegebene Wörter (``"englisch=deutsch"``),
     ``fancy`` die Zahl der zusätzlichen Fächer, die im Chat gefüllt werden.
-    Die Anwendung erfindet hier nichts - sie räumt nur den Platz frei und
-    schreibt den Massstab daneben.
+    Sie treten an die Stelle der zugänglichsten Wörter der frischen Auswahl -
+    die Liste bleibt bei 60, sie muss auf eine A4-Seite passen.
 
-    Alle vier Prüfungen werden gegen die neue Liste neu aufgesetzt; sonst
-    zeigte ihr Lösungsschlüssel auf Wörter, die nicht mehr darin stehen.
+    Beispielsätze werden übernommen, wo dasselbe Wort schon einen hatte:
+    Ein Satz gehört zum Wort, nicht zur Liste.
     """
     settings = settings or Settings()
     vorgaben = [_wortangabe(t) for t in eigene]
     plaetze = int(fancy) + len(vorgaben)
-    if plaetze <= 0:
-        raise ValueError("Ohne --fancy und ohne --wort gibt es nichts zu tun.")
+    if plaetze < 0:
+        raise ValueError("Die Zahl der Fächer kann nicht negativ sein.")
 
-    neu = Pack(data=json.loads(json.dumps(pack.data)))
-    gesamt = len(neu.all_entries)
-    if plaetze > gesamt // 2:
+    quellen = [pack, *weitere]
+    schon = [e.get("englisch", "") for p in quellen for e in p.all_entries]
+    # Ein Satz gehört zum Wort: Wer ihn einmal geschrieben hat, schreibt ihn
+    # für dieselbe Vokabel nicht noch einmal.
+    saetze = {
+        e["englisch"].lower(): e
+        for p in quellen for e in p.all_entries
+        if e.get("englisch") and e.get("satz")
+    }
+
+    unit = pack.unit
+    plan = plan_unit(db, unit, settings, schon_verwendet=schon)
+    if plaetze > settings.target_total // 2:
         raise ValueError(
-            f"{plaetze} Plätze von {gesamt} Wörtern ist zu viel - das wäre "
-            "keine Aufwertung mehr, sondern eine andere Liste."
+            f"{plaetze} Fächer von {settings.target_total} Wörtern ist zu viel - "
+            "das wäre keine Aufwertung mehr, sondern eine andere Liste."
         )
 
-    # Die zugänglichsten Wörter weichen, quer über beide Tests.
-    kandidaten = sorted(
-        ((_schwierigkeit(e), test, i)
-         for test in ("test1", "test2")
-         for i, e in enumerate(neu.data["liste"][test])
-         if e.get("herkunft") != "fancy"),
-        key=lambda x: x[0],
-    )
-    weichen = sorted(kandidaten[:plaetze], key=lambda x: (x[1], x[2]))
+    neu = Pack(data=scaffold(db, unit, settings, plan))
+    neu.data["liste_version"] = max(p.liste_version for p in quellen) + 1
+    neu.data["fassung"] = 1
 
-    # Zuerst die selbst angegebenen Wörter, dann die offenen Fancy-Fächer.
-    belegung: list[tuple[str, str] | None] = list(vorgaben)
-    belegung += [None] * (len(weichen) - len(belegung))
-    thema = neu.thema
-    leit = neu.data.get("leitwoerter", [])
-    cefr = LIST_BOUNDS.label
+    # Beispielsätze übernehmen.
+    uebernommen = 0
+    for test in ("test1", "test2"):
+        for eintrag in neu.data["liste"][test]:
+            alt_e = saetze.get(eintrag.get("englisch", "").lower())
+            if alt_e and not eintrag.get("satz"):
+                eintrag["satz"] = alt_e["satz"]
+                eintrag["form"] = alt_e.get("form", "")
+                uebernommen += 1
+
+    # Plätze für die aufgewerteten Wörter: die zugänglichsten weichen.
     ersetzt: list[tuple[str, str]] = []
-    for (note, test, i), vorgabe in zip(weichen, belegung, strict=True):
-        alt_e = neu.data["liste"][test][i]
-        raus = alt_e.get("englisch", "")
-        if vorgabe is None:
-            neu.data["liste"][test][i] = _fancy_platzhalter(
-                alt_e["nr"], raus, note, thema, leit, cefr
-            )
-        else:
-            englisch, deutsch = vorgabe
-            eintrag = _list_entry(alt_e["nr"], englisch, deutsch, "fancy")
-            eintrag["ersetzt"] = raus
-            neu.data["liste"][test][i] = eintrag
-        ersetzt.append((raus, vorgabe[0] if vorgabe else "(im Chat)"))
+    if plaetze:
+        thema = neu.thema
+        leit = neu.data.get("leitwoerter", [])
+        cefr = LIST_BOUNDS.label
+        kandidaten = sorted(
+            ((_schwierigkeit(e), test, i)
+             for test in ("test1", "test2")
+             for i, e in enumerate(neu.data["liste"][test])
+             if e.get("englisch")),
+            key=lambda x: x[0],
+        )
+        weichen = sorted(kandidaten[:plaetze], key=lambda x: (x[1], x[2]))
+        belegung: list[tuple[str, str] | None] = list(vorgaben)
+        belegung += [None] * (len(weichen) - len(belegung))
+        for (note, test, i), vorgabe in zip(weichen, belegung, strict=True):
+            alt_e = neu.data["liste"][test][i]
+            raus = alt_e.get("englisch", "")
+            if vorgabe is None:
+                neu.data["liste"][test][i] = _fancy_platzhalter(
+                    alt_e["nr"], raus, note, thema, leit, cefr
+                )
+            else:
+                englisch, deutsch = vorgabe
+                eintrag = _list_entry(alt_e["nr"], englisch, deutsch, "fancy")
+                eintrag["ersetzt"] = raus
+                eintrag["begruendung"] = ""
+                alt_satz = saetze.get(englisch.lower())
+                if alt_satz:
+                    eintrag["satz"] = alt_satz["satz"]
+                neu.data["liste"][test][i] = eintrag
+            ersetzt.append((raus, vorgabe[0] if vorgabe else "(im Chat)"))
 
-    neu.data["liste_version"] = pack.liste_version + 1
-    neu.data["erzeugt"] = date.today().isoformat()
+    frueher = {w.lower() for w in schon}
+    jetzt = [e["englisch"] for e in neu.all_entries if e.get("englisch")]
     neu.data["abgeleitet_von"] = {
         "paket": pack.pfad.name if pack.pfad else "",
-        "liste_version": pack.liste_version,
+        "listen_zuvor": sorted(p.liste_version for p in quellen),
+        "neu_gewaehlt": sorted(w for w in jetzt if w.lower() not in frueher),
         "ersetzt": [{"raus": a, "rein": b} for a, b in ersetzt],
+        "saetze_uebernommen": uebernommen,
     }
-    unit_label = neu.unit_label
-    # Die Lückentexte sind Handarbeit und bleiben erhalten. Fällt eines ihrer
-    # Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel`
-    # beim nächsten Prüfen - lieber ein klarer Fehler als stillschweigend
-    # weggeworfene Arbeit.
-    alte_specs = dict(pack.exams)
-    neu.data["pruefungen"] = {
-        f"teil{teil}": {
-            niveau: _exam_scaffold(
-                neu.entries(f"test{teil}"), unit_label, teil, PROFILES[niveau],
-                settings, settings.seed + neu.liste_version,
-                fassung=neu.fassung, liste_version=neu.liste_version,
-                liste_abdruck=neu.liste_abdruck,
-            )
-            for niveau in NIVEAUS
-        }
-        for teil in (1, 2)
-    }
-    for (teil, niveau), spec in alte_specs.items():
-        _text_uebernehmen(spec, neu.data["pruefungen"][f"teil{teil}"][niveau])
+    # Die Prüfungen stammen aus `scaffold` und hängen damit schon an der
+    # neuen Liste; ihr Abdruck wird hier nur noch auf den Endstand gebracht,
+    # nachdem die Fächer geräumt sind.
+    abdruck = neu.liste_abdruck
+    for teil in (1, 2):
+        for niveau in NIVEAUS:
+            spec = neu.data["pruefungen"][f"teil{teil}"][niveau]
+            spec["meta"]["liste_version"] = neu.liste_version
+            spec["meta"]["liste_fingerabdruck"] = abdruck
     return neu
 
 

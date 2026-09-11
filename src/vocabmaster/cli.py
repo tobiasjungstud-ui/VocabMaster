@@ -242,6 +242,65 @@ def cmd_ausgleichen(args) -> int:
     return 0
 
 
+def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
+    """Kontrolliert den **Bestand**, nicht die einzelne Datei.
+
+    `vocabmaster prüfen` sieht immer nur ein Paket. Was sich erst im
+    Nebeneinander zeigt, fällt dort durch: zwei Pakete, die auf denselben
+    Dateinamen zielen; eine Fassung ohne ihre Liste; zwei Listen derselben
+    Unit mit identischem Inhalt. Genau das prüft diese Übersicht.
+    """
+    befunde: list[str] = []
+    for unit, pakete in sorted(nach_unit.items()):
+        gesehen: dict[tuple[int, int], str] = {}
+        listen: dict[str, list[str]] = {}
+        versionen = {p.liste_version for p in pakete if p.fassung == 1}
+
+        for pack in pakete:
+            name = pack.pfad.name if pack.pfad else "?"
+            schluessel = (pack.liste_version, pack.fassung)
+            if schluessel in gesehen:
+                befunde.append(
+                    f"FEHLER Unit {unit:02d}: {name} und {gesehen[schluessel]} "
+                    f"sind beide V{pack.liste_version} Fassung {pack.fassung} - "
+                    "sie schreiben dieselben Word-Dateien."
+                )
+            gesehen[schluessel] = name
+
+            if pack.fassung == 1:
+                listen.setdefault(pack.liste_abdruck, []).append(name)
+            elif pack.liste_version not in versionen:
+                befunde.append(
+                    f"FEHLER Unit {unit:02d}: {name} ist eine Fassung zu "
+                    f"V{pack.liste_version}, aber diese Liste gibt es nicht."
+                )
+
+            for (teil, niveau), spec in sorted(pack.exams.items()):
+                abdruck = spec.get("meta", {}).get("liste_fingerabdruck")
+                if abdruck and abdruck != pack.liste_abdruck:
+                    befunde.append(
+                        f"FEHLER Unit {unit:02d}: {name} Teil {teil} "
+                        f"Niveau {niveau} hängt an einer anderen Liste "
+                        f"({abdruck} statt {pack.liste_abdruck})."
+                    )
+
+        for abdruck, namen in listen.items():
+            if len(namen) > 1:
+                befunde.append(
+                    f"WARNUNG Unit {unit:02d}: {' und '.join(namen)} enthalten "
+                    f"dieselben 60 Wörter ({abdruck}) - zwei Listen, die sich "
+                    "nicht unterscheiden."
+                )
+        luecken = sorted(set(range(1, max(versionen) + 1)) - versionen) if versionen else []
+        if luecken:
+            befunde.append(
+                f"WARNUNG Unit {unit:02d}: Listenversion "
+                f"{', '.join(f'V{v}' for v in luecken)} fehlt - "
+                "die Nummerierung hat eine Lücke."
+            )
+    return befunde
+
+
 def cmd_listen(args) -> int:
     """Welche Vokabellisten es je Unit gibt - und was daran hängt."""
     pfade = sorted(Path(args.verzeichnis).glob("unit_*.json"))
@@ -273,6 +332,15 @@ def cmd_listen(args) -> int:
                 teile.append(f"{offen} offen")
             print(f"  {marke:<22} {pack.pfad.name:<28} "
                   f"{' · '.join(t for t in teile if t)}")
+    befunde = _bestand_pruefen(nach_unit)
+    if befunde:
+        print("\nBefunde im Bestand:")
+        for zeile in befunde:
+            print(f"  {zeile}")
+    else:
+        print("\nBestand in Ordnung: keine Kollisionen, keine Waisen, "
+              "keine doppelten Listen.")
+
     print("\nJede Fassung ist mit Nummer, Datum und Listenabdruck hinterlegt. "
           "Eine Prüfung\ngehört zu der Liste, deren Abdruck in ihr steht; "
           "'vocabmaster prüfen' schlägt an,\nsobald das nicht mehr stimmt. "
@@ -284,8 +352,20 @@ def cmd_liste_neu(args) -> int:
     """Eine neue Vokabelliste V2, V3 ... mit aufgewerteten Wörtern."""
     pack = Pack.load(args.paket)
     settings = _settings(args)
+    db = _db(args)
+
+    # Alle bestehenden Listen dieser Unit - die neue Auswahl soll ihnen
+    # ausweichen, soweit der Hauptteil das hergibt.
+    weitere: list[Pack] = []
+    for kandidat in sorted(Path(args.verzeichnis).glob("unit_*.json")):
+        anderer = Pack.load(kandidat)
+        if (anderer.unit == pack.unit
+                and anderer.liste_version != pack.liste_version
+                and anderer.fassung == 1):
+            weitere.append(anderer)
+
     try:
-        neu = neue_liste(pack, args.fancy, args.wort or (), settings)
+        neu = neue_liste(pack, db, args.fancy, args.wort or (), settings, weitere)
     except ValueError as fehler:
         print(str(fehler))
         return 1
@@ -298,17 +378,26 @@ def cmd_liste_neu(args) -> int:
         return 1
     neu.save(ziel)
 
-    ersetzt = neu.data["abgeleitet_von"]["ersetzt"]
+    herkunft = neu.data["abgeleitet_von"]
+    ersetzt = herkunft["ersetzt"]
+    zuvor = ", ".join(f"V{v}" for v in herkunft["listen_zuvor"])
     print(f"{ziel} geschrieben - {neu.unit_label}, Vokabelliste "
-          f"V{neu.liste_version} (aus V{pack.liste_version}).")
-    print(f"  Abdruck der neuen Liste: {neu.liste_abdruck}")
-    print(f"  {len(ersetzt)} Wörter aufgewertet:")
-    for e in ersetzt:
-        print(f"    {e['raus']:<20} -> {e['rein']}")
+          f"V{neu.liste_version}.")
+    print(f"  Abdruck: {neu.liste_abdruck}")
+    print(f"  Auswahl neu aus der Datenbank getroffen, {zuvor} ausweichend.")
+    frisch = herkunft["neu_gewaehlt"]
+    print(f"  {len(frisch)} Wörter stehen in keiner früheren Liste"
+          + (f": {', '.join(frisch)}" if frisch else
+             " - der Hauptteil dieser Unit gibt nicht mehr her."))
+    print(f"  {herkunft['saetze_uebernommen']} Beispielsätze übernommen.")
+    if ersetzt:
+        print(f"  {len(ersetzt)} Wörter aufgewertet:")
+        for e in ersetzt:
+            print(f"    {e['raus']:<20} -> {e['rein']}")
     offen = [e for e in neu.all_entries if e.get("herkunft") == "fancy"
              and not e.get("englisch")]
-    print(f"\n  Die vier Prüfungen wurden gegen V{neu.liste_version} neu "
-          "aufgesetzt; ihre Lückentexte sind erhalten geblieben.")
+    print(f"\n  Die vier Prüfungen sind frisch gegen V{neu.liste_version} "
+          "aufgesetzt - ihre Lückentexte werden im Chat neu geschrieben.")
     if offen:
         print(f"\nJetzt im Chat entscheiden: {len(offen)} offene Fächer "
               "(englisch, deutsch, satz, begruendung).")

@@ -277,10 +277,18 @@ class ExamChecker:
                          f"task {name}: the instruction contains a hard-coded "
                          f"point count ({number}P) - it is added automatically")
 
+    #: Die Niveaumarke im Kopf ("Part I Niv. B") benennt die Fassung, nicht
+    #: die Quelle der Wörter. Die Aufgabenstellung nennt weiterhin nur Unit
+    #: und Teil - beide Niveaus prüfen dieselbe Vokabelliste.
+    HEADER_IGNORE = {"niv", "a", "b"}
+
     def check_header_consistency(self) -> None:
         header = self.spec.get("header") or {}
         unit = re.sub(r"[|]", " ", header.get("unit", "")).lower()
-        unit_words = [w for w in re.findall(r"[a-z0-9]+", unit) if w != "unit"]
+        unit_words = [
+            w for w in re.findall(r"[a-z0-9]+", unit)
+            if w != "unit" and w not in self.HEADER_IGNORE
+        ]
         for name, task in (("1", self.task1), ("2", self.task2)):
             instruction = (task.get("instruction") or "").lower()
             missing = [w for w in unit_words if w not in instruction]

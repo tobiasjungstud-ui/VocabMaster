@@ -34,7 +34,7 @@ from vocabmaster.pack import wortart_von  # noqa: E402
 from vocabmaster.pool import plan_unit  # noqa: E402
 
 
-def datei_name(pack: dict, unit: int, version: int) -> str:
+def datei_name(unit: int, version: int) -> str:
     """Wie das Paket dieser Liste heisst - für die Anzeige."""
     name = f"unit_{unit:02d}"
     if version > 1:
@@ -184,7 +184,7 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
                         if not e.get("englisch") or not e.get("satz"))
             listen.append({
                 "version": version,
-                "datei": datei_name(pack, unit, version),
+                "datei": datei_name(unit, version),
                 "abdruck": pack.get("pruefungen", {}).get("teil1", {})
                                .get("A", {}).get("meta", {})
                                .get("liste_fingerabdruck", ""),

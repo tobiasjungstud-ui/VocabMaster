@@ -24,6 +24,22 @@ python werkstatt/bauen.py    # vokabelwerkstatt.html aus vorlage.html
 | `bauen.py` | setzt beides zusammen |
 | `vokabelwerkstatt.html` | die veröffentlichte Datei — **nie von Hand ändern** |
 
+## Die Vokabelliste wählen
+
+Oben in der Leiste stehen **alle** Vokabellisten dieser Unit — V1, V2, V3 —
+und darunter „＋ neue Liste anlegen". Voreingestellt ist **V1**: der
+Normalfall ist eine Liste, zu der über die Zeit mehrere verschiedene
+Prüfungen entstehen.
+
+Was die Seite darunter zeigt — die 60 Wörter, die Schwierigkeitslineale, die
+Prüfungsauswahlen — gehört zur **gewählten** Liste. Der Auftrag nennt sie
+beim Namen, damit im Chat nichts verwechselt wird.
+
+Aufgewertete Wörter gehören zu einer **neuen** Liste; bei einer bestehenden
+sind die Felder deshalb aus. Eine bestehende Liste nachträglich zu verändern
+hiesse, ihre Prüfungen ungültig zu machen — das verhindert die Kontrolle
+`listenbezug` ohnehin.
+
 ## Zwei Regler
 
 **Anspruch der Prüfung** wählt die geprüften Wörter, **Schwierigkeit des

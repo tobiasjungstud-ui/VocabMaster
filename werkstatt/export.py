@@ -34,6 +34,14 @@ from vocabmaster.pack import wortart_von  # noqa: E402
 from vocabmaster.pool import plan_unit  # noqa: E402
 
 
+def datei_name(pack: dict, unit: int, version: int) -> str:
+    """Wie das Paket dieser Liste heisst - für die Anzeige."""
+    name = f"unit_{unit:02d}"
+    if version > 1:
+        name += f"_v{version}"
+    return name + ".json"
+
+
 def _zipf_tabelle(db: Database, unit: int) -> dict[str, float]:
     """Häufigkeit je Wort der Unit.
 
@@ -137,32 +145,64 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
         (WURZEL / "src" / "vocabmaster" / "data" / "themen.json").read_text("utf-8")
     )["themen"]
 
-    units = []
+    # Je Unit kann es mehrere Vokabellisten geben (V1, V2, ...). Jede ist ein
+    # eigener Eintrag mit ihren eigenen 60 Wörtern; die Oberfläche lässt
+    # zwischen ihnen wählen, statt eine davon zu erraten.
+    roh: dict[int, list[dict]] = {}
+    fassungen: dict[tuple[int, int], list[int]] = {}
     quelle = None
     for datei in sorted(pakete.glob("unit_*.json")):
         pack = json.loads(datei.read_text("utf-8"))
-        # Fassungspakete (unit_01_fassung2.json) enthalten nur eine einzelne
-        # Prüfung und keine zweite Niveaustufe. Die Oberfläche zeigt die
-        # Grundfassung; eine weitere Fassung entsteht erst auf Auftrag.
+        unit = int(pack["unit"])
+        version = int(pack.get("liste_version", 1))
         if int(pack.get("fassung", 1)) > 1:
+            # Ein Fassungspaket ist eine weitere Prüfung zu einer bestehenden
+            # Liste, keine eigene Liste.
+            fassungen.setdefault((unit, version), []).append(
+                int(pack.get("fassung", 1))
+            )
             continue
-        unit = pack["unit"]
         quelle = quelle or pack["quelle"]
+        roh.setdefault(unit, []).append(pack)
+
+    units = []
+    for unit in sorted(roh):
         thema = themen.get(str(unit), {})
         zipf = _zipf_tabelle(db, unit)
-        woerter = _woerter(pack, zipf)
+        listen = []
+        for pack in sorted(roh[unit], key=lambda p: int(p.get("liste_version", 1))):
+            version = int(pack.get("liste_version", 1))
+            woerter = _woerter(pack, zipf)
+            aufgewertet = [
+                {"en": e["englisch"], "de": e["deutsch"],
+                 "ersetzt": e.get("ersetzt", ""),
+                 "begruendung": e.get("begruendung", "")}
+                for e in pack["liste"]["test1"] + pack["liste"]["test2"]
+                if e.get("herkunft") == "fancy"
+            ]
+            offen = sum(1 for e in pack["liste"]["test1"] + pack["liste"]["test2"]
+                        if not e.get("englisch") or not e.get("satz"))
+            listen.append({
+                "version": version,
+                "datei": datei_name(pack, unit, version),
+                "abdruck": pack.get("pruefungen", {}).get("teil1", {})
+                               .get("A", {}).get("meta", {})
+                               .get("liste_fingerabdruck", ""),
+                "erzeugt": pack.get("erzeugt", ""),
+                "aufgewertet": aufgewertet,
+                "offen": offen,
+                "fassungen": sorted(fassungen.get((unit, version), [])),
+                "woerter": woerter,
+                "echt": _echte_auswahl(pack, woerter),
+            })
         units.append({
             "unit": unit,
-            "titel": pack.get("unit_label") or pack.get("titel", f"Unit {unit}"),
-            "thema": pack.get("thema") or thema.get("thema", ""),
+            "titel": roh[unit][0].get("unit_label") or f"Unit {unit}",
+            "thema": roh[unit][0].get("thema") or thema.get("thema", ""),
             "seiten": thema.get("seiten", ""),
-            "liste_version": int(pack.get("liste_version", 1)),
-            "liste_abdruck": pack.get("pruefungen", {}).get("teil1", {})
-                                 .get("A", {}).get("meta", {})
-                                 .get("liste_fingerabdruck", ""),
+            "leitwoerter": thema.get("leitwoerter", []),
             "herkunft": _herkunft(db, unit, settings),
-            "woerter": woerter,
-            "echt": _echte_auswahl(pack, woerter),
+            "listen": listen,
         })
 
     return {
@@ -195,8 +235,10 @@ def main() -> int:
     Path(args.out).write_text(
         json.dumps(daten, ensure_ascii=False, indent=1), encoding="utf-8"
     )
-    print(f"{args.out}: {len(daten['units'])} Units, "
-          f"{sum(len(u['woerter']) for u in daten['units'])} Wörter")
+    listen = sum(len(u["listen"]) for u in daten["units"])
+    woerter = sum(len(li["woerter"]) for u in daten["units"] for li in u["listen"])
+    print(f"{args.out}: {len(daten['units'])} Units, {listen} Vokabellisten, "
+          f"{woerter} Wörter")
     return 0
 
 

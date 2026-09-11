@@ -786,6 +786,16 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
                 stufe, "pruefung",
                 f"Teil {teil} Niveau {niveau} - {finding.check}: {finding.message}",
             )
+        ueberholt = spec.get("task2", {}).get("text_ueberholt")
+        if ueberholt:
+            jetzt = [g.get("answer", "") for g in spec.get("task2", {}).get("gaps", [])]
+            bericht.add(
+                FEHLER, "pruefung",
+                f"Teil {teil} Niveau {niveau} - text_ueberholt: Der Lückentext "
+                f"wurde für die Lücken {', '.join(ueberholt)} geschrieben; "
+                f"gefragt sind jetzt {', '.join(jetzt)}. Er muss neu "
+                "geschrieben werden - danach das Feld 'text_ueberholt' löschen.",
+            )
         stats = report.stats.get("readability", {})
         if stats:
             ist = textstufe(stats)

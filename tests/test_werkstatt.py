@@ -44,23 +44,49 @@ def test_daten_sind_auf_dem_stand_der_pakete(frisch, abgelegt):
 
 
 def test_angezeigte_auswahl_steht_so_in_den_paketen(abgelegt):
-    """Jedes Wort der vier Prüfungen kommt in der Liste derselben Unit vor."""
+    """Jedes Wort der vier Prüfungen kommt in der Liste vor, die es zeigt.
+
+    Je Unit kann es mehrere Vokabellisten geben (V1, V2, ...). Geprüft wird
+    jede für sich - eine Prüfung von V2 darf nicht gegen V1 gehalten werden,
+    das ist gerade der Fehler, den `listenbezug` verhindern soll.
+    """
     for unit in abgelegt["units"]:
-        for schluessel, auswahl in unit["echt"].items():
-            test = int(schluessel[1])
-            liste = {w["en"] for w in unit["woerter"] if w["test"] == test}
-            fremd = [w for w in auswahl["woerter"] if w not in liste]
-            assert not fremd, f"Unit {unit['unit']} {schluessel}: {fremd}"
-            offen = [w for w in auswahl["luecken"] if w not in auswahl["woerter"]]
-            assert not offen, f"Unit {unit['unit']} {schluessel} Lücken: {offen}"
+        assert unit["listen"], f"Unit {unit['unit']} ohne Vokabelliste"
+        for li in unit["listen"]:
+            wo = f"Unit {unit['unit']} V{li['version']}"
+            for schluessel, auswahl in li["echt"].items():
+                test = int(schluessel[1])
+                liste = {w["en"] for w in li["woerter"] if w["test"] == test}
+                fremd = [w for w in auswahl["woerter"] if w not in liste]
+                assert not fremd, f"{wo} {schluessel}: {fremd}"
+                offen = [w for w in auswahl["luecken"]
+                         if w not in auswahl["woerter"]]
+                assert not offen, f"{wo} {schluessel} Lücken: {offen}"
+
+
+def test_jede_liste_hat_ihre_eigene_kennung(abgelegt):
+    """V1, V2 ... müssen sich unterscheiden - sonst zeigt die Auswahl Unsinn."""
+    for unit in abgelegt["units"]:
+        versionen = [li["version"] for li in unit["listen"]]
+        assert len(versionen) == len(set(versionen)), (
+            f"Unit {unit['unit']}: doppelte Listenversion {versionen}"
+        )
+        abdruecke = [li["abdruck"] for li in unit["listen"] if li["abdruck"]]
+        assert len(abdruecke) == len(set(abdruecke)), (
+            f"Unit {unit['unit']}: zwei Listen mit demselben Abdruck"
+        )
 
 
 def test_niveau_a_ist_schwerer_als_niveau_b(abgelegt):
     for unit in abgelegt["units"]:
-        for teil in ("1", "2"):
-            a = unit["echt"]["t" + teil + "A"]["schnitt"]
-            b = unit["echt"]["t" + teil + "B"]["schnitt"]
-            assert a > b, f"Unit {unit['unit']} Teil {teil}: A {a} <= B {b}"
+        for li in unit["listen"]:
+            for teil in ("1", "2"):
+                a = li["echt"]["t" + teil + "A"]["schnitt"]
+                b = li["echt"]["t" + teil + "B"]["schnitt"]
+                assert a > b, (
+                    f"Unit {unit['unit']} V{li['version']} Teil {teil}: "
+                    f"A {a} <= B {b}"
+                )
 
 
 def test_gebaute_seite_ist_vollstaendig():

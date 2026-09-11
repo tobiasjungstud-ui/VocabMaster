@@ -178,37 +178,66 @@ Eine neue Liste entsteht nicht aus dem Nichts, sondern durch **Aufwertung**:
 
 ```bash
 vocabmaster liste-neu kuratiert/unit_01.json --fancy 3 \
-    --wort "dreadful=schrecklich" --wort "exhausted=erschöpft"
+    --wort "englisch=deutsch"
 ```
 
 Das schreibt `kuratiert/unit_01_v2.json`. Die Liste bleibt bei **60 Wörtern**
 — sie muss auf eine A4-Seite passen —, also tritt jedes aufgewertete Wort an
-die Stelle eines zu einfachen. Es weichen die **zugänglichsten** zuerst:
-`earring`, `theme park`, `anecdote` sind für eine Klasse auf B1.1–B1.2 kein
-Lernstoff.
+die Stelle eines zu einfachen. Es weichen die **zugänglichsten** zuerst, und
+welche das sind, hängt an der Unit: in Unit 3 `exotic` und `realistic`, in
+Unit 7 `sports stadium` und `skeleton`.
 
-`--wort` nimmt die Angabe in beiden Richtungen (`dreadful=schrecklich` wie
-`schrecklich=dreadful`); erkannt wird sie an der Schreibung. Wo das nicht
-reicht (`rot=red`), wird **nicht geraten**, sondern zurückgefragt —
-eindeutig ist `en:dreadful=schrecklich`.
+### Der Massstab steht nicht im Programm
 
-`--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Die Anwendung
-erfindet auch hier nichts; sie räumt den Platz frei und schreibt den
-Massstab daneben (`FANCY_MASSSTAB`):
+`--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Das Fach liefert
+die **Lage**, nicht das Ergebnis:
 
-* **Aufwertung statt Zusatz** — ein Wort, das den „very + Adjektiv"-Notausgang
-  ersetzt: `very crowded` → `packed`, `very tired` → `exhausted`,
-  `very important` → `crucial`, `very interesting` → `fascinating`.
-* **Niveau B1.2–B2.1** — deutlich über dem Grundwortschatz, aber nicht so
-  selten, dass es nie wieder vorkommt: `dreadful` statt `terrible`.
-* **Alltagstauglich** — Themenfelder, die Jugendliche im Sprechen und
-  Schreiben sofort brauchen.
-* **Kollisionsfrei** — bildet mit keinem Wort der Liste eine Wortfamilie.
+* das Wortfeld der Unit und ihre Leitwörter,
+* das Niveauband der Liste,
+* welches Wort gewichen ist und mit welcher Prüfnote.
+
+Wonach ausgewählt wird, gehört ausdrücklich **nicht** in den Quelltext.
+Steht dort erst einmal ein Kriterienkatalog mit Musterwörtern, bekommt jede
+Unit dieselbe Antwort zurück — dieselben fünf Adjektive für Werbung wie für
+Bauwerke. Was ein Wort hier verdient, entscheidet sich am Wortfeld dieser
+Unit, an dem, was schon in der Liste steht, und daran, was der Klasse an
+Ausdruck wirklich fehlt. Das ist eine Überlegung, keine Tabelle.
+
+Ein Test wacht darüber (`tests/test_keine_schablonen.py`): Sobald fertige
+Beispielvokabeln in `src/` oder in der Oberfläche auftauchen, schlägt er an.
+Er hat schon einmal angeschlagen.
+
+Die Begründung je Wort gehört ins Feld `begruendung` — die Themenkontrolle
+liest sie, und sie bleibt im Paket nachlesbar. Im Chat gehört sie ohnehin in
+die Antwort (siehe „Pflicht: Herkunft immer im Chat berichten").
+
+`--wort` nimmt die Angabe in beiden Richtungen (`englisch=deutsch` wie
+`deutsch=englisch`); erkannt wird sie an der Schreibung — Umlaute und
+typische Endungen sprechen für Deutsch, `th` oder `-ness` für Englisch. Wo
+das nicht reicht (`rot=red`), wird **nicht geraten**, sondern zurückgefragt;
+eindeutig ist `en:<wort>=<Wort>`.
 
 Die vier Prüfungen werden gegen die neue Liste neu aufgesetzt; die
 handgeschriebenen Lückentexte bleiben erhalten. Fällt eines ihrer
 Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel` —
 lieber ein klarer Fehler als stillschweigend weggeworfene Arbeit.
+
+### Ein übernommener Lückentext ist nicht automatisch gültig
+
+Ein Lückentext ist für **bestimmte** Lücken geschrieben. Werden die
+Prüfungswörter neu gesetzt — durch `liste-neu` oder durch `ausgleichen` —,
+passt er nicht mehr: Der Satz, der `checkout` erschliessbar machte, steht
+dann über der Lösung `downside`.
+
+Genau das lief lange still durch, und der Selbstcheck hat es nicht bemerkt:
+`loesungsschluessel` prüft nur, dass die Lückenwörter *in der Liste stehen*,
+nicht, dass der Text sie *meint*. Deshalb merkt sich `task2.text_ueberholt`
+jetzt, für welche Lücken ein übernommener Text einmal geschrieben wurde.
+Stimmen sie nicht mehr mit den heutigen überein, ist das ein **Fehler** —
+auszuräumen nur durch Neuschreiben, danach das Feld löschen.
+
+Der Text wird trotzdem übernommen und nicht verworfen: Er ist Handarbeit
+und die bessere Grundlage für die neue Fassung als ein leeres Feld.
 
 ## Zweite Fassung einer Prüfung
 
@@ -319,8 +348,10 @@ je genau einen klassischen Fehler ein und verlangen, dass der Selbstcheck
 ihn findet. Die mitgelieferten Pakete unter `kuratiert/` werden mitgeprüft
 und dürfen weder Fehler noch Warnungen zeigen.
 
-Eigene Tests wachen ausserdem darüber, dass **kein Wort aus Culture, Project
-oder Curriculum extra** in eine Liste rutscht, dass jede Unit ohne
+Eigene Tests wachen ausserdem darüber, dass **kein fertiges Unterrichts-
+material im Quelltext steht** (keine Musterwörter, keine Musterlückentexte),
+dass **kein Wort aus Culture, Project oder Curriculum extra** in eine Liste
+rutscht, dass jede Unit ohne
 Ergänzungen auf 60 Wörter kommt, dass die Prüfung für Niveau A in jeder Unit
 messbar schwerer ist als die für Niveau B, und dass die Oberfläche unter
 `werkstatt/` auf dem Stand der Pakete ist.

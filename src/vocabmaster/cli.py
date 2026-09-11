@@ -28,6 +28,7 @@ from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
 from .niveau import (
+    LIST_BOUNDS,
     NIVEAUS,
     NORMAL_TEXTSTUFE,
     PROFILES,
@@ -35,7 +36,6 @@ from .niveau import (
     ziele_fuer_textstufe,
 )
 from .pack import (
-    FANCY_MASSSTAB,
     Pack,
     _schwierigkeit,
     ausgleichen,
@@ -304,10 +304,15 @@ def cmd_liste_neu(args) -> int:
     print(f"\n  Die vier Prüfungen wurden gegen V{neu.liste_version} neu "
           "aufgesetzt; ihre Lückentexte sind erhalten geblieben.")
     if offen:
-        print(f"\nJetzt im Chat ausfüllen: {len(offen)} Fancy-Fächer "
-              "(englisch, deutsch, satz) nach diesem Massstab:")
-        for zeile in FANCY_MASSSTAB:
-            print(f"  - {zeile}")
+        print(f"\nJetzt im Chat entscheiden: {len(offen)} offene Fächer "
+              "(englisch, deutsch, satz, begruendung).")
+        print(f"  Wortfeld: {neu.thema}")
+        leit = neu.data.get("leitwoerter", [])
+        if leit:
+            print(f"  Leitwörter: {', '.join(leit)}")
+        print(f"  Niveau der Liste: {LIST_BOUNDS.label}")
+        print("  Wonach ausgewählt wird, entscheidet das Wortfeld dieser "
+              "Unit - es steht nicht im Programm.")
     print(f"\nDanach 'vocabmaster prüfen {ziel}'.")
     return 0
 
@@ -504,7 +509,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--fancy", type=int, default=0,
                    help="so viele Fächer für im Chat gewählte Wörter")
     p.add_argument("--wort", action="append", metavar="EN=DE",
-                   help="selbst angegebenes Wort, z. B. 'dreadful=schrecklich' "
+                   help="selbst angegebenes Wort als 'englisch=deutsch' "
                         "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")
     p.add_argument("--verzeichnis", default="kuratiert")
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",

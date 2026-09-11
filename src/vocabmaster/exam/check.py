@@ -78,7 +78,10 @@ SPEC_SCHEMA = {
     "task2": dict,
 }
 TASK1_KEYS = {"instruction", "items"}
-TASK2_KEYS = {"instruction", "word_bank_label", "word_bank", "gaps", "text"}
+#: ``text_ueberholt`` merkt sich, für welche Lücken ein übernommener
+#: Lückentext einmal geschrieben wurde - siehe `pack._text_uebernehmen`.
+TASK2_KEYS = {"instruction", "word_bank_label", "word_bank", "gaps", "text",
+              "text_ueberholt"}
 ITEM_KEYS = {"german", "english", "pos", "note"}
 GAP_KEYS = {"german", "english", "answer", "pos", "unique_because", "note"}
 HEADER_KEYS = {"title", "unit", "name_label", "grade_label"}

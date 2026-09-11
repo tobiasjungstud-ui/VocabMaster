@@ -70,7 +70,11 @@ def test_neue_liste_bindet_die_pruefungen_neu(pack, settings):
     offen = [e for e in neu.all_entries
              if e.get("herkunft") == "fancy" and not e.get("englisch")]
     assert len(offen) == 2, "die Anwendung erfindet die Wörter nicht selbst"
-    assert all("Fancy-Fach" in e.get("hinweis", "") for e in offen)
+    for e in offen:
+        # Das Fach liefert die Lage, nicht das Ergebnis.
+        assert pack.thema in e["hinweis"], "das Wortfeld der Unit muss dabeistehen"
+        assert e["ersetzt"], "wofür der Platz frei wurde, gehört dazu"
+        assert "begruendung" in e, "die Begründung wird im Paket festgehalten"
 
 
 def test_neue_liste_haelt_die_luckentexte(pack, settings):
@@ -113,3 +117,50 @@ def test_dateinamen_trennen_die_listenversionen():
     assert dateiname(1, "VocabularyList", liste_version=2) != dateiname(
         1, "VocabularyList", liste_version=1
     )
+
+
+def test_das_fach_gibt_die_lage_vor_nicht_die_antwort(pack, settings):
+    """Zwei Units, zwei verschiedene Lagen - sonst wäre es eine Schablone."""
+    neu = neue_liste(pack, fancy=1, settings=settings)
+    fach = next(e for e in neu.all_entries
+                if e.get("herkunft") == "fancy" and not e.get("englisch"))
+    hinweis = fach["hinweis"]
+    assert pack.thema in hinweis
+    assert "Prüfnote" in hinweis, "warum dieser Platz frei wurde, gehört dazu"
+    # Und kein fertiges Wort, das die Auswahl vorwegnimmt.
+    assert not any(w in hinweis.lower() for w in
+                   ("dreadful", "packed", "exhausted", "crucial", "fascinating"))
+
+
+def test_uebernommener_lueckentext_wird_als_ueberholt_erkannt(pack, db, settings):
+    """Ein Text ist für *bestimmte* Lücken geschrieben.
+
+    Werden die Prüfungswörter neu gesetzt, passt er nicht mehr: Der Satz,
+    der 'checkout' erschliessbar machte, steht dann über einer anderen
+    Lösung. Das lief lange still durch - hier nicht mehr.
+    """
+    from vocabmaster.pack import _text_uebernehmen
+
+    alt = {"task2": {"text": "Ein Satz mit {1}.",
+                     "gaps": [{"answer": "checkout"}]}}
+    gleich = {"task2": {"text": "TODO", "gaps": [{"answer": "checkout"}]}}
+    anders = {"task2": {"text": "TODO", "gaps": [{"answer": "downside"}]}}
+
+    _text_uebernehmen(alt, gleich)
+    assert gleich["task2"]["text"] == "Ein Satz mit {1}."
+    assert "text_ueberholt" not in gleich["task2"], "gleiche Lücken, alles gut"
+
+    _text_uebernehmen(alt, anders)
+    assert anders["task2"]["text"] == "Ein Satz mit {1}.", "Handarbeit bleibt"
+    assert anders["task2"]["text_ueberholt"] == ["checkout"]
+
+
+def test_ueberholter_lueckentext_ist_ein_fehler(pack, db, settings):
+    """Und der Selbstcheck lässt ihn nicht durch."""
+    from vocabmaster.checks import pruefe_paket
+
+    spec = pack.data["pruefungen"]["teil1"]["A"]["task2"]
+    spec["text_ueberholt"] = ["irgendein", "anderes", "wort"]
+    bericht = pruefe_paket(pack, db, settings)
+    passend = [b for b in bericht.fehler if "text_ueberholt" in b.text]
+    assert passend, "ein Text für andere Lücken muss ein Fehler sein"

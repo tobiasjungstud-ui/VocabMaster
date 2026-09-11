@@ -40,7 +40,7 @@ from .database import Database
 from .exam.difficulty import score_item
 from .exam.select import _clashes as _exam_clashes
 from .exam.vocab import VocabItem, VocabTest, guess_pos
-from .niveau import NIVEAUS, PROFILES, NiveauProfile, profile
+from .niveau import LIST_BOUNDS, NIVEAUS, PROFILES, NiveauProfile, profile
 from .pool import UnitPlan, plan_unit
 
 SCHEMA_VERSION = 2
@@ -679,30 +679,64 @@ def pack_filename(unit: int, fassung: int = 1, liste_version: int = 1) -> str:
     return name + ".json"
 
 
-#: Was ein Wort im Fancy-Fach zu leisten hat. Der Text steht in jedem
-#: erzeugten Platzhalter, damit er beim Ausfüllen im Chat vor Augen ist -
-#: und damit später nachlesbar bleibt, wonach ausgewählt wurde.
-FANCY_MASSSTAB = [
-    "Aufwertung statt Zusatz: ein Wort, das den 'very + Adjektiv'-Notausgang "
-    "ersetzt, in den Lernende auf diesem Stand immer wieder geraten - "
-    "'very crowded' -> 'packed', 'very tired' -> 'exhausted', "
-    "'very important' -> 'crucial', 'very interesting' -> 'fascinating'.",
-    "Niveau B1.2-B2.1: deutlich über dem Grundwortschatz, aber nicht so "
-    "selten, dass es nie wieder vorkommt. 'dreadful' statt 'terrible'.",
-    "Alltagstauglich: aus Themenfeldern, die Jugendliche im Sprechen und "
-    "Schreiben sofort brauchen, nicht aus der Prüfungsvitrine.",
-    "Kollisionsfrei: darf mit keinem Wort dieser Liste eine Wortfamilie "
-    "bilden und keines davon doppeln.",
-]
+def _text_uebernehmen(alt: dict[str, Any], neu: dict[str, Any]) -> None:
+    """Trägt einen handgeschriebenen Lückentext in die neu gesetzte Prüfung.
+
+    Ein Lückentext ist für **bestimmte** Lücken geschrieben. Werden die
+    Prüfungswörter neu gewürfelt, passt er nicht mehr: Der Satz, der
+    "checkout" erschliessbar machte, steht dann über der Lösung "downside".
+    Bisher wurde er trotzdem übernommen, und keine Kontrolle hat es gemerkt.
+
+    Deshalb wird er zwar übernommen - weggeworfene Handarbeit wäre schlimmer -,
+    aber als überholt gekennzeichnet. ``pruefe_pruefungen`` macht daraus
+    einen Fehler, der sich nur durch Neuschreiben ausräumen lässt.
+    """
+    text = alt.get("task2", {}).get("text", "")
+    if not text or "TODO" in text:
+        return
+    frueher = [g.get("answer", "") for g in alt.get("task2", {}).get("gaps", [])]
+    jetzt = [g.get("answer", "") for g in neu.get("task2", {}).get("gaps", [])]
+    neu["task2"]["text"] = text
+    if frueher != jetzt:
+        neu["task2"]["text_ueberholt"] = frueher
+    else:
+        neu["task2"].pop("text_ueberholt", None)
 
 
-def _fancy_platzhalter(nummer: int, ersetzt: str = "") -> dict[str, Any]:
+def _fancy_platzhalter(
+    nummer: int,
+    ersetzt: str = "",
+    note: float = 0.0,
+    thema: str = "",
+    leitwoerter: Iterable[str] = (),
+    cefr: str = "",
+) -> dict[str, Any]:
+    """Ein offenes Fach für ein aufgewertetes Wort.
+
+    Hier steht **kein Massstab und kein Beispielwort**. Beides gehörte
+    hartkodiert in den Quelltext, und damit wäre die Auswahl auf Dauer
+    dieselbe - wer sie einmal aufgeschrieben hat, bekommt für jede Unit die
+    gleichen fünf Adjektive zurück. Womit ein Wort seinen Platz verdient,
+    entscheidet sich am Wortfeld dieser Unit und an dem, was hier schon
+    steht; das Fach liefert dafür die Lage, nicht das Ergebnis.
+
+    Die Begründung gehört ins Feld ``begruendung`` - die Themenkontrolle
+    liest sie, und sie bleibt im Paket nachlesbar.
+    """
     eintrag = _list_entry(nummer, "", "", "fancy")
+    lage = [
+        f"Wortfeld der Unit: {thema}." if thema else "",
+        f"Leitwörter: {', '.join(leitwoerter)}." if leitwoerter else "",
+        f"Niveau der Liste: {cefr}." if cefr else "",
+        (f"Frei geworden für '{ersetzt}' (Prüfnote {note:.1f}/10, damit das "
+         "zugänglichste Wort der Liste)." if ersetzt else ""),
+    ]
     eintrag["hinweis"] = (
-        "Fancy-Fach: im Chat ausfüllen. " + " ".join(FANCY_MASSSTAB)
-        + (f" (Ersetzt das zu einfache '{ersetzt}'.)" if ersetzt else "")
+        "Offenes Fach - englisch, deutsch, satz und begruendung im Chat "
+        "setzen. " + " ".join(t for t in lage if t)
     )
     eintrag["ersetzt"] = ersetzt
+    eintrag["begruendung"] = ""
     return eintrag
 
 
@@ -734,14 +768,14 @@ def _wortangabe(text: str) -> tuple[str, str]:
 
     Welche Seite welche ist, wird an der Schreibung erkannt: Umlaute und
     typische Endungen sprechen für Deutsch, ``th`` oder ``-ness`` für
-    Englisch. Wo das nicht reicht ("schrecklich=dreadful" hat auf beiden
-    Seiten Signale, "rot=red" auf keiner), wird **nicht geraten** - dann
-    kommt eine Rückfrage. Eindeutig ist immer ``en:dreadful=schrecklich``.
+    Englisch. Wo das nicht reicht (weil beide Seiten Signale tragen oder
+    keine, wie bei "rot=red"), wird **nicht geraten** - dann kommt eine
+    Rückfrage. Eindeutig ist immer die Form ``en:<wort>=<Wort>``.
     """
     if "=" not in text:
         raise ValueError(
             f"{text!r}: erwartet wird 'englisch=deutsch', "
-            "zum Beispiel 'dreadful=schrecklich'."
+            "also 'englisch=deutsch'."
         )
     links, rechts = (t.strip() for t in text.split("=", 1))
     if not links or not rechts:
@@ -779,7 +813,7 @@ def neue_liste(
     zugänglichsten Wörter der Liste weichen zuerst, weil genau sie für eine
     Klasse auf B1.1-B1.2 am wenigsten Lernstoff sind.
 
-    ``eigene`` sind selbst angegebene Wörter (``"dreadful=schrecklich"``),
+    ``eigene`` sind selbst angegebene Wörter (``"englisch=deutsch"``),
     ``fancy`` die Zahl der zusätzlichen Fächer, die im Chat gefüllt werden.
     Die Anwendung erfindet hier nichts - sie räumt nur den Platz frei und
     schreibt den Massstab daneben.
@@ -814,12 +848,17 @@ def neue_liste(
     # Zuerst die selbst angegebenen Wörter, dann die offenen Fancy-Fächer.
     belegung: list[tuple[str, str] | None] = list(vorgaben)
     belegung += [None] * (len(weichen) - len(belegung))
+    thema = neu.thema
+    leit = neu.data.get("leitwoerter", [])
+    cefr = LIST_BOUNDS.label
     ersetzt: list[tuple[str, str]] = []
-    for (_note, test, i), vorgabe in zip(weichen, belegung, strict=True):
+    for (note, test, i), vorgabe in zip(weichen, belegung, strict=True):
         alt_e = neu.data["liste"][test][i]
         raus = alt_e.get("englisch", "")
         if vorgabe is None:
-            neu.data["liste"][test][i] = _fancy_platzhalter(alt_e["nr"], raus)
+            neu.data["liste"][test][i] = _fancy_platzhalter(
+                alt_e["nr"], raus, note, thema, leit, cefr
+            )
         else:
             englisch, deutsch = vorgabe
             eintrag = _list_entry(alt_e["nr"], englisch, deutsch, "fancy")
@@ -839,10 +878,7 @@ def neue_liste(
     # Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel`
     # beim nächsten Prüfen - lieber ein klarer Fehler als stillschweigend
     # weggeworfene Arbeit.
-    alte_texte = {
-        (teil, niveau): spec.get("task2", {}).get("text", "")
-        for (teil, niveau), spec in pack.exams.items()
-    }
+    alte_specs = dict(pack.exams)
     neu.data["pruefungen"] = {
         f"teil{teil}": {
             niveau: _exam_scaffold(
@@ -855,9 +891,8 @@ def neue_liste(
         }
         for teil in (1, 2)
     }
-    for (teil, niveau), text in alte_texte.items():
-        if text and "TODO" not in text:
-            neu.data["pruefungen"][f"teil{teil}"][niveau]["task2"]["text"] = text
+    for (teil, niveau), spec in alte_specs.items():
+        _text_uebernehmen(spec, neu.data["pruefungen"][f"teil{teil}"][niveau])
     return neu
 
 
@@ -966,10 +1001,7 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
         pack.data["liste"][name] = rows
 
     unit_label = pack.unit_label
-    alte_texte = {
-        (teil, niveau): spec.get("task2", {}).get("text", "")
-        for (teil, niveau), spec in pack.exams.items()
-    }
+    alte_specs = dict(pack.exams)
     pack.data["pruefungen"] = {
         f"teil{teil}": {
             niveau: _exam_scaffold(
@@ -982,7 +1014,8 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
         }
         for teil in (1, 2)
     }
-    for (teil, niveau), text in alte_texte.items():
-        if text and "TODO" not in text:
-            pack.data["pruefungen"][f"teil{teil}"][niveau]["task2"]["text"] = text
+    for (teil, niveau), spec in alte_specs.items():
+        _text_uebernehmen(
+            spec, pack.data["pruefungen"][f"teil{teil}"][niveau]
+        )
     return pack

@@ -413,13 +413,10 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         </div>
         <div class="feld" style="margin-top:10px">
           <label for="listenwahl">Vokabelliste</label>
-        <select id="listenwahl">
-          <option value="neu">neu erzeugen — die Prüfungen beziehen sich darauf</option>
-          <option value="bestehend" selected>die bestehende V1 weiterverwenden</option>
-        </select>
+        <select id="listenwahl"></select>
         <p class="hinweis" id="listenhinweis"></p>
 
-        <label for="fancy">Aufgewertete Wörter („fancy")</label>
+        <label for="fancy" id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
         <div class="paar">
           <div class="feld"><input type="number" id="fancy" min="0" max="20" value="0"></div>
           <div class="feld">
@@ -430,7 +427,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           </div>
         </div>
         <textarea id="fancywoerter" hidden
-          placeholder="dreadful=schrecklich&#10;exhausted=erschöpft&#10;crucial=entscheidend"></textarea>
+          placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
         <p class="hinweis" id="fancyhinweis"></p>
 
         <label for="notiz">Notiz an mich</label>
@@ -535,7 +532,7 @@ function fenster(sortiert, n, ziel){
 
 /* Die echte Auswahl aus den Daten, auf die Wortobjekte dieses Tests gemappt. */
 function echteAuswahl(teil, niveau, sortiert){
-  const e = (unitDaten().echt || {})["t" + teil + niveau];
+  const e = (anzeigeListe().echt || {})["t" + teil + niveau];
   if(!e) return null;
   const nach = new Map(sortiert.map(w => [w.en, w]));
   const woerter = e.woerter.map(en => nach.get(en)).filter(Boolean);
@@ -578,16 +575,38 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
-               liste:"bestehend", fancy:0, fancyQuelle:"claude", fancyWoerter:""};
+               listeVersion:1, fancy:0, fancyQuelle:"claude", fancyWoerter:""};
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
+
+/* Die gewählte Vokabelliste dieser Unit. Voreingestellt ist die erste
+   erzeugte - das ist der Normalfall: eine Liste, dazu über die Zeit mehrere
+   verschiedene Prüfungen. */
+function listenDaten(){
+  const u = unitDaten();
+  return u.listen.find(l => l.version === state.listeVersion) || u.listen[0];
+}
+function neueVersion(){
+  const u = unitDaten();
+  return Math.max(...u.listen.map(l => l.version)) + 1;
+}
+/* Wird eine neue Liste angelegt? Dann gibt es noch keine Wörter zu zeigen -
+   die Vorschau bleibt bei der Liste, aus der sie hervorgeht. */
+function legtNeueListeAn(){ return state.listeVersion === 0; }
+function basisListe(){
+  const u = unitDaten();
+  return u.listen[u.listen.length - 1];
+}
 function testWoerter(teil){
-  return unitDaten().woerter.filter(w => w.test === teil)
+  return anzeigeListe().woerter.filter(w => w.test === teil)
          .slice().sort((a,b) => b.score - a.score || a.en.localeCompare(b.en));
 }
 /* Voreinstellung: die Durchschnitte, die die Anwendung selbst erreicht hat. */
+function anzeigeListe(){
+  return legtNeueListeAn() ? basisListe() : listenDaten();
+}
 function vorgabe(niveau){
-  const e = unitDaten().echt || {};
+  const e = anzeigeListe().echt || {};
   const werte = [1,2].map(t => e["t" + t + niveau]).filter(Boolean)
                      .map(x => x.schnitt);
   if(!werte.length) return niveau === "A" ? 3.5 : 1.7;
@@ -608,9 +627,9 @@ function vorgabenSetzen(){
    Lückentexte, die im Paket liegen. Deshalb steht sie auch als Strich auf
    der Bahn - man sieht, wie weit man sich von ihr entfernt. */
 function normalWort(niveau){
-  const werte = DATA.units.flatMap(u =>
-    [1,2].map(t => (u.echt || {})["t" + t + niveau]).filter(Boolean)
-         .map(x => x.schnitt));
+  const werte = DATA.units.flatMap(u => u.listen.flatMap(li =>
+    [1,2].map(t => (li.echt || {})["t" + t + niveau]).filter(Boolean)
+         .map(x => x.schnitt)));
   return werte.length ? werte.reduce((a,b) => a+b, 0) / werte.length : 0;
 }
 function normalText(niveau){
@@ -618,7 +637,7 @@ function normalText(niveau){
 }
 /* Die Textstufe, die in dieser Unit tatsächlich erreicht wurde. */
 function textVorgabe(niveau){
-  const e = unitDaten().echt || {};
+  const e = anzeigeListe().echt || {};
   const werte = [1,2].map(t => e["t" + t + niveau]).filter(Boolean)
                      .map(x => x.textstufe).filter(x => x > 0);
   return werte.length
@@ -706,7 +725,10 @@ function zeichneKopf(){
     posten("aus der Liste", h.gewaehlt) +
     posten("ergänzt", h.ergaenzt, h.ergaenzt > 0) +
     posten("Zusatzteile", h.zusatzteile, h.zusatzteile > 0);
-  $("listenNote").textContent = "60 Wörter · Test 1 und Test 2 · für beide Gruppen dieselbe";
+  const li = anzeigeListe();
+  $("listenNote").textContent = "V" + li.version + " · " + li.woerter.length +
+    " Wörter · Test 1 und Test 2 · für beide Gruppen dieselbe" +
+    (legtNeueListeAn() ? " (Grundlage für V" + neueVersion() + ")" : "");
 }
 function posten(titel, wert, betont){
   return '<div class="' + (betont ? "betont" : "") + '"><dt>' + titel +
@@ -803,7 +825,7 @@ function bindeBalken(){
 
 function zeichneListe(){
   const suche = state.suche.trim().toLowerCase();
-  const zeilen = unitDaten().woerter
+  const zeilen = anzeigeListe().woerter
     .filter(w => !suche || (w.en + " " + w.de + " " + w.satz).toLowerCase().includes(suche))
     .map(w => "<tr><td class='num'>" + w.test + "." + w.nr + "</td><td class='en'>" +
       esc(w.en) + "</td><td>" + esc(w.de) + "</td><td class='num'>" + w.score.toFixed(1) +
@@ -840,10 +862,15 @@ function auftrag(){
     eigenerText:state.textEigen,
     textziele:{A:textZiele("A"), B:textZiele("B")},
     variante:state.variante, anzahl:state.anzahl, luecken:state.luecken,
-    liste:state.liste,
-    listeVersion:(unitDaten().liste_version || 1),
-    fancy:state.fancy, fancyQuelle:state.fancyQuelle,
-    fancyWoerter:state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean),
+    neueListe:legtNeueListeAn(),
+    listeVersion:(legtNeueListeAn() ? neueVersion() : state.listeVersion),
+    basisVersion:basisListe().version,
+    // Aufgewertete Wörter gibt es nur zu einer neuen Liste. Sonst bliebe ein
+    // vorher eingetippter Wert im Auftrag stehen und widerspräche der Wahl.
+    fancy:legtNeueListeAn() ? state.fancy : 0,
+    fancyQuelle:state.fancyQuelle,
+    fancyWoerter:legtNeueListeAn()
+      ? state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean) : [],
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
     erzeugt:new Date().toISOString()
@@ -874,26 +901,25 @@ function befehlstext(a){
                     teileNiv.join(", ") + ".");
     }
   }
-  const neueListe = a.liste === "neu" || a.fancy > 0 || a.fancyWoerter.length;
-  if(neueListe){
-    const naechste = "V" + (a.listeVersion + 1);
-    zeilen.push("Dafür eine neue Vokabelliste " + naechste +
-                " anlegen (die bestehende V" + a.listeVersion + " bleibt);" +
-                " die Prüfungen beziehen sich auf " + naechste + ".");
-  } else if(a.hatPruefungen){
-    zeilen.push("Die Prüfungen beziehen sich auf die bestehende Liste V" +
+  if(a.neueListe){
+    zeilen.push("Dafür eine neue Vokabelliste V" + a.listeVersion +
+                " anlegen (aus V" + a.basisVersion + "; die bestehenden " +
+                "Listen bleiben); die Prüfungen beziehen sich auf V" +
                 a.listeVersion + ".");
+  } else if(a.hatPruefungen){
+    zeilen.push("Grundlage ist die bestehende Vokabelliste V" +
+                a.listeVersion + " — keine neue Liste anlegen.");
   }
   if(a.fancyWoerter.length)
     zeilen.push("Diese Wörter aufnehmen: " + a.fancyWoerter.join(", ") + ".");
-  // Die Zahl im Feld ist die Gesamtzahl der Fächer. Selbst angegebene Wörter
-  // füllen einen Teil davon; für den Rest wähle ich.
+  // Absichtlich ohne Massstab und ohne Beispielwörter: wonach ein
+  // aufgewertetes Wort gewählt wird, hängt am Wortfeld dieser Unit und wird
+  // im Chat entschieden. Stünde es hier, käme für jede Unit dasselbe zurück.
   const offen = Math.max(0, a.fancy - a.fancyWoerter.length);
   if(offen > 0)
     zeilen.push(offen + (a.fancyWoerter.length ? " weitere" : "") +
-                " aufgewertete Wörter selbst wählen — Ersatz für den " +
-                "„very + Adjektiv\u201c-Notausgang, B1.2–B2.1, alltagstauglich, " +
-                "kollisionsfrei. Bitte mit Begründung je Wort.");
+                " aufgewertete Wörter für „" + a.thema + "“ selbst wählen, " +
+                "je mit Begründung.");
   if(a.notiz) zeilen.push(a.notiz);
   return zeilen.join(" ");
 }
@@ -956,7 +982,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneListenwahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -970,6 +996,7 @@ $("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +
 
 $("unit").addEventListener("change", e => {
   state.unit = +e.target.value;
+  state.listeVersion = unitDaten().listen[0].version;
   if(!state.eigen) vorgabenSetzen();
   if(!state.textEigen) textVorgabenSetzen();
   $("twertA").textContent = state.text.A.toFixed(1);
@@ -1013,41 +1040,81 @@ $("tzurueck").addEventListener("click", () => {
   zeichneTextband(); zeichneAuftrag();
 });
 
-function zeichneListenhinweis(){
-  const v = unitDaten().liste_version || 1;
-  // Aufgewertete Wörter ändern die Liste - dann ist "bestehende weiterverwenden"
-  // keine Möglichkeit mehr, und die Auswahl sagt das auch.
-  const erzwungen = state.fancy > 0 || state.fancyWoerter.trim().length > 0;
-  if(erzwungen && state.liste !== "neu"){
-    state.liste = "neu";
-    $("listenwahl").value = "neu";
+function zeichneListenwahl(){
+  const u = unitDaten(), wahl = $("listenwahl");
+  wahl.innerHTML = "";
+  for(const li of u.listen){
+    const o = document.createElement("option");
+    o.value = String(li.version);
+    o.textContent = "V" + li.version + " — " + li.woerter.length + " Wörter"
+      + (li.version === 1 ? " (Grundliste)" : "")
+      + (li.aufgewertet.length ? " · " + li.aufgewertet.length + " aufgewertet" : "")
+      + (li.offen ? " · " + li.offen + " offen" : "");
+    wahl.appendChild(o);
   }
-  const neueListe = state.liste === "neu";
-  $("listenwahl").options[1].disabled = erzwungen;
-  $("listenwahl").options[1].textContent = erzwungen
-    ? "die bestehende V" + v + " weiterverwenden (geht nicht mit neuen Wörtern)"
-    : "die bestehende V" + v + " weiterverwenden";
-  $("listenhinweis").textContent = neueListe
-    ? "Es entsteht V" + (v + 1) + ". Jede Prüfung trägt den Abdruck ihrer Liste " +
-      "im Dateinamen und im Paket — ein Test kann später nicht zur falschen " +
-      "Liste gelegt werden."
-    : "Die Prüfungen werden an V" + v + " gebunden (Dateiname Unit" +
-      String(state.unit).padStart(2, "0") + "_V" + v + "_…).";
+  const o = document.createElement("option");
+  o.value = "0";
+  o.textContent = "＋ neue Liste V" + neueVersion() + " anlegen";
+  wahl.appendChild(o);
+  wahl.value = String(state.listeVersion);
+  if(!wahl.value || wahl.selectedIndex < 0){
+    state.listeVersion = u.listen[0].version;
+    wahl.value = String(state.listeVersion);
+  }
+}
+
+function zeichneListenhinweis(){
+  const neu = legtNeueListeAn();
+  // Die Fancy-Felder gehören zur neuen Liste. Eine bestehende zu verändern
+  // hiesse, ihre Prüfungen ungültig zu machen - deshalb sind sie hier aus,
+  // statt die Listenwahl im Rücken umzustellen.
+  $("fancy").disabled = !neu;
+  $("fancyquelle").disabled = !neu;
+  $("fancywoerter").disabled = !neu;
+  $("fancylabel").textContent = neu
+    ? "Aufgewertete Wörter für V" + neueVersion()
+    : "Aufgewertete Wörter — nur für eine neue Liste";
+
+  if(neu){
+    $("listenhinweis").textContent =
+      "V" + neueVersion() + " entsteht aus V" + basisListe().version +
+      ". Die bestehenden Listen bleiben unangetastet; die unten gezeigten " +
+      "Wörter sind die von V" + basisListe().version + ".";
+  } else {
+    const li = listenDaten();
+    $("listenhinweis").textContent =
+      "Die Prüfungen werden an V" + li.version + " gebunden (Dateiname Unit" +
+      String(state.unit).padStart(2, "0") + "_V" + li.version + "_…, Abdruck " +
+      li.abdruck + ")." +
+      (li.fassungen.length
+        ? " Dazu bestehen bereits Fassung " + li.fassungen.join(", ") + "."
+        : "");
+  }
+
   const eigene = state.fancyWoerter.split("\n")
                       .map(z => z.trim()).filter(Boolean).length;
   const gesamt = Math.max(state.fancy, eigene);
-  const offen = Math.max(0, state.fancy - eigene);
-  $("fancyhinweis").textContent = gesamt === 0
-    ? "Aufgewertete Wörter treten an die Stelle der zugänglichsten — die Liste bleibt bei 60."
-    : gesamt + " Wörter ersetzen die " + gesamt + " zugänglichsten der Liste " +
-      "(sie bleibt bei 60, eine A4-Seite)" +
-      (eigene ? " · " + eigene + " von Ihnen" : "") +
-      (offen ? " · " + offen + " wähle ich" : "") + ".";
+  const restlich = Math.max(0, state.fancy - eigene);
+  $("fancyhinweis").textContent = !neu
+    ? "Eine bestehende Liste wird nicht verändert — ihre Prüfungen hängen daran."
+    : gesamt === 0
+      ? "Aufgewertete Wörter treten an die Stelle der zugänglichsten — die Liste "
+        + "bleibt bei 60. Wonach gewählt wird, entscheidet das Wortfeld der Unit."
+      : gesamt + " Wörter ersetzen die " + gesamt + " zugänglichsten der Liste " +
+        "(sie bleibt bei 60, eine A4-Seite)" +
+        (eigene ? " · " + eigene + " von Ihnen" : "") +
+        (restlich ? " · " + restlich + " wähle ich" : "") + ".";
 }
 
 $("listenwahl").addEventListener("change", e => {
-  state.liste = e.target.value;
-  zeichneListenhinweis(); zeichneAuftrag();
+  state.listeVersion = +e.target.value;
+  if(!state.eigen) vorgabenSetzen();
+  if(!state.textEigen) textVorgabenSetzen();
+  $("wertA").textContent = state.ziel.A.toFixed(1);
+  $("wertB").textContent = state.ziel.B.toFixed(1);
+  $("twertA").textContent = state.text.A.toFixed(1);
+  $("twertB").textContent = state.text.B.toFixed(1);
+  alles();
 });
 $("fancy").addEventListener("change", e => {
   state.fancy = Math.max(0, Math.min(20, +e.target.value || 0));

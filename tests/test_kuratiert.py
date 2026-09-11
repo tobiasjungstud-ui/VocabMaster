@@ -69,12 +69,17 @@ def test_fassung_ersetzt_genau_eine_pruefung(pfad):
 
     (teil, niveau), spec = next(iter(pack.exams.items()))
     alt = grund.exam(teil, niveau)
-    neu_w = {i["english"] for i in spec["task1"]["items"]}
-    neu_w |= {g["answer"] for g in spec["task2"]["gaps"]}
-    alt_w = {i["english"] for i in alt["task1"]["items"]}
-    alt_w |= {g["answer"] for g in alt["task2"]["gaps"]}
-    assert neu_w != alt_w, "eine Fassung, die dasselbe prüft, ist keine"
-    assert spec["task2"]["text"] != alt["task2"]["text"], "auch der Text ist neu"
+
+    # Ein Überschnitt der geprüften Wörter ist ausdrücklich erlaubt: Alle
+    # Fassungen prüfen dieselbe Liste, und die zwölf schwersten Wörter
+    # bleiben die zwölf schwersten. Was eine Fassung unterscheidet, ist ihr
+    # Lückentext und die Aufteilung in Übersetzung und Lücke.
+    assert spec["task2"]["text"] != alt["task2"]["text"], "der Text ist neu"
+    neu_l = [g["answer"] for g in spec["task2"]["gaps"]]
+    alt_l = [g["answer"] for g in alt["task2"]["gaps"]]
+    assert neu_l != alt_l, "dieselben Lücken wären dasselbe Blatt"
+    assert spec["meta"]["fassung"] == pack.fassung, "die Fassung ist hinterlegt"
+    assert spec["meta"]["erzeugt"], "mit Datum"
 
 
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")

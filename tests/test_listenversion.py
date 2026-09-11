@@ -45,12 +45,13 @@ def test_vertauschte_liste_faellt_auf(pack, db, settings):
 
 def test_neue_liste_wertet_die_zugaenglichsten_woerter_auf(pack, settings):
     vorher = {e["englisch"] for e in pack.all_entries}
-    neu = neue_liste(pack, fancy=0, eigene=["dreadful=schrecklich"], settings=settings)
+    neu = neue_liste(pack, fancy=0, eigene=["misleading=irreführend"],
+                     settings=settings)
 
     assert neu.liste_version == pack.liste_version + 1
     assert len(neu.all_entries) == len(pack.all_entries), "die Liste bleibt bei 60"
     nachher = {e["englisch"] for e in neu.all_entries}
-    assert "dreadful" in nachher
+    assert "misleading" in nachher
     raus = vorher - nachher
     assert len(raus) == 1
     # Was weicht, muss leichter gewesen sein als das, was bleibt.

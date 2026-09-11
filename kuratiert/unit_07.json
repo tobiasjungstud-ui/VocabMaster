@@ -658,7 +658,9 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "c10f8be64a4e"
+          "liste_fingerabdruck": "c10f8be64a4e",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -759,7 +761,9 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "c10f8be64a4e"
+          "liste_fingerabdruck": "c10f8be64a4e",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -862,7 +866,9 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "c10f8be64a4e"
+          "liste_fingerabdruck": "c10f8be64a4e",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -961,7 +967,9 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "c10f8be64a4e"
+          "liste_fingerabdruck": "c10f8be64a4e",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -1057,5 +1065,6 @@
       }
     }
   },
-  "liste_version": 1
+  "liste_version": 1,
+  "fassung": 1
 }

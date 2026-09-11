@@ -405,11 +405,8 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         </div>
         <div class="feld" style="margin-top:10px">
           <label for="variante">Fassung</label>
-          <select id="variante">
-            <option value="1">1 — die bestehende</option>
-            <option value="2">2 — neue Fassung (Nachschreiber)</option>
-            <option value="3">3 — weitere Fassung</option>
-          </select>
+          <select id="variante"></select>
+          <p class="hinweis" id="fassunghinweis"></p>
         </div>
         <div class="feld" style="margin-top:10px">
           <label for="listenwahl">Vokabelliste</label>
@@ -861,7 +858,9 @@ function auftrag(){
     textVorgabe:{A:textVorgabe("A"), B:textVorgabe("B")},
     eigenerText:state.textEigen,
     textziele:{A:textZiele("A"), B:textZiele("B")},
-    variante:state.variante, anzahl:state.anzahl, luecken:state.luecken,
+    variante:state.variante === 0 ? naechsteFassung() : state.variante,
+    neueFassung:state.variante === 0,
+    anzahl:state.anzahl, luecken:state.luecken,
     neueListe:legtNeueListeAn(),
     listeVersion:(legtNeueListeAn() ? neueVersion() : state.listeVersion),
     basisVersion:basisListe().version,
@@ -880,8 +879,10 @@ function auftrag(){
 function befehlstext(a){
   if(!a.teile.length) return "Nichts ausgewählt — links mindestens einen Punkt ankreuzen.";
   const zeilen = ["Unit " + a.unit + ": " + a.teile.map(t => t.text).join(", ") + "."];
-  if(a.variante > 1) zeilen.push("Fassung " + a.variante + " — eine neue Variante, " +
-    "nicht die bestehende überschreiben.");
+  if(a.neueFassung)
+    zeilen.push("Davon eine neue Fassung anlegen (wird als Fassung " +
+                a.variante + " hinterlegt; die bestehenden bleiben). " +
+                "Überschneidungen mit früheren Fassungen sind in Ordnung.");
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
       a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
@@ -982,7 +983,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneListenwahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -1039,6 +1040,34 @@ $("tzurueck").addEventListener("click", () => {
   $("twertB").textContent = state.text.B.toFixed(1);
   zeichneTextband(); zeichneAuftrag();
 });
+
+function fassungen(){
+  const li = anzeigeListe();
+  return [1, ...(li.fassungen || [])].sort((a, b) => a - b);
+}
+function naechsteFassung(){ return Math.max(...fassungen()) + 1; }
+
+function zeichneFassungswahl(){
+  const wahl = $("variante");
+  wahl.innerHTML = "";
+  for(const f of fassungen()){
+    const o = document.createElement("option");
+    o.value = String(f);
+    o.textContent = "Fassung " + f + (f === 1 ? " — die erste" : "");
+    wahl.appendChild(o);
+  }
+  const o = document.createElement("option");
+  o.value = "0";
+  o.textContent = "＋ neue Fassung erstellen";
+  wahl.appendChild(o);
+  wahl.value = String(state.variante);
+  if(wahl.selectedIndex < 0){ state.variante = 1; wahl.value = "1"; }
+  $("fassunghinweis").textContent = state.variante === 0
+    ? "Wird als Fassung " + naechsteFassung() + " hinterlegt — mit Nummer, " +
+      "Datum und Listenabdruck. Die bestehenden bleiben unangetastet."
+    : "Bereits hinterlegt: " + fassungen().map(f => "Fassung " + f).join(", ") +
+      ". Jede hat ihre eigene Datei und ihren eigenen Lückentext.";
+}
 
 function zeichneListenwahl(){
   const u = unitDaten(), wahl = $("listenwahl");
@@ -1148,7 +1177,8 @@ $("luecken").addEventListener("change", e => {
   zeichneTeile(); zeichneAuftrag();
 });
 $("variante").addEventListener("change", e => {
-  state.variante = +e.target.value; zeichneAuftrag();
+  state.variante = +e.target.value;
+  zeichneFassungswahl(); zeichneAuftrag();
 });
 $("notiz").addEventListener("input", e => { state.notiz = e.target.value; zeichneAuftrag(); });
 $("suche").addEventListener("input", e => { state.suche = e.target.value; zeichneListe(); });

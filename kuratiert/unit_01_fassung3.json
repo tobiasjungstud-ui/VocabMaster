@@ -657,10 +657,10 @@
           "niveau": "A",
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
+          "fassung": 3,
+          "erzeugt": "2026-09-11",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093",
-          "fassung": 2,
-          "erzeugt": "2026-09-11"
+          "liste_fingerabdruck": "f2ad6b039093"
         },
         "total_words": 12,
         "header": {
@@ -673,34 +673,44 @@
           "instruction": "1) Translate using the vocabulary from unit 1 part i.",
           "items": [
             {
-              "german": "ereignisreich",
-              "english": "eventful",
+              "german": "altmodisch",
+              "english": "old-fashioned",
               "pos": "adj"
             },
             {
-              "german": "betteln",
-              "english": "beg",
-              "pos": "verb"
-            },
-            {
-              "german": "inzwischen",
-              "english": "meanwhile",
+              "german": "glücklicherweise",
+              "english": "thankfully",
               "pos": "adv"
             },
             {
-              "german": "Bürgerkrieg",
-              "english": "civil war",
-              "pos": "noun"
-            },
-            {
-              "german": "riesig",
-              "english": "immense",
+              "german": "enttäuschend",
+              "english": "disappointing",
               "pos": "adj"
             },
             {
-              "german": "Waffe",
-              "english": "weapon",
+              "german": "schätzen",
+              "english": "treasure",
+              "pos": "verb"
+            },
+            {
+              "german": "auf etw. stoßen",
+              "english": "come across",
+              "pos": "verb"
+            },
+            {
+              "german": "verzweifelt",
+              "english": "desperately",
+              "pos": "adv"
+            },
+            {
+              "german": "Freundin",
+              "english": "girlfriend",
               "pos": "noun"
+            },
+            {
+              "german": "unbeliebt",
+              "english": "unpopular",
+              "pos": "adj"
             }
           ]
         },
@@ -708,18 +718,16 @@
           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
           "word_bank_label": "Words:",
           "word_bank": [
-            "nutzlos",
-            "glücklicherweise",
+            "danach",
+            "jmd. an etw. erinnern",
             "Waisenhaus",
-            "modisch",
-            "enttäuschend",
-            "schätzen"
+            "stinkend"
           ],
           "gaps": [
             {
-              "german": "schätzen",
-              "english": "treasure",
-              "answer": "treasure",
+              "german": "jmd. an etw. erinnern",
+              "english": "remind of",
+              "answer": "remind of",
               "pos": "verb"
             },
             {
@@ -729,44 +737,32 @@
               "pos": "noun"
             },
             {
-              "german": "enttäuschend",
-              "english": "disappointing",
-              "answer": "disappointing",
-              "pos": "adj",
-              "unique_because": "Der Satz nennt eine enttäuschte Erwartung ('We had hoped to see their young faces clearly, so ...'); weder 'fashionable' noch 'useless' passt auf verblasste Fotografien."
+              "german": "stinkend",
+              "english": "smelly",
+              "answer": "smelly",
+              "pos": "adj"
             },
             {
-              "german": "glücklicherweise",
-              "english": "thankfully",
-              "answer": "thankfully",
+              "german": "danach",
+              "english": "afterwards",
+              "answer": "afterwards",
               "pos": "adv"
-            },
-            {
-              "german": "modisch",
-              "english": "fashionable",
-              "answer": "fashionable",
-              "pos": "adj",
-              "unique_because": "'a hat that was once very ..., though nobody would choose it today' spricht ausdrücklich von Mode im Wandel."
-            },
-            {
-              "german": "nutzlos",
-              "english": "useless",
-              "answer": "useless",
-              "pos": "adj",
-              "unique_because": "Der Gegensatz 'might seem ..., but for our family it holds a life' verlangt ein Wort für 'wertlos'."
             }
           ],
-          "text": "My grandmother kept a wooden box under her bed. She used to {1} the letters inside it more than her jewellery. Most of them came from a friend she met at the {2} in Dublin. We had hoped to see their young faces clearly, so the faded photographs are rather {3}. The letters themselves, {4}, are still easy to read. In every picture she wears a hat that was once very {5}, though nobody would choose it today. To a stranger the whole box might seem {6}, but for our family it holds a life."
+          "text": "My father keeps an old biscuit tin on his desk. Those old photographs {1} him of a summer nobody else remembers. His parents left him at the {2} in Cork when he was four. The tin is the only thing he carried away from there. A pair of football boots lies at the bottom, still a little {3} after forty years. He washed them once, and {4} he never wore them again. My mother laughs at the whole box, but she never touches it."
         }
       }
     }
   },
-  "fassung": 2,
+  "liste_version": 1,
+  "fassung": 3,
   "abgeleitet_von": {
     "paket": "unit_01.json",
     "teil": 1,
     "niveau": "A",
-    "wortlaut_gemeinsam_hoechstens": 4
-  },
-  "liste_version": 1
+    "fruehere_fassungen": [
+      1,
+      2
+    ]
+  }
 }

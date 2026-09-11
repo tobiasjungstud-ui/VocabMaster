@@ -662,7 +662,9 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25"
+          "liste_fingerabdruck": "b7d061d86b25",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -763,7 +765,9 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25"
+          "liste_fingerabdruck": "b7d061d86b25",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -866,7 +870,9 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25"
+          "liste_fingerabdruck": "b7d061d86b25",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -967,7 +973,9 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25"
+          "liste_fingerabdruck": "b7d061d86b25",
+          "fassung": 1,
+          "erzeugt": "2026-09-10"
         },
         "total_words": 12,
         "header": {
@@ -1073,5 +1081,6 @@
       "grund": "Gleicher Grund wie in Teil 1: Wissenschaftswortschatz ist zu grossen Teilen international. Der Wert liegt mit 1.4 genau an der Schwelle."
     }
   ],
-  "liste_version": 1
+  "liste_version": 1,
+  "fassung": 1
 }

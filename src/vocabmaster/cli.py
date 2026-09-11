@@ -42,6 +42,7 @@ from .pack import (
     neue_fassung,
     neue_liste,
     pack_filename,
+    pruefungswoerter,
     scaffold,
     waehle_pruefungswoerter,
 )
@@ -256,21 +257,26 @@ def cmd_listen(args) -> int:
         pakete = sorted(nach_unit[unit], key=lambda p: (p.liste_version, p.fassung))
         print(f"\nUnit {unit:02d} - {pakete[0].thema}")
         for pack in pakete:
-            marke = f"V{pack.liste_version}"
-            if pack.fassung > 1:
-                marke += f" Fassung {pack.fassung}"
+            marke = f"V{pack.liste_version} · Fassung {pack.fassung}"
             fancy = sum(1 for e in pack.all_entries
                         if e.get("herkunft") == "fancy")
             offen = len(pack.offen())
-            teile = [f"{len(pack.exams)} Prüfungen",
-                     f"Abdruck {pack.liste_abdruck}"]
+            welche = ", ".join(
+                f"T{teil}/{niv}" for teil, niv in sorted(pack.exams)
+            )
+            teile = [welche or "keine Prüfung",
+                     f"Abdruck {pack.liste_abdruck}",
+                     pack.data.get("erzeugt", "")]
             if fancy:
                 teile.append(f"{fancy} aufgewertet")
             if offen:
                 teile.append(f"{offen} offen")
-            print(f"  {marke:<18} {pack.pfad.name:<30} {' · '.join(teile)}")
-    print("\nEine Prüfung gehört zu der Liste, deren Abdruck in ihr steht; "
-          "\n'vocabmaster prüfen' schlägt an, sobald das nicht mehr stimmt.")
+            print(f"  {marke:<22} {pack.pfad.name:<28} "
+                  f"{' · '.join(t for t in teile if t)}")
+    print("\nJede Fassung ist mit Nummer, Datum und Listenabdruck hinterlegt. "
+          "Eine Prüfung\ngehört zu der Liste, deren Abdruck in ihr steht; "
+          "'vocabmaster prüfen' schlägt an,\nsobald das nicht mehr stimmt. "
+          "Überschneidungen zwischen Fassungen sind erlaubt.")
     return 0
 
 
@@ -318,7 +324,7 @@ def cmd_liste_neu(args) -> int:
 
 
 def cmd_fassung(args) -> int:
-    """Eine zweite Fassung einer einzelnen Prüfung anlegen."""
+    """Noch eine Fassung einer Prüfung anlegen - fortlaufend, hinterlegt."""
     pack = Pack.load(args.paket)
     settings = _settings(args)
     if args.woerter:
@@ -331,19 +337,35 @@ def cmd_fassung(args) -> int:
               "Übersetzungsteil nichts übrig.")
         return 1
     prof = profile(args.niveau)
-    ziel = Path(args.verzeichnis) / pack_filename(pack.unit, args.nummer)
+
+    # Alle Fassungen dieser Prüfung, die schon hinterlegt sind.
+    vorhanden: dict[int, Pack] = {}
+    for kandidat in sorted(Path(args.verzeichnis).glob("unit_*.json")):
+        anderer = Pack.load(kandidat)
+        if (anderer.unit == pack.unit
+                and anderer.liste_version == pack.liste_version
+                and anderer.fassung != pack.fassung
+                and anderer.exam(args.teil, prof.name)):
+            vorhanden[anderer.fassung] = anderer
+
+    nummer = args.nummer
+    if nummer is None:
+        nummer = max([pack.fassung, *vorhanden]) + 1
+    elif nummer in vorhanden and not args.ueberschreiben:
+        print(f"Fassung {nummer} besteht bereits "
+              f"({vorhanden[nummer].pfad.name}) - mit --überschreiben "
+              "ersetzen oder --nummer weglassen für die nächste freie.")
+        return 1
+
+    ziel = Path(args.verzeichnis) / pack_filename(
+        pack.unit, nummer, pack.liste_version
+    )
     if ziel.exists() and not args.ueberschreiben:
         print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
         return 1
 
-    alt_spec = pack.exam(args.teil, prof.name)
-    bisher = [i["english"] for i in alt_spec.get("task1", {}).get("items", [])]
-    bisher += [g["answer"] for g in alt_spec.get("task2", {}).get("gaps", [])]
-
-    gemeinsam = (settings.max_overlap_words if args.gemeinsam is None
-                 else args.gemeinsam)
-    neu = neue_fassung(pack, args.teil, prof.name, args.nummer, settings,
-                       gemeinsam)
+    weitere = list(vorhanden.values())
+    neu = neue_fassung(pack, args.teil, prof.name, nummer, settings, weitere)
     if args.textstufe is not None:
         neu.data["pruefungen"][f"teil{args.teil}"][prof.name]["textstufe"] = (
             args.textstufe
@@ -351,30 +373,30 @@ def cmd_fassung(args) -> int:
     neu.save(ziel)
 
     spec = neu.exam(args.teil, prof.name)
-    woerter = [i["english"] for i in spec["task1"]["items"]]
-    woerter += [g["answer"] for g in spec["task2"]["gaps"]]
+    woerter = pruefungswoerter(spec)
     noten = [_schwierigkeit(e) for e in neu.entries(f"test{args.teil}")
              if e["englisch"] in woerter]
     schnitt = sum(noten) / len(noten) if noten else 0.0
-    alt_noten = [_schwierigkeit(e) for e in pack.entries(f"test{args.teil}")
-                 if e["englisch"] in bisher]
-    alt_schnitt = sum(alt_noten) / len(alt_noten) if alt_noten else 0.0
-    gemeinsam_w = sorted(set(woerter) & set(bisher))
 
     print(f"{ziel} geschrieben - {neu.unit_label} Teil {args.teil} "
-          f"Niveau {prof.name}, Fassung {args.nummer}.")
-    print(f"  Anspruch: Ø {schnitt:.2f}/10 "
-          f"(Fassung 1: Ø {alt_schnitt:.2f}/10)")
-    anteil = len(gemeinsam_w) / len(woerter) * 100 if woerter else 0.0
-    print(f"  Gemeinsam mit Fassung 1: {len(gemeinsam_w)} von {len(woerter)} "
-          f"= {anteil:.0f} % (Grenze {settings.max_overlap_share * 100:.0f} %)"
-          + (f" ({', '.join(gemeinsam_w)})" if gemeinsam_w else ""))
-    print(f"  Neu gegenüber Fassung 1: "
-          f"{', '.join(sorted(set(woerter) - set(bisher)))}")
+          f"Niveau {prof.name}, Fassung {nummer} (Liste V{pack.liste_version}).")
+    print(f"  Anspruch: Ø {schnitt:.2f}/10")
+    print(f"  {len(spec['task1']['items'])}× übersetzen, "
+          f"{len(spec['task2']['gaps'])} Lücken")
+
+    # Überschnitt ist erlaubt - er wird berichtet, nicht begrenzt.
+    for p_alt in sorted([pack, *weitere], key=lambda x: x.fassung):
+        alt_w = set(pruefungswoerter(p_alt.exam(args.teil, prof.name)))
+        gemeinsam = sorted(set(woerter) & alt_w)
+        print(f"  gegenüber Fassung {p_alt.fassung}: {len(gemeinsam)} von "
+              f"{len(woerter)} Wörtern gemeinsam"
+              + (f" ({', '.join(gemeinsam)})" if gemeinsam else ""))
+
     verlangt = neu.textstufe(args.teil, prof.name)
     if verlangt is None:
         verlangt = NORMAL_TEXTSTUFE[prof.name]
-    ziele = ziele_fuer_textstufe(PROFILES[prof.name], neu.textstufe(args.teil, prof.name))
+    ziele = ziele_fuer_textstufe(PROFILES[prof.name],
+                                 neu.textstufe(args.teil, prof.name))
     print(f"  Textstufe: {verlangt:.1f}/10 "
           f"(Normallage Niveau {prof.name}: {NORMAL_TEXTSTUFE[prof.name]:.1f})")
     print(f"    {ziele['min_words']}-{ziele['max_words']} Wörter, "
@@ -384,7 +406,8 @@ def cmd_fassung(args) -> int:
           f"Nebensätze ≤ {ziele['max_subordinators_per_sentence']} je Satz")
     print(f"\nJetzt im Chat ausfüllen: der Lückentext in "
           f"pruefungen.teil{args.teil}.{prof.name}.task2.text "
-          f"({len(spec['task2']['gaps'])} Lücken).")
+          f"({len(spec['task2']['gaps'])} Lücken) - er ist es, der diese "
+          "Fassung von den anderen unterscheidet.")
     print(f"Danach 'vocabmaster prüfen {ziel} --nur test'.")
     return 0
 
@@ -518,16 +541,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser(
         "fassung",
-        help="eine zweite Fassung einer einzelnen Prüfung anlegen",
+        help="noch eine Fassung einer einzelnen Prüfung anlegen",
     )
     p.add_argument("paket", help="das bestehende Paket, z. B. kuratiert/unit_01.json")
     p.add_argument("--teil", type=int, choices=(1, 2), required=True)
     p.add_argument("--niveau", choices=list(NIVEAUS), required=True)
-    p.add_argument("--nummer", type=int, default=2,
-                   help="die wievielte Fassung (Voreinstellung 2)")
-    p.add_argument("--gemeinsam", type=int, default=None,
-                   help="höchstens so viele Wörter wie in Fassung 1 "
-                        "(Vorgabe: 40 %% der Prüfung)")
+    p.add_argument("--nummer", type=int, default=None,
+                   help="Nummer der Fassung (Vorgabe: die nächste freie)")
     p.add_argument("--woerter", type=int,
                    help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
     p.add_argument("--luecken", type=int,

@@ -157,40 +157,43 @@ def waehle_pruefungswoerter(
     entries: list[dict[str, Any]],
     prof: NiveauProfile,
     settings: Settings | None = None,
-    meiden: Iterable[str] = (),
-    hoechstens_gemeinsam: int = 0,
+    schon_geprueft: Iterable[str] = (),
 ) -> list[dict[str, Any]]:
     """Welche Wörter eines Tests dieses Niveau prüft.
 
     Die 30 Wörter des Tests werden nach Schwierigkeit sortiert. Niveau A
     prüft von oben - die zwölf schwersten -, Niveau B von unten - die zwölf
-    zugänglichsten. Beide schöpfen aus derselben Liste; dass sich die beiden
-    Auswahlen dabei berühren, ist erlaubt und bei 30 Wörtern selten.
+    zugänglichsten. Beide schöpfen aus derselben Liste.
+
+    ``schon_geprueft`` nennt die Wörter, die frühere Fassungen dieser
+    Prüfung bereits abgefragt haben. **Ein Überschnitt ist ausdrücklich
+    erlaubt** - alle Fassungen prüfen dieselbe Vokabelliste, und die zwölf
+    schwersten Wörter bleiben die zwölf schwersten, egal wie oft man sie
+    abfragt. Die Angabe wirkt deshalb nur als Stichentscheid unter *gleich
+    schweren* Wörtern: Bei gleicher Note kommt das noch nicht geprüfte zuerst.
+    Sie darf eine Fassung niemals leichter machen - eine Prüfung, die
+    `teddy bear` abfragt, weil die guten Wörter schon vergeben waren, ist
+    keine Prüfung für Niveau A mehr.
 
     Übersprungen wird, was der Checker anschliessend beanstanden würde: zwei
     Wörter einer Wortfamilie, Beinah-Synonyme, bekannte Verwechslungspaare.
-
-    ``meiden`` nennt die englischen Wörter einer bestehenden Fassung, von
-    denen höchstens ``hoechstens_gemeinsam`` wieder vorkommen dürfen - so
-    entsteht eine zweite Fassung, die dieselbe Vokabelliste prüft, aber
-    nicht dasselbe Blatt ist. Der Preis steht im Prüfbericht: je weniger
-    gemeinsam, desto weiter muss die Auswahl vom Rand der Liste weg, und
-    desto mehr weicht ihr Schnitt von der ersten Fassung ab.
     """
     settings = settings or Settings()
     take = settings.exam_words
-    meiden = {w.lower() for w in meiden}
+    gebraucht = {w.lower() for w in schon_geprueft}
     brauchbar = [e for e in entries if e.get("englisch") and e.get("deutsch")]
     # "Anekdote" -> "anecdote" schreibt man ab; das prüft nichts. Solche
     # Wörter bleiben in der Liste (gelernt werden sie trotzdem), rutschen in
-    # der Prüfung aber ans Ende - auch für Niveau B. In einer Unit wie
-    # "Wissenschaft", die zu einem grossen Teil aus Internationalismen
-    # besteht, kommen sie dennoch dran; der Checker meldet das dann.
+    # der Prüfung aber ans Ende - auch für Niveau B.
     reihenfolge = sorted(
         brauchbar,
         key=lambda e: (
             _abschreibbar(e),
-            -_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e),
+            # Die Note entscheidet; auf eine Stelle gerundet, damit ein
+            # Hundertstel Unterschied den Stichentscheid nicht aushebelt.
+            round(-_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e), 1),
+            e.get("englisch", "").lower() in gebraucht,
+            e.get("englisch", "").lower(),
         ),
     )
 
@@ -201,8 +204,6 @@ def waehle_pruefungswoerter(
     max_anteil = prof.selection_targets["max_share_one_word_class"]
     grenze_wortart = int(take * max_anteil)
 
-    # Welche zwei Wörter sich gegenseitig ausschliessen, hängt nur vom Paar
-    # ab - einmal ausgerechnet, gilt es für alle Durchgänge.
     vokabeln = {id(e): _as_vocab_item(e) for e in brauchbar}
     unvertraeglich: dict[int, set[int]] = {id(e): set() for e in brauchbar}
     for a in brauchbar:
@@ -222,54 +223,17 @@ def waehle_pruefungswoerter(
             return False
         return True
 
-    def greifen(ordnung: list[dict[str, Any]]) -> list[dict[str, Any]]:
-        gewaehlt: list[dict[str, Any]] = []
-        verbraucht = 0
-        for entry in ordnung:
-            if len(gewaehlt) >= take:
-                break
-            gemieden = entry.get("englisch", "").lower() in meiden
-            if gemieden and verbraucht >= hoechstens_gemeinsam:
-                continue
-            if passt(entry, gewaehlt):
-                gewaehlt.append(entry)
-                verbraucht += gemieden
-        if len(gewaehlt) < take:  # notfalls auffüllen, der Checker meldet es
-            gewaehlt += [e for e in ordnung if e not in gewaehlt][
-                : take - len(gewaehlt)
-            ]
-        return gewaehlt
-
-    if not meiden:
-        return greifen(reihenfolge)
-
-    # Mit einer Sperre reicht die reine Bestenliste nicht mehr: Ein früh
-    # gegriffenes Wort kann ein besseres blockieren ("old-fashioned" verdrängt
-    # "fashionable", das gleich schwer ist). Deshalb wird die Reihenfolge
-    # mehrfach leicht verrauscht durchprobiert und die beste Ausbeute behalten
-    # - mit festem Startwert, damit derselbe Auftrag dasselbe Blatt ergibt.
-    rng = random.Random(settings.seed + len(meiden))
-    bestes = greifen(reihenfolge)
-
-    def guete(auswahl: list[dict[str, Any]]) -> float:
-        if not auswahl:
-            return float("-inf")
-        mittel = sum(_schwierigkeit(e) for e in auswahl) / len(auswahl)
-        return mittel if prof.zuerst else -mittel
-
-    for _ in range(2000):
-        gestoert = sorted(
-            brauchbar,
-            key=lambda e: (
-                _abschreibbar(e),
-                (-_schwierigkeit(e) if prof.zuerst else _schwierigkeit(e))
-                + rng.random() * 0.9,
-            ),
-        )
-        versuch = greifen(gestoert)
-        if len(versuch) == take and guete(versuch) > guete(bestes):
-            bestes = versuch
-    return bestes
+    gewaehlt: list[dict[str, Any]] = []
+    for entry in reihenfolge:
+        if len(gewaehlt) >= take:
+            break
+        if passt(entry, gewaehlt):
+            gewaehlt.append(entry)
+    if len(gewaehlt) < take:  # notfalls auffüllen, der Checker meldet es dann
+        gewaehlt += [e for e in reihenfolge if e not in gewaehlt][
+            : take - len(gewaehlt)
+        ]
+    return gewaehlt
 
 
 def _exam_scaffold(
@@ -279,14 +243,14 @@ def _exam_scaffold(
     prof: NiveauProfile,
     settings: Settings,
     seed: int,
-    meiden: Iterable[str] = (),
-    hoechstens_gemeinsam: int = 0,
+    schon_geprueft: Iterable[str] = (),
+    fassung: int = 1,
     liste_version: int = 1,
     liste_abdruck: str = "",
 ) -> dict[str, Any]:
     part_label, source = TEIL_NAMEN[teil]
     chosen = waehle_pruefungswoerter(
-        entries, prof, settings, meiden, hoechstens_gemeinsam
+        entries, prof, settings, schon_geprueft
     )
     by_score = sorted(chosen, key=lambda e: -_schwierigkeit(e))
 
@@ -297,14 +261,21 @@ def _exam_scaffold(
 
     # Je Lücke eine andere Wortart, damit sich zwei Lücken nicht schon von der
     # Grammatik her vertauschen lassen. Adverbien zählen als eigene Wortart.
+    #
+    # **Welche** Wörter Lücken werden, wird je Fassung durchgeschoben. Alle
+    # zwölf sind für dieses Niveau ausgewählt; ob ein Wort übersetzt oder
+    # eingesetzt wird, sagt über seine Schwierigkeit nichts. Damit
+    # unterscheiden sich zwei Fassungen auch dann, wenn sie dieselben zwölf
+    # Wörter prüfen - und das kostet keinen einzigen Punkt Anspruch.
+    versatz = max(0, int(fassung) - 1)
     gaps: list[dict[str, Any]] = []
     for pos in ("verb", "noun", "adj", "adv"):
-        for entry in bankfaehig:
-            if len(gaps) >= settings.exam_gaps:
-                break
-            if wortart_von(entry) == pos and entry not in gaps:
-                gaps.append(entry)
-                break
+        gleiche = [e for e in bankfaehig if wortart_von(e) == pos]
+        if not gleiche or len(gaps) >= settings.exam_gaps:
+            continue
+        entry = gleiche[versatz % len(gleiche)]
+        if entry not in gaps:
+            gaps.append(entry)
     for entry in bankfaehig:
         if len(gaps) >= settings.exam_gaps:
             break
@@ -334,6 +305,9 @@ def _exam_scaffold(
             # zwei Tage später nicht mehr sagen, zu welcher Vokabelliste sie
             # gehört - und ein stillschweigend vertauschter Lösungsschlüssel
             # ist der teuerste Fehler, den dieses Programm machen kann.
+            # Jede Fassung ist hinterlegt und benannt - auch die erste.
+            "fassung": int(fassung),
+            "erzeugt": date.today().isoformat(),
             "liste_version": int(liste_version),
             # Der Abdruck **der ganzen Liste**, nicht nur dieses Tests: eine
             # Prüfung hängt an der Vokabelliste der Unit, und die umfasst
@@ -418,7 +392,7 @@ def scaffold(
         f"teil{teil}": {
             name: _exam_scaffold(
                 blocks[f"test{teil}"], unit_label, teil, PROFILES[name],
-                settings, settings.seed, liste_version=1,
+                settings, settings.seed, fassung=1, liste_version=1,
                 liste_abdruck=abdruck,
             )
             for name in NIVEAUS
@@ -884,7 +858,7 @@ def neue_liste(
             niveau: _exam_scaffold(
                 neu.entries(f"test{teil}"), unit_label, teil, PROFILES[niveau],
                 settings, settings.seed + neu.liste_version,
-                liste_version=neu.liste_version,
+                fassung=neu.fassung, liste_version=neu.liste_version,
                 liste_abdruck=neu.liste_abdruck,
             )
             for niveau in NIVEAUS
@@ -896,26 +870,34 @@ def neue_liste(
     return neu
 
 
+def pruefungswoerter(spec: dict[str, Any]) -> list[str]:
+    """Die englischen Wörter, die eine Prüfung abfragt - Übersetzung und Lücken."""
+    woerter = [i["english"] for i in spec.get("task1", {}).get("items", [])]
+    woerter += [g["answer"] for g in spec.get("task2", {}).get("gaps", [])]
+    return woerter
+
+
 def neue_fassung(
     pack: Pack,
     teil: int,
     niveau: str,
-    nummer: int = 2,
+    nummer: int | None = None,
     settings: Settings | None = None,
-    hoechstens_gemeinsam: int = 4,
+    weitere: Iterable[Pack] = (),
 ) -> Pack:
-    """Eine zweite Fassung **einer** Prüfung, als eigenes Paket.
+    """Noch eine Fassung **einer** Prüfung, als eigenes Paket.
 
-    Die Vokabelliste bleibt Wort für Wort dieselbe - beide Gruppen haben sie
-    so gelernt. Neu sind nur die geprüften Wörter und der Lückentext. Das
-    Ergebnis ist ein eigenes Paket mit eigener Nummer, damit die bestehende
-    Fassung unangetastet bleibt.
+    Es gibt keine "Nachschreibfassung" und keine Sonderrolle für die erste:
+    Es sind einfach fortlaufende Fassungen derselben Prüfung, jede mit
+    eigener Nummer, eigenem Datum und eigenem Paket hinterlegt. Die
+    Vokabelliste bleibt dabei Wort für Wort dieselbe.
 
-    Weil beide Fassungen aus denselben dreissig Wörtern schöpfen und beide
-    das schwere (Niveau A) oder das zugängliche (Niveau B) Ende davon
-    wollen, ist ein Überschnitt unvermeidlich. ``hoechstens_gemeinsam``
-    setzt die Grenze; wie viel Anspruch das kostet, steht danach im
-    Prüfbericht.
+    **Ein Überschnitt mit früheren Fassungen ist erlaubt** und wird nicht
+    begrenzt. Alle Fassungen prüfen dieselbe Liste, und die zwölf
+    schwersten Wörter bleiben die zwölf schwersten. Frühere Fassungen
+    entscheiden nur noch Gleichstände; was eine Fassung wirklich
+    unterscheidet, ist ihr Lückentext und die Aufteilung in Übersetzung
+    und Lücke. Der Überschnitt wird berichtet, nicht verhindert.
     """
     settings = settings or Settings()
     prof = profile(niveau)
@@ -924,8 +906,12 @@ def neue_fassung(
         raise ValueError(
             f"{pack.unit_label} hat keine Prüfung Teil {teil} Niveau {prof.name}."
         )
-    bisher = [i["english"] for i in alt.get("task1", {}).get("items", [])]
-    bisher += [g["answer"] for g in alt.get("task2", {}).get("gaps", [])]
+    frueher = [pack, *weitere]
+    if nummer is None:
+        nummer = max(p.fassung for p in frueher) + 1
+    schon = []
+    for p in frueher:
+        schon += pruefungswoerter(p.exam(teil, prof.name))
 
     neu = Pack(data=json.loads(json.dumps(pack.data)))
     neu.data["fassung"] = int(nummer)
@@ -934,16 +920,16 @@ def neue_fassung(
         "paket": pack.pfad.name if pack.pfad else "",
         "teil": teil,
         "niveau": prof.name,
-        "wortlaut_gemeinsam_hoechstens": hoechstens_gemeinsam,
+        "fruehere_fassungen": sorted(p.fassung for p in frueher),
     }
     # Nur die eine Prüfung wird neu aufgesetzt; die anderen drei fallen weg,
-    # damit dieses Paket nicht versehentlich Fassung 1 überschreibt.
+    # damit dieses Paket nicht versehentlich andere überschreibt.
     neu.data["pruefungen"] = {
         f"teil{teil}": {
             prof.name: _exam_scaffold(
                 neu.entries(f"test{teil}"), neu.unit_label, teil, prof,
                 settings, settings.seed + int(nummer),
-                meiden=bisher, hoechstens_gemeinsam=hoechstens_gemeinsam,
+                schon_geprueft=schon, fassung=int(nummer),
                 liste_version=neu.liste_version,
                 liste_abdruck=neu.liste_abdruck,
             )
@@ -1007,7 +993,7 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
             niveau: _exam_scaffold(
                 pack.entries(f"test{teil}"), unit_label, teil,
                 PROFILES[niveau], settings, settings.seed,
-                liste_version=pack.liste_version,
+                fassung=pack.fassung, liste_version=pack.liste_version,
                 liste_abdruck=pack.liste_abdruck,
             )
             for niveau in NIVEAUS

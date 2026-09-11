@@ -239,30 +239,41 @@ auszuräumen nur durch Neuschreiben, danach das Feld löschen.
 Der Text wird trotzdem übernommen und nicht verworfen: Er ist Handarbeit
 und die bessere Grundlage für die neue Fassung als ein leeres Feld.
 
-## Zweite Fassung einer Prüfung
+## Fassungen einer Prüfung
 
-Für eine Nachprüfung, oder wenn ein Blatt bekannt geworden ist:
+Es gibt keine „Nachschreibfassung" und keine Sonderrolle für die erste. Es
+sind fortlaufende Fassungen derselben Prüfung — **jede mit Nummer, Datum und
+Listenabdruck hinterlegt**, jede in ihrer eigenen Datei:
 
 ```bash
-vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A \
-     --nummer 2 --woerter 12 --luecken 6
+vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A
 ```
 
-Das schreibt `kuratiert/unit_01_fassung2.json` — **dieselbe Vokabelliste**,
-Wort für Wort, aber nur die eine neu gesetzte Prüfung. Die Dokumente heissen
-`Unit01_Test_PartI_NiveauA_Fassung2.docx`; die erste Fassung bleibt
-unangetastet. Danach wie immer: Lückentext im Chat schreiben, `prüfen`,
-`bauen`.
+Ohne `--nummer` entsteht die nächste freie. Die Datei heisst
+`kuratiert/unit_01_fassung3.json`, die Dokumente
+`Unit01_V1_Test_PartI_NiveauA_Fassung3.docx`. Bestehende Fassungen werden
+nie überschrieben; `vocabmaster listen` zeigt alle.
 
-`--gemeinsam` ist die Obergrenze für Wörter, die schon in Fassung 1 geprüft
-wurden; voreingestellt sind **40 %** der Prüfung (`VM_MAX_OVERLAP`), bei
-12 Wörtern also 4. Ein Überschnitt ist ausdrücklich erlaubt — beide
-Fassungen prüfen dieselbe Liste —, aber darüber ist es keine zweite Fassung
-mehr, sondern dieselbe mit anderer Reihenfolge. Ganz ohne Überschnitt geht es selten: Beide Fassungen schöpfen aus
-denselben dreissig Wörtern und beide wollen dasselbe Ende davon — das
-schwere für Niveau A, das zugängliche für Niveau B. **Je weniger gemeinsam,
-desto weiter muss die Auswahl von diesem Ende weg, desto mehr weicht der
-Anspruch von der ersten Fassung ab.** Der Befehl schreibt beide Zahlen hin.
+### Überschneidungen sind erlaubt
+
+**Das ist keine Ausnahme, sondern die Regel.** Alle Fassungen prüfen
+dieselbe Vokabelliste, und die zwölf schwersten Wörter bleiben die zwölf
+schwersten — egal wie oft man sie abfragt. Es gibt deshalb **keine
+Obergrenze** für den Überschnitt. Er wird berichtet, nicht verhindert.
+
+Frühere Fassungen wirken nur noch als **Stichentscheid unter gleich schweren
+Wörtern**: Bei gleicher Note kommt das noch nicht geprüfte zuerst. Sie
+dürfen eine Fassung niemals leichter machen. Eine Prüfung, die `teddy bear`
+(0.2/10) abfragt, weil die guten Wörter „schon vergeben" waren, ist keine
+Prüfung für Niveau A mehr — das war der Fehler, aus dem diese Regel stammt.
+
+Was eine Fassung unterscheidet, ist zweierlei:
+
+* **der Lückentext** — im Chat neu geschrieben, und
+* **die Aufteilung**: welche der zwölf Wörter Lücke werden und welche
+  Übersetzung, wird je Fassung durchgeschoben. Ob ein Wort eingesetzt oder
+  übersetzt wird, sagt über seine Schwierigkeit nichts — diese Variation
+  kostet keinen Punkt Anspruch.
 
 ## Schwierigkeit des Lückentexts
 

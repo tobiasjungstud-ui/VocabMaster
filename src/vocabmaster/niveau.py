@@ -182,3 +182,103 @@ def profile(name: str | NiveauProfile | None) -> NiveauProfile:
 def other(name: str | NiveauProfile) -> NiveauProfile:
     """Das jeweils andere Niveau - für den Kontrastvergleich."""
     return PROFILES["B" if profile(name).name == "A" else "A"]
+
+
+# ---------------------------------------------------------------------------
+# Textstufe: wie schwer der Lückentext liest
+# ---------------------------------------------------------------------------
+#: Wie weit jede Messgrösse reicht, wenn die Textstufe von 0 auf 10 geht.
+#:
+#: Die Stufe ist absichtlich auf **derselben** Skala wie die Wortnote der
+#: Prüfung (0-10), damit die beiden Regler vergleichbar bleiben. Die Anker
+#: sind so gewählt, dass die 32 mitgelieferten Lückentexte dort landen, wo
+#: sie hingehören: Niveau A im Schnitt bei 3.0, Niveau B bei 1.7, ohne eine
+#: einzige Überlappung.
+_TEXT_ANKER = {
+    "laenge": (40.0, 140.0),        # Wörter im Text
+    "satzlaenge": (6.0, 24.0),      # Wörter je Satz
+    "lesbarkeit": (100.0, 45.0),    # Flesch-Lesbarkeit, fallend
+    "nebensaetze": (0.0, 2.0),      # Nebensätze je Satz
+}
+
+#: Die gemessene Normallage der mitgelieferten Texte. Das ist der Punkt, auf
+#: dem der Regler steht, solange niemand ihn anfasst - kein Richtwert,
+#: sondern der Durchschnitt dessen, was tatsächlich im Paket liegt.
+NORMAL_TEXTSTUFE = {"A": 3.0, "B": 1.7}
+
+#: Wieviel Schulstufe (Flesch-Kincaid) eine ganze Reglerbreite ausmacht.
+_GRAD_SPANNE = 9.0
+
+
+def _anteil(wert: float, anker: tuple[float, float]) -> float:
+    von, bis = anker
+    if bis == von:
+        return 0.0
+    return max(0.0, min(10.0, (wert - von) / (bis - von) * 10.0))
+
+
+def textstufe(stats: dict) -> float:
+    """Wie schwer ein Lückentext liest, von 0 bis 10.
+
+    ``stats`` ist das Ergebnis von :func:`vocabmaster.exam.english.readability`.
+    Gewichtet wird, was die Prüfungen ohnehin messen: Länge, Satzlänge,
+    Lesbarkeit und Nebensatzdichte - zu gleichen Teilen, damit sich keine
+    einzelne Grösse verstecken kann.
+    """
+    saetze = max(1, int(stats.get("sentences", 0)) or 1)
+    teile = (
+        _anteil(float(stats.get("words", 0)), _TEXT_ANKER["laenge"]),
+        _anteil(float(stats.get("words_per_sentence", 0)), _TEXT_ANKER["satzlaenge"]),
+        _anteil(float(stats.get("flesch_reading_ease", 0)), _TEXT_ANKER["lesbarkeit"]),
+        _anteil(float(stats.get("subordinators", 0)) / saetze,
+                _TEXT_ANKER["nebensaetze"]),
+    )
+    return round(sum(teile) / len(teile), 2)
+
+
+def ziele_fuer_textstufe(prof: NiveauProfile, stufe: float | None) -> dict:
+    """Die Zielwerte des Lückentexts, verschoben auf eine andere Stufe.
+
+    Auf der Normalstufe des Niveaus kommt **unverändert** heraus, was im
+    Profil steht - der Regler in der Mitte ändert nichts. Von dort weg
+    wandern alle vier Grössen gemeinsam: ein längerer Text hat auch längere
+    Sätze, liest sich schwerer und verträgt mehr Nebensätze.
+
+    Was nicht mitwandert, ist die Mechanik der Lücken (Abstand, Vorlauf,
+    Auslauf): Sie hält den Text lösbar und hat mit Anspruch nichts zu tun.
+    """
+    ziele = dict(prof.level_targets)
+    if stufe is None:
+        return ziele
+    delta = (float(stufe) - NORMAL_TEXTSTUFE[prof.name]) / 10.0
+    if not delta:
+        return ziele
+
+    def spanne(anker: str) -> float:
+        von, bis = _TEXT_ANKER[anker]
+        return bis - von
+
+    ziele["min_words"] = max(25, round(ziele["min_words"] + delta * spanne("laenge")))
+    ziele["max_words"] = max(
+        ziele["min_words"] + 20,
+        round(ziele["max_words"] + delta * spanne("laenge")),
+    )
+    for schluessel in ("min_avg_sentence", "max_avg_sentence"):
+        ziele[schluessel] = round(
+            max(5.0, ziele[schluessel] + delta * spanne("satzlaenge")), 1
+        )
+    ziele["max_sentence_length"] = max(
+        int(ziele["max_avg_sentence"]) + 4,
+        round(ziele["max_sentence_length"] + delta * spanne("satzlaenge")),
+    )
+    ziele["min_flesch_ease"] = round(
+        max(20.0, min(100.0, ziele["min_flesch_ease"] + delta * spanne("lesbarkeit"))), 1
+    )
+    ziele["max_flesch_grade"] = round(
+        max(1.0, ziele["max_flesch_grade"] + delta * _GRAD_SPANNE), 1
+    )
+    ziele["max_subordinators_per_sentence"] = round(
+        max(0.0, ziele["max_subordinators_per_sentence"] + delta * spanne("nebensaetze")),
+        2,
+    )
+    return ziele

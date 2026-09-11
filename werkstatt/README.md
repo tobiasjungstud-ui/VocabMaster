@@ -24,6 +24,18 @@ python werkstatt/bauen.py    # vokabelwerkstatt.html aus vorlage.html
 | `bauen.py` | setzt beides zusammen |
 | `vokabelwerkstatt.html` | die veröffentlichte Datei — **nie von Hand ändern** |
 
+## Zwei Regler
+
+**Anspruch der Prüfung** wählt die geprüften Wörter, **Schwierigkeit des
+Lückentexts** bestimmt, wie der Text liest. Beide zeigen als Strich auf der
+Bahn, wo die Normallage liegt — beim Anspruch der Durchschnitt dieser Unit,
+beim Lückentext der Durchschnitt aller 32 gelieferten Texte (Niveau A 3.0,
+Niveau B 1.7). Unter dem Textregler steht das Zielband, das sich daraus
+ergibt: Wörter, Satzlänge, Lesbarkeit, Nebensätze je Satz.
+
+Die Seite rechnet das mit denselben Ankern wie die Anwendung — sie stehen in
+`daten.json`, damit keine zweite Wahrheit entsteht.
+
 ## Was die Seite voreinstellt
 
 Der Regler „Anspruch" steht je Unit auf dem **gemessenen** Durchschnitt der

@@ -5,16 +5,71 @@
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
   "importiert": "2026-09-10"
  },
+ "textstufe_normal": {
+  "A": 3.0,
+  "B": 1.7
+ },
+ "textanker": {
+  "laenge": [
+   40.0,
+   140.0
+  ],
+  "satzlaenge": [
+   6.0,
+   24.0
+  ],
+  "lesbarkeit": [
+   100.0,
+   45.0
+  ],
+  "nebensaetze": [
+   0.0,
+   2.0
+  ]
+ },
+ "textgrad_spanne": 9.0,
  "niveaus": {
   "A": {
    "label": "Niveau A",
    "cefr": "B1.2-B2.1",
-   "beschreibung": "Leistungsstärkere Gruppe: geprüft werden die anspruchsvolleren Wörter der Liste, der Lückentext ist länger und darf Nebensätze enthalten."
+   "beschreibung": "Leistungsstärkere Gruppe: geprüft werden die anspruchsvolleren Wörter der Liste, der Lückentext ist länger und darf Nebensätze enthalten.",
+   "textziele": {
+    "min_words": 70,
+    "max_words": 130,
+    "min_sentences": 4,
+    "max_sentences": 8,
+    "min_avg_sentence": 9.0,
+    "max_avg_sentence": 20.0,
+    "max_sentence_length": 28,
+    "max_unknown_words": 3,
+    "min_gap_distance": 6,
+    "min_lead_in": 4,
+    "min_tail": 3,
+    "min_flesch_ease": 55.0,
+    "max_flesch_grade": 9.5,
+    "max_subordinators_per_sentence": 2.0
+   }
   },
   "B": {
    "label": "Niveau B",
    "cefr": "A2.2-B1.1",
-   "beschreibung": "Leistungsschwächere Gruppe: geprüft werden die zugänglicheren Wörter derselben Liste, der Lückentext ist kürzer und besteht aus kurzen Hauptsätzen."
+   "beschreibung": "Leistungsschwächere Gruppe: geprüft werden die zugänglicheren Wörter derselben Liste, der Lückentext ist kürzer und besteht aus kurzen Hauptsätzen.",
+   "textziele": {
+    "min_words": 50,
+    "max_words": 95,
+    "min_sentences": 4,
+    "max_sentences": 9,
+    "min_avg_sentence": 7.0,
+    "max_avg_sentence": 14.0,
+    "max_sentence_length": 18,
+    "max_unknown_words": 1,
+    "min_gap_distance": 7,
+    "min_lead_in": 4,
+    "min_tail": 3,
+    "min_flesch_ease": 70.0,
+    "max_flesch_grade": 6.5,
+    "max_subordinators_per_sentence": 1.0
+   }
   }
  },
  "units": [
@@ -774,7 +829,15 @@
       "old-fashioned",
       "thankfully"
      ],
-     "schnitt": 3.49
+     "schnitt": 3.49,
+     "textstufe": 3.75,
+     "textmass": {
+      "woerter": 79,
+      "satzlaenge": 13.2,
+      "lesbarkeit": 74.6,
+      "grad": 6.1,
+      "nebensaetze": 0.5
+     }
     },
     "t1B": {
      "woerter": [
@@ -797,7 +860,15 @@
       "valuable",
       "meanwhile"
      ],
-     "schnitt": 1.7
+     "schnitt": 1.7,
+     "textstufe": 1.38,
+     "textmass": {
+      "woerter": 50,
+      "satzlaenge": 8.3,
+      "lesbarkeit": 86.7,
+      "grad": 3.2,
+      "nebensaetze": 0.17
+     }
     },
     "t2A": {
      "woerter": [
@@ -820,7 +891,15 @@
       "rural",
       "dramatically"
      ],
-     "schnitt": 3.06
+     "schnitt": 3.06,
+     "textstufe": 3.45,
+     "textmass": {
+      "woerter": 79,
+      "satzlaenge": 13.2,
+      "lesbarkeit": 76.7,
+      "grad": 5.8,
+      "nebensaetze": 0.33
+     }
     },
     "t2B": {
      "woerter": [
@@ -843,7 +922,15 @@
       "fragile",
       "sailor"
      ],
-     "schnitt": 1.5
+     "schnitt": 1.5,
+     "textstufe": 1.42,
+     "textmass": {
+      "woerter": 72,
+      "satzlaenge": 9.0,
+      "lesbarkeit": 95.5,
+      "grad": 2.2,
+      "nebensaetze": 0.0
+     }
     }
    }
   },
@@ -1603,7 +1690,15 @@
       "accustomed",
       "forensic scientist"
      ],
-     "schnitt": 4.11
+     "schnitt": 4.11,
+     "textstufe": 2.89,
+     "textmass": {
+      "woerter": 84,
+      "satzlaenge": 12.0,
+      "lesbarkeit": 82.9,
+      "grad": 4.7,
+      "nebensaetze": 0.14
+     }
     },
     "t1B": {
      "woerter": [
@@ -1626,7 +1721,15 @@
       "decisive",
       "propose"
      ],
-     "schnitt": 1.99
+     "schnitt": 1.99,
+     "textstufe": 1.26,
+     "textmass": {
+      "woerter": 61,
+      "satzlaenge": 10.2,
+      "lesbarkeit": 96.7,
+      "grad": 2.3,
+      "nebensaetze": 0.0
+     }
     },
     "t2A": {
      "woerter": [
@@ -1649,7 +1752,15 @@
       "disposable",
       "frankly"
      ],
-     "schnitt": 3.75
+     "schnitt": 3.75,
+     "textstufe": 2.88,
+     "textmass": {
+      "woerter": 73,
+      "satzlaenge": 10.4,
+      "lesbarkeit": 72.2,
+      "grad": 5.8,
+      "nebensaetze": 0.14
+     }
     },
     "t2B": {
      "woerter": [
@@ -1672,7 +1783,15 @@
       "careless",
       "fearless"
      ],
-     "schnitt": 2.23
+     "schnitt": 2.23,
+     "textstufe": 1.68,
+     "textmass": {
+      "woerter": 57,
+      "satzlaenge": 11.4,
+      "lesbarkeit": 94.3,
+      "grad": 2.9,
+      "nebensaetze": 0.2
+     }
     }
    }
   },
@@ -2432,7 +2551,15 @@
       "equivalent",
       "occasionally"
      ],
-     "schnitt": 3.75
+     "schnitt": 3.75,
+     "textstufe": 2.84,
+     "textmass": {
+      "woerter": 75,
+      "satzlaenge": 12.5,
+      "lesbarkeit": 81.3,
+      "grad": 5.0,
+      "nebensaetze": 0.17
+     }
     },
     "t1B": {
      "woerter": [
@@ -2455,7 +2582,15 @@
       "nasty",
       "bargain"
      ],
-     "schnitt": 1.77
+     "schnitt": 1.77,
+     "textstufe": 1.69,
+     "textmass": {
+      "woerter": 57,
+      "satzlaenge": 9.5,
+      "lesbarkeit": 82.9,
+      "grad": 4.1,
+      "nebensaetze": 0.0
+     }
     },
     "t2A": {
      "woerter": [
@@ -2478,7 +2613,15 @@
       "convenient",
       "approximately"
      ],
-     "schnitt": 3.57
+     "schnitt": 3.57,
+     "textstufe": 2.66,
+     "textmass": {
+      "woerter": 70,
+      "satzlaenge": 11.7,
+      "lesbarkeit": 75.3,
+      "grad": 5.6,
+      "nebensaetze": 0.0
+     }
     },
     "t2B": {
      "woerter": [
@@ -2501,7 +2644,15 @@
       "minimum",
       "comedian"
      ],
-     "schnitt": 1.57
+     "schnitt": 1.57,
+     "textstufe": 1.19,
+     "textmass": {
+      "woerter": 52,
+      "satzlaenge": 10.4,
+      "lesbarkeit": 93.8,
+      "grad": 2.8,
+      "nebensaetze": 0.0
+     }
     }
    }
   },
@@ -3261,7 +3412,15 @@
       "obvious",
       "mammal"
      ],
-     "schnitt": 3.52
+     "schnitt": 3.52,
+     "textstufe": 3.92,
+     "textmass": {
+      "woerter": 70,
+      "satzlaenge": 11.7,
+      "lesbarkeit": 70.5,
+      "grad": 6.3,
+      "nebensaetze": 0.83
+     }
     },
     "t1B": {
      "woerter": [
@@ -3284,7 +3443,15 @@
       "grumpy",
       "disgusted"
      ],
-     "schnitt": 1.7
+     "schnitt": 1.7,
+     "textstufe": 2.02,
+     "textmass": {
+      "woerter": 56,
+      "satzlaenge": 11.2,
+      "lesbarkeit": 91.2,
+      "grad": 3.3,
+      "nebensaetze": 0.4
+     }
     },
     "t2A": {
      "woerter": [
@@ -3307,7 +3474,15 @@
       "sympathetic",
       "excitement"
      ],
-     "schnitt": 4.1
+     "schnitt": 4.1,
+     "textstufe": 2.64,
+     "textmass": {
+      "woerter": 76,
+      "satzlaenge": 10.9,
+      "lesbarkeit": 76.7,
+      "grad": 5.3,
+      "nebensaetze": 0.0
+     }
     },
     "t2B": {
      "woerter": [
@@ -3330,7 +3505,15 @@
       "mechanical",
       "speed up"
      ],
-     "schnitt": 1.95
+     "schnitt": 1.95,
+     "textstufe": 2.08,
+     "textmass": {
+      "woerter": 54,
+      "satzlaenge": 9.0,
+      "lesbarkeit": 80.2,
+      "grad": 4.3,
+      "nebensaetze": 0.33
+     }
     }
    }
   },
@@ -4090,7 +4273,15 @@
       "kind-hearted",
       "pharmacist"
      ],
-     "schnitt": 3.22
+     "schnitt": 3.22,
+     "textstufe": 3.04,
+     "textmass": {
+      "woerter": 74,
+      "satzlaenge": 10.6,
+      "lesbarkeit": 73.8,
+      "grad": 5.6,
+      "nebensaetze": 0.29
+     }
     },
     "t1B": {
      "woerter": [
@@ -4113,7 +4304,15 @@
       "risky",
       "enemy"
      ],
-     "schnitt": 0.89
+     "schnitt": 0.89,
+     "textstufe": 2.22,
+     "textmass": {
+      "woerter": 54,
+      "satzlaenge": 10.8,
+      "lesbarkeit": 84.6,
+      "grad": 4.1,
+      "nebensaetze": 0.4
+     }
     },
     "t2A": {
      "woerter": [
@@ -4136,7 +4335,15 @@
       "essential",
       "aspiration"
      ],
-     "schnitt": 4.32
+     "schnitt": 4.32,
+     "textstufe": 3.82,
+     "textmass": {
+      "woerter": 77,
+      "satzlaenge": 12.8,
+      "lesbarkeit": 70.8,
+      "grad": 6.6,
+      "nebensaetze": 0.5
+     }
     },
     "t2B": {
      "woerter": [
@@ -4159,7 +4366,15 @@
       "hollow",
       "beak"
      ],
-     "schnitt": 1.36
+     "schnitt": 1.36,
+     "textstufe": 1.35,
+     "textmass": {
+      "woerter": 55,
+      "satzlaenge": 9.2,
+      "lesbarkeit": 92.9,
+      "grad": 2.6,
+      "nebensaetze": 0.17
+     }
     }
    }
   },
@@ -4919,7 +5134,15 @@
       "trustworthy",
       "adventurous"
      ],
-     "schnitt": 3.4
+     "schnitt": 3.4,
+     "textstufe": 2.72,
+     "textmass": {
+      "woerter": 78,
+      "satzlaenge": 11.1,
+      "lesbarkeit": 80.6,
+      "grad": 4.8,
+      "nebensaetze": 0.14
+     }
     },
     "t1B": {
      "woerter": [
@@ -4942,7 +5165,15 @@
       "rewarding",
       "nursery"
      ],
-     "schnitt": 1.72
+     "schnitt": 1.72,
+     "textstufe": 2.04,
+     "textmass": {
+      "woerter": 59,
+      "satzlaenge": 9.8,
+      "lesbarkeit": 86.4,
+      "grad": 3.6,
+      "nebensaetze": 0.33
+     }
     },
     "t2A": {
      "woerter": [
@@ -4965,7 +5196,15 @@
       "beneficial",
       "independence"
      ],
-     "schnitt": 4.43
+     "schnitt": 4.43,
+     "textstufe": 2.95,
+     "textmass": {
+      "woerter": 70,
+      "satzlaenge": 11.7,
+      "lesbarkeit": 87.4,
+      "grad": 4.0,
+      "nebensaetze": 0.67
+     }
     },
     "t2B": {
      "woerter": [
@@ -4988,7 +5227,15 @@
       "generous",
       "modest"
      ],
-     "schnitt": 1.5
+     "schnitt": 1.5,
+     "textstufe": 2.28,
+     "textmass": {
+      "woerter": 54,
+      "satzlaenge": 10.8,
+      "lesbarkeit": 83.1,
+      "grad": 4.4,
+      "nebensaetze": 0.4
+     }
     }
    }
   },
@@ -5748,7 +5995,15 @@
       "accidental",
       "proclamation"
      ],
-     "schnitt": 3.98
+     "schnitt": 3.98,
+     "textstufe": 2.76,
+     "textmass": {
+      "woerter": 75,
+      "satzlaenge": 10.7,
+      "lesbarkeit": 73.0,
+      "grad": 5.7,
+      "nebensaetze": 0.0
+     }
     },
     "t1B": {
      "woerter": [
@@ -5771,7 +6026,15 @@
       "lit up",
       "demolish"
      ],
-     "schnitt": 1.58
+     "schnitt": 1.58,
+     "textstufe": 1.42,
+     "textmass": {
+      "woerter": 55,
+      "satzlaenge": 9.2,
+      "lesbarkeit": 86.8,
+      "grad": 3.4,
+      "nebensaetze": 0.0
+     }
     },
     "t2A": {
      "woerter": [
@@ -5794,7 +6057,15 @@
       "retractable",
       "partially"
      ],
-     "schnitt": 3.5
+     "schnitt": 3.5,
+     "textstufe": 2.43,
+     "textmass": {
+      "woerter": 74,
+      "satzlaenge": 9.2,
+      "lesbarkeit": 75.1,
+      "grad": 5.1,
+      "nebensaetze": 0.0
+     }
     },
     "t2B": {
      "woerter": [
@@ -5817,7 +6088,15 @@
       "vibrant",
       "green space"
      ],
-     "schnitt": 1.78
+     "schnitt": 1.78,
+     "textstufe": 1.96,
+     "textmass": {
+      "woerter": 52,
+      "satzlaenge": 10.4,
+      "lesbarkeit": 82.4,
+      "grad": 4.4,
+      "nebensaetze": 0.2
+     }
     }
    }
   },
@@ -6577,7 +6856,15 @@
       "irresponsible",
       "unbelievable"
      ],
-     "schnitt": 3.75
+     "schnitt": 3.75,
+     "textstufe": 2.94,
+     "textmass": {
+      "woerter": 76,
+      "satzlaenge": 9.5,
+      "lesbarkeit": 69.2,
+      "grad": 6.0,
+      "nebensaetze": 0.12
+     }
     },
     "t1B": {
      "woerter": [
@@ -6600,7 +6887,15 @@
       "unexpected",
       "burglar"
      ],
-     "schnitt": 1.8
+     "schnitt": 1.8,
+     "textstufe": 1.42,
+     "textmass": {
+      "woerter": 55,
+      "satzlaenge": 9.2,
+      "lesbarkeit": 86.8,
+      "grad": 3.4,
+      "nebensaetze": 0.0
+     }
     },
     "t2A": {
      "woerter": [
@@ -6623,7 +6918,15 @@
       "immature",
       "offence"
      ],
-     "schnitt": 3.55
+     "schnitt": 3.55,
+     "textstufe": 2.36,
+     "textmass": {
+      "woerter": 75,
+      "satzlaenge": 9.4,
+      "lesbarkeit": 81.1,
+      "grad": 4.3,
+      "nebensaetze": 0.12
+     }
     },
     "t2B": {
      "woerter": [
@@ -6646,7 +6949,15 @@
       "abusive",
       "decade"
      ],
-     "schnitt": 1.76
+     "schnitt": 1.76,
+     "textstufe": 1.49,
+     "textmass": {
+      "woerter": 55,
+      "satzlaenge": 9.2,
+      "lesbarkeit": 89.9,
+      "grad": 3.0,
+      "nebensaetze": 0.17
+     }
     }
    }
   }

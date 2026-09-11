@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -21,7 +22,14 @@ sys.path.insert(0, str(WURZEL / "src"))
 from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
 from vocabmaster.exam.difficulty import score  # noqa: E402
-from vocabmaster.niveau import PROFILES  # noqa: E402
+from vocabmaster.exam.english import readability  # noqa: E402
+from vocabmaster.niveau import (  # noqa: E402
+    _GRAD_SPANNE,
+    _TEXT_ANKER,
+    NORMAL_TEXTSTUFE,
+    PROFILES,
+    textstufe,
+)
 from vocabmaster.pack import wortart_von  # noqa: E402
 from vocabmaster.pool import plan_unit  # noqa: E402
 
@@ -91,10 +99,23 @@ def _echte_auswahl(pack: dict, woerter: list[dict]) -> dict[str, dict]:
             rang = {w: _rang(nach_en, w) for w in alle}
             alle.sort(key=lambda w: (-rang[w] if zuerst else rang[w], w))
             werte = [rang[w] for w in alle if w.lower() in nach_en]
+            text = re.sub(r"\{\d+\}", "word", pruef["task2"].get("text", ""))
+            mass = readability(text) if text else {}
             heraus[f"t{tnr}{niveau}"] = {
                 "woerter": alle,
                 "luecken": luecken,
                 "schnitt": round(sum(werte) / len(werte), 2) if werte else 0.0,
+                "textstufe": textstufe(mass) if mass else 0.0,
+                "textmass": {
+                    "woerter": mass.get("words", 0),
+                    "satzlaenge": mass.get("words_per_sentence", 0),
+                    "lesbarkeit": mass.get("flesch_reading_ease", 0),
+                    "grad": mass.get("flesch_kincaid_grade", 0),
+                    "nebensaetze": round(
+                        mass.get("subordinators", 0)
+                        / max(1, mass.get("sentences", 1)), 2
+                    ),
+                } if mass else {},
             }
     return heraus
 
@@ -142,11 +163,17 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
 
     return {
         "quelle": quelle or {},
+        "textstufe_normal": dict(NORMAL_TEXTSTUFE),
+        # Damit die Oberfläche die Zielbänder mit denselben Zahlen ausrechnet
+        # wie die Anwendung und nicht mit einer Kopie davon.
+        "textanker": {k: list(v) for k, v in _TEXT_ANKER.items()},
+        "textgrad_spanne": _GRAD_SPANNE,
         "niveaus": {
             n: {
                 "label": p.label,
                 "cefr": p.cefr,
                 "beschreibung": p.beschreibung,
+                "textziele": dict(p.level_targets),
             }
             for n, p in PROFILES.items()
         },

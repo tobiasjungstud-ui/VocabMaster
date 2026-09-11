@@ -39,7 +39,15 @@ from .list.leveling import score_candidate
 from .list.models import Candidate, Severity
 from .list.normalize import headword, normalize_key
 from .list.validation import validate_all
-from .niveau import LIST_BOUNDS, NIVEAUS, PROFILES, SENTENCE_MAX_WORDS
+from .niveau import (
+    LIST_BOUNDS,
+    NIVEAUS,
+    NORMAL_TEXTSTUFE,
+    PROFILES,
+    SENTENCE_MAX_WORDS,
+    textstufe,
+    ziele_fuer_textstufe,
+)
 from .pack import Pack
 
 FEHLER, WARNUNG, HINWEIS = "FEHLER", "WARNUNG", "HINWEIS"
@@ -718,11 +726,15 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
     zusammen = []
     for (teil, niveau), spec in sorted(pack.exams.items()):
         prof = PROFILES[niveau]
+        # Steht im Paket eine abweichende Textstufe, wird der Lückentext
+        # gegen deren Bänder gemessen - sonst gegen die des Niveaus.
+        gewuenscht = pack.textstufe(teil, niveau)
+        ziele = ziele_fuer_textstufe(prof, gewuenscht)
         report = ExamChecker(
             spec,
             vocab=pack.vocab_test(teil),
             all_tests=pack.all_vocab_tests,
-            level_targets=prof.level_targets,
+            level_targets=ziele,
             selection_targets=prof.selection_targets,
         ).run()
         for finding in report.findings:
@@ -733,11 +745,20 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
             )
         stats = report.stats.get("readability", {})
         if stats:
+            ist = textstufe(stats)
+            soll = gewuenscht if gewuenscht is not None else NORMAL_TEXTSTUFE[niveau]
             zusammen.append(
                 f"T{teil}/{niveau}: {stats['words']} W., Lesbarkeit "
                 f"{stats['flesch_reading_ease']:.0f}, Grad "
-                f"{stats['flesch_kincaid_grade']:.1f}"
+                f"{stats['flesch_kincaid_grade']:.1f}, Textstufe {ist:.1f}"
             )
+            if abs(ist - soll) > 1.0:
+                bericht.add(
+                    WARNUNG, "pruefung",
+                    f"Teil {teil} Niveau {niveau} - textstufe: Der Lückentext "
+                    f"liest sich auf Stufe {ist:.1f}/10, verlangt war "
+                    f"{soll:.1f}/10.",
+                )
     bericht.kennzahlen["pruefung"] = "; ".join(zusammen) or "keine Prüfungen im Paket"
 
 

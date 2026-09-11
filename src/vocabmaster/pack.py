@@ -472,6 +472,20 @@ class Pack:
     def unit_label(self) -> str:
         return str(self.data.get("unit_label") or f"Unit {self.unit}")
 
+    def textstufe(self, teil: int, niveau: str | NiveauProfile) -> float | None:
+        """Die für diesen Lückentext verlangte Textstufe, falls abweichend.
+
+        ``None`` heisst: die Normallage des Niveaus, also das, was ohne
+        Regler herauskommt.
+        """
+        prof = profile(niveau)
+        wert = self.exam(teil, prof.name).get("textstufe")
+        if wert is None:
+            wert = (self.data.get("textstufen") or {}).get(
+                f"teil{teil}", {}
+            ).get(prof.name)
+        return None if wert is None else float(wert)
+
     @property
     def fassung(self) -> int:
         """Die wievielte Fassung dieser Prüfungen - voreingestellt die erste.

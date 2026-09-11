@@ -169,6 +169,41 @@ schwere für Niveau A, das zugängliche für Niveau B. **Je weniger gemeinsam,
 desto weiter muss die Auswahl von diesem Ende weg, desto mehr weicht der
 Anspruch von der ersten Fassung ab.** Der Befehl schreibt beide Zahlen hin.
 
+## Schwierigkeit des Lückentexts
+
+Zwei Regler, nicht einer. Der **Anspruch** wählt die geprüften *Wörter*, die
+**Textstufe** bestimmt, wie der *Lückentext* liest. Beide laufen von 0 bis 10,
+damit sie sich vergleichen lassen.
+
+Die Textstufe (`niveau.textstufe`) wiegt zu gleichen Teilen, was die
+Prüfungen ohnehin messen: Textlänge, Satzlänge, Flesch-Lesbarkeit und
+Nebensatzdichte. Die **Normallage ist gemessen, nicht gesetzt** — sie ist der
+Durchschnitt der 32 mitgelieferten Lückentexte:
+
+| Niveau | normal | Spanne der gelieferten Texte |
+|---|---|---|
+| **A** | **3.0** | 2.36 – 3.92 |
+| **B** | **1.7** | 1.19 – 2.28 |
+
+Keine einzige Überlappung; ein Test wacht darüber. Wer die Anker in
+`_TEXT_ANKER` verstellt, ohne `NORMAL_TEXTSTUFE` nachzuziehen, merkt es dort.
+
+In der Normalstellung kommt **unverändert** heraus, was im Profil steht — der
+Regler in der Mitte ändert nichts. Von dort weg wandern alle vier Grössen
+gemeinsam: ein längerer Text hat auch längere Sätze, liest sich schwerer und
+verträgt mehr Nebensätze. Die Mechanik der Lücken (Abstand, Vorlauf,
+Auslauf) wandert **nicht** mit: sie hält den Text lösbar und hat mit Anspruch
+nichts zu tun.
+
+```bash
+vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A \
+    --nummer 2 --textstufe 5.0
+```
+
+Die Stufe wird im Paket vermerkt; `prüfen` misst den Lückentext danach gegen
+dieses Band und meldet, wenn der geschriebene Text mehr als eine Stufe
+daneben liegt.
+
 ## Was der Anspruchsregler kann und was nicht
 
 Die Schwierigkeitsnote ist eine Eigenschaft des **Wortes**, nicht eine

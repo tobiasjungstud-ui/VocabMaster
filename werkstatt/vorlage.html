@@ -102,9 +102,25 @@ select{
 .regler-kopf .cefr{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
 .wert{font-family:var(--mono); font-size:15px; font-weight:600; font-variant-numeric:tabular-nums}
 .regler.a .wert{color:var(--nivA)} .regler.b .wert{color:var(--nivB)}
+.bahn{position:relative; padding-top:5px}
+/* Der Strich zeigt, wo die Normallage liegt; die Zahl dazu steht in der
+   Skala darunter - über der Bahn geriete sie der Kopfzeile ins Gehege. */
+.marke{
+  position:absolute; top:0; width:1px; height:13px; background:var(--ink-3);
+  transform:translateX(-0.5px); pointer-events:none; opacity:.75;
+}
+.regler.a .marke{background:var(--nivA)}
+.regler.b .marke{background:var(--nivB)}
+.skala .normal{color:var(--ink-2)}
+.zielband{
+  margin-top:7px; padding:7px 9px; border-radius:var(--r);
+  background:var(--sunk); font-family:var(--mono); font-size:10.5px;
+  color:var(--ink-2); line-height:1.55;
+}
 input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--accent)}
 .regler.b input[type=range]{accent-color:var(--nivB)}
-.regler .skala{display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--ink-3)}
+.regler .skala{display:flex; justify-content:space-between; gap:6px;
+  font-family:var(--mono); font-size:10px; color:var(--ink-3)}
 .zurueck{
   background:none; border:0; padding:0; color:var(--accent); cursor:pointer;
   font-size:11.5px; text-decoration:underline; text-underline-offset:2px;
@@ -330,18 +346,45 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <b>Niveau A</b><span class="cefr">B1.2–B2.1</span>
             <span class="wert" id="wertA">3.5</span>
           </div>
-          <input type="range" id="zielA" min="0" max="10" step="0.1" value="3.5">
-          <div class="skala"><span>leicht</span><span>0–10</span><span>schwer</span></div>
+          <div class="bahn"><span class="marke" id="markeA" data-text="normal"></span>
+            <input type="range" id="zielA" min="0" max="10" step="0.1" value="3.5"></div>
+          <div class="skala"><span>leicht</span><span class="normal" id="normWortA">0–10</span><span>schwer</span></div>
         </div>
         <div class="regler b">
           <div class="regler-kopf">
             <b>Niveau B</b><span class="cefr">A2.2–B1.1</span>
             <span class="wert" id="wertB">1.7</span>
           </div>
-          <input type="range" id="zielB" min="0" max="10" step="0.1" value="1.7">
-          <div class="skala"><span>leicht</span><span>0–10</span><span>schwer</span></div>
+          <div class="bahn"><span class="marke" id="markeB" data-text="normal"></span>
+            <input type="range" id="zielB" min="0" max="10" step="0.1" value="1.7"></div>
+          <div class="skala"><span>leicht</span><span class="normal" id="normWortB">0–10</span><span>schwer</span></div>
         </div>
         <button class="zurueck" id="zurueck" hidden>auf die Voreinstellung dieser Unit zurück</button>
+      </section>
+
+      <section>
+        <span class="legende">Schwierigkeit des Lückentexts</span>
+        <div class="regler a">
+          <div class="regler-kopf">
+            <b>Niveau A</b><span class="cefr" id="tcefrA">B1.2–B2.1</span>
+            <span class="wert" id="twertA">3.0</span>
+          </div>
+          <div class="bahn"><span class="marke" id="tmarkeA" data-text="normal"></span>
+            <input type="range" id="textA" min="0" max="10" step="0.1" value="3.0"></div>
+          <div class="skala"><span>kurz</span><span class="normal" id="normTextA">0–10</span><span>verschachtelt</span></div>
+          <div class="zielband" id="tbandA"></div>
+        </div>
+        <div class="regler b">
+          <div class="regler-kopf">
+            <b>Niveau B</b><span class="cefr" id="tcefrB">A2.2–B1.1</span>
+            <span class="wert" id="twertB">1.7</span>
+          </div>
+          <div class="bahn"><span class="marke" id="tmarkeB" data-text="normal"></span>
+            <input type="range" id="textB" min="0" max="10" step="0.1" value="1.7"></div>
+          <div class="skala"><span>kurz</span><span class="normal" id="normTextB">0–10</span><span>verschachtelt</span></div>
+          <div class="zielband" id="tbandB"></div>
+        </div>
+        <button class="zurueck" id="tzurueck" hidden>auf die Normallage zurück</button>
       </section>
 
       <section>
@@ -504,6 +547,7 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 
 /* ---------------- Zustand ---------------- */
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
+               text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:""};
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
@@ -525,6 +569,97 @@ function vorgabenSetzen(){
   state.eigen = false;
   $("zielA").value = state.ziel.A; $("zielB").value = state.ziel.B;
   $("zurueck").hidden = true;
+  setzeMarke("markeA", normalWort("A"), "normWortA");
+  setzeMarke("markeB", normalWort("B"), "normWortB");
+}
+
+/* ---------------- Lückentext ----------------
+   Die Normallage ist gemessen, nicht gesetzt: der Durchschnitt der 32
+   Lückentexte, die im Paket liegen. Deshalb steht sie auch als Strich auf
+   der Bahn - man sieht, wie weit man sich von ihr entfernt. */
+function normalWort(niveau){
+  const werte = DATA.units.flatMap(u =>
+    [1,2].map(t => (u.echt || {})["t" + t + niveau]).filter(Boolean)
+         .map(x => x.schnitt));
+  return werte.length ? werte.reduce((a,b) => a+b, 0) / werte.length : 0;
+}
+function normalText(niveau){
+  return (DATA.textstufe_normal || {})[niveau] ?? 0;
+}
+/* Die Textstufe, die in dieser Unit tatsächlich erreicht wurde. */
+function textVorgabe(niveau){
+  const e = unitDaten().echt || {};
+  const werte = [1,2].map(t => e["t" + t + niveau]).filter(Boolean)
+                     .map(x => x.textstufe).filter(x => x > 0);
+  return werte.length
+    ? Math.round(werte.reduce((a,b) => a+b, 0) / werte.length * 10) / 10
+    : normalText(niveau);
+}
+function textVorgabenSetzen(){
+  state.text.A = textVorgabe("A");
+  state.text.B = textVorgabe("B");
+  state.textEigen = false;
+  $("textA").value = state.text.A; $("textB").value = state.text.B;
+  $("tzurueck").hidden = true;
+  setzeMarke("tmarkeA", normalText("A"), "normTextA");
+  setzeMarke("tmarkeB", normalText("B"), "normTextB");
+}
+function setzeMarke(id, wert, beschriftung){
+  const el = $(id);
+  if(el){
+    const p = Math.max(0, Math.min(10, wert)) / 10;
+    // Der Daumen ist rund 16px breit; ohne diesen Ausgleich läuft der
+    // Strich an den Enden aus der Bahn.
+    el.style.left = "calc(" + (p * 100).toFixed(2) + "% + " +
+                    ((0.5 - p) * 16).toFixed(2) + "px)";
+  }
+  const text = $(beschriftung);
+  if(text) text.textContent = "normal " + wert.toFixed(1);
+}
+
+/* Dieselben Anker wie in vocabmaster.niveau - sie kommen aus den Daten,
+   damit hier keine zweite Wahrheit entsteht. */
+function textZiele(niveau){
+  const prof = (DATA.niveaus || {})[niveau] || {};
+  const z = Object.assign({}, prof.textziele || {});
+  const anker = DATA.textanker || {};
+  const spanne = k => anker[k] ? anker[k][1] - anker[k][0] : 0;
+  const delta = (state.text[niveau] - normalText(niveau)) / 10;
+  if(!delta || !Object.keys(z).length) return z;
+  const r = (x, n) => Math.round(x * Math.pow(10, n)) / Math.pow(10, n);
+  z.min_words = Math.max(25, Math.round(z.min_words + delta * spanne("laenge")));
+  z.max_words = Math.max(z.min_words + 20,
+                         Math.round(z.max_words + delta * spanne("laenge")));
+  z.min_avg_sentence = r(Math.max(5, z.min_avg_sentence + delta * spanne("satzlaenge")), 1);
+  z.max_avg_sentence = r(Math.max(5, z.max_avg_sentence + delta * spanne("satzlaenge")), 1);
+  z.max_sentence_length = Math.max(Math.trunc(z.max_avg_sentence) + 4,
+    Math.round(z.max_sentence_length + delta * spanne("satzlaenge")));
+  z.min_flesch_ease = r(Math.max(20, Math.min(100,
+    z.min_flesch_ease + delta * spanne("lesbarkeit"))), 1);
+  z.max_flesch_grade = r(Math.max(1,
+    z.max_flesch_grade + delta * (DATA.textgrad_spanne || 9)), 1);
+  z.max_subordinators_per_sentence = r(Math.max(0,
+    z.max_subordinators_per_sentence + delta * spanne("nebensaetze")), 2);
+  return z;
+}
+
+function zeichneTextband(){
+  for(const niv of ["A","B"]){
+    const z = textZiele(niv);
+    const el = $("tband" + niv);
+    if(!el) continue;
+    if(!Object.keys(z).length){ el.textContent = ""; continue; }
+    el.innerHTML =
+      z.min_words + "–" + z.max_words + " Wörter · Sätze Ø " +
+      z.min_avg_sentence + "–" + z.max_avg_sentence +
+      "<br>Lesbarkeit ≥ " + z.min_flesch_ease + " · Grad ≤ " + z.max_flesch_grade +
+      " · Nebensätze ≤ " + z.max_subordinators_per_sentence + " je Satz";
+    const ist = textVorgabe(niv);
+    if(Math.abs(state.text[niv] - ist) > 0.05){
+      el.innerHTML += "<br><span style='color:var(--warn)'>bisher in dieser Unit: Stufe " +
+        ist.toFixed(1) + "</span>";
+    }
+  }
 }
 
 /* ---------------- Zeichnen ---------------- */
@@ -669,6 +804,11 @@ function auftrag(){
     ziel:{A:state.ziel.A, B:state.ziel.B},
     vorgabe:{A:vorgabe("A"), B:vorgabe("B")},
     eigenerAnspruch:state.eigen,
+    textstufe:{A:state.text.A, B:state.text.B},
+    textNormal:{A:normalText("A"), B:normalText("B")},
+    textVorgabe:{A:textVorgabe("A"), B:textVorgabe("B")},
+    eigenerText:state.textEigen,
+    textziele:{A:textZiele("A"), B:textZiele("B")},
     variante:state.variante, anzahl:state.anzahl, luecken:state.luecken,
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
@@ -688,6 +828,17 @@ function befehlstext(a){
       a.vorgabe.B.toFixed(1) + ").");
     if(a.anzahl !== 12 || a.luecken !== 4)
       zeilen.push(a.anzahl + " Wörter je Prüfung, davon " + a.luecken + " Lücken.");
+    if(a.eigenerText){
+      const teileNiv = [];
+      for(const niv of ["A","B"]){
+        if(Math.abs(a.textstufe[niv] - a.textVorgabe[niv]) > 0.05)
+          teileNiv.push("Niveau " + niv + " auf " + a.textstufe[niv].toFixed(1) +
+                        "/10 (normal " + a.textNormal[niv].toFixed(1) + ")");
+      }
+      if(teileNiv.length)
+        zeilen.push("Lückentext-Schwierigkeit abweichend: " +
+                    teileNiv.join(", ") + ".");
+    }
   }
   if(a.notiz) zeilen.push(a.notiz);
   return zeilen.join(" ");
@@ -751,7 +902,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneAuftrag(); }
+function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -766,6 +917,9 @@ $("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +
 $("unit").addEventListener("change", e => {
   state.unit = +e.target.value;
   if(!state.eigen) vorgabenSetzen();
+  if(!state.textEigen) textVorgabenSetzen();
+  $("twertA").textContent = state.text.A.toFixed(1);
+  $("twertB").textContent = state.text.B.toFixed(1);
   $("wertA").textContent = state.ziel.A.toFixed(1);
   $("wertB").textContent = state.ziel.B.toFixed(1);
   alles();
@@ -789,6 +943,22 @@ $("zurueck").addEventListener("click", () => {
   $("zurueck").hidden = true;
   zeichneTeile(); zeichneAuftrag();
 });
+for(const niv of ["A","B"]){
+  $("text" + niv).addEventListener("input", e => {
+    state.text[niv] = +e.target.value;
+    state.textEigen = true;
+    $("twert" + niv).textContent = state.text[niv].toFixed(1);
+    $("tzurueck").hidden = false;
+    zeichneTextband(); zeichneAuftrag();
+  });
+}
+$("tzurueck").addEventListener("click", () => {
+  textVorgabenSetzen();
+  $("twertA").textContent = state.text.A.toFixed(1);
+  $("twertB").textContent = state.text.B.toFixed(1);
+  zeichneTextband(); zeichneAuftrag();
+});
+
 $("anzahl").addEventListener("change", e => {
   state.anzahl = Math.max(6, Math.min(20, +e.target.value || 12));
   e.target.value = state.anzahl;
@@ -848,8 +1018,11 @@ $("herunterladen").addEventListener("click", async () => {
 });
 
 vorgabenSetzen();
+textVorgabenSetzen();
 $("wertA").textContent = state.ziel.A.toFixed(1);
 $("wertB").textContent = state.ziel.B.toFixed(1);
+$("twertA").textContent = state.text.A.toFixed(1);
+$("twertB").textContent = state.text.B.toFixed(1);
 alles();
 starteDb();
 starteDownloads();

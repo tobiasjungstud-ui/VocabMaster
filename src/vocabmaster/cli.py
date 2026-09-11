@@ -27,7 +27,13 @@ from .config import Settings
 from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
-from .niveau import NIVEAUS, PROFILES, profile
+from .niveau import (
+    NIVEAUS,
+    NORMAL_TEXTSTUFE,
+    PROFILES,
+    profile,
+    ziele_fuer_textstufe,
+)
 from .pack import (
     Pack,
     _schwierigkeit,
@@ -258,6 +264,10 @@ def cmd_fassung(args) -> int:
 
     neu = neue_fassung(pack, args.teil, prof.name, args.nummer, settings,
                        args.gemeinsam)
+    if args.textstufe is not None:
+        neu.data["pruefungen"][f"teil{args.teil}"][prof.name]["textstufe"] = (
+            args.textstufe
+        )
     neu.save(ziel)
 
     spec = neu.exam(args.teil, prof.name)
@@ -279,6 +289,17 @@ def cmd_fassung(args) -> int:
           + (f" ({', '.join(gemeinsam)})" if gemeinsam else ""))
     print(f"  Neu gegenüber Fassung 1: "
           f"{', '.join(sorted(set(woerter) - set(bisher)))}")
+    verlangt = neu.textstufe(args.teil, prof.name)
+    if verlangt is None:
+        verlangt = NORMAL_TEXTSTUFE[prof.name]
+    ziele = ziele_fuer_textstufe(PROFILES[prof.name], neu.textstufe(args.teil, prof.name))
+    print(f"  Textstufe: {verlangt:.1f}/10 "
+          f"(Normallage Niveau {prof.name}: {NORMAL_TEXTSTUFE[prof.name]:.1f})")
+    print(f"    {ziele['min_words']}-{ziele['max_words']} Wörter, "
+          f"Sätze Ø {ziele['min_avg_sentence']}-{ziele['max_avg_sentence']}, "
+          f"Lesbarkeit ≥ {ziele['min_flesch_ease']}, "
+          f"Grad ≤ {ziele['max_flesch_grade']}, "
+          f"Nebensätze ≤ {ziele['max_subordinators_per_sentence']} je Satz")
     print(f"\nJetzt im Chat ausfüllen: der Lückentext in "
           f"pruefungen.teil{args.teil}.{prof.name}.task2.text "
           f"({len(spec['task2']['gaps'])} Lücken).")
@@ -409,6 +430,9 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
     p.add_argument("--luecken", type=int,
                    help="davon Lücken (Vorgabe aus den Einstellungen)")
+    p.add_argument("--textstufe", type=float,
+                   help="Schwierigkeit des Lückentexts 0-10 (Normallage: "
+                        "Niveau A 3.0, Niveau B 1.7)")
     p.add_argument("--verzeichnis", default="kuratiert")
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
                    action="store_true")

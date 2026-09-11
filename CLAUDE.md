@@ -147,13 +147,76 @@ Satzlänge, Textlänge und Nebensatzdichte des Lückentextes.
 Die Beispielsätze der Liste lernen beide Gruppen, deshalb gilt für sie das
 engere Mass: **höchstens 13 Wörter je Satz.**
 
+## Welche Liste meint dieser Test?
+
+Das ist die Frage, die sich zwei Tage nach dem Bauen stellt. Jede
+Vokabelliste trägt deshalb einen Code — **V1, V2, V3** — und zwar im
+Dateinamen von allem, was zu ihr gehört:
+
+```
+Unit01_V1_VocabularyList.docx
+Unit01_V1_Test_PartI_NiveauA.docx
+Unit01_V2_VocabularyList.docx            ← andere Liste, eigene Prüfungen
+Unit01_V2_Test_PartI_NiveauA_Fassung2.docx
+```
+
+Dazu trägt **jede Prüfung den Fingerabdruck ihrer Liste** im Paket
+(`meta.liste_fingerabdruck`, eine Kurzform über alle 60 Wortpaare;
+Beispielsätze zählen nicht mit). Die Kontrolle `listenbezug` schlägt an,
+sobald eine Prüfung zu einer Liste gehört, die nicht mehr im Paket liegt —
+denn dann zeigt ihr Lösungsschlüssel auf Wörter, die es dort nicht gibt.
+Das ist der teuerste Fehler, den dieses Programm machen kann, und er fällt
+sonst erst beim Korrigieren auf.
+
+```bash
+vocabmaster listen        # welche Listen es je Unit gibt, mit Abdruck
+```
+
+## Aufgewertete Wörter („fancy")
+
+Eine neue Liste entsteht nicht aus dem Nichts, sondern durch **Aufwertung**:
+
+```bash
+vocabmaster liste-neu kuratiert/unit_01.json --fancy 3 \
+    --wort "dreadful=schrecklich" --wort "exhausted=erschöpft"
+```
+
+Das schreibt `kuratiert/unit_01_v2.json`. Die Liste bleibt bei **60 Wörtern**
+— sie muss auf eine A4-Seite passen —, also tritt jedes aufgewertete Wort an
+die Stelle eines zu einfachen. Es weichen die **zugänglichsten** zuerst:
+`earring`, `theme park`, `anecdote` sind für eine Klasse auf B1.1–B1.2 kein
+Lernstoff.
+
+`--wort` nimmt die Angabe in beiden Richtungen (`dreadful=schrecklich` wie
+`schrecklich=dreadful`); erkannt wird sie an der Schreibung. Wo das nicht
+reicht (`rot=red`), wird **nicht geraten**, sondern zurückgefragt —
+eindeutig ist `en:dreadful=schrecklich`.
+
+`--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Die Anwendung
+erfindet auch hier nichts; sie räumt den Platz frei und schreibt den
+Massstab daneben (`FANCY_MASSSTAB`):
+
+* **Aufwertung statt Zusatz** — ein Wort, das den „very + Adjektiv"-Notausgang
+  ersetzt: `very crowded` → `packed`, `very tired` → `exhausted`,
+  `very important` → `crucial`, `very interesting` → `fascinating`.
+* **Niveau B1.2–B2.1** — deutlich über dem Grundwortschatz, aber nicht so
+  selten, dass es nie wieder vorkommt: `dreadful` statt `terrible`.
+* **Alltagstauglich** — Themenfelder, die Jugendliche im Sprechen und
+  Schreiben sofort brauchen.
+* **Kollisionsfrei** — bildet mit keinem Wort der Liste eine Wortfamilie.
+
+Die vier Prüfungen werden gegen die neue Liste neu aufgesetzt; die
+handgeschriebenen Lückentexte bleiben erhalten. Fällt eines ihrer
+Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel` —
+lieber ein klarer Fehler als stillschweigend weggeworfene Arbeit.
+
 ## Zweite Fassung einer Prüfung
 
 Für eine Nachprüfung, oder wenn ein Blatt bekannt geworden ist:
 
 ```bash
 vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A \
-    --nummer 2 --gemeinsam 4 --woerter 12 --luecken 6
+     --nummer 2 --woerter 12 --luecken 6
 ```
 
 Das schreibt `kuratiert/unit_01_fassung2.json` — **dieselbe Vokabelliste**,
@@ -163,7 +226,10 @@ unangetastet. Danach wie immer: Lückentext im Chat schreiben, `prüfen`,
 `bauen`.
 
 `--gemeinsam` ist die Obergrenze für Wörter, die schon in Fassung 1 geprüft
-wurden. Ganz ohne Überschnitt geht es selten: Beide Fassungen schöpfen aus
+wurden; voreingestellt sind **40 %** der Prüfung (`VM_MAX_OVERLAP`), bei
+12 Wörtern also 4. Ein Überschnitt ist ausdrücklich erlaubt — beide
+Fassungen prüfen dieselbe Liste —, aber darüber ist es keine zweite Fassung
+mehr, sondern dieselbe mit anderer Reihenfolge. Ganz ohne Überschnitt geht es selten: Beide Fassungen schöpfen aus
 denselben dreissig Wörtern und beide wollen dasselbe Ende davon — das
 schwere für Niveau A, das zugängliche für Niveau B. **Je weniger gemeinsam,
 desto weiter muss die Auswahl von diesem Ende weg, desto mehr weicht der

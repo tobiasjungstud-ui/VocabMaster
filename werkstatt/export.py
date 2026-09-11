@@ -156,6 +156,10 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
             "titel": pack.get("unit_label") or pack.get("titel", f"Unit {unit}"),
             "thema": pack.get("thema") or thema.get("thema", ""),
             "seiten": thema.get("seiten", ""),
+            "liste_version": int(pack.get("liste_version", 1)),
+            "liste_abdruck": pack.get("pruefungen", {}).get("teil1", {})
+                                 .get("A", {}).get("meta", {})
+                                 .get("liste_fingerabdruck", ""),
             "herkunft": _herkunft(db, unit, settings),
             "woerter": woerter,
             "echt": _echte_auswahl(pack, woerter),

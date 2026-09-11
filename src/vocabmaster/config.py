@@ -60,6 +60,18 @@ class Settings:
     # --- Prüfungen --------------------------------------------------------
     exam_words: int = field(default_factory=lambda: _env_int("VM_EXAM_WORDS", 12))
     exam_gaps: int = field(default_factory=lambda: _env_int("VM_EXAM_GAPS", 4))
+    #: Höchstanteil einer zweiten Fassung, der sich mit der ersten decken
+    #: darf. Ein Überschnitt ist ausdrücklich erlaubt - beide Fassungen
+    #: prüfen dieselbe Liste -, aber über 40 Prozent ist es keine zweite
+    #: Fassung mehr, sondern dieselbe mit anderer Reihenfolge.
+    max_overlap_share: float = field(
+        default_factory=lambda: float(os.environ.get("VM_MAX_OVERLAP", 0.40))
+    )
+
+    @property
+    def max_overlap_words(self) -> int:
+        """Wie viele Wörter sich zwei Fassungen teilen dürfen."""
+        return int(self.exam_words * self.max_overlap_share)
 
     # --- Layout der Vokabelliste -----------------------------------------
     heading_test1: str = field(default_factory=lambda: os.environ.get("VM_HEADING1", "Test 1"))

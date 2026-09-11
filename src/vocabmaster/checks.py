@@ -354,6 +354,49 @@ def pruefe_dubletten(pack: Pack, bericht: Pruefbericht) -> None:
 
 
 # ---------------------------------------------------------------------------
+# 5a  Listenbezug
+# ---------------------------------------------------------------------------
+def pruefe_listenbezug(pack: Pack, bericht: Pruefbericht) -> None:
+    """Gehört jede Prüfung noch zu der Liste, die im Paket liegt?
+
+    Wer heute eine Vokabelliste baut und übermorgen eine Prüfung dazu, muss
+    sich darauf verlassen können, dass beide dieselben 60 Wörter meinen.
+    Jede Prüfung trägt deshalb den Fingerabdruck der Liste, für die sie
+    geschrieben wurde. Stimmt er nicht mehr, ist der Lösungsschlüssel im
+    Zweifel falsch - und das fällt beim Korrigieren auf, nicht vorher.
+    """
+    bericht.gelaufen.append("listenbezug")
+    jetzt = pack.liste_abdruck
+    ohne_abdruck = []
+    for (teil, niveau), spec in sorted(pack.exams.items()):
+        meta = spec.get("meta", {})
+        abdruck = meta.get("liste_fingerabdruck")
+        if not abdruck:
+            ohne_abdruck.append(f"Teil {teil} Niveau {niveau}")
+            continue
+        if abdruck != jetzt:
+            bericht.add(
+                FEHLER, "listenbezug",
+                f"Teil {teil} Niveau {niveau} wurde für Liste V"
+                f"{meta.get('liste_version', '?')} ({abdruck}) geschrieben, "
+                f"im Paket liegt jetzt V{pack.liste_version} ({jetzt}). "
+                "Entweder die alte Liste zurückholen oder die Prüfung neu "
+                "aufsetzen - der Lösungsschlüssel passt sonst nicht.",
+            )
+    if ohne_abdruck:
+        bericht.add(
+            HINWEIS, "listenbezug",
+            f"Ohne Listenabdruck (aus einer früheren Fassung): "
+            f"{', '.join(ohne_abdruck)}. Beim nächsten Aufsetzen kommt er dazu.",
+        )
+    bericht.kennzahlen["listenbezug"] = (
+        f"Liste V{pack.liste_version} ({jetzt}), "
+        f"{len(pack.exams) - len(ohne_abdruck)} von {len(pack.exams)} "
+        "Prüfungen daran gebunden"
+    )
+
+
+# ---------------------------------------------------------------------------
 # 5  Altbestand
 # ---------------------------------------------------------------------------
 def pruefe_altbestand(pack: Pack, db: Database, bericht: Pruefbericht) -> None:
@@ -791,6 +834,7 @@ def pruefe_paket(
     pruefe_dubletten(pack, bericht)
     pruefe_altbestand(pack, db, bericht)
     if mit_pruefungen:
+        pruefe_listenbezug(pack, bericht)
         pruefe_loesungsschluessel(pack, bericht)
         pruefe_niveau_konsistenz(pack, bericht)
     pruefe_platzhalter(pack, bericht, mit_pruefungen)

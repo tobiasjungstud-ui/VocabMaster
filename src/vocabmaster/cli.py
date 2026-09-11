@@ -35,10 +35,12 @@ from .niveau import (
     ziele_fuer_textstufe,
 )
 from .pack import (
+    FANCY_MASSSTAB,
     Pack,
     _schwierigkeit,
     ausgleichen,
     neue_fassung,
+    neue_liste,
     pack_filename,
     scaffold,
     waehle_pruefungswoerter,
@@ -239,6 +241,77 @@ def cmd_ausgleichen(args) -> int:
     return 0
 
 
+def cmd_listen(args) -> int:
+    """Welche Vokabellisten es je Unit gibt - und was daran hängt."""
+    pfade = sorted(Path(args.verzeichnis).glob("unit_*.json"))
+    if not pfade:
+        print(f"In {args.verzeichnis}/ liegt kein Paket.")
+        return 1
+    nach_unit: dict[int, list[Pack]] = {}
+    for pfad in pfade:
+        pack = Pack.load(pfad)
+        nach_unit.setdefault(pack.unit, []).append(pack)
+
+    for unit in sorted(nach_unit):
+        pakete = sorted(nach_unit[unit], key=lambda p: (p.liste_version, p.fassung))
+        print(f"\nUnit {unit:02d} - {pakete[0].thema}")
+        for pack in pakete:
+            marke = f"V{pack.liste_version}"
+            if pack.fassung > 1:
+                marke += f" Fassung {pack.fassung}"
+            fancy = sum(1 for e in pack.all_entries
+                        if e.get("herkunft") == "fancy")
+            offen = len(pack.offen())
+            teile = [f"{len(pack.exams)} Prüfungen",
+                     f"Abdruck {pack.liste_abdruck}"]
+            if fancy:
+                teile.append(f"{fancy} aufgewertet")
+            if offen:
+                teile.append(f"{offen} offen")
+            print(f"  {marke:<18} {pack.pfad.name:<30} {' · '.join(teile)}")
+    print("\nEine Prüfung gehört zu der Liste, deren Abdruck in ihr steht; "
+          "\n'vocabmaster prüfen' schlägt an, sobald das nicht mehr stimmt.")
+    return 0
+
+
+def cmd_liste_neu(args) -> int:
+    """Eine neue Vokabelliste V2, V3 ... mit aufgewerteten Wörtern."""
+    pack = Pack.load(args.paket)
+    settings = _settings(args)
+    try:
+        neu = neue_liste(pack, args.fancy, args.wort or (), settings)
+    except ValueError as fehler:
+        print(str(fehler))
+        return 1
+
+    ziel = Path(args.verzeichnis) / pack_filename(
+        neu.unit, liste_version=neu.liste_version
+    )
+    if ziel.exists() and not args.ueberschreiben:
+        print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
+        return 1
+    neu.save(ziel)
+
+    ersetzt = neu.data["abgeleitet_von"]["ersetzt"]
+    print(f"{ziel} geschrieben - {neu.unit_label}, Vokabelliste "
+          f"V{neu.liste_version} (aus V{pack.liste_version}).")
+    print(f"  Abdruck der neuen Liste: {neu.liste_abdruck}")
+    print(f"  {len(ersetzt)} Wörter aufgewertet:")
+    for e in ersetzt:
+        print(f"    {e['raus']:<20} -> {e['rein']}")
+    offen = [e for e in neu.all_entries if e.get("herkunft") == "fancy"
+             and not e.get("englisch")]
+    print(f"\n  Die vier Prüfungen wurden gegen V{neu.liste_version} neu "
+          "aufgesetzt; ihre Lückentexte sind erhalten geblieben.")
+    if offen:
+        print(f"\nJetzt im Chat ausfüllen: {len(offen)} Fancy-Fächer "
+              "(englisch, deutsch, satz) nach diesem Massstab:")
+        for zeile in FANCY_MASSSTAB:
+            print(f"  - {zeile}")
+    print(f"\nDanach 'vocabmaster prüfen {ziel}'.")
+    return 0
+
+
 def cmd_fassung(args) -> int:
     """Eine zweite Fassung einer einzelnen Prüfung anlegen."""
     pack = Pack.load(args.paket)
@@ -262,8 +335,10 @@ def cmd_fassung(args) -> int:
     bisher = [i["english"] for i in alt_spec.get("task1", {}).get("items", [])]
     bisher += [g["answer"] for g in alt_spec.get("task2", {}).get("gaps", [])]
 
+    gemeinsam = (settings.max_overlap_words if args.gemeinsam is None
+                 else args.gemeinsam)
     neu = neue_fassung(pack, args.teil, prof.name, args.nummer, settings,
-                       args.gemeinsam)
+                       gemeinsam)
     if args.textstufe is not None:
         neu.data["pruefungen"][f"teil{args.teil}"][prof.name]["textstufe"] = (
             args.textstufe
@@ -279,14 +354,16 @@ def cmd_fassung(args) -> int:
     alt_noten = [_schwierigkeit(e) for e in pack.entries(f"test{args.teil}")
                  if e["englisch"] in bisher]
     alt_schnitt = sum(alt_noten) / len(alt_noten) if alt_noten else 0.0
-    gemeinsam = sorted(set(woerter) & set(bisher))
+    gemeinsam_w = sorted(set(woerter) & set(bisher))
 
     print(f"{ziel} geschrieben - {neu.unit_label} Teil {args.teil} "
           f"Niveau {prof.name}, Fassung {args.nummer}.")
     print(f"  Anspruch: Ø {schnitt:.2f}/10 "
           f"(Fassung 1: Ø {alt_schnitt:.2f}/10)")
-    print(f"  Gemeinsam mit Fassung 1: {len(gemeinsam)} von {len(woerter)}"
-          + (f" ({', '.join(gemeinsam)})" if gemeinsam else ""))
+    anteil = len(gemeinsam_w) / len(woerter) * 100 if woerter else 0.0
+    print(f"  Gemeinsam mit Fassung 1: {len(gemeinsam_w)} von {len(woerter)} "
+          f"= {anteil:.0f} % (Grenze {settings.max_overlap_share * 100:.0f} %)"
+          + (f" ({', '.join(gemeinsam_w)})" if gemeinsam_w else ""))
     print(f"  Neu gegenüber Fassung 1: "
           f"{', '.join(sorted(set(woerter) - set(bisher)))}")
     verlangt = neu.textstufe(args.teil, prof.name)
@@ -415,6 +492,25 @@ def build_parser() -> argparse.ArgumentParser:
                        help="nur die Kontrollen dieses Teils laufen lassen")
         p.set_defaults(func=cmd_pruefen)
 
+    p = sub.add_parser("listen", help="welche Vokabellisten je Unit bestehen")
+    p.add_argument("--verzeichnis", default="kuratiert")
+    p.set_defaults(func=cmd_listen)
+
+    p = sub.add_parser(
+        "liste-neu",
+        help="eine neue Vokabelliste V2, V3 ... mit aufgewerteten Wörtern",
+    )
+    p.add_argument("paket", help="das bestehende Paket, z. B. kuratiert/unit_01.json")
+    p.add_argument("--fancy", type=int, default=0,
+                   help="so viele Fächer für im Chat gewählte Wörter")
+    p.add_argument("--wort", action="append", metavar="EN=DE",
+                   help="selbst angegebenes Wort, z. B. 'dreadful=schrecklich' "
+                        "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")
+    p.add_argument("--verzeichnis", default="kuratiert")
+    p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
+                   action="store_true")
+    p.set_defaults(func=cmd_liste_neu)
+
     p = sub.add_parser(
         "fassung",
         help="eine zweite Fassung einer einzelnen Prüfung anlegen",
@@ -424,8 +520,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--niveau", choices=list(NIVEAUS), required=True)
     p.add_argument("--nummer", type=int, default=2,
                    help="die wievielte Fassung (Voreinstellung 2)")
-    p.add_argument("--gemeinsam", type=int, default=4,
-                   help="höchstens so viele Wörter wie in Fassung 1 (Vorgabe 4)")
+    p.add_argument("--gemeinsam", type=int, default=None,
+                   help="höchstens so viele Wörter wie in Fassung 1 "
+                        "(Vorgabe: 40 %% der Prüfung)")
     p.add_argument("--woerter", type=int,
                    help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
     p.add_argument("--luecken", type=int,

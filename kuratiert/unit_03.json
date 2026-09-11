@@ -656,7 +656,9 @@
           "titel": "Unit 3 Part I - Vokabelprüfung, Niveau A",
           "niveau": "A",
           "cefr": "B1.2-B2.1",
-          "quelle_liste": "Test 1"
+          "quelle_liste": "Test 1",
+          "liste_version": 1,
+          "liste_fingerabdruck": "11afb0e77665"
         },
         "total_words": 12,
         "header": {
@@ -753,7 +755,9 @@
           "titel": "Unit 3 Part I - Vokabelprüfung, Niveau B",
           "niveau": "B",
           "cefr": "A2.2-B1.1",
-          "quelle_liste": "Test 1"
+          "quelle_liste": "Test 1",
+          "liste_version": 1,
+          "liste_fingerabdruck": "11afb0e77665"
         },
         "total_words": 12,
         "header": {
@@ -854,7 +858,9 @@
           "titel": "Unit 3 Part II - Vokabelprüfung, Niveau A",
           "niveau": "A",
           "cefr": "B1.2-B2.1",
-          "quelle_liste": "Test 2"
+          "quelle_liste": "Test 2",
+          "liste_version": 1,
+          "liste_fingerabdruck": "11afb0e77665"
         },
         "total_words": 12,
         "header": {
@@ -951,7 +957,9 @@
           "titel": "Unit 3 Part II - Vokabelprüfung, Niveau B",
           "niveau": "B",
           "cefr": "A2.2-B1.1",
-          "quelle_liste": "Test 2"
+          "quelle_liste": "Test 2",
+          "liste_version": 1,
+          "liste_fingerabdruck": "11afb0e77665"
         },
         "total_words": 12,
         "header": {
@@ -1046,5 +1054,6 @@
         }
       }
     }
-  }
+  },
+  "liste_version": 1
 }

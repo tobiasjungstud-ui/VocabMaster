@@ -78,6 +78,8 @@
    "titel": "Unit 1",
    "thema": "Erinnerungen und Gegenstände",
    "seiten": "8-17",
+   "liste_version": 1,
+   "liste_abdruck": "f2ad6b039093",
    "herkunft": {
     "hauptteil": 213,
     "gefiltert": 141,
@@ -939,6 +941,8 @@
    "titel": "Unit 2",
    "thema": "Entscheidungen, Zukunft und Engagement",
    "seiten": "18-27",
+   "liste_version": 1,
+   "liste_abdruck": "ce0cc46598ee",
    "herkunft": {
     "hauptteil": 186,
     "gefiltert": 103,
@@ -1800,6 +1804,8 @@
    "titel": "Unit 3",
    "thema": "Werbung, Marketing und Konsum",
    "seiten": "28-37",
+   "liste_version": 1,
+   "liste_abdruck": "11afb0e77665",
    "herkunft": {
     "hauptteil": 133,
     "gefiltert": 61,
@@ -2661,6 +2667,8 @@
    "titel": "Unit 4",
    "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
    "seiten": "38-47",
+   "liste_version": 1,
+   "liste_abdruck": "6513cdc05c9c",
    "herkunft": {
     "hauptteil": 136,
     "gefiltert": 68,
@@ -3522,6 +3530,8 @@
    "titel": "Unit 5",
    "thema": "Wissenschaft, Forschung und Biomimikry",
    "seiten": "48-57",
+   "liste_version": 1,
+   "liste_abdruck": "b7d061d86b25",
    "herkunft": {
     "hauptteil": 128,
     "gefiltert": 68,
@@ -4383,6 +4393,8 @@
    "titel": "Unit 6",
    "thema": "Persönlichkeit und soziale Rollen",
    "seiten": "58-67",
+   "liste_version": 1,
+   "liste_abdruck": "0e4ed90c3fb4",
    "herkunft": {
     "hauptteil": 88,
     "gefiltert": 37,
@@ -5244,6 +5256,8 @@
    "titel": "Unit 7",
    "thema": "Bauwerke und Wahrzeichen",
    "seiten": "68-77",
+   "liste_version": 1,
+   "liste_abdruck": "c10f8be64a4e",
    "herkunft": {
     "hauptteil": 100,
     "gefiltert": 37,
@@ -6105,6 +6119,8 @@
    "titel": "Unit 8",
    "thema": "Verbrechen, Sicherheit und Krimis",
    "seiten": "78-87",
+   "liste_version": 1,
+   "liste_abdruck": "d70a04625e5d",
    "herkunft": {
     "hauptteil": 119,
     "gefiltert": 55,

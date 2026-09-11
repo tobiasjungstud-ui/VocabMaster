@@ -12,12 +12,29 @@ from .helpers import fill
 
 
 def test_dateinamen_folgen_der_konvention():
-    # Die Vokabelliste trägt kein Niveau - es gibt nur eine.
-    assert dateiname(3, "VocabularyList") == "Unit03_VocabularyList.docx"
-    assert dateiname(3, "Test", 1, "B") == "Unit03_Test_PartI_NiveauB.docx"
+    # Die Vokabelliste trägt kein Niveau - es gibt je Liste nur eine.
+    assert dateiname(3, "VocabularyList") == "Unit03_V1_VocabularyList.docx"
+    assert dateiname(3, "Test", 1, "B") == "Unit03_V1_Test_PartI_NiveauB.docx"
     assert dateiname(12, "Test", 2, "A", loesung=True) == (
-        "Unit12_Test_PartII_NiveauA_Loesung.docx"
+        "Unit12_V1_Test_PartII_NiveauA_Loesung.docx"
     )
+
+
+def test_dateiname_nennt_liste_und_fassung():
+    """Am Namen muss ablesbar sein, zu welcher Liste eine Prüfung gehört."""
+    assert dateiname(3, "VocabularyList", liste_version=2) == (
+        "Unit03_V2_VocabularyList.docx"
+    )
+    assert dateiname(3, "Test", 1, "A", liste_version=2) == (
+        "Unit03_V2_Test_PartI_NiveauA.docx"
+    )
+    # Liste und Fassung sind zwei verschiedene Dinge und stehen beide drin.
+    assert dateiname(3, "Test", 1, "A", fassung=2, liste_version=3) == (
+        "Unit03_V3_Test_PartI_NiveauA_Fassung2.docx"
+    )
+    # Zwei Listen derselben Unit dürfen sich nie auf denselben Namen abbilden.
+    namen = {dateiname(3, "Test", 1, "A", liste_version=v) for v in (1, 2, 3)}
+    assert len(namen) == 3
 
 
 def test_alle_dokumente_entstehen(tmp_path, pack, settings):
@@ -25,15 +42,15 @@ def test_alle_dokumente_entstehen(tmp_path, pack, settings):
     ergebnis = baue_alles(pack, tmp_path, settings)
     namen = sorted(p.name for p in ergebnis.dateien)
     assert namen == [
-        "Unit01_Test_PartII_NiveauA.docx",
-        "Unit01_Test_PartII_NiveauA_Loesung.docx",
-        "Unit01_Test_PartII_NiveauB.docx",
-        "Unit01_Test_PartII_NiveauB_Loesung.docx",
-        "Unit01_Test_PartI_NiveauA.docx",
-        "Unit01_Test_PartI_NiveauA_Loesung.docx",
-        "Unit01_Test_PartI_NiveauB.docx",
-        "Unit01_Test_PartI_NiveauB_Loesung.docx",
-        "Unit01_VocabularyList.docx",
+        "Unit01_V1_Test_PartII_NiveauA.docx",
+        "Unit01_V1_Test_PartII_NiveauA_Loesung.docx",
+        "Unit01_V1_Test_PartII_NiveauB.docx",
+        "Unit01_V1_Test_PartII_NiveauB_Loesung.docx",
+        "Unit01_V1_Test_PartI_NiveauA.docx",
+        "Unit01_V1_Test_PartI_NiveauA_Loesung.docx",
+        "Unit01_V1_Test_PartI_NiveauB.docx",
+        "Unit01_V1_Test_PartI_NiveauB_Loesung.docx",
+        "Unit01_V1_VocabularyList.docx",
     ]
     for pfad in ergebnis.dateien:
         assert pfad.exists() and pfad.stat().st_size > 0

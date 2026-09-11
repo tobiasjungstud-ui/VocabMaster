@@ -4,11 +4,11 @@ Je Unit entstehen neun Dokumente: **eine** Vokabelliste für beide Gruppen
 und vier Prüfungen mit ihren Lösungsblättern.
 
 ============================================  ==========================================
-``Unit03_VocabularyList.docx``                Vokabelliste, Test 1 und Test 2
-``Unit03_Test_PartI_NiveauA.docx``            Prüfung zu Test 1, stärkere Gruppe
-``Unit03_Test_PartI_NiveauB.docx``            Prüfung zu Test 1, schwächere Gruppe
-``Unit03_Test_PartII_NiveauA.docx``           Prüfung zu Test 2, stärkere Gruppe
-``Unit03_Test_PartII_NiveauB.docx``           Prüfung zu Test 2, schwächere Gruppe
+``Unit03_V1_VocabularyList.docx``             Vokabelliste V1, Test 1 und Test 2
+``Unit03_V1_Test_PartI_NiveauA.docx``         Prüfung zu Test 1, stärkere Gruppe
+``Unit03_V1_Test_PartI_NiveauB.docx``         Prüfung zu Test 1, schwächere Gruppe
+``Unit03_V1_Test_PartII_NiveauA.docx``        Prüfung zu Test 2, stärkere Gruppe
+``Unit03_V1_Test_PartII_NiveauB.docx``        Prüfung zu Test 2, schwächere Gruppe
 ``…_Loesung.docx``                            je Prüfung ein Lösungsblatt
 ============================================  ==========================================
 
@@ -42,17 +42,21 @@ TEIL_NAMEN = {1: "PartI", 2: "PartII"}
 
 def dateiname(unit: int, art: str, teil: int | None = None,
               niveau: str | None = None, loesung: bool = False,
-              fassung: int = 1) -> str:
-    """Einheitliche Benennung: ``Unit03_Test_PartI_NiveauB_Loesung.docx``.
+              fassung: int = 1, liste_version: int = 1) -> str:
+    """Einheitliche Benennung: ``Unit03_V1_Test_PartI_NiveauB_Loesung.docx``.
 
-    Die Vokabelliste trägt kein Niveau im Namen - es gibt nur eine.
+    Der Code **V1, V2, V3** benennt die Vokabelliste. Er steht auf der Liste
+    und auf jeder Prüfung, die zu ihr gehört - denn genau das ist die Frage,
+    die sich zwei Tage später stellt: Zu welcher Liste gehört dieser Test?
+    Am Dateinamen ist das ablesbar, ohne eine Datei zu öffnen.
 
-    Eine zweite oder dritte Fassung derselben Prüfung - für eine
+    Die Vokabelliste trägt kein Niveau im Namen - es gibt je Liste nur eine.
+
+    Eine zweite oder dritte **Fassung** derselben Prüfung - für eine
     Nachprüfung, oder weil die erste bekannt geworden ist - trägt ihre
-    Nummer im Namen. Die erste nicht: sonst hiessen alle bestehenden
-    Dateien plötzlich anders.
+    Nummer dahinter. Die erste nicht.
     """
-    parts = [f"Unit{unit:02d}", art]
+    parts = [f"Unit{unit:02d}", f"V{max(1, int(liste_version))}", art]
     if teil:
         parts.append(TEIL_NAMEN[teil])
     if niveau:
@@ -129,7 +133,7 @@ def schreibe_pruefung(
     if mit_loesung:
         loesung = ziel.with_name(
             dateiname(pack.unit, "Test", teil, niveau, loesung=True,
-                      fassung=pack.fassung)
+                      fassung=pack.fassung, liste_version=pack.liste_version)
         )
         geschrieben.append(
             Path(build_answer_key(spec, str(settings.exam_template), str(loesung)))
@@ -157,7 +161,8 @@ def baue_alles(
     ergebnis.bericht.gelaufen.append("dokument")
 
     if "liste" in teile:
-        pfad = ziel / dateiname(pack.unit, "VocabularyList")
+        pfad = ziel / dateiname(pack.unit, "VocabularyList",
+                                liste_version=pack.liste_version)
         ergebnis.dateien.append(schreibe_liste(pack, pfad, settings))
 
     if "test" in teile:
@@ -165,7 +170,8 @@ def baue_alles(
             if niveau not in niveaus:
                 continue
             pfad = ziel / dateiname(pack.unit, "Test", teil, niveau,
-                                    fassung=pack.fassung)
+                                    fassung=pack.fassung,
+                                    liste_version=pack.liste_version)
             geschrieben = schreibe_pruefung(
                 pack, teil, niveau, pfad, settings, mit_loesung
             )

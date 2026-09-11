@@ -24,6 +24,7 @@ ihr Diff im Git-Verlauf lesen.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import random
 import re
@@ -76,6 +77,21 @@ def _list_entry(number: int, english: str, german: str, herkunft: str,
         "herkunft": herkunft,
         "abschnitt": abschnitt,
     }
+
+
+def liste_fingerabdruck(eintraege: list[dict[str, Any]]) -> str:
+    """Ein kurzer Abdruck der 60 Wörter - ändert sich, sobald die Liste sich ändert.
+
+    Damit lässt sich später beantworten, was ohne ihn niemand beantworten
+    kann: Gehört diese Prüfung noch zu der Liste, die gerade im Paket liegt?
+    Beispielsätze zählen nicht mit - wer einen Satz umformuliert, macht damit
+    keine neue Liste.
+    """
+    roh = "\n".join(
+        f"{e.get('englisch', '').strip().lower()}|{e.get('deutsch', '').strip().lower()}"
+        for e in eintraege
+    )
+    return hashlib.sha256(roh.encode("utf-8")).hexdigest()[:12]
 
 
 def wortart_von(entry: dict[str, Any]) -> str:
@@ -265,6 +281,8 @@ def _exam_scaffold(
     seed: int,
     meiden: Iterable[str] = (),
     hoechstens_gemeinsam: int = 0,
+    liste_version: int = 1,
+    liste_abdruck: str = "",
 ) -> dict[str, Any]:
     part_label, source = TEIL_NAMEN[teil]
     chosen = waehle_pruefungswoerter(
@@ -312,6 +330,15 @@ def _exam_scaffold(
             "niveau": prof.name,
             "cefr": prof.cefr,
             "quelle_liste": source,
+            # Woran diese Prüfung hängt. Ohne diese zwei Felder lässt sich
+            # zwei Tage später nicht mehr sagen, zu welcher Vokabelliste sie
+            # gehört - und ein stillschweigend vertauschter Lösungsschlüssel
+            # ist der teuerste Fehler, den dieses Programm machen kann.
+            "liste_version": int(liste_version),
+            # Der Abdruck **der ganzen Liste**, nicht nur dieses Tests: eine
+            # Prüfung hängt an der Vokabelliste der Unit, und die umfasst
+            # beide Tests.
+            "liste_fingerabdruck": liste_abdruck or liste_fingerabdruck(entries),
         },
         "total_words": settings.exam_words,
         "header": {
@@ -386,11 +413,13 @@ def scaffold(
             row["nr"] = number
 
     unit_label = db.unit_label(unit)
+    abdruck = liste_fingerabdruck(blocks["test1"] + blocks["test2"])
     pruefungen = {
         f"teil{teil}": {
             name: _exam_scaffold(
                 blocks[f"test{teil}"], unit_label, teil, PROFILES[name],
-                settings, settings.seed,
+                settings, settings.seed, liste_version=1,
+                liste_abdruck=abdruck,
             )
             for name in NIVEAUS
         }
@@ -405,6 +434,7 @@ def scaffold(
         "thema": theme.get("thema", ""),
         "leitwoerter": theme.get("leitwoerter", []),
         "quelle": dict(db.quelle),
+        "liste_version": 1,
         "erzeugt": date.today().isoformat(),
         "fehlbestand": plan.report.fehlend,
         "herkunft_uebersicht": {
@@ -485,6 +515,16 @@ class Pack:
                 f"teil{teil}", {}
             ).get(prof.name)
         return None if wert is None else float(wert)
+
+    @property
+    def liste_version(self) -> int:
+        """Die wievielte Vokabelliste dieser Unit - V1, V2, V3 ..."""
+        return max(1, int(self.data.get("liste_version", 1)))
+
+    @property
+    def liste_abdruck(self) -> str:
+        """Der Fingerabdruck der Liste, wie sie **jetzt** im Paket steht."""
+        return liste_fingerabdruck(self.all_entries)
 
     @property
     def fassung(self) -> int:
@@ -629,10 +669,196 @@ class Pack:
         return out
 
 
-def pack_filename(unit: int, fassung: int = 1) -> str:
+def pack_filename(unit: int, fassung: int = 1, liste_version: int = 1) -> str:
+    """``unit_01.json``, ``unit_01_v2.json``, ``unit_01_v2_fassung3.json``."""
+    name = f"unit_{unit:02d}"
+    if liste_version > 1:
+        name += f"_v{liste_version}"
     if fassung > 1:
-        return f"unit_{unit:02d}_fassung{fassung}.json"
-    return f"unit_{unit:02d}.json"
+        name += f"_fassung{fassung}"
+    return name + ".json"
+
+
+#: Was ein Wort im Fancy-Fach zu leisten hat. Der Text steht in jedem
+#: erzeugten Platzhalter, damit er beim Ausfüllen im Chat vor Augen ist -
+#: und damit später nachlesbar bleibt, wonach ausgewählt wurde.
+FANCY_MASSSTAB = [
+    "Aufwertung statt Zusatz: ein Wort, das den 'very + Adjektiv'-Notausgang "
+    "ersetzt, in den Lernende auf diesem Stand immer wieder geraten - "
+    "'very crowded' -> 'packed', 'very tired' -> 'exhausted', "
+    "'very important' -> 'crucial', 'very interesting' -> 'fascinating'.",
+    "Niveau B1.2-B2.1: deutlich über dem Grundwortschatz, aber nicht so "
+    "selten, dass es nie wieder vorkommt. 'dreadful' statt 'terrible'.",
+    "Alltagstauglich: aus Themenfeldern, die Jugendliche im Sprechen und "
+    "Schreiben sofort brauchen, nicht aus der Prüfungsvitrine.",
+    "Kollisionsfrei: darf mit keinem Wort dieser Liste eine Wortfamilie "
+    "bilden und keines davon doppeln.",
+]
+
+
+def _fancy_platzhalter(nummer: int, ersetzt: str = "") -> dict[str, Any]:
+    eintrag = _list_entry(nummer, "", "", "fancy")
+    eintrag["hinweis"] = (
+        "Fancy-Fach: im Chat ausfüllen. " + " ".join(FANCY_MASSSTAB)
+        + (f" (Ersetzt das zu einfache '{ersetzt}'.)" if ersetzt else "")
+    )
+    eintrag["ersetzt"] = ersetzt
+    return eintrag
+
+
+#: Schreibungen, die es praktisch nur im Deutschen gibt.
+_DEUTSCH_MARKER = (
+    "ä", "ö", "ü", "ß", "sch", "tz", "pf",
+    "ung", "heit", "keit", "schaft", "isch", "lich",
+)
+#: ... und solche, die es praktisch nur im Englischen gibt.
+_ENGLISCH_MARKER = (
+    "th", "wh", "ough", "augh", "ck ", "ness", "ful", "less",
+    "tion", "sion", "ing", "ly",
+)
+
+
+def _sprachgewicht(wort: str) -> int:
+    """Positiv heisst eher englisch, negativ eher deutsch."""
+    w = wort.lower().strip()
+    punkte = sum(1 for m in _ENGLISCH_MARKER if m in w)
+    punkte -= sum(1 for m in _DEUTSCH_MARKER if m in w)
+    # Deutsche Nomen werden grossgeschrieben, englische mitten im Satz nicht.
+    if wort[:1].isupper() and not wort.isupper():
+        punkte -= 1
+    return punkte
+
+
+def _wortangabe(text: str) -> tuple[str, str]:
+    """Liest ``englisch=deutsch`` - in beliebiger Reihenfolge.
+
+    Welche Seite welche ist, wird an der Schreibung erkannt: Umlaute und
+    typische Endungen sprechen für Deutsch, ``th`` oder ``-ness`` für
+    Englisch. Wo das nicht reicht ("schrecklich=dreadful" hat auf beiden
+    Seiten Signale, "rot=red" auf keiner), wird **nicht geraten** - dann
+    kommt eine Rückfrage. Eindeutig ist immer ``en:dreadful=schrecklich``.
+    """
+    if "=" not in text:
+        raise ValueError(
+            f"{text!r}: erwartet wird 'englisch=deutsch', "
+            "zum Beispiel 'dreadful=schrecklich'."
+        )
+    links, rechts = (t.strip() for t in text.split("=", 1))
+    if not links or not rechts:
+        raise ValueError(f"{text!r}: beide Seiten müssen besetzt sein.")
+
+    # Ausdrückliche Angabe schlägt jede Vermutung.
+    for a, b in ((links, rechts), (rechts, links)):
+        if a.lower().startswith("en:"):
+            return a[3:].strip(), b.split(":", 1)[-1].strip() if b.lower().startswith("de:") else b
+        if a.lower().startswith("de:"):
+            return b.split(":", 1)[-1].strip() if b.lower().startswith("en:") else b, a[3:].strip()
+
+    gl, gr = _sprachgewicht(links), _sprachgewicht(rechts)
+    if gl > gr:
+        return links, rechts
+    if gr > gl:
+        return rechts, links
+    raise ValueError(
+        f"{text!r}: hier lässt sich nicht ablesen, welche Seite die "
+        "englische ist. Bitte ausdrücklich schreiben, zum Beispiel "
+        f"'en:{links}={rechts}'."
+    )
+
+
+def neue_liste(
+    pack: Pack,
+    fancy: int = 0,
+    eigene: Iterable[str] = (),
+    settings: Settings | None = None,
+) -> Pack:
+    """Eine neue Fassung der **Vokabelliste** - V2, V3, ...
+
+    Die Liste bleibt bei 60 Wörtern; sie muss auf eine A4-Seite passen. Ein
+    aufgewertetes Wort tritt deshalb an die Stelle eines zu einfachen: Die
+    zugänglichsten Wörter der Liste weichen zuerst, weil genau sie für eine
+    Klasse auf B1.1-B1.2 am wenigsten Lernstoff sind.
+
+    ``eigene`` sind selbst angegebene Wörter (``"dreadful=schrecklich"``),
+    ``fancy`` die Zahl der zusätzlichen Fächer, die im Chat gefüllt werden.
+    Die Anwendung erfindet hier nichts - sie räumt nur den Platz frei und
+    schreibt den Massstab daneben.
+
+    Alle vier Prüfungen werden gegen die neue Liste neu aufgesetzt; sonst
+    zeigte ihr Lösungsschlüssel auf Wörter, die nicht mehr darin stehen.
+    """
+    settings = settings or Settings()
+    vorgaben = [_wortangabe(t) for t in eigene]
+    plaetze = int(fancy) + len(vorgaben)
+    if plaetze <= 0:
+        raise ValueError("Ohne --fancy und ohne --wort gibt es nichts zu tun.")
+
+    neu = Pack(data=json.loads(json.dumps(pack.data)))
+    gesamt = len(neu.all_entries)
+    if plaetze > gesamt // 2:
+        raise ValueError(
+            f"{plaetze} Plätze von {gesamt} Wörtern ist zu viel - das wäre "
+            "keine Aufwertung mehr, sondern eine andere Liste."
+        )
+
+    # Die zugänglichsten Wörter weichen, quer über beide Tests.
+    kandidaten = sorted(
+        ((_schwierigkeit(e), test, i)
+         for test in ("test1", "test2")
+         for i, e in enumerate(neu.data["liste"][test])
+         if e.get("herkunft") != "fancy"),
+        key=lambda x: x[0],
+    )
+    weichen = sorted(kandidaten[:plaetze], key=lambda x: (x[1], x[2]))
+
+    # Zuerst die selbst angegebenen Wörter, dann die offenen Fancy-Fächer.
+    belegung: list[tuple[str, str] | None] = list(vorgaben)
+    belegung += [None] * (len(weichen) - len(belegung))
+    ersetzt: list[tuple[str, str]] = []
+    for (_note, test, i), vorgabe in zip(weichen, belegung, strict=True):
+        alt_e = neu.data["liste"][test][i]
+        raus = alt_e.get("englisch", "")
+        if vorgabe is None:
+            neu.data["liste"][test][i] = _fancy_platzhalter(alt_e["nr"], raus)
+        else:
+            englisch, deutsch = vorgabe
+            eintrag = _list_entry(alt_e["nr"], englisch, deutsch, "fancy")
+            eintrag["ersetzt"] = raus
+            neu.data["liste"][test][i] = eintrag
+        ersetzt.append((raus, vorgabe[0] if vorgabe else "(im Chat)"))
+
+    neu.data["liste_version"] = pack.liste_version + 1
+    neu.data["erzeugt"] = date.today().isoformat()
+    neu.data["abgeleitet_von"] = {
+        "paket": pack.pfad.name if pack.pfad else "",
+        "liste_version": pack.liste_version,
+        "ersetzt": [{"raus": a, "rein": b} for a, b in ersetzt],
+    }
+    unit_label = neu.unit_label
+    # Die Lückentexte sind Handarbeit und bleiben erhalten. Fällt eines ihrer
+    # Lückenwörter der Aufwertung zum Opfer, meldet das `loesungsschluessel`
+    # beim nächsten Prüfen - lieber ein klarer Fehler als stillschweigend
+    # weggeworfene Arbeit.
+    alte_texte = {
+        (teil, niveau): spec.get("task2", {}).get("text", "")
+        for (teil, niveau), spec in pack.exams.items()
+    }
+    neu.data["pruefungen"] = {
+        f"teil{teil}": {
+            niveau: _exam_scaffold(
+                neu.entries(f"test{teil}"), unit_label, teil, PROFILES[niveau],
+                settings, settings.seed + neu.liste_version,
+                liste_version=neu.liste_version,
+                liste_abdruck=neu.liste_abdruck,
+            )
+            for niveau in NIVEAUS
+        }
+        for teil in (1, 2)
+    }
+    for (teil, niveau), text in alte_texte.items():
+        if text and "TODO" not in text:
+            neu.data["pruefungen"][f"teil{teil}"][niveau]["task2"]["text"] = text
+    return neu
 
 
 def neue_fassung(
@@ -683,6 +909,8 @@ def neue_fassung(
                 neu.entries(f"test{teil}"), neu.unit_label, teil, prof,
                 settings, settings.seed + int(nummer),
                 meiden=bisher, hoechstens_gemeinsam=hoechstens_gemeinsam,
+                liste_version=neu.liste_version,
+                liste_abdruck=neu.liste_abdruck,
             )
         }
     }
@@ -747,6 +975,8 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
             niveau: _exam_scaffold(
                 pack.entries(f"test{teil}"), unit_label, teil,
                 PROFILES[niveau], settings, settings.seed,
+                liste_version=pack.liste_version,
+                liste_abdruck=pack.liste_abdruck,
             )
             for niveau in NIVEAUS
         }

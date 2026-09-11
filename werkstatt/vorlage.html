@@ -129,6 +129,14 @@ input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--accent)}
 
 .paar{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .feld label{display:block; font-size:11.5px; color:var(--ink-2); margin-bottom:4px}
+.feld select, .rail select{
+  width:100%; padding:7px 8px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r);
+  font:inherit; font-size:12.5px; color:var(--ink);
+}
+.hinweis{
+  margin:5px 0 12px; font-size:11px; line-height:1.5; color:var(--ink-3);
+}
 .feld input[type=number]{
   width:100%; padding:7px 8px; background:var(--paper);
   border:1px solid var(--line-2); border-radius:var(--r);
@@ -404,7 +412,28 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           </select>
         </div>
         <div class="feld" style="margin-top:10px">
-          <label for="notiz">Notiz an mich</label>
+          <label for="listenwahl">Vokabelliste</label>
+        <select id="listenwahl">
+          <option value="neu">neu erzeugen — die Prüfungen beziehen sich darauf</option>
+          <option value="bestehend" selected>die bestehende V1 weiterverwenden</option>
+        </select>
+        <p class="hinweis" id="listenhinweis"></p>
+
+        <label for="fancy">Aufgewertete Wörter („fancy")</label>
+        <div class="paar">
+          <div class="feld"><input type="number" id="fancy" min="0" max="20" value="0"></div>
+          <div class="feld">
+            <select id="fancyquelle">
+              <option value="claude" selected>von Claude wählen lassen</option>
+              <option value="selbst">ich gebe sie selbst an</option>
+            </select>
+          </div>
+        </div>
+        <textarea id="fancywoerter" hidden
+          placeholder="dreadful=schrecklich&#10;exhausted=erschöpft&#10;crucial=entscheidend"></textarea>
+        <p class="hinweis" id="fancyhinweis"></p>
+
+        <label for="notiz">Notiz an mich</label>
           <textarea id="notiz" placeholder="z. B. Thema des Lückentexts, Wörter die drin sein müssen …"></textarea>
         </div>
       </section>
@@ -417,6 +446,21 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 
     <!-- ============ Arbeitsfläche ============ -->
     <main class="werk">
+      <div class="tafel">
+        <div class="tafel-kopf"><h2>Auftrag</h2>
+          <span class="note">geht an den Chat — dort läuft der Bau mit allen elf Kontrollen</span></div>
+        <div class="auftrag">
+          <div class="befehl" id="befehl"></div>
+          <div class="knopfreihe">
+            <button class="knopf" id="kopieren">Befehl kopieren</button>
+            <button class="knopf" id="ablegen">Im Auftragsbuch ablegen</button>
+            <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
+          </div>
+          <div class="status" id="status"></div>
+          <ul class="liste-auftraege" id="auftragsbuch"></ul>
+        </div>
+      </div>
+
       <div class="tafel">
         <div class="unitkopf">
           <div class="unitnr" id="unitNr"></div>
@@ -444,21 +488,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
               <tbody id="wortzeilen"></tbody>
             </table>
           </div>
-        </div>
-      </div>
-
-      <div class="tafel">
-        <div class="tafel-kopf"><h2>Auftrag</h2>
-          <span class="note">geht an den Chat — dort läuft der Bau mit allen elf Kontrollen</span></div>
-        <div class="auftrag">
-          <div class="befehl" id="befehl"></div>
-          <div class="knopfreihe">
-            <button class="knopf" id="kopieren">Befehl kopieren</button>
-            <button class="knopf" id="ablegen">Im Auftragsbuch ablegen</button>
-            <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
-          </div>
-          <div class="status" id="status"></div>
-          <ul class="liste-auftraege" id="auftragsbuch"></ul>
         </div>
       </div>
 
@@ -548,7 +577,8 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 /* ---------------- Zustand ---------------- */
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                text:{A:3.0, B:1.7}, textEigen:false,
-               anzahl:12, luecken:4, notiz:"", suche:""};
+               anzahl:12, luecken:4, notiz:"", suche:"",
+               liste:"bestehend", fancy:0, fancyQuelle:"claude", fancyWoerter:""};
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
 function testWoerter(teil){
@@ -810,6 +840,10 @@ function auftrag(){
     eigenerText:state.textEigen,
     textziele:{A:textZiele("A"), B:textZiele("B")},
     variante:state.variante, anzahl:state.anzahl, luecken:state.luecken,
+    liste:state.liste,
+    listeVersion:(unitDaten().liste_version || 1),
+    fancy:state.fancy, fancyQuelle:state.fancyQuelle,
+    fancyWoerter:state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean),
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
     erzeugt:new Date().toISOString()
@@ -840,6 +874,26 @@ function befehlstext(a){
                     teileNiv.join(", ") + ".");
     }
   }
+  const neueListe = a.liste === "neu" || a.fancy > 0 || a.fancyWoerter.length;
+  if(neueListe){
+    const naechste = "V" + (a.listeVersion + 1);
+    zeilen.push("Dafür eine neue Vokabelliste " + naechste +
+                " anlegen (die bestehende V" + a.listeVersion + " bleibt);" +
+                " die Prüfungen beziehen sich auf " + naechste + ".");
+  } else if(a.hatPruefungen){
+    zeilen.push("Die Prüfungen beziehen sich auf die bestehende Liste V" +
+                a.listeVersion + ".");
+  }
+  if(a.fancyWoerter.length)
+    zeilen.push("Diese Wörter aufnehmen: " + a.fancyWoerter.join(", ") + ".");
+  // Die Zahl im Feld ist die Gesamtzahl der Fächer. Selbst angegebene Wörter
+  // füllen einen Teil davon; für den Rest wähle ich.
+  const offen = Math.max(0, a.fancy - a.fancyWoerter.length);
+  if(offen > 0)
+    zeilen.push(offen + (a.fancyWoerter.length ? " weitere" : "") +
+                " aufgewertete Wörter selbst wählen — Ersatz für den " +
+                "„very + Adjektiv\u201c-Notausgang, B1.2–B2.1, alltagstauglich, " +
+                "kollisionsfrei. Bitte mit Begründung je Wort.");
   if(a.notiz) zeilen.push(a.notiz);
   return zeilen.join(" ");
 }
@@ -902,7 +956,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneAuftrag(); }
+function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -957,6 +1011,60 @@ $("tzurueck").addEventListener("click", () => {
   $("twertA").textContent = state.text.A.toFixed(1);
   $("twertB").textContent = state.text.B.toFixed(1);
   zeichneTextband(); zeichneAuftrag();
+});
+
+function zeichneListenhinweis(){
+  const v = unitDaten().liste_version || 1;
+  // Aufgewertete Wörter ändern die Liste - dann ist "bestehende weiterverwenden"
+  // keine Möglichkeit mehr, und die Auswahl sagt das auch.
+  const erzwungen = state.fancy > 0 || state.fancyWoerter.trim().length > 0;
+  if(erzwungen && state.liste !== "neu"){
+    state.liste = "neu";
+    $("listenwahl").value = "neu";
+  }
+  const neueListe = state.liste === "neu";
+  $("listenwahl").options[1].disabled = erzwungen;
+  $("listenwahl").options[1].textContent = erzwungen
+    ? "die bestehende V" + v + " weiterverwenden (geht nicht mit neuen Wörtern)"
+    : "die bestehende V" + v + " weiterverwenden";
+  $("listenhinweis").textContent = neueListe
+    ? "Es entsteht V" + (v + 1) + ". Jede Prüfung trägt den Abdruck ihrer Liste " +
+      "im Dateinamen und im Paket — ein Test kann später nicht zur falschen " +
+      "Liste gelegt werden."
+    : "Die Prüfungen werden an V" + v + " gebunden (Dateiname Unit" +
+      String(state.unit).padStart(2, "0") + "_V" + v + "_…).";
+  const eigene = state.fancyWoerter.split("\n")
+                      .map(z => z.trim()).filter(Boolean).length;
+  const gesamt = Math.max(state.fancy, eigene);
+  const offen = Math.max(0, state.fancy - eigene);
+  $("fancyhinweis").textContent = gesamt === 0
+    ? "Aufgewertete Wörter treten an die Stelle der zugänglichsten — die Liste bleibt bei 60."
+    : gesamt + " Wörter ersetzen die " + gesamt + " zugänglichsten der Liste " +
+      "(sie bleibt bei 60, eine A4-Seite)" +
+      (eigene ? " · " + eigene + " von Ihnen" : "") +
+      (offen ? " · " + offen + " wähle ich" : "") + ".";
+}
+
+$("listenwahl").addEventListener("change", e => {
+  state.liste = e.target.value;
+  zeichneListenhinweis(); zeichneAuftrag();
+});
+$("fancy").addEventListener("change", e => {
+  state.fancy = Math.max(0, Math.min(20, +e.target.value || 0));
+  e.target.value = state.fancy;
+  zeichneListenhinweis(); zeichneAuftrag();
+});
+$("fancyquelle").addEventListener("change", e => {
+  state.fancyQuelle = e.target.value;
+  $("fancywoerter").hidden = state.fancyQuelle !== "selbst";
+  zeichneListenhinweis(); zeichneAuftrag();
+});
+$("fancywoerter").addEventListener("input", e => {
+  state.fancyWoerter = e.target.value;
+  const eigene = state.fancyWoerter.split("\n")
+                      .map(z => z.trim()).filter(Boolean).length;
+  if(eigene > state.fancy){ state.fancy = eigene; $("fancy").value = eigene; }
+  zeichneListenhinweis(); zeichneAuftrag();
 });
 
 $("anzahl").addEventListener("change", e => {

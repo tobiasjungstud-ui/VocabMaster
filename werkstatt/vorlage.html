@@ -1,0 +1,857 @@
+<title>Vokabelwerkstatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+:root{
+  --paper:#F7F5EF; --surface:#FFFDF8; --sunk:#EDEBE1;
+  --ink:#171A22; --ink-2:#4C5364; --ink-3:#7E8698;
+  --line:#DCD8CC; --line-2:#C3BEAF;
+  --accent:#1B3E8F; --accent-soft:#E3E9F7;
+  --nivA:#1B3E8F; --nivA-soft:#E3E9F7; --nivA-line:#B6C4E4;
+  --nivB:#A8621B; --nivB-soft:#F7EADB; --nivB-line:#E6C79E;
+  --ok:#2F6B3C; --warn:#8A6A12; --crit:#9B2226;
+  --shadow:0 1px 2px rgba(23,26,34,.05), 0 8px 22px -14px rgba(23,26,34,.30);
+  --r:5px;
+  --serif:"IBM Plex Serif",Georgia,serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#101319; --surface:#191E27; --sunk:#0B0D12;
+    --ink:#E9E7DF; --ink-2:#A8AFBE; --ink-3:#737B8B;
+    --line:#2A313E; --line-2:#3B4455;
+    --accent:#8FAAEA; --accent-soft:#1C2740;
+    --nivA:#8FAAEA; --nivA-soft:#1C2740; --nivA-line:#324262;
+    --nivB:#E3A560; --nivB-soft:#2C2216; --nivB-line:#553F24;
+    --ok:#71C081; --warn:#D9B25C; --crit:#E4796F;
+    --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -14px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101319; --surface:#191E27; --sunk:#0B0D12;
+  --ink:#E9E7DF; --ink-2:#A8AFBE; --ink-3:#737B8B;
+  --line:#2A313E; --line-2:#3B4455;
+  --accent:#8FAAEA; --accent-soft:#1C2740;
+  --nivA:#8FAAEA; --nivA-soft:#1C2740; --nivA-line:#324262;
+  --nivB:#E3A560; --nivB-soft:#2C2216; --nivB-line:#553F24;
+  --ok:#71C081; --warn:#D9B25C; --crit:#E4796F;
+  --shadow:0 1px 2px rgba(0,0,0,.45), 0 10px 26px -14px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:15px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1240px; margin:0 auto; padding-inline:20px; padding-block:0 56px}
+h1,h2,h3{text-wrap:balance; margin:0}
+button,input,select,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:3px}
+
+/* ---------- Kopf ---------- */
+.masthead{
+  border-bottom:1px solid var(--line); margin-bottom:26px;
+  padding-block:22px 16px;
+  display:flex; flex-wrap:wrap; gap:16px 28px; align-items:baseline;
+}
+.marke{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.01em}
+.marke em{font-style:italic; font-weight:400; color:var(--accent)}
+.quelle{
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-3);
+  margin-left:auto; text-align:right; line-height:1.6;
+}
+.quelle b{color:var(--ink-2); font-weight:500}
+
+/* ---------- Raster ---------- */
+.werkbank{display:grid; grid-template-columns:296px minmax(0,1fr); gap:28px; align-items:start}
+@media (max-width:900px){ .werkbank{grid-template-columns:1fr} }
+
+/* ---------- Steuerleiste ---------- */
+.rail{
+  position:sticky; top:16px; display:flex; flex-direction:column; gap:2px;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  box-shadow:var(--shadow); overflow:hidden;
+}
+@media (max-width:900px){ .rail{position:static} }
+.rail section{padding:16px 16px 18px; border-bottom:1px solid var(--line)}
+.rail section:last-of-type{border-bottom:0}
+.legende{
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3); margin-bottom:11px; display:block;
+}
+select{
+  width:100%; padding:9px 10px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r);
+}
+.unit-thema{font-size:12.5px; color:var(--ink-2); margin-top:8px; line-height:1.45}
+
+.tick{display:flex; align-items:flex-start; gap:9px; padding:5px 0; cursor:pointer}
+.tick input{margin:2px 0 0; accent-color:var(--accent); width:15px; height:15px}
+.tick span{font-size:13.5px}
+.tick .sub{display:block; color:var(--ink-3); font-size:11.5px; font-family:var(--mono)}
+.tick.a span strong{color:var(--nivA)}
+.tick.b span strong{color:var(--nivB)}
+
+.regler{margin-bottom:16px}
+.regler:last-child{margin-bottom:0}
+.regler-kopf{display:flex; justify-content:space-between; align-items:baseline; gap:8px; margin-bottom:2px}
+.regler-kopf b{font-size:13.5px; font-weight:600}
+.regler-kopf .cefr{font-family:var(--mono); font-size:10.5px; color:var(--ink-3)}
+.wert{font-family:var(--mono); font-size:15px; font-weight:600; font-variant-numeric:tabular-nums}
+.regler.a .wert{color:var(--nivA)} .regler.b .wert{color:var(--nivB)}
+input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--accent)}
+.regler.b input[type=range]{accent-color:var(--nivB)}
+.regler .skala{display:flex; justify-content:space-between; font-family:var(--mono); font-size:10px; color:var(--ink-3)}
+.zurueck{
+  background:none; border:0; padding:0; color:var(--accent); cursor:pointer;
+  font-size:11.5px; text-decoration:underline; text-underline-offset:2px;
+}
+.zurueck[hidden]{display:none}
+
+.paar{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.feld label{display:block; font-size:11.5px; color:var(--ink-2); margin-bottom:4px}
+.feld input[type=number]{
+  width:100%; padding:7px 8px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r);
+  font-family:var(--mono); font-variant-numeric:tabular-nums;
+}
+textarea{
+  width:100%; min-height:56px; resize:vertical; padding:8px 9px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r); font-size:13px;
+}
+.bauen{
+  width:100%; padding:12px 14px; border:0; border-radius:var(--r);
+  background:var(--accent); color:#FFFDF8; font-weight:600; font-size:15px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+}
+:root[data-theme="dark"] .bauen, :root:not([data-theme="light"]) .bauen{color:#0E1117}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .bauen{color:#FFFDF8} }
+.bauen:hover{filter:brightness(1.08)}
+.bauen:disabled{opacity:.45; cursor:not-allowed}
+.bauen-hinweis{font-size:11.5px; color:var(--ink-3); margin-top:8px; line-height:1.45}
+
+/* ---------- Arbeitsfläche ---------- */
+.werk{display:flex; flex-direction:column; gap:22px; min-width:0}
+.tafel{
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:var(--r); box-shadow:var(--shadow);
+}
+.tafel-kopf{
+  padding:15px 18px; border-bottom:1px solid var(--line);
+  display:flex; flex-wrap:wrap; gap:8px 16px; align-items:baseline;
+}
+.tafel-kopf h2{font-family:var(--serif); font-size:19px; font-weight:600}
+.tafel-kopf .note{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:auto}
+
+.unitkopf{padding:20px 18px 18px}
+.unitnr{
+  font-family:var(--serif); font-size:13px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--accent); font-weight:600;
+}
+.unitkopf h2{font-family:var(--serif); font-size:29px; font-weight:600; margin:4px 0 0; letter-spacing:-.015em}
+.unitkopf .seiten{font-family:var(--mono); font-size:12px; color:var(--ink-3); margin-top:6px}
+.herkunft{display:flex; flex-wrap:wrap; gap:0; margin-top:16px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
+.herkunft div{flex:1 1 96px; padding:9px 12px; border-right:1px solid var(--line); background:var(--paper)}
+.herkunft div:last-child{border-right:0}
+.herkunft dt{font-family:var(--mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3)}
+.herkunft dd{margin:2px 0 0; font-family:var(--mono); font-size:17px; font-weight:600; font-variant-numeric:tabular-nums}
+.herkunft .betont dd{color:var(--nivB)}
+
+/* ---------- Lineal ---------- */
+.teil{padding:18px}
+.teil + .teil{border-top:1px solid var(--line)}
+.teil-kopf{display:flex; flex-wrap:wrap; gap:6px 14px; align-items:baseline; margin-bottom:14px}
+.teil-kopf h3{font-family:var(--serif); font-size:17px; font-weight:600}
+.teil-kopf .aus{font-family:var(--mono); font-size:11.5px; color:var(--ink-3)}
+.teil-kopf .vorschau{
+  margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; padding:2px 7px; border-radius:2px;
+  background:var(--nivB-soft); color:var(--nivB); border:1px solid var(--nivB-line);
+}
+
+.lineal{position:relative; padding-top:26px}
+.klammern{position:absolute; inset:0 0 auto; height:24px}
+.klammer{
+  position:absolute; top:0; height:20px; border-radius:3px 3px 0 0;
+  border:1px solid; border-bottom:0; display:flex; align-items:center;
+  justify-content:center; gap:5px; min-width:0; overflow:hidden;
+  font-family:var(--mono); font-size:10.5px; font-weight:600; white-space:nowrap;
+}
+.klammer.a{background:var(--nivA-soft); border-color:var(--nivA-line); color:var(--nivA); top:0}
+.klammer.b{background:var(--nivB-soft); border-color:var(--nivB-line); color:var(--nivB); top:0}
+.balken{display:flex; gap:2px; align-items:flex-end; height:58px; padding-top:2px}
+.balken .bar{
+  flex:1 1 0; min-width:0; background:var(--sunk); border-radius:1.5px 1.5px 0 0;
+  border:1px solid var(--line); border-bottom:0; position:relative; cursor:default;
+}
+.balken .bar.inA{background:var(--nivA-soft); border-color:var(--nivA-line)}
+.balken .bar.inB{background:var(--nivB-soft); border-color:var(--nivB-line)}
+.balken .bar.inAB{background:linear-gradient(135deg,var(--nivA-soft) 0 50%,var(--nivB-soft) 50% 100%); border-color:var(--line-2)}
+.lineal-fuss{
+  display:flex; justify-content:space-between; margin-top:5px;
+  font-family:var(--mono); font-size:10px; color:var(--ink-3);
+  border-top:1px solid var(--line); padding-top:5px;
+}
+.ablesung{
+  min-height:20px; margin-top:8px; font-size:12.5px; color:var(--ink-2);
+  font-family:var(--mono);
+}
+.ablesung b{color:var(--ink); font-weight:600}
+
+.wortpaar{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px}
+@media (max-width:640px){ .wortpaar{grid-template-columns:1fr} }
+.wortbox{border:1px solid var(--line); border-radius:var(--r); overflow:hidden; min-width:0}
+.wortbox.a{border-color:var(--nivA-line)}
+.wortbox.b{border-color:var(--nivB-line)}
+.wortbox-kopf{
+  padding:8px 11px; display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+  font-family:var(--mono); font-size:11px; font-weight:600;
+}
+.wortbox.a .wortbox-kopf{background:var(--nivA-soft); color:var(--nivA)}
+.wortbox.b .wortbox-kopf{background:var(--nivB-soft); color:var(--nivB)}
+.wortbox-kopf .schnitt{font-variant-numeric:tabular-nums; font-weight:500}
+.wortbox ol{list-style:none; margin:0; padding:6px 0}
+.wortbox li{
+  display:flex; gap:9px; align-items:baseline; padding:3px 11px; font-size:13px;
+}
+.wortbox li .en{font-weight:500; min-width:0; overflow-wrap:anywhere}
+.wortbox li .de{color:var(--ink-3); font-size:11.5px; margin-left:auto; text-align:right; overflow-wrap:anywhere}
+.wortbox li .sc{
+  font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; width:2.2em; flex:none;
+}
+.wortbox li.luecke .en::after{
+  content:"Lücke"; font-family:var(--mono); font-size:9.5px; letter-spacing:.04em;
+  margin-left:7px; padding:1px 4px; border-radius:2px;
+  background:var(--sunk); color:var(--ink-3); vertical-align:2px;
+}
+.mangel{
+  margin-top:10px; padding:9px 11px; border-radius:var(--r); font-size:12.5px;
+  background:var(--nivB-soft); color:var(--nivB); border:1px solid var(--nivB-line);
+}
+
+/* ---------- Wortliste ---------- */
+.suche{
+  width:100%; padding:8px 10px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r); margin:0 0 12px;
+}
+.tabellenrahmen{overflow-x:auto}
+table{width:100%; border-collapse:collapse; font-size:13px}
+thead th{
+  text-align:left; padding:7px 10px; border-bottom:1px solid var(--line-2);
+  font-family:var(--mono); font-size:10px; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap;
+}
+tbody td{padding:6px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-family:var(--mono); font-variant-numeric:tabular-nums}
+td.en{font-weight:500; white-space:nowrap}
+td.satz{color:var(--ink-2); font-size:12.5px}
+.marke-erg{
+  font-family:var(--mono); font-size:9px; letter-spacing:.06em; text-transform:uppercase;
+  padding:1px 5px; border-radius:2px; background:var(--nivB-soft); color:var(--nivB);
+  border:1px solid var(--nivB-line); white-space:nowrap;
+}
+
+/* ---------- Auftrag ---------- */
+.auftrag{padding:18px}
+.befehl{
+  font-family:var(--mono); font-size:13px; line-height:1.65; background:var(--sunk);
+  border:1px solid var(--line); border-left:3px solid var(--accent);
+  border-radius:var(--r); padding:13px 15px; white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.knopfreihe{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+.knopf{
+  padding:8px 13px; border:1px solid var(--line-2); background:var(--paper);
+  border-radius:var(--r); cursor:pointer; font-size:13px; font-weight:500;
+}
+.knopf:hover{border-color:var(--accent); color:var(--accent)}
+.knopf[hidden]{display:none}
+.status{font-size:12.5px; color:var(--ink-3); margin-top:10px; min-height:18px}
+.status.ok{color:var(--ok)}
+.status.fehler{color:var(--crit)}
+
+.liste-auftraege{list-style:none; margin:14px 0 0; padding:0; display:flex; flex-direction:column; gap:7px}
+.liste-auftraege li{
+  display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline;
+  padding:9px 11px; border:1px solid var(--line); border-radius:var(--r); background:var(--paper);
+  font-size:12.5px;
+}
+.liste-auftraege .wann{font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+.liste-auftraege .was{font-weight:500}
+.liste-auftraege .erledigt{margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--ok)}
+
+.fussnote{
+  margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
+  font-size:12.5px; color:var(--ink-3); line-height:1.6; max-width:68ch;
+}
+.fussnote b{color:var(--ink-2); font-weight:600}
+@media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <div>
+      <div class="marke">Vokabel<em>werkstatt</em></div>
+    </div>
+    <div class="quelle" id="quelle"></div>
+  </header>
+
+  <div class="werkbank">
+    <!-- ============ Steuerleiste ============ -->
+    <aside class="rail">
+      <section>
+        <label class="legende" for="unit">Unit</label>
+        <select id="unit"></select>
+        <p class="unit-thema" id="unitThema"></p>
+      </section>
+
+      <section>
+        <span class="legende">Was soll entstehen</span>
+        <label class="tick" for="bLi"><input type="checkbox" id="bLi" checked>
+          <span>Vokabelliste<span class="sub">60 Wörter · beide Gruppen</span></span></label>
+        <label class="tick a" for="b1A"><input type="checkbox" id="b1A" checked>
+          <span>Prüfung Teil I · <strong>Niveau A</strong><span class="sub">aus Test 1</span></span></label>
+        <label class="tick b" for="b1B"><input type="checkbox" id="b1B" checked>
+          <span>Prüfung Teil I · <strong>Niveau B</strong><span class="sub">aus Test 1</span></span></label>
+        <label class="tick a" for="b2A"><input type="checkbox" id="b2A" checked>
+          <span>Prüfung Teil II · <strong>Niveau A</strong><span class="sub">aus Test 2</span></span></label>
+        <label class="tick b" for="b2B"><input type="checkbox" id="b2B" checked>
+          <span>Prüfung Teil II · <strong>Niveau B</strong><span class="sub">aus Test 2</span></span></label>
+      </section>
+
+      <section>
+        <span class="legende">Anspruch der Prüfung</span>
+        <div class="regler a">
+          <div class="regler-kopf">
+            <b>Niveau A</b><span class="cefr">B1.2–B2.1</span>
+            <span class="wert" id="wertA">3.5</span>
+          </div>
+          <input type="range" id="zielA" min="0" max="10" step="0.1" value="3.5">
+          <div class="skala"><span>leicht</span><span>0–10</span><span>schwer</span></div>
+        </div>
+        <div class="regler b">
+          <div class="regler-kopf">
+            <b>Niveau B</b><span class="cefr">A2.2–B1.1</span>
+            <span class="wert" id="wertB">1.7</span>
+          </div>
+          <input type="range" id="zielB" min="0" max="10" step="0.1" value="1.7">
+          <div class="skala"><span>leicht</span><span>0–10</span><span>schwer</span></div>
+        </div>
+        <button class="zurueck" id="zurueck" hidden>auf die Voreinstellung dieser Unit zurück</button>
+      </section>
+
+      <section>
+        <span class="legende">Feinheiten</span>
+        <div class="paar">
+          <div class="feld"><label for="anzahl">Wörter je Prüfung</label>
+            <input type="number" id="anzahl" min="6" max="20" step="2" value="12"></div>
+          <div class="feld"><label for="luecken">davon Lücken</label>
+            <input type="number" id="luecken" min="2" max="6" value="4"></div>
+        </div>
+        <div class="feld" style="margin-top:10px">
+          <label for="variante">Fassung</label>
+          <select id="variante">
+            <option value="1">1 — die bestehende</option>
+            <option value="2">2 — neue Fassung (Nachschreiber)</option>
+            <option value="3">3 — weitere Fassung</option>
+          </select>
+        </div>
+        <div class="feld" style="margin-top:10px">
+          <label for="notiz">Notiz an mich</label>
+          <textarea id="notiz" placeholder="z. B. Thema des Lückentexts, Wörter die drin sein müssen …"></textarea>
+        </div>
+      </section>
+
+      <section>
+        <button class="bauen" id="bauen">Auftrag erstellen</button>
+        <p class="bauen-hinweis" id="bauenHinweis"></p>
+      </section>
+    </aside>
+
+    <!-- ============ Arbeitsfläche ============ -->
+    <main class="werk">
+      <div class="tafel">
+        <div class="unitkopf">
+          <div class="unitnr" id="unitNr"></div>
+          <h2 id="unitTitel"></h2>
+          <div class="seiten" id="unitSeiten"></div>
+          <dl class="herkunft" id="herkunft"></dl>
+        </div>
+      </div>
+
+      <div class="tafel" id="teile"></div>
+
+      <div class="tafel">
+        <div class="tafel-kopf">
+          <h2>Die Vokabelliste</h2>
+          <span class="note" id="listenNote"></span>
+        </div>
+        <div style="padding:14px 18px 18px">
+          <input class="suche" type="search" id="suche" placeholder="Suchen in Englisch, Deutsch oder Beispielsatz …">
+          <div class="tabellenrahmen">
+            <table>
+              <thead><tr>
+                <th class="num">Nr</th><th>Englisch</th><th>Deutsch</th>
+                <th class="num">0–10</th><th>Beispielsatz</th><th>Herkunft</th>
+              </tr></thead>
+              <tbody id="wortzeilen"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tafel">
+        <div class="tafel-kopf"><h2>Auftrag</h2>
+          <span class="note">geht an den Chat — dort läuft der Bau mit allen elf Kontrollen</span></div>
+        <div class="auftrag">
+          <div class="befehl" id="befehl"></div>
+          <div class="knopfreihe">
+            <button class="knopf" id="kopieren">Befehl kopieren</button>
+            <button class="knopf" id="ablegen">Im Auftragsbuch ablegen</button>
+            <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
+          </div>
+          <div class="status" id="status"></div>
+          <ul class="liste-auftraege" id="auftragsbuch"></ul>
+        </div>
+      </div>
+
+      <p class="fussnote">
+        <b>Was diese Seite tut und was nicht.</b> Sie zeigt die echte Wortauswahl aus der
+        Datenbank und rechnet live aus, welche Wörter bei einem bestimmten Anspruch geprüft
+        würden. Beispielsätze und Lückentexte schreibt sie nicht — die entstehen im Chat und
+        durchlaufen dort die elf Kontrollen, bevor eine Word-Datei entsteht. Der Knopf erzeugt
+        deshalb einen Auftrag, keine Datei.
+      </p>
+    </main>
+  </div>
+</div>
+
+<script id="daten" type="application/json">__DATEN__</script>
+<script>
+(function(){
+"use strict";
+const DATA = JSON.parse(document.getElementById("daten").textContent);
+const $ = id => document.getElementById(id);
+
+/* ---------------- Auswahl-Logik ----------------
+   Voreingestellt zeigt die Seite die Auswahl, die die Anwendung selbst
+   getroffen hat - mit allen Regeln: keine zwei Wörter einer Wortfamilie,
+   höchstens drei Mehrwortausdrücke, keine Häufung einer Wortart, keine
+   abschreibbaren Kognate. Diese Auswahl steht in den Daten.
+
+   Sobald am Anspruch gedreht wird, kann die Seite das nicht mehr nachbilden.
+   Dann zeigt sie eine Näherung: die Wörter werden nach Prüfschwierigkeit
+   gereiht und ein zusammenhängendes Fenster gewählt, dessen Durchschnitt dem
+   Wunsch am nächsten kommt. Die endgültige Auswahl trifft der Bau im Chat -
+   die Seite weist das aus.                                                  */
+function fenster(sortiert, n, ziel){
+  n = Math.min(n, sortiert.length);
+  let best = 0, bestAbw = Infinity, bestSchnitt = 0;
+  for(let s = 0; s + n <= sortiert.length; s++){
+    let summe = 0;
+    for(let i = s; i < s + n; i++) summe += sortiert[i].score;
+    const schnitt = summe / n, abw = Math.abs(schnitt - ziel);
+    if(abw < bestAbw - 1e-9){ best = s; bestAbw = abw; bestSchnitt = schnitt; }
+  }
+  return {woerter:sortiert.slice(best, best + n), schnitt:bestSchnitt,
+          abweichung:bestAbw, echt:false};
+}
+
+/* Die echte Auswahl aus den Daten, auf die Wortobjekte dieses Tests gemappt. */
+function echteAuswahl(teil, niveau, sortiert){
+  const e = (unitDaten().echt || {})["t" + teil + niveau];
+  if(!e) return null;
+  const nach = new Map(sortiert.map(w => [w.en, w]));
+  const woerter = e.woerter.map(en => nach.get(en)).filter(Boolean);
+  if(woerter.length !== e.woerter.length) return null;
+  return {woerter:woerter, schnitt:e.schnitt, abweichung:0, echt:true,
+          luecken:e.luecken};
+}
+
+/* Welche Auswahl gilt gerade? */
+function auswahlFuer(teil, niveau, sortiert){
+  if(!state.eigen && state.anzahl === 12){
+    const echt = echteAuswahl(teil, niveau, sortiert);
+    if(echt) return echt;
+  }
+  return fenster(sortiert, state.anzahl, state.ziel[niveau]);
+}
+
+/* Lücken: bei der echten Auswahl stehen sie in den Daten, sonst genähert. */
+function luecken(auswahl, anzahl){
+  if(auswahl.echt && auswahl.luecken){
+    const treffer = auswahl.woerter.filter(w => auswahl.luecken.includes(w.en));
+    if(treffer.length) return treffer;
+  }
+  const gewaehlt = [];
+  for(const art of ["verb","noun","adj","adv"]){
+    if(gewaehlt.length >= anzahl) break;
+    const t = auswahl.woerter.find(w => w.pos === art && !gewaehlt.includes(w));
+    if(t) gewaehlt.push(t);
+  }
+  for(const w of auswahl.woerter){
+    if(gewaehlt.length >= anzahl) break;
+    if(!gewaehlt.includes(w)) gewaehlt.push(w);
+  }
+  return gewaehlt;
+}
+
+const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", name:"Niveau B"}};
+
+/* ---------------- Zustand ---------------- */
+const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
+               anzahl:12, luecken:4, notiz:"", suche:""};
+
+function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
+function testWoerter(teil){
+  return unitDaten().woerter.filter(w => w.test === teil)
+         .slice().sort((a,b) => b.score - a.score || a.en.localeCompare(b.en));
+}
+/* Voreinstellung: die Durchschnitte, die die Anwendung selbst erreicht hat. */
+function vorgabe(niveau){
+  const e = unitDaten().echt || {};
+  const werte = [1,2].map(t => e["t" + t + niveau]).filter(Boolean)
+                     .map(x => x.schnitt);
+  if(!werte.length) return niveau === "A" ? 3.5 : 1.7;
+  return Math.round(werte.reduce((a,b) => a + b, 0) / werte.length * 10) / 10;
+}
+function vorgabenSetzen(){
+  state.ziel.A = vorgabe("A");
+  state.ziel.B = vorgabe("B");
+  state.eigen = false;
+  $("zielA").value = state.ziel.A; $("zielB").value = state.ziel.B;
+  $("zurueck").hidden = true;
+}
+
+/* ---------------- Zeichnen ---------------- */
+function zeichneKopf(){
+  const u = unitDaten();
+  $("unitNr").textContent = u.unit === 0 ? "Starter Unit" : "Unit " + u.unit;
+  $("unitTitel").textContent = u.thema;
+  $("unitSeiten").textContent = "Lehrmittel S. " + u.seiten + " · Hauptteil";
+  $("unitThema").textContent = u.thema;
+  const h = u.herkunft;
+  $("herkunft").innerHTML =
+    posten("im Hauptteil", h.hauptteil) +
+    posten("aussortiert", h.gefiltert) +
+    posten("aus der Liste", h.gewaehlt) +
+    posten("ergänzt", h.ergaenzt, h.ergaenzt > 0) +
+    posten("Zusatzteile", h.zusatzteile, h.zusatzteile > 0);
+  $("listenNote").textContent = "60 Wörter · Test 1 und Test 2 · für beide Gruppen dieselbe";
+}
+function posten(titel, wert, betont){
+  return '<div class="' + (betont ? "betont" : "") + '"><dt>' + titel +
+         "</dt><dd>" + wert + "</dd></div>";
+}
+
+function zeichneTeile(){
+  const teile = $("teile");
+  teile.innerHTML = "";
+  for(const teil of [1,2]){
+    const sortiert = testWoerter(teil);
+    const aA = auswahlFuer(teil, "A", sortiert);
+    const aB = auswahlFuer(teil, "B", sortiert);
+    const div = document.createElement("div");
+    div.className = "teil";
+    div.innerHTML =
+      '<div class="teil-kopf"><h3>Prüfung Teil ' + (teil === 1 ? "I" : "II") +
+      '</h3><span class="aus">' + sortiert.length + " Wörter aus Test " + teil +
+      ", nach Prüfschwierigkeit gereiht</span>" +
+      (aA.echt ? "" : '<span class="vorschau">Näherung — endgültige Auswahl beim Bau</span>') +
+      "</div>" +
+      lineal(sortiert, aA, aB, teil) +
+      '<div class="wortpaar">' + kasten("A", aA) + kasten("B", aB) + "</div>" +
+      mangelHinweis(aA, aB);
+    teile.appendChild(div);
+  }
+  bindeBalken();
+}
+
+function lineal(sortiert, aA, aB, teil){
+  const N = sortiert.length;
+  const inA = new Set(aA.woerter), inB = new Set(aB.woerter);
+  const spanne = menge => {
+    const idx = sortiert.map((w,i) => menge.has(w) ? i : -1).filter(i => i >= 0);
+    return idx.length ? {von:Math.min.apply(null, idx), bis:Math.max.apply(null, idx) + 1}
+                      : {von:0, bis:0};
+  };
+  const sA = spanne(inA), sB = spanne(inB);
+  const proz = i => i / N * 100;
+  const bars = sortiert.map((w, i) => {
+    const a = inA.has(w), b = inB.has(w);
+    const klasse = a && b ? "inAB" : a ? "inA" : b ? "inB" : "";
+    const hoehe = 16 + (w.score / 10) * 42;
+    return '<div class="bar ' + klasse + '" style="height:' + hoehe.toFixed(1) +
+           'px" data-teil="' + teil + '" data-i="' + i + '" title="' +
+           esc(w.en + " — " + w.de + " · " + w.score.toFixed(1) + "/10") + '"></div>';
+  }).join("");
+  const klammer = (kl, s, schnitt, marke) =>
+    '<div class="klammer ' + kl + '" style="left:' + proz(s.von).toFixed(2) + "%;width:" +
+    Math.max(proz(s.bis) - proz(s.von), 8).toFixed(2) + '%">' + marke + " · Ø " +
+    schnitt.toFixed(1) + "</div>";
+  return '<div class="lineal">' +
+    '<div class="klammern">' + klammer("a", sA, aA.schnitt, "A") +
+      klammer("b", sB, aB.schnitt, "B") + "</div>" +
+    '<div class="balken">' + bars + "</div>" +
+    '<div class="lineal-fuss"><span>schwerste Wörter</span><span>' + N +
+      " Wörter</span><span>zugänglichste</span></div>" +
+    '<div class="ablesung" id="ablese' + teil + '">Über einen Balken fahren, um das Wort zu sehen.</div>' +
+  "</div>";
+}
+
+function kasten(niveau, auswahl){
+  const lueckenWoerter = luecken(auswahl, state.luecken);
+  const zeilen = auswahl.woerter.map(w =>
+    "<li" + (lueckenWoerter.includes(w) ? ' class="luecke"' : "") + '><span class="sc">' +
+    w.score.toFixed(1) + '</span><span class="en">' + esc(w.en) +
+    '</span><span class="de">' + esc(w.de) + "</span></li>").join("");
+  return '<div class="wortbox ' + niveau.toLowerCase() + '">' +
+    '<div class="wortbox-kopf"><span>' + NIV[niveau].name + " · " + NIV[niveau].cefr +
+    '</span><span class="schnitt">Ø ' + auswahl.schnitt.toFixed(1) + "/10</span></div><ol>" +
+    zeilen + "</ol></div>";
+}
+
+function mangelHinweis(aA, aB){
+  const m = [];
+  if(!aA.echt && aA.abweichung > 0.4) m.push("Niveau A: Ø " + state.ziel.A.toFixed(1) +
+    " gibt dieser Test nicht her — erreichbar sind Ø " + aA.schnitt.toFixed(1) + ".");
+  if(!aB.echt && aB.abweichung > 0.4) m.push("Niveau B: Ø " + state.ziel.B.toFixed(1) +
+    " ist hier nicht erreichbar — erreichbar sind Ø " + aB.schnitt.toFixed(1) + ".");
+  return m.length ? '<div class="mangel">' + m.join(" ") + "</div>" : "";
+}
+
+function bindeBalken(){
+  document.querySelectorAll(".balken .bar").forEach(bar => {
+    bar.addEventListener("mouseenter", () => {
+      const teil = +bar.dataset.teil, w = testWoerter(teil)[+bar.dataset.i];
+      const ziel = $("ablese" + teil);
+      if(ziel) ziel.innerHTML = "<b>" + esc(w.en) + "</b> · " + esc(w.de) +
+        " · " + w.score.toFixed(1) + "/10 · Zipf " + w.zipf.toFixed(2) +
+        " · " + esc(w.pos || "—");
+    });
+  });
+}
+
+function zeichneListe(){
+  const suche = state.suche.trim().toLowerCase();
+  const zeilen = unitDaten().woerter
+    .filter(w => !suche || (w.en + " " + w.de + " " + w.satz).toLowerCase().includes(suche))
+    .map(w => "<tr><td class='num'>" + w.test + "." + w.nr + "</td><td class='en'>" +
+      esc(w.en) + "</td><td>" + esc(w.de) + "</td><td class='num'>" + w.score.toFixed(1) +
+      "</td><td class='satz'>" + esc(w.satz) + "</td><td>" +
+      (w.quelle === "wortliste" ? "<span style='color:var(--ink-3);font-size:11.5px'>" +
+        esc(w.abschnitt || "Wortliste") + "</span>"
+       : "<span class='marke-erg'>ergänzt</span>") + "</td></tr>").join("");
+  $("wortzeilen").innerHTML = zeilen ||
+    "<tr><td colspan='6' style='color:var(--ink-3);padding:14px 10px'>Kein Treffer.</td></tr>";
+}
+
+/* ---------------- Auftrag ---------------- */
+function gewaehlteTeile(){
+  const t = [];
+  if($("bLi").checked) t.push({art:"liste", text:"die Vokabelliste"});
+  for(const [id, teil, niv] of [["b1A",1,"A"],["b1B",1,"B"],["b2A",2,"A"],["b2B",2,"B"]]){
+    if($(id).checked) t.push({art:"pruefung", teil:teil, niveau:niv,
+      text:"Prüfung Teil " + (teil === 1 ? "I" : "II") + " Niveau " + niv});
+  }
+  return t;
+}
+
+function auftrag(){
+  const u = unitDaten(), teile = gewaehlteTeile();
+  const pruefungen = teile.filter(t => t.art === "pruefung");
+  return {
+    unit:u.unit, thema:u.thema, teile:teile,
+    ziel:{A:state.ziel.A, B:state.ziel.B},
+    vorgabe:{A:vorgabe("A"), B:vorgabe("B")},
+    eigenerAnspruch:state.eigen,
+    variante:state.variante, anzahl:state.anzahl, luecken:state.luecken,
+    notiz:state.notiz.trim(),
+    hatPruefungen:pruefungen.length > 0,
+    erzeugt:new Date().toISOString()
+  };
+}
+
+function befehlstext(a){
+  if(!a.teile.length) return "Nichts ausgewählt — links mindestens einen Punkt ankreuzen.";
+  const zeilen = ["Unit " + a.unit + ": " + a.teile.map(t => t.text).join(", ") + "."];
+  if(a.variante > 1) zeilen.push("Fassung " + a.variante + " — eine neue Variante, " +
+    "nicht die bestehende überschreiben.");
+  if(a.hatPruefungen){
+    if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
+      a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
+      "/10 (Voreinstellung wäre " + a.vorgabe.A.toFixed(1) + " und " +
+      a.vorgabe.B.toFixed(1) + ").");
+    if(a.anzahl !== 12 || a.luecken !== 4)
+      zeilen.push(a.anzahl + " Wörter je Prüfung, davon " + a.luecken + " Lücken.");
+  }
+  if(a.notiz) zeilen.push(a.notiz);
+  return zeilen.join(" ");
+}
+
+function zeichneAuftrag(){
+  const a = auftrag();
+  $("befehl").textContent = befehlstext(a);
+  $("bauen").disabled = a.teile.length === 0;
+  const anz = a.teile.length;
+  $("bauenHinweis").textContent = anz === 0 ? "Links auswählen, was entstehen soll."
+    : anz + (anz === 1 ? " Dokument" : " Dokumente") +
+      (a.hatPruefungen ? " (Prüfungen jeweils mit Lösungsblatt)" : "") + ".";
+}
+
+/* ---------------- Auftragsbuch (db) ---------------- */
+let db = null, downloads = null;
+const buch = [];
+
+function zeichneBuch(){
+  if(!buch.length){ $("auftragsbuch").innerHTML = ""; return; }
+  $("auftragsbuch").innerHTML = buch.slice(0, 8).map(e => {
+    const d = new Date(e.erzeugt);
+    const wann = d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"}) + " " +
+                 d.toLocaleTimeString("de-CH", {hour:"2-digit", minute:"2-digit"});
+    return "<li><span class='wann'>" + wann + "</span><span class='was'>Unit " + e.unit +
+      "</span><span style='color:var(--ink-3)'>" +
+      esc((e.teile || []).map(t => t.text).join(", ")) + "</span>" +
+      (e.erledigt ? "<span class='erledigt'>erledigt</span>" : "") + "</li>";
+  }).join("");
+}
+
+async function starteDb(){
+  try{
+    db = await window.claude?.use?.("db");
+    if(!db) return;
+    db.collection("auftraege").orderBy("erzeugt", "desc").limit(12)
+      .onSnapshot(schnappschuss => {
+        buch.length = 0;
+        schnappschuss.docs.forEach(doc => { if(doc.exists) buch.push(doc.data()); });
+        zeichneBuch();
+      }, () => {});
+  }catch(e){ db = null; }
+}
+async function starteDownloads(){
+  try{
+    downloads = await window.claude?.use?.("downloads");
+    if(downloads) $("herunterladen").hidden = false;
+  }catch(e){ downloads = null; }
+}
+
+function melde(text, art){
+  const s = $("status");
+  s.textContent = text;
+  s.className = "status" + (art ? " " + art : "");
+}
+
+/* ---------------- Verdrahtung ---------------- */
+function esc(s){
+  return String(s == null ? "" : s).replace(/[&<>"']/g,
+    c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+function alles(){ zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneAuftrag(); }
+
+DATA.units.forEach(u => {
+  const o = document.createElement("option");
+  o.value = u.unit;
+  o.textContent = (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit) + " — " + u.thema;
+  $("unit").appendChild(o);
+});
+$("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +
+  esc(DATA.quelle.importiert) + " · SHA-256 " +
+  esc(String(DATA.quelle.pruefsumme_sha256).slice(0, 12));
+
+$("unit").addEventListener("change", e => {
+  state.unit = +e.target.value;
+  if(!state.eigen) vorgabenSetzen();
+  $("wertA").textContent = state.ziel.A.toFixed(1);
+  $("wertB").textContent = state.ziel.B.toFixed(1);
+  alles();
+});
+["bLi","b1A","b1B","b2A","b2B"].forEach(id =>
+  $(id).addEventListener("change", zeichneAuftrag));
+
+for(const niv of ["A","B"]){
+  $("ziel" + niv).addEventListener("input", e => {
+    state.ziel[niv] = +e.target.value;
+    state.eigen = true;
+    $("wert" + niv).textContent = state.ziel[niv].toFixed(1);
+    $("zurueck").hidden = false;
+    zeichneTeile(); zeichneAuftrag();
+  });
+}
+$("zurueck").addEventListener("click", () => {
+  vorgabenSetzen();
+  $("wertA").textContent = state.ziel.A.toFixed(1);
+  $("wertB").textContent = state.ziel.B.toFixed(1);
+  $("zurueck").hidden = true;
+  zeichneTeile(); zeichneAuftrag();
+});
+$("anzahl").addEventListener("change", e => {
+  state.anzahl = Math.max(6, Math.min(20, +e.target.value || 12));
+  e.target.value = state.anzahl;
+  if(!state.eigen) vorgabenSetzen();
+  $("wertA").textContent = state.ziel.A.toFixed(1);
+  $("wertB").textContent = state.ziel.B.toFixed(1);
+  zeichneTeile(); zeichneAuftrag();
+});
+$("luecken").addEventListener("change", e => {
+  state.luecken = Math.max(2, Math.min(6, +e.target.value || 4));
+  e.target.value = state.luecken;
+  zeichneTeile(); zeichneAuftrag();
+});
+$("variante").addEventListener("change", e => {
+  state.variante = +e.target.value; zeichneAuftrag();
+});
+$("notiz").addEventListener("input", e => { state.notiz = e.target.value; zeichneAuftrag(); });
+$("suche").addEventListener("input", e => { state.suche = e.target.value; zeichneListe(); });
+
+$("kopieren").addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText($("befehl").textContent);
+    melde("Befehl kopiert — im Chat einfügen und abschicken.", "ok");
+  }catch(e){
+    melde("Kopieren hat der Browser abgelehnt. Text von Hand markieren.", "fehler");
+  }
+});
+
+$("ablegen").addEventListener("click", async () => {
+  const a = auftrag();
+  if(!a.teile.length){ melde("Nichts ausgewählt.", "fehler"); return; }
+  if(!db){
+    melde("Das Auftragsbuch steht in dieser Ansicht nicht zur Verfügung — " +
+          "den Befehl stattdessen kopieren.", "fehler");
+    return;
+  }
+  try{
+    const id = "u" + String(a.unit).padStart(2, "0") + "-" + Date.now();
+    await db.doc("auftraege/" + id).set(Object.assign({erledigt:false}, a));
+    melde("Abgelegt. Im Chat genügt jetzt: „Nimm den nächsten Auftrag.“", "ok");
+  }catch(e){
+    melde("Ablegen ist fehlgeschlagen: " + (e && e.message ? e.message : "unbekannt"),
+          "fehler");
+  }
+});
+
+$("herunterladen").addEventListener("click", async () => {
+  const a = auftrag();
+  if(!downloads) return;
+  try{
+    const r = await downloads.save({
+      filename: "auftrag_unit" + String(a.unit).padStart(2, "0") + ".json",
+      data: JSON.stringify(a, null, 2)
+    });
+    melde(r && r.status === "delivered" ? "Weitergegeben." : "Gesichert.", "ok");
+  }catch(e){ melde("Nicht gesichert.", "fehler"); }
+});
+
+vorgabenSetzen();
+$("wertA").textContent = state.ziel.A.toFixed(1);
+$("wertB").textContent = state.ziel.B.toFixed(1);
+alles();
+starteDb();
+starteDownloads();
+})();
+</script>

@@ -158,14 +158,31 @@ Die Prüfung übernimmt **jeden** Teil des Word-Pakets der Referenzprüfung
 `word/document.xml` neu. Das Layout ist damit byteweise identisch; ein Test
 wacht darüber. An der Vorlage wird nichts geändert.
 
+## Oberfläche
+
+Unter `werkstatt/` liegt eine einzelne HTML-Seite, auf der sich einstellen
+lässt, was gebaut werden soll — Unit, Liste, die vier Prüfungen, Anspruch je
+Niveau, Wörter und Lücken je Prüfung. Sie rechnet nichts selbst: sie zeigt,
+was in `kuratiert/` steht, und schreibt daraus den Auftragssatz für den Chat.
+
+```bash
+python werkstatt/export.py   # daten.json aus kuratiert/ und der Datenbank
+python werkstatt/bauen.py    # vokabelwerkstatt.html aus vorlage.html
+```
+
+Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
+sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
+eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
+
 ## Tests
 
-`pytest` und `ruff check src app.py tests` müssen grün sein. Die Tests bauen
+`pytest` und `ruff check src app.py tests werkstatt` müssen grün sein. Die Tests bauen
 je genau einen klassischen Fehler ein und verlangen, dass der Selbstcheck
 ihn findet. Die mitgelieferten Pakete unter `kuratiert/` werden mitgeprüft
 und dürfen weder Fehler noch Warnungen zeigen.
 
 Eigene Tests wachen ausserdem darüber, dass **kein Wort aus Culture, Project
 oder Curriculum extra** in eine Liste rutscht, dass jede Unit ohne
-Ergänzungen auf 60 Wörter kommt, und dass die Prüfung für Niveau A in jeder
-Unit messbar schwerer ist als die für Niveau B.
+Ergänzungen auf 60 Wörter kommt, dass die Prüfung für Niveau A in jeder Unit
+messbar schwerer ist als die für Niveau B, und dass die Oberfläche unter
+`werkstatt/` auf dem Stand der Pakete ist.

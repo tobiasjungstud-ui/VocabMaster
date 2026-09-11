@@ -538,9 +538,22 @@ def pruefe_niveau_konsistenz(pack: Pack, bericht: Pruefbericht) -> None:
                 f"Teil {teil}: Der Abstand zwischen den Niveaus ist gering "
                 f"(A {ma:.1f}/10 gegen B {mb:.1f}/10).",
             )
-    bericht.kennzahlen["niveau_konsistenz"] = (
-        "; ".join(kennzahlen) or "keine Prüfungen im Paket"
-    )
+    if kennzahlen:
+        auskunft = "; ".join(kennzahlen)
+    elif pack.exams:
+        # Ein Fassungspaket enthält genau eine der vier Prüfungen. Dann gibt
+        # es nichts zu vergleichen - was aber nicht heisst, dass nichts drin
+        # ist. Dass die geprüften Wörter aus der Liste dieses Pakets stammen,
+        # sichert `loesungsschluessel` unabhängig davon.
+        vorhanden = ", ".join(
+            f"Teil {teil} Niveau {niveau}" for teil, niveau in sorted(pack.exams)
+        )
+        auskunft = (
+            f"nur {vorhanden} im Paket - ohne Gegenstück kein Niveauvergleich"
+        )
+    else:
+        auskunft = "keine Prüfungen im Paket"
+    bericht.kennzahlen["niveau_konsistenz"] = auskunft
 
 
 def _mittlere_schwierigkeit(eintraege: list[dict]) -> float:

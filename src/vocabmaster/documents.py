@@ -41,16 +41,24 @@ TEIL_NAMEN = {1: "PartI", 2: "PartII"}
 
 
 def dateiname(unit: int, art: str, teil: int | None = None,
-              niveau: str | None = None, loesung: bool = False) -> str:
+              niveau: str | None = None, loesung: bool = False,
+              fassung: int = 1) -> str:
     """Einheitliche Benennung: ``Unit03_Test_PartI_NiveauB_Loesung.docx``.
 
     Die Vokabelliste trägt kein Niveau im Namen - es gibt nur eine.
+
+    Eine zweite oder dritte Fassung derselben Prüfung - für eine
+    Nachprüfung, oder weil die erste bekannt geworden ist - trägt ihre
+    Nummer im Namen. Die erste nicht: sonst hiessen alle bestehenden
+    Dateien plötzlich anders.
     """
     parts = [f"Unit{unit:02d}", art]
     if teil:
         parts.append(TEIL_NAMEN[teil])
     if niveau:
         parts.append(f"Niveau{niveau}")
+    if fassung and fassung > 1:
+        parts.append(f"Fassung{fassung}")
     if loesung:
         parts.append("Loesung")
     return "_".join(parts) + ".docx"
@@ -120,7 +128,8 @@ def schreibe_pruefung(
     geschrieben = [Path(build_docx(spec, str(settings.exam_template), str(ziel)))]
     if mit_loesung:
         loesung = ziel.with_name(
-            dateiname(pack.unit, "Test", teil, niveau, loesung=True)
+            dateiname(pack.unit, "Test", teil, niveau, loesung=True,
+                      fassung=pack.fassung)
         )
         geschrieben.append(
             Path(build_answer_key(spec, str(settings.exam_template), str(loesung)))
@@ -155,7 +164,8 @@ def baue_alles(
         for teil, niveau in sorted(pack.exams):
             if niveau not in niveaus:
                 continue
-            pfad = ziel / dateiname(pack.unit, "Test", teil, niveau)
+            pfad = ziel / dateiname(pack.unit, "Test", teil, niveau,
+                                    fassung=pack.fassung)
             geschrieben = schreibe_pruefung(
                 pack, teil, niveau, pfad, settings, mit_loesung
             )

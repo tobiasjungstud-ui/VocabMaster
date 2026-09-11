@@ -120,6 +120,11 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
     quelle = None
     for datei in sorted(pakete.glob("unit_*.json")):
         pack = json.loads(datei.read_text("utf-8"))
+        # Fassungspakete (unit_01_fassung2.json) enthalten nur eine einzelne
+        # Prüfung und keine zweite Niveaustufe. Die Oberfläche zeigt die
+        # Grundfassung; eine weitere Fassung entsteht erst auf Auftrag.
+        if int(pack.get("fassung", 1)) > 1:
+            continue
         unit = pack["unit"]
         quelle = quelle or pack["quelle"]
         thema = themen.get(str(unit), {})

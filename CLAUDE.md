@@ -147,6 +147,43 @@ Satzlänge, Textlänge und Nebensatzdichte des Lückentextes.
 Die Beispielsätze der Liste lernen beide Gruppen, deshalb gilt für sie das
 engere Mass: **höchstens 13 Wörter je Satz.**
 
+## Zweite Fassung einer Prüfung
+
+Für eine Nachprüfung, oder wenn ein Blatt bekannt geworden ist:
+
+```bash
+vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A \
+    --nummer 2 --gemeinsam 4 --woerter 12 --luecken 6
+```
+
+Das schreibt `kuratiert/unit_01_fassung2.json` — **dieselbe Vokabelliste**,
+Wort für Wort, aber nur die eine neu gesetzte Prüfung. Die Dokumente heissen
+`Unit01_Test_PartI_NiveauA_Fassung2.docx`; die erste Fassung bleibt
+unangetastet. Danach wie immer: Lückentext im Chat schreiben, `prüfen`,
+`bauen`.
+
+`--gemeinsam` ist die Obergrenze für Wörter, die schon in Fassung 1 geprüft
+wurden. Ganz ohne Überschnitt geht es selten: Beide Fassungen schöpfen aus
+denselben dreissig Wörtern und beide wollen dasselbe Ende davon — das
+schwere für Niveau A, das zugängliche für Niveau B. **Je weniger gemeinsam,
+desto weiter muss die Auswahl von diesem Ende weg, desto mehr weicht der
+Anspruch von der ersten Fassung ab.** Der Befehl schreibt beide Zahlen hin.
+
+## Was der Anspruchsregler kann und was nicht
+
+Die Schwierigkeitsnote ist eine Eigenschaft des **Wortes**, nicht eine
+Einstellung. Der Regler in der Oberfläche wählt aus, was die Unit hergibt —
+er macht keine schwereren Wörter. Die Obergrenze steht damit fest, bevor man
+ihn anfasst: In Unit 1 ist `orphanage` mit 4.1 das schwerste Wort
+überhaupt, die zwölf schwersten von Test 1 kommen auf Ø 3.5. Über den
+gesamten Wortschatz aller acht Units liegt der Höchstwert bei 6.7
+(`facial recognition`).
+
+Ein Zielwert oberhalb dessen, was die Unit hergibt, ist deshalb kein Fehler,
+sondern nicht erfüllbar. Dann gilt: bauen, was möglich ist, und den
+erreichten Schnitt zusammen mit der Obergrenze berichten — nie so tun, als
+sei der Wunsch erfüllt.
+
 ## Layout
 
 Jede Vokabelliste muss auf **eine A4-Seite** passen. Voreingestellt sind

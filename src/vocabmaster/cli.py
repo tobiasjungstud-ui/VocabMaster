@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 from .checks import FEHLER, WARNUNG, pruefe_paket
@@ -26,10 +27,12 @@ from .config import Settings
 from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
-from .niveau import NIVEAUS, PROFILES
+from .niveau import NIVEAUS, PROFILES, profile
 from .pack import (
     Pack,
+    _schwierigkeit,
     ausgleichen,
+    neue_fassung,
     pack_filename,
     scaffold,
     waehle_pruefungswoerter,
@@ -230,6 +233,59 @@ def cmd_ausgleichen(args) -> int:
     return 0
 
 
+def cmd_fassung(args) -> int:
+    """Eine zweite Fassung einer einzelnen Prüfung anlegen."""
+    pack = Pack.load(args.paket)
+    settings = _settings(args)
+    if args.woerter:
+        settings = replace(settings, exam_words=args.woerter)
+    if args.luecken:
+        settings = replace(settings, exam_gaps=args.luecken)
+    if settings.exam_gaps >= settings.exam_words:
+        print(f"--luecken ({settings.exam_gaps}) muss kleiner sein als "
+              f"--woerter ({settings.exam_words}): sonst bleibt für den "
+              "Übersetzungsteil nichts übrig.")
+        return 1
+    prof = profile(args.niveau)
+    ziel = Path(args.verzeichnis) / pack_filename(pack.unit, args.nummer)
+    if ziel.exists() and not args.ueberschreiben:
+        print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
+        return 1
+
+    alt_spec = pack.exam(args.teil, prof.name)
+    bisher = [i["english"] for i in alt_spec.get("task1", {}).get("items", [])]
+    bisher += [g["answer"] for g in alt_spec.get("task2", {}).get("gaps", [])]
+
+    neu = neue_fassung(pack, args.teil, prof.name, args.nummer, settings,
+                       args.gemeinsam)
+    neu.save(ziel)
+
+    spec = neu.exam(args.teil, prof.name)
+    woerter = [i["english"] for i in spec["task1"]["items"]]
+    woerter += [g["answer"] for g in spec["task2"]["gaps"]]
+    noten = [_schwierigkeit(e) for e in neu.entries(f"test{args.teil}")
+             if e["englisch"] in woerter]
+    schnitt = sum(noten) / len(noten) if noten else 0.0
+    alt_noten = [_schwierigkeit(e) for e in pack.entries(f"test{args.teil}")
+                 if e["englisch"] in bisher]
+    alt_schnitt = sum(alt_noten) / len(alt_noten) if alt_noten else 0.0
+    gemeinsam = sorted(set(woerter) & set(bisher))
+
+    print(f"{ziel} geschrieben - {neu.unit_label} Teil {args.teil} "
+          f"Niveau {prof.name}, Fassung {args.nummer}.")
+    print(f"  Anspruch: Ø {schnitt:.2f}/10 "
+          f"(Fassung 1: Ø {alt_schnitt:.2f}/10)")
+    print(f"  Gemeinsam mit Fassung 1: {len(gemeinsam)} von {len(woerter)}"
+          + (f" ({', '.join(gemeinsam)})" if gemeinsam else ""))
+    print(f"  Neu gegenüber Fassung 1: "
+          f"{', '.join(sorted(set(woerter) - set(bisher)))}")
+    print(f"\nJetzt im Chat ausfüllen: der Lückentext in "
+          f"pruefungen.teil{args.teil}.{prof.name}.task2.text "
+          f"({len(spec['task2']['gaps'])} Lücken).")
+    print(f"Danach 'vocabmaster prüfen {ziel} --nur test'.")
+    return 0
+
+
 def cmd_pruefen(args) -> int:
     pack = Pack.load(args.paket)
     teile = ("liste", "test") if args.nur == "alles" else (args.nur,)
@@ -337,6 +393,26 @@ def build_parser() -> argparse.ArgumentParser:
                        default="alles",
                        help="nur die Kontrollen dieses Teils laufen lassen")
         p.set_defaults(func=cmd_pruefen)
+
+    p = sub.add_parser(
+        "fassung",
+        help="eine zweite Fassung einer einzelnen Prüfung anlegen",
+    )
+    p.add_argument("paket", help="das bestehende Paket, z. B. kuratiert/unit_01.json")
+    p.add_argument("--teil", type=int, choices=(1, 2), required=True)
+    p.add_argument("--niveau", choices=list(NIVEAUS), required=True)
+    p.add_argument("--nummer", type=int, default=2,
+                   help="die wievielte Fassung (Voreinstellung 2)")
+    p.add_argument("--gemeinsam", type=int, default=4,
+                   help="höchstens so viele Wörter wie in Fassung 1 (Vorgabe 4)")
+    p.add_argument("--woerter", type=int,
+                   help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
+    p.add_argument("--luecken", type=int,
+                   help="davon Lücken (Vorgabe aus den Einstellungen)")
+    p.add_argument("--verzeichnis", default="kuratiert")
+    p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
+                   action="store_true")
+    p.set_defaults(func=cmd_fassung)
 
     p = sub.add_parser("bauen", help="prüfen und die Word-Dateien schreiben")
     p.add_argument("paket")

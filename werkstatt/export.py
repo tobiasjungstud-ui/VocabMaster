@@ -19,6 +19,8 @@ from pathlib import Path
 WURZEL = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(WURZEL / "src"))
 
+from vocabmaster import datenbanken as _dbs  # noqa: E402
+from vocabmaster import paedagogik as _paed  # noqa: E402
 from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
 from vocabmaster.exam.difficulty import score  # noqa: E402
@@ -207,6 +209,26 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
 
     return {
         "quelle": quelle or {},
+        # Welche Vokabeldatenbanken registriert sind. Die Seite zeigt sie
+        # zur Auswahl; gebaut wird im Chat mit --datenbank <Name>.
+        "datenbanken": [
+            {"name": d.name, "titel": d.titel, "beschreibung": d.beschreibung,
+             "units": d.units, "vorhanden": d.vorhanden,
+             "quelle": d.quelle.get("datei", ""),
+             "importiert": d.quelle.get("importiert", "")}
+            for d in _dbs.alle()
+        ],
+        "aktive_datenbank": _dbs.GRUNDEINTRAG["name"],
+        # Die Stufen des pädagogischen Rankings, mit ihren Bändern.
+        "ranking_stufen": [
+            {"name": st.name, "titel": st.titel,
+             "zipf_min": st.zipf_min, "zipf_max": st.zipf_max,
+             "mindest_schwierigkeit": st.mindest_schwierigkeit,
+             "beschreibung": st.beschreibung}
+            for st in _paed.STUFEN.values()
+        ],
+        "ranking_vorgabe": _paed.STUFE_VORGABE,
+        "ranking_kriterien": [name for _, name in _paed._RANGFOLGE],
         "textstufe_normal": dict(NORMAL_TEXTSTUFE),
         # Damit die Oberfläche die Zielbänder mit denselben Zahlen ausrechnet
         # wie die Anwendung und nicht mit einer Kopie davon.

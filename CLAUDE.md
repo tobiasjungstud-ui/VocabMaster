@@ -54,6 +54,30 @@ Das Feld `herkunft` je Eintrag (`"wortliste"` oder `"ergänzt"`) und das Feld
 `abschnitt` liefern diese Angaben. Sie stammen aus dem Abgleich mit der
 Datenbank, nicht aus dem Gedächtnis.
 
+## Mehrere Vokabeldatenbanken
+
+Die Datenbanken stehen in `src/vocabmaster/data/datenbanken.json`; jede ist
+ein Name, ein Verzeichnis und eine Zeile zur Einordnung. Eine neue kommt
+**ohne Codeänderung** dazu:
+
+```bash
+vocabmaster db import level3.xls --name EnglishPlus3 \
+    --titel "English Plus 2nd edition, Level 3"
+vocabmaster db liste                      # welche es gibt, welche aktiv ist
+vocabmaster gerüst 3 --datenbank EnglishPlus3
+```
+
+`--datenbank` nimmt **beides**: den Namen einer registrierten Datenbank oder
+weiterhin einen Verzeichnispfad. Jede bisherige Aufrufform bleibt damit
+gültig, und ohne Angabe kommt wie immer `EnglishPlus4`.
+
+Der Grundeintrag `EnglishPlus4` ist fest im Code hinterlegt und steht auch
+dann zur Verfügung, wenn die Registratur fehlt oder unlesbar ist — ein
+kaputtes JSON darf die Anwendung nicht lahmlegen. Ein Test wacht darüber.
+
+Jede Datenbank hat ihr eigenes Verzeichnis; ein Import in eine neue fasst
+die bestehende nicht an.
+
 ## Datengrundlage — nur die neue Wortliste
 
 Einzige Quelle ist `data/english_plus_2e_level_4_german_wordlist.xls`
@@ -359,6 +383,67 @@ sondern nicht erfüllbar. Dann gilt: bauen, was möglich ist, und den
 erreichten Schnitt zusammen mit der Obergrenze berichten — nie so tun, als
 sei der Wunsch erfüllt.
 
+## Pädagogisches Ranking — zuschaltbar, nie ersetzend
+
+Voreingestellt reiht die Auswahl nach Lernwert und Häufigkeit; dieser Weg
+bleibt **unverändert**. Wer mehr will, schaltet zu:
+
+```bash
+vocabmaster gerüst 3 --pädagogisch --stufe advanced
+vocabmaster liste-neu kuratiert/unit_01.json --fancy 8 --pädagogisch
+```
+
+Ohne die Flagge wird `vocabmaster.paedagogik` nicht einmal betreten. Ein
+Test vergleicht beide Wege Wort für Wort.
+
+### Erst ein harter Vorfilter, dann eine feste Rangfolge
+
+Sieben Kriterien zu einer Punktzahl zu verrechnen ergäbe eine Zahl, die
+niemand nachvollzieht und die bei jedem Durchlauf anders ausfällt. Deshalb:
+
+**1. Vorfilter** — die Stufe legt ein Band fest, aus *zwei* Grössen:
+
+| Stufe | Zipf-Band | Schwierigkeit ab | im Band (je Unit) |
+|---|---|---|---|
+| `basic` | 3.60 – 4.75 | 0.10 | 15 – 31 |
+| `intermediate` | 2.90 – 4.40 | 0.16 | 5 – 18 |
+| `advanced` | 2.45 – 4.00 | 0.24 | 1 – 9 |
+
+Die Häufigkeit hält den Grundwortschatz draussen (`good` und `bad` liegen
+über jedem Band). Die Schwierigkeit hält das andere Extrem draussen: ein
+seltenes Wort, das man aus dem Deutschen abschreibt — `Teddybär`,
+`Ohrring`. Beides sind Wörter, die sonst in jedem Durchlauf wiederkämen,
+ohne etwas zu lehren.
+
+Schwierigkeit ist dabei der Mittelwert aus **schwer zu schreiben**
+(Rechtschreibfallen, Länge, unregelmässige Form — gedämpft, wenn das Wort
+dem deutschen Stichwort gleicht) und **schwer zu verwenden** (feste
+Präposition, Mehrwortausdruck, im Deutschen reflexiv, mehrdeutig,
+gehobenes Register).
+
+Dass die oberen Bänder klein sind, ist **kein Fehler der Grenzen**, sondern
+eine Eigenschaft dieses Lehrmittels: Wörter, die zugleich schwer zu
+schreiben und schwer zu verwenden sind, gibt es darin wenige. Deshalb wird
+nichts weggeworfen — das Band bestimmt die **Rangfolge**, nicht die
+Mitgliedschaft. Der Regler verschiebt den Schwerpunkt; er kann keinen
+Wortschatz herbeiführen, den die Unit nicht hat.
+
+**2. Rangfolge statt Summe** — die Kriterien werden der Reihe nach
+abgefragt. Erst bei Gleichstand entscheidet das nächste:
+
+1. Relevanz für die Unit
+2. Fehleranfälligkeit
+3. Lernwert
+4. kommunikativer Nutzen
+5. Nutzen fürs Sprechen und Schreiben
+6. Schwierigkeit
+7. Häufigkeit — nur noch als Stichentscheid
+
+Die Ausgewogenheit über Wortarten und Themen stellt `_greedy_pick` her, wo
+sie schon immer entstand; das Ranking liefert ihm den Zuschlag. Zwei
+Durchläufe ergeben dieselbe Reihenfolge — auch bei anderer
+Eingabereihenfolge. Ein Test wacht darüber.
+
 ## Layout
 
 Jede Vokabelliste muss auf **eine A4-Seite** passen. Voreingestellt sind
@@ -398,5 +483,7 @@ material im Quelltext steht** (keine Musterwörter, keine Musterlückentexte),
 dass **kein Wort aus Culture, Project oder Curriculum extra** in eine Liste
 rutscht, dass jede Unit ohne
 Ergänzungen auf 60 Wörter kommt, dass die Prüfung für Niveau A in jeder Unit
-messbar schwerer ist als die für Niveau B, und dass die Oberfläche unter
-`werkstatt/` auf dem Stand der Pakete ist.
+messbar schwerer ist als die für Niveau B, dass die Oberfläche unter
+`werkstatt/` auf dem Stand der Pakete ist, und dass die beiden
+zuschaltbaren Zusätze — Datenbankwahl und pädagogisches Ranking — den
+bestehenden Weg **nicht** verändern.

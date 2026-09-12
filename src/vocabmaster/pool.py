@@ -59,6 +59,10 @@ class PoolReport:
     doppelungen: list[str] = field(default_factory=list)
     aussortiert: dict[str, list[str]] = field(default_factory=dict)
     ausnahme: str = ""
+    #: Leer, solange nach Häufigkeit gereiht wird; sonst der Name der Stufe.
+    ranking: str = ""
+    #: Wie viele Kandidaten im Band dieser Stufe lagen.
+    im_band: int = 0
 
     @property
     def ergaenzt_anteil(self) -> float:
@@ -157,6 +161,8 @@ def plan_unit(
     unit: int,
     settings: Settings | None = None,
     schon_verwendet: Iterable[str] = (),
+    ranking: str = "zipf",
+    stufe: str = "",
 ) -> UnitPlan:
     """Wählt die 60 Wörter einer Unit und teilt sie auf Test 1 und Test 2 auf.
 
@@ -166,6 +172,12 @@ def plan_unit(
     werden -, sondern nur leicht abgewertet. Eine zweite Liste soll aus
     demselben Stoff eine andere sinnvolle Auswahl treffen, nicht eine
     schlechtere.
+
+    ``ranking`` ist voreingestellt ``"zipf"`` - dann läuft alles wie bisher
+    und dieser Zusatz rührt nichts an. Mit ``"paedagogisch"`` tritt die
+    Reihung aus :mod:`vocabmaster.paedagogik` hinzu; ``stufe`` wählt dort
+    das Häufigkeits- und Schwierigkeitsband (basic, intermediate,
+    advanced).
     """
     settings = settings or Settings()
     frueher = {w.strip().lower() for w in schon_verwendet if w}
@@ -199,11 +211,35 @@ def plan_unit(
         for loser, winner, why in dropped
     ]
 
+    # Der pädagogische Zuschlag, falls verlangt. Ohne ihn bleibt unten
+    # genau der Ausdruck stehen, der hier immer stand.
+    paed: dict[int, float] = {}
+    if ranking == "paedagogisch":
+        from . import paedagogik
+
+        gewaehlte_stufe = stufe or paedagogik.STUFE_VORGABE
+        geordnet, _ = paedagogik.ranken(
+            kept, theme.get("leitwoerter", []), gewaehlte_stufe
+        )
+        # Aus dem Rang wird ein Zuschlag in der Grössenordnung des
+        # Lernwerts (0 bis 2), damit `_greedy_pick` ihn gegen seine
+        # Wortart- und Themenabschläge abwägen kann - das ist die
+        # Ausgewogenheit, die es ohnehin schon herstellt.
+        anzahl = max(1, len(geordnet))
+        for rang, c in enumerate(geordnet):
+            paed[id(c)] = 2.0 * (1.0 - rang / anzahl)
+        report.ranking = gewaehlte_stufe
+        report.im_band = sum(
+            1 for c in kept
+            if paedagogik.im_band(c, paedagogik.STUFEN[gewaehlte_stufe])
+        )
+
     vorliebe = None
-    if frueher:
+    if frueher or paed:
         def vorliebe(c: Candidate) -> float:
             bekannt = (c.headword or c.english or "").strip().lower()
-            return 0.0 if bekannt in frueher else _NEUHEITS_BONUS
+            wert = 0.0 if bekannt in frueher else _NEUHEITS_BONUS
+            return wert + paed.get(id(c), 0.0)
 
     auswahl = select_words(kept, fallback=None, target=ziel, bias=vorliebe)
     gewaehlt = list(auswahl.chosen)

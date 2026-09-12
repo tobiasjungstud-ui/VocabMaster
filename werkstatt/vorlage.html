@@ -340,6 +340,12 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     <!-- ============ Steuerleiste ============ -->
     <aside class="rail">
       <section>
+        <label class="legende" for="datenbank">Datenbank</label>
+        <select id="datenbank"></select>
+        <p class="hinweis" id="dbhinweis"></p>
+      </section>
+
+      <section>
         <label class="legende" for="unit">Unit</label>
         <select id="unit"></select>
         <p class="unit-thema" id="unitThema"></p>
@@ -438,6 +444,14 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <textarea id="fancywoerter" hidden
           placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
         <p class="hinweis" id="fancyhinweis"></p>
+
+        <label class="tick" for="paed"><input type="checkbox" id="paed">
+          <span>Nach pädagogischen Kriterien ranken<span class="sub">sonst wie bisher: nach Häufigkeit</span></span></label>
+        <div id="paedfeld" hidden>
+          <label for="stufe">Schwierigkeitsstufe</label>
+          <select id="stufe"></select>
+          <p class="hinweis" id="stufehinweis"></p>
+        </div>
 
         <label for="notiz">Notiz an mich</label>
           <textarea id="notiz" placeholder="z. B. Thema des Lückentexts, Wörter die drin sein müssen …"></textarea>
@@ -584,7 +598,8 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
-               listeVersion:1, fancy:0, fancyQuelle:"claude", fancyWoerter:""};
+               listeVersion:1, fancy:0, fancyQuelle:"claude", fancyWoerter:"",
+               datenbank:"", paed:false, stufe:""};
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
 
@@ -873,6 +888,9 @@ function auftrag(){
     variante:state.variante === 0 ? naechsteFassung() : state.variante,
     neueFassung:state.variante === 0,
     anzahl:state.anzahl, luecken:state.luecken,
+    datenbank:state.datenbank,
+    mehrereDatenbanken:(DATA.datenbanken || []).length > 1,
+    paed:state.paed, stufe:state.stufe,
     neueListe:legtNeueListeAn(),
     listeVersion:(legtNeueListeAn() ? neueVersion() : state.listeVersion),
     basisVersion:basisListe().version,
@@ -942,6 +960,10 @@ function befehlstext(a){
     zeilen.push(offen + (a.fancyWoerter.length ? " weitere" : "") +
                 " aufgewertete Wörter für „" + a.thema + "“ selbst wählen, " +
                 "je mit Begründung.");
+  if(a.mehrereDatenbanken) zeilen.push("Datenbank: " + a.datenbank + ".");
+  if(a.paed)
+    zeilen.push("Wortauswahl nach pädagogischen Kriterien ranken, Stufe " +
+                a.stufe + ".");
   if(a.notiz) zeilen.push(a.notiz);
   zeilen.push("Erwartet: " + a.dokumente + ".");
   return zeilen.join(" ");
@@ -1020,7 +1042,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -1083,6 +1105,58 @@ function fassungen(){
   return [1, ...(li.fassungen || [])].sort((a, b) => a - b);
 }
 function naechsteFassung(){ return Math.max(...fassungen()) + 1; }
+
+function zeichneDatenbankwahl(){
+  const wahl = $("datenbank"), liste = DATA.datenbanken || [];
+  if(!state.datenbank)
+    state.datenbank = DATA.aktive_datenbank || (liste[0] || {}).name || "";
+  if(wahl.options.length !== liste.length){
+    wahl.innerHTML = "";
+    for(const d of liste){
+      const o = document.createElement("option");
+      o.value = d.name;
+      o.textContent = d.name + (d.titel ? " — " + d.titel : "") +
+                      (d.vorhanden ? "" : " (noch nicht importiert)");
+      o.disabled = !d.vorhanden;
+      wahl.appendChild(o);
+    }
+  }
+  wahl.value = state.datenbank;
+  wahl.disabled = liste.length < 2;
+  const d = liste.find(x => x.name === state.datenbank) || {};
+  $("dbhinweis").textContent = liste.length < 2
+    ? "Eine Datenbank registriert. Weitere kommen mit „vocabmaster db import … "
+      + "--name …\u201c dazu und stehen dann hier zur Wahl."
+    : (d.quelle || "") + (d.importiert ? " · importiert " + d.importiert : "") +
+      " · " + (d.units || 0) + " Units";
+}
+
+/* Der Regler gehört zur Checkbox: ohne sie läuft alles wie bisher, und
+   dann hat eine Stufe auch nichts zu sagen. */
+function zeichneRanking(){
+  $("paedfeld").hidden = !state.paed;
+  const stufen = DATA.ranking_stufen || [];
+  if(!state.stufe)
+    state.stufe = DATA.ranking_vorgabe || (stufen[0] || {}).name || "";
+  const wahl = $("stufe");
+  if(wahl.options.length !== stufen.length){
+    wahl.innerHTML = "";
+    for(const st of stufen){
+      const o = document.createElement("option");
+      o.value = st.name;
+      o.textContent = st.name + " — " + st.titel;
+      wahl.appendChild(o);
+    }
+  }
+  wahl.value = state.stufe;
+  const st = stufen.find(x => x.name === state.stufe) || {};
+  $("stufehinweis").innerHTML = !st.name ? "" :
+    esc(st.beschreibung) +
+    "<br>Vorfilter: Zipf " + st.zipf_min + "–" + st.zipf_max +
+    ", Schwierigkeit ab " + st.mindest_schwierigkeit +
+    "<br>Gereiht der Reihe nach: " +
+    esc((DATA.ranking_kriterien || []).slice(0, 3).join(" → ")) + " …";
+}
 
 function zeichneFassungswahl(){
   const wahl = $("variante");
@@ -1216,6 +1290,15 @@ $("luecken").addEventListener("change", e => {
 $("variante").addEventListener("change", e => {
   state.variante = +e.target.value;
   zeichneFassungswahl(); zeichneAuftrag();
+});
+$("datenbank").addEventListener("change", e => {
+  state.datenbank = e.target.value; zeichneDatenbankwahl(); zeichneAuftrag();
+});
+$("paed").addEventListener("change", e => {
+  state.paed = e.target.checked; zeichneRanking(); zeichneAuftrag();
+});
+$("stufe").addEventListener("change", e => {
+  state.stufe = e.target.value; zeichneRanking(); zeichneAuftrag();
 });
 $("notiz").addEventListener("input", e => { state.notiz = e.target.value; zeichneAuftrag(); });
 $("suche").addEventListener("input", e => { state.suche = e.target.value; zeichneListe(); });

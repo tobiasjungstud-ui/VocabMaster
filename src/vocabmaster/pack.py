@@ -793,6 +793,8 @@ def neue_liste(
     eigene: Iterable[str] = (),
     settings: Settings | None = None,
     weitere: Iterable[Pack] = (),
+    ranking: str = "zipf",
+    stufe: str = "",
 ) -> Pack:
     """Eine neue Fassung der **Vokabelliste** - V2, V3, ...
 
@@ -832,7 +834,8 @@ def neue_liste(
     }
 
     unit = pack.unit
-    plan = plan_unit(db, unit, settings, schon_verwendet=schon)
+    plan = plan_unit(db, unit, settings, schon_verwendet=schon,
+                     ranking=ranking, stufe=stufe)
     if plaetze > settings.target_total // 2:
         raise ValueError(
             f"{plaetze} Fächer von {settings.target_total} Wörtern ist zu viel - "

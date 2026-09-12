@@ -5,6 +5,54 @@
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
   "importiert": "2026-09-10"
  },
+ "datenbanken": [
+  {
+   "name": "EnglishPlus4",
+   "titel": "English Plus 2nd edition, Level 4",
+   "beschreibung": "Die Wortliste, mit der dieses Repository gebaut wurde.",
+   "units": 9,
+   "vorhanden": true,
+   "quelle": "english_plus_2e_level_4_german_wordlist.xls",
+   "importiert": "2026-09-10"
+  }
+ ],
+ "aktive_datenbank": "EnglishPlus4",
+ "ranking_stufen": [
+  {
+   "name": "basic",
+   "titel": "zugänglich",
+   "zipf_min": 3.6,
+   "zipf_max": 4.75,
+   "mindest_schwierigkeit": 0.1,
+   "beschreibung": "Wörter, die eine Klasse auf B1.1 noch nicht sicher hat, aber oft wiedersieht."
+  },
+  {
+   "name": "intermediate",
+   "titel": "mittel",
+   "zipf_min": 2.9,
+   "zipf_max": 4.4,
+   "mindest_schwierigkeit": 0.16,
+   "beschreibung": "Der Bereich, in dem sich der Wortschatz einer Unit normalerweise bewegt."
+  },
+  {
+   "name": "advanced",
+   "titel": "anspruchsvoll",
+   "zipf_min": 2.45,
+   "zipf_max": 4.0,
+   "mindest_schwierigkeit": 0.24,
+   "beschreibung": "Seltener, dafür ausdrucksstark - für Gruppen, die schon sicher sind."
+  }
+ ],
+ "ranking_vorgabe": "intermediate",
+ "ranking_kriterien": [
+  "Relevanz für die Unit",
+  "Fehleranfälligkeit",
+  "Lernwert",
+  "kommunikativer Nutzen",
+  "Nutzen fürs Sprechen und Schreiben",
+  "Schwierigkeit",
+  "Häufigkeit (nur als Stichentscheid)"
+ ],
  "textstufe_normal": {
   "A": 3.0,
   "B": 1.7

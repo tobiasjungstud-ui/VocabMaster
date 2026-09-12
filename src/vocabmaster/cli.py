@@ -22,8 +22,9 @@ import sys
 from dataclasses import replace
 from pathlib import Path
 
+from . import datenbanken
 from .checks import FEHLER, WARNUNG, pruefe_paket
-from .config import Settings
+from .config import PACKAGE_ROOT, Settings
 from .database import Database
 from .documents import baue_alles
 from .importer import import_wordlist, write_database
@@ -55,7 +56,9 @@ AUSGABE = Path("out")
 def _settings(args) -> Settings:
     s = Settings()
     if getattr(args, "datenbank", None):
-        s.database = Path(args.datenbank)
+        # Nimmt den Namen einer registrierten Datenbank **oder** weiterhin
+        # einen Pfad - jede bisherige Aufrufform bleibt gültig.
+        s.database = datenbanken.aufloesen(args.datenbank)
     return s
 
 
@@ -79,13 +82,45 @@ def _unit(text: str) -> int:
 # ---------------------------------------------------------------- Datenbank
 def cmd_db_import(args) -> int:
     result = import_wordlist(args.quelle)
-    ziel = Path(args.ziel) if args.ziel else _settings(args).database
+    if args.ziel:
+        ziel = Path(args.ziel)
+    elif args.name:
+        # Eine neue Datenbank bekommt ihr eigenes Verzeichnis; die
+        # bestehende wird dabei nicht angefasst.
+        bestand = datenbanken.finde(args.name)
+        ziel = (bestand.verzeichnis if bestand
+                else PACKAGE_ROOT / "data" / datenbanken.slug(args.name))
+    else:
+        ziel = _settings(args).database
+
     dateien = write_database(result, ziel)
     print(f"{len(result.rows)} Einträge aus {result.source} gelesen.")
     print(f"Prüfsumme SHA-256 {result.checksum[:16]}…, importiert {result.imported}")
     print(f"Geschrieben nach {ziel}/: {', '.join(p.name for p in dateien)}")
+
+    if args.name:
+        eintrag = datenbanken.eintragen(
+            args.name, ziel, args.titel or "", args.beschreibung or ""
+        )
+        print(f"\nAls '{eintrag.name}' registriert - wählbar mit "
+              f"--datenbank {eintrag.name}.")
     for hinweis in result.warnings:
         print(f"  Hinweis: {hinweis}")
+    return 0
+
+
+def cmd_db_liste(args) -> int:
+    """Welche Vokabeldatenbanken registriert sind."""
+    aktiv = _settings(args).database.resolve()
+    for d in datenbanken.alle():
+        marke = "*" if d.verzeichnis.resolve() == aktiv else " "
+        stand = (f"{d.units} Units · {d.quelle.get('datei', '?')} · "
+                 f"importiert {d.quelle.get('importiert', '?')}"
+                 if d.vorhanden else "noch nicht importiert")
+        print(f" {marke} {d.name:<16} {d.titel}")
+        print(f"   {' ':<16} {stand}")
+    print("\n* = zurzeit aktiv. Andere wählen: --datenbank <Name>.")
+    print("Neue aufnehmen: vocabmaster db import <datei.xls> --name <Name>.")
     return 0
 
 
@@ -172,6 +207,42 @@ def cmd_db_pool(args) -> int:
 
 
 # ------------------------------------------------------------------- Gerüst
+def _ranking_flaggen(p) -> None:
+    """Die beiden Schalter des pädagogischen Rankings - an einer Stelle.
+
+    Sie stehen bei `gerüst` wie bei `liste-neu`; ohne sie läuft alles wie
+    bisher.
+    """
+    p.add_argument("--pädagogisch", "--paedagogisch", dest="paedagogisch",
+                   action="store_true",
+                   help="nach pädagogischen Kriterien ranken statt allein "
+                        "nach Häufigkeit (Voreinstellung: aus)")
+    p.add_argument("--stufe", choices=tuple(("basic", "intermediate", "advanced")),
+                   default="",
+                   help="Schwierigkeitsband für --pädagogisch "
+                        "(Voreinstellung: intermediate)")
+
+
+def _ranking(args) -> str:
+    """'paedagogisch', wenn ausdrücklich verlangt - sonst der bisherige Weg."""
+    return "paedagogisch" if getattr(args, "paedagogisch", False) else "zipf"
+
+
+def _ranking_bericht(report) -> None:
+    if not report.ranking:
+        return
+    from . import paedagogik
+
+    stufe = paedagogik.STUFEN[report.ranking]
+    print(f"\n  Pädagogisches Ranking, Stufe '{stufe.name}' ({stufe.titel}):")
+    print(f"    Band: Zipf {stufe.zipf_min}-{stufe.zipf_max}, "
+          f"Schwierigkeit ab {stufe.mindest_schwierigkeit}")
+    print(f"    {report.im_band} von {report.brauchbar} Kandidaten im Band; "
+          "der Rest bleibt wählbar, rückt aber nach hinten.")
+    print("    Gereiht wird der Reihe nach, nicht als Punktesumme: "
+          + ", ".join(name for _, name in paedagogik._RANGFOLGE[:3]) + " …")
+
+
 def cmd_geruest(args) -> int:
     db = _db(args)
     settings = _settings(args)
@@ -181,10 +252,12 @@ def cmd_geruest(args) -> int:
         print(f"{pfad} besteht bereits - mit --überschreiben neu erzeugen.")
         return 1
 
-    plan = plan_unit(db, unit, settings)
+    plan = plan_unit(db, unit, settings,
+                     ranking=_ranking(args), stufe=getattr(args, "stufe", ""))
     Pack(data=scaffold(db, unit, settings, plan)).save(pfad)
     r = plan.report
     print(f"{pfad} geschrieben - {db.unit_label(unit)}, {r.summary()}")
+    _ranking_bericht(r)
     if r.aus_zusatzteilen:
         print("\n  Ausnahme - aus Zusatzteilen derselben Unit nachgezogen:")
         for wort, bereich in r.aus_zusatzteilen:
@@ -365,7 +438,8 @@ def cmd_liste_neu(args) -> int:
             weitere.append(anderer)
 
     try:
-        neu = neue_liste(pack, db, args.fancy, args.wort or (), settings, weitere)
+        neu = neue_liste(pack, db, args.fancy, args.wort or (), settings, weitere,
+                         ranking=_ranking(args), stufe=getattr(args, "stufe", ""))
     except ValueError as fehler:
         print(str(fehler))
         return 1
@@ -554,7 +628,9 @@ def build_parser() -> argparse.ArgumentParser:
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    parser.add_argument("--datenbank", help="Verzeichnis der Wortlisten-Datenbank")
+    parser.add_argument("--datenbank",
+                        help="Name einer registrierten Datenbank (siehe "
+                             "'db liste') oder ein Verzeichnispfad")
     sub = parser.add_subparsers(dest="befehl", required=True)
 
     db = sub.add_parser("db", help="Datenbank aufbauen und ansehen")
@@ -563,7 +639,13 @@ def build_parser() -> argparse.ArgumentParser:
     p = dbsub.add_parser("import", help="Datenbank aus einer Excel-Wortliste bauen")
     p.add_argument("quelle", help="Excel-Datei (.xls oder .xlsx)")
     p.add_argument("-o", "--ziel", help="Zielverzeichnis der Datenbank")
+    p.add_argument("--name", help="unter diesem Namen registrieren, z. B. EnglishPlus3")
+    p.add_argument("--titel", help="Klartextname des Lehrmittels")
+    p.add_argument("--beschreibung", help="eine Zeile zur Einordnung")
     p.set_defaults(func=cmd_db_import)
+
+    p = dbsub.add_parser("liste", help="welche Vokabeldatenbanken es gibt")
+    p.set_defaults(func=cmd_db_liste)
 
     p = dbsub.add_parser("units", help="Übersicht über alle Units")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")
@@ -583,6 +665,7 @@ def build_parser() -> argparse.ArgumentParser:
         p = sub.add_parser(name, help="Gerüst für eine Unit erzeugen")
         p.add_argument("unit", type=_unit)
         p.add_argument("-o", "--verzeichnis", default=str(KURATIERT))
+        _ranking_flaggen(p)
         p.add_argument("--überschreiben", "--ueberschreiben", action="store_true",
                        dest="ueberschreiben")
         p.set_defaults(func=cmd_geruest)
@@ -623,6 +706,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--wort", action="append", metavar="EN=DE",
                    help="selbst angegebenes Wort als 'englisch=deutsch' "
                         "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")
+    _ranking_flaggen(p)
     p.add_argument("--verzeichnis", default="kuratiert")
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
                    action="store_true")

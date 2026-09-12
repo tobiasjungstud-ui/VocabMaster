@@ -1,0 +1,10 @@
+{
+  "datenbanken": [
+    {
+      "name": "EnglishPlus4",
+      "verzeichnis": "wortliste",
+      "titel": "English Plus 2nd edition, Level 4",
+      "beschreibung": "Die Wortliste, mit der dieses Repository gebaut wurde."
+    }
+  ]
+}

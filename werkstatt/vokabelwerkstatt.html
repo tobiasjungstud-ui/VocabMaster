@@ -884,6 +884,7 @@ function auftrag(){
       ? state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean) : [],
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
+    dokumente:stueckzahl(teile),
     erzeugt:new Date().toISOString()
   };
 }
@@ -914,15 +915,23 @@ function befehlstext(a){
                     teileNiv.join(", ") + ".");
     }
   }
+  // "die Prüfungen beziehen sich auf V2" las sich wie ein Auftrag, Prüfungen
+  // zu bauen - auch wenn links nur die Vokabelliste angekreuzt war. Deshalb
+  // steht der Satz nur da, wo wirklich Prüfungen bestellt sind.
   if(a.neueListe){
     zeilen.push("Dafür eine neue Vokabelliste V" + a.listeVersion +
                 " anlegen (aus V" + a.basisVersion + "; die bestehenden " +
-                "Listen bleiben); die Prüfungen beziehen sich auf V" +
-                a.listeVersion + ".");
+                "Listen bleiben)." +
+                (a.hatPruefungen
+                  ? " Die Prüfungen beziehen sich auf V" + a.listeVersion + "."
+                  : " Künftige Prüfungen dieser Unit beziehen sich dann auf V" +
+                    a.listeVersion + "."));
   } else if(a.hatPruefungen){
     zeilen.push("Grundlage ist die bestehende Vokabelliste V" +
                 a.listeVersion + " — keine neue Liste anlegen.");
   }
+  if(!a.hatPruefungen)
+    zeilen.push("Nur die Vokabelliste — keine Prüfungen, keine Lückentexte.");
   if(a.fancyWoerter.length)
     zeilen.push("Diese Wörter aufnehmen: " + a.fancyWoerter.join(", ") + ".");
   // Absichtlich ohne Massstab und ohne Beispielwörter: wonach ein
@@ -934,17 +943,33 @@ function befehlstext(a){
                 " aufgewertete Wörter für „" + a.thema + "“ selbst wählen, " +
                 "je mit Begründung.");
   if(a.notiz) zeilen.push(a.notiz);
+  zeilen.push("Erwartet: " + a.dokumente + ".");
   return zeilen.join(" ");
+}
+
+/* Wieviele Dateien am Ende dastehen. Jede Prüfung bringt ihr Lösungsblatt
+   mit, die Vokabelliste nicht - das ist der häufigste Rechenfehler beim
+   Überfliegen und gehört deshalb ausgeschrieben in den Auftrag. */
+function stueckzahl(teile){
+  const pruefungen = teile.filter(t => t.art === "pruefung").length;
+  const listen = teile.length - pruefungen;
+  const teilchen = [];
+  if(listen) teilchen.push(listen === 1 ? "die Vokabelliste" : listen + " Listen");
+  if(pruefungen)
+    teilchen.push(pruefungen + (pruefungen === 1 ? " Prüfung" : " Prüfungen") +
+                  " mit Lösungsblatt");
+  const dateien = listen + pruefungen * 2;
+  return teilchen.join(" und ") + " — " + dateien +
+         (dateien === 1 ? " Datei" : " Dateien");
 }
 
 function zeichneAuftrag(){
   const a = auftrag();
   $("befehl").textContent = befehlstext(a);
   $("bauen").disabled = a.teile.length === 0;
-  const anz = a.teile.length;
-  $("bauenHinweis").textContent = anz === 0 ? "Links auswählen, was entstehen soll."
-    : anz + (anz === 1 ? " Dokument" : " Dokumente") +
-      (a.hatPruefungen ? " (Prüfungen jeweils mit Lösungsblatt)" : "") + ".";
+  $("bauenHinweis").textContent = a.teile.length === 0
+    ? "Links auswählen, was entstehen soll."
+    : stueckzahl(a.teile) + ".";
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */

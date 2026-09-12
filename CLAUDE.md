@@ -241,6 +241,24 @@ liest sie, und sie bleibt im Paket nachlesbar.
 (`rot=red`), wird **nicht geraten**, sondern zurückgefragt; eindeutig ist
 `en:<wort>=<Wort>`.
 
+## Nur bauen, was bestellt ist
+
+Der Auftrag aus der Werkstatt nennt in seinem **ersten Satz**, was entstehen
+soll, und in seinem letzten die Stückzahl. Steht dort „Unit 1: die
+Vokabelliste. … Nur die Vokabelliste — keine Prüfungen, keine Lückentexte.
+… Erwartet: die Vokabelliste — 1 Datei", dann ist genau **eine** Datei zu
+bauen.
+
+Sätze wie „künftige Prüfungen dieser Unit beziehen sich dann auf V2" sagen,
+woran eine später bestellte Prüfung hängen wird — sie sind **keine
+Bestellung**. Wer sie als eine liest, liefert acht ungefragte Dokumente. Das
+ist einmal passiert; daher steht die Stückzahl jetzt ausgeschrieben im
+Auftrag.
+
+Ein Paket enthält immer die Gerüste aller vier Prüfungen — das ist seine
+Form. Ob daraus Dokumente werden, entscheidet `bauen --nur liste`
+beziehungsweise `--nur test`, nicht die Form der Datei.
+
 ## Der Bestand als Ganzes
 
 `vocabmaster prüfen` sieht immer nur **ein** Paket. Was sich erst im

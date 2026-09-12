@@ -1,0 +1,1141 @@
+{
+  "schema": 2,
+  "unit": 1,
+  "unit_label": "Unit 1",
+  "titel": "Unit 1",
+  "thema": "Erinnerungen und Gegenstände",
+  "leitwoerter": [
+    "memory",
+    "remember",
+    "object",
+    "capsule",
+    "past",
+    "childhood",
+    "keep",
+    "container",
+    "damaged",
+    "festival"
+  ],
+  "quelle": {
+    "datei": "english_plus_2e_level_4_german_wordlist.xls",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
+    "importiert": "2026-09-10"
+  },
+  "liste_version": 2,
+  "erzeugt": "2026-09-12",
+  "fehlbestand": 0,
+  "herkunft_uebersicht": {
+    "hauptteil": 60,
+    "zusatzteile": [],
+    "zu_ergaenzen": 0,
+    "ausnahme": ""
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "unbezahlbar",
+        "englisch": "priceless",
+        "satz": "To us the letters are priceless.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "romantic",
+        "begruendung": "Die Liste hat \"worthless\" für die eine Seite, für die andere nur das Verb \"treasure\". \"priceless\" ist das Gegenstück als Adjektiv und trifft den Kern der Unit: Ein Erinnerungsstück hat keinen Preis, sondern einen Wert."
+      },
+      {
+        "nr": 2,
+        "deutsch": "schäbig",
+        "englisch": "shabby",
+        "satz": "He still wears that shabby old jacket.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "picnic",
+        "begruendung": "Zwischen \"damaged\" (kaputt) und \"old-fashioned\" (aus der Mode) fehlt der abgenutzte Zustand, den ein lange gebrauchter Gegenstand hat. Für eine Klasse auf B1.1 ist das sonst \"not new and not nice\"."
+      },
+      {
+        "nr": 3,
+        "deutsch": "Handschrift",
+        "englisch": "handwriting",
+        "satz": "I knew the letter by her handwriting.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "on board",
+        "begruendung": "Alte Briefe sind in dieser Unit das häufigste Erinnerungsstück, und woran man sie erkennt, lässt sich nicht benennen. Ein Wort, das die Klasse auch ausserhalb dieses Themas laufend braucht."
+      },
+      {
+        "nr": 4,
+        "deutsch": "Kratzer",
+        "englisch": "scratch",
+        "satz": "There is a deep scratch across the lid.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "emotionally",
+        "begruendung": "\"damaged\" sagt nur, dass etwas kaputt ist. Um zu beschreiben, woran man einem Gegenstand sein Alter ansieht, braucht es die konkrete Spur - und \"scratch\" ist die alltäglichste davon."
+      },
+      {
+        "nr": 5,
+        "deutsch": "einwickeln",
+        "englisch": "wrap up",
+        "satz": "Please wrap up the glasses in newspaper.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "historic",
+        "begruendung": "Aufbewahren ist das, was man mit Erinnerungsstücken tut, und die Liste hat dafür nur \"get rid of\" - also das Gegenteil. \"wrap up\" schliesst die Lücke und ist im Alltag ohnehin ständig gebraucht."
+      },
+      {
+        "nr": 6,
+        "deutsch": "lehrreich",
+        "englisch": "instructive",
+        "satz": "The visit to the war museum was very instructive.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1"
+      },
+      {
+        "nr": 7,
+        "deutsch": "elegant",
+        "englisch": "graceful",
+        "satz": "Her grandmother was still a graceful dancer at seventy.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 8,
+        "deutsch": "verzweifelt",
+        "englisch": "desperately",
+        "satz": "He searched desperately for the ring he had lost.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 9,
+        "deutsch": "Waisenhaus",
+        "englisch": "orphanage",
+        "satz": "She spent her first six years in an orphanage.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 10,
+        "deutsch": "betteln",
+        "englisch": "beg",
+        "satz": "The boy had to beg for food on the streets.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 11,
+        "deutsch": "sich entschuldigen",
+        "englisch": "apologize",
+        "satz": "He wrote a letter to apologize for the broken vase.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 12,
+        "deutsch": "beschädigt",
+        "englisch": "damaged",
+        "satz": "The photograph was badly damaged by the rain.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 13,
+        "deutsch": "enttäuschend",
+        "englisch": "disappointing",
+        "satz": "The ending of the film was rather disappointing.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 14,
+        "deutsch": "modisch",
+        "englisch": "fashionable",
+        "satz": "That coat was fashionable when my mother was young.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 15,
+        "deutsch": "nutzlos",
+        "englisch": "useless",
+        "satz": "The old camera is useless without its battery.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 16,
+        "deutsch": "wertlos",
+        "englisch": "worthless",
+        "satz": "Without its original box, the toy is almost worthless.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 17,
+        "deutsch": "identifizieren",
+        "englisch": "identify",
+        "satz": "Can you identify the man in this photograph?",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Angler, Fischer",
+        "englisch": "fisherman",
+        "satz": "An old fisherman showed us the harbour at dawn.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 19,
+        "deutsch": "glücklicherweise",
+        "englisch": "thankfully",
+        "satz": "Thankfully, nothing was broken inside the heavy parcel.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 14"
+      },
+      {
+        "nr": 20,
+        "deutsch": "danach",
+        "englisch": "afterwards",
+        "satz": "We visited the museum and had tea afterwards.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Zeltplatz",
+        "englisch": "campsite",
+        "satz": "Our tent stood at the edge of the campsite.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Bürgerkrieg",
+        "englisch": "civil war",
+        "satz": "These letters were written during the civil war.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Haken",
+        "englisch": "hook",
+        "satz": "His coat hangs on a hook behind the door.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 24,
+        "deutsch": "überleben",
+        "englisch": "survive",
+        "satz": "Only a few letters survived the big fire.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Dachboden",
+        "englisch": "attic",
+        "satz": "We found a dusty suitcase up in the attic.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Beschreibung",
+        "englisch": "description",
+        "satz": "His description of the old house was very exact.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Armband",
+        "englisch": "wristband",
+        "satz": "The festival wristband is still on my arm.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 28,
+        "deutsch": "bedauern",
+        "englisch": "regret",
+        "satz": "I regret selling my grandfather's watch last year.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "sich auf etw. freuen",
+        "englisch": "look forward to",
+        "satz": "We look forward to the summer holidays every year.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 30,
+        "deutsch": "spielen, auftreten",
+        "englisch": "perform",
+        "satz": "The class will perform a short play tonight.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "staubig",
+        "englisch": "dusty",
+        "satz": "Nobody had opened the dusty box for years.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "theme park",
+        "begruendung": "\"attic\" steht in der Liste, aber kein Wort, um ihn zu beschreiben. \"dusty\" ist das Adjektiv des Dachbodens und ersetzt die Verlegenheitslösung \"very old and dirty\" durch ein Wort."
+      },
+      {
+        "nr": 2,
+        "deutsch": "verblasst",
+        "englisch": "faded",
+        "satz": "The blue on the old curtains has faded.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "document",
+        "begruendung": "Die Liste kann Gegenstände beschädigen (\"damaged\"), verderben (\"rotten\") und entwerten (\"worthless\") - aber nicht verblassen lassen. Genau das tun Fotografien, Stoffe und Erinnerungen, und zwar in beiden Bedeutungen: \"a faded photograph\" wie \"a faded memory\". Für eine Unit über Erinnerungsstücke ist das die auffälligste Lücke."
+      },
+      {
+        "nr": 3,
+        "deutsch": "Vorfahre",
+        "englisch": "ancestor",
+        "satz": "My ancestors came from a village near Cork.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "waterfall",
+        "begruendung": "Die Unit reicht über die eigene Kindheit hinaus zurück, die Liste aber nicht: \"childhood\" ist die früheste Zeitangabe darin. \"ancestor\" öffnet das Thema um die Generationen davor."
+      },
+      {
+        "nr": 4,
+        "deutsch": "Flohmarkt",
+        "englisch": "flea market",
+        "satz": "We found the lamp at a flea market.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "capsule",
+        "begruendung": "Woher alte Gegenstände kommen, kann die Liste nicht sagen. Der Flohmarkt ist der Ort dafür, im Englischen genauso geläufig wie im Deutschen, und für Jugendliche ein vertrautes Wochenendthema."
+      },
+      {
+        "nr": 5,
+        "deutsch": "erben",
+        "englisch": "inherit",
+        "satz": "She will inherit her grandmother's ring one day.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "fancy",
+        "abschnitt": "",
+        "ersetzt": "anecdote",
+        "begruendung": "Wie Gegenstände überhaupt in eine Familie kommen, lässt sich mit dieser Liste nicht sagen: \"belong to\" nennt den Besitz, \"adopt\" gehört zu Menschen. \"inherit\" ist der Vorgang, um den es in dieser Unit geht, und er kommt im Sprechen über Familienerinnerungen ständig vor."
+      },
+      {
+        "nr": 6,
+        "deutsch": "dramatisch",
+        "englisch": "dramatically",
+        "satz": "The value of those old coins rose dramatically.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 7,
+        "deutsch": "adoptieren",
+        "englisch": "adopt",
+        "satz": "They decided to adopt a child from another country.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 8,
+        "deutsch": "schätzen",
+        "englisch": "treasure",
+        "satz": "I treasure the letters my grandfather sent me.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 9,
+        "deutsch": "riesig",
+        "englisch": "immense",
+        "satz": "The old library holds an immense collection of maps.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 10,
+        "deutsch": "zerbrechlich",
+        "englisch": "fragile",
+        "satz": "Please wrap the glass carefully, because it is fragile.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 11,
+        "deutsch": "altmodisch",
+        "englisch": "old-fashioned",
+        "satz": "My uncle still writes with an old-fashioned pen.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 12,
+        "deutsch": "verfault",
+        "englisch": "rotten",
+        "satz": "We found rotten apples at the back of the box.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 13,
+        "deutsch": "unbeliebt",
+        "englisch": "unpopular",
+        "satz": "His decision was unpopular with the whole class.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 14,
+        "deutsch": "stinkend",
+        "englisch": "smelly",
+        "satz": "He finally threw away the smelly old football boots.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Speicherstick",
+        "englisch": "memory stick",
+        "satz": "All my holiday photos are saved on a memory stick.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Freundin",
+        "englisch": "girlfriend",
+        "satz": "He showed the silver ring to his girlfriend.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 13"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Kindheit",
+        "englisch": "childhood",
+        "satz": "These pictures take me back to my childhood in Wales.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 14"
+      },
+      {
+        "nr": 18,
+        "deutsch": "sich etw. merken",
+        "englisch": "memorize",
+        "satz": "She had to memorize the long poem before Friday.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 14"
+      },
+      {
+        "nr": 19,
+        "deutsch": "ereignisreich",
+        "englisch": "eventful",
+        "satz": "Our journey through Scotland was long and eventful.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Matrose",
+        "englisch": "sailor",
+        "satz": "His grandfather worked as a sailor for thirty years.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 21,
+        "deutsch": "inzwischen",
+        "englisch": "meanwhile",
+        "satz": "I packed the bags; meanwhile, Tom made the sandwiches.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 22,
+        "deutsch": "auf etw. stoßen",
+        "englisch": "come across",
+        "satz": "I came across an old diary yesterday.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 16"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Kanone",
+        "englisch": "cannon",
+        "satz": "An old cannon still stands outside the castle gate.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Sprengstoff",
+        "englisch": "explosive",
+        "satz": "The soldiers hid the explosive under the bridge.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Waffe",
+        "englisch": "weapon",
+        "satz": "The museum shows an old weapon from 1850.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 26,
+        "deutsch": "(für) immer",
+        "englisch": "forever",
+        "satz": "She promised to keep the ring forever.",
+        "form": "",
+        "wortart": "adv",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 27,
+        "deutsch": "gehören",
+        "englisch": "belong to",
+        "satz": "All these letters belong to my grandmother.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 28,
+        "deutsch": "engagieren",
+        "englisch": "engage",
+        "satz": "Our art teacher tried to engage the whole class.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "jmd. an etw. erinnern",
+        "englisch": "remind of",
+        "satz": "These songs remind me of our summer in Italy.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 30,
+        "deutsch": "los werden",
+        "englisch": "get rid of",
+        "satz": "It was hard to get rid of the old furniture.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 1 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-12",
+          "liste_version": 2,
+          "liste_fingerabdruck": "7f5358049389"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+          "items": [
+            {
+              "german": "Waisenhaus",
+              "english": "orphanage",
+              "pos": "noun"
+            },
+            {
+              "german": "sich entschuldigen",
+              "english": "apologize",
+              "pos": "verb"
+            },
+            {
+              "german": "modisch",
+              "english": "fashionable",
+              "pos": "adj"
+            },
+            {
+              "german": "verzweifelt",
+              "english": "desperately",
+              "pos": "adv"
+            },
+            {
+              "german": "einwickeln",
+              "english": "wrap up",
+              "pos": "verb"
+            },
+            {
+              "german": "danach",
+              "english": "afterwards",
+              "pos": "adv"
+            },
+            {
+              "german": "unbezahlbar",
+              "english": "priceless",
+              "pos": "adj"
+            },
+            {
+              "german": "lehrreich",
+              "english": "instructive",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "Beschreibung",
+            "glücklicherweise",
+            "enttäuschend",
+            "sich auf etw. freuen"
+          ],
+          "gaps": [
+            {
+              "german": "sich auf etw. freuen",
+              "english": "look forward to",
+              "answer": "look forward to",
+              "pos": "verb"
+            },
+            {
+              "german": "Beschreibung",
+              "english": "description",
+              "answer": "description",
+              "pos": "noun"
+            },
+            {
+              "german": "enttäuschend",
+              "english": "disappointing",
+              "answer": "disappointing",
+              "pos": "adj"
+            },
+            {
+              "german": "glücklicherweise",
+              "english": "thankfully",
+              "answer": "thankfully",
+              "pos": "adv"
+            }
+          ],
+          "text": "Every July my cousins and I {1} the same weekend at my aunt's house. She keeps a small notebook with a {2} of every object in her attic. Last year the box we opened held nothing but old bus tickets. That was rather {3} after so much waiting. The summer before, {4}, we had found a bundle of letters. My aunt read two of them aloud and then put the bundle back."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 1 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-12",
+          "liste_version": 2,
+          "liste_fingerabdruck": "7f5358049389"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part I Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+          "items": [
+            {
+              "german": "beschädigt",
+              "english": "damaged",
+              "pos": "adj"
+            },
+            {
+              "german": "überleben",
+              "english": "survive",
+              "pos": "verb"
+            },
+            {
+              "german": "Dachboden",
+              "english": "attic",
+              "pos": "noun"
+            },
+            {
+              "german": "Angler, Fischer",
+              "english": "fisherman",
+              "pos": "noun"
+            },
+            {
+              "german": "spielen, auftreten",
+              "english": "perform",
+              "pos": "verb"
+            },
+            {
+              "german": "wertlos",
+              "english": "worthless",
+              "pos": "adj"
+            },
+            {
+              "german": "Armband",
+              "english": "wristband",
+              "pos": "noun"
+            },
+            {
+              "german": "Zeltplatz",
+              "english": "campsite",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "schäbig",
+            "Bürgerkrieg",
+            "identifizieren",
+            "Haken"
+          ],
+          "gaps": [
+            {
+              "german": "identifizieren",
+              "english": "identify",
+              "answer": "identify",
+              "pos": "verb"
+            },
+            {
+              "german": "Bürgerkrieg",
+              "english": "civil war",
+              "answer": "civil war",
+              "pos": "noun",
+              "unique_because": "'fought in the same ...' verlangt einen Krieg; an einem Haken kämpft niemand."
+            },
+            {
+              "german": "schäbig",
+              "english": "shabby",
+              "answer": "shabby",
+              "pos": "adj"
+            },
+            {
+              "german": "Haken",
+              "english": "hook",
+              "answer": "hook",
+              "pos": "noun",
+              "unique_because": "'hangs on the very same ... by the door' verlangt einen Gegenstand an der Wand, keinen Krieg."
+            }
+          ],
+          "text": "My grandfather kept an old coat in the hall. He could {1} every soldier in the photograph. They had all fought in the same {2}. He wore it for thirty years and it looks {3} now. Today it still hangs on the very same {4} by the door. My mother says it will stay there."
+        }
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 1 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-12",
+          "liste_version": 2,
+          "liste_fingerabdruck": "7f5358049389"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+          "items": [
+            {
+              "german": "auf etw. stoßen",
+              "english": "come across",
+              "pos": "verb"
+            },
+            {
+              "german": "sich etw. merken",
+              "english": "memorize",
+              "pos": "verb"
+            },
+            {
+              "german": "Speicherstick",
+              "english": "memory stick",
+              "pos": "noun"
+            },
+            {
+              "german": "jmd. an etw. erinnern",
+              "english": "remind of",
+              "pos": "verb"
+            },
+            {
+              "german": "stinkend",
+              "english": "smelly",
+              "pos": "adj"
+            },
+            {
+              "german": "unbeliebt",
+              "english": "unpopular",
+              "pos": "adj"
+            },
+            {
+              "german": "riesig",
+              "english": "immense",
+              "pos": "adj"
+            },
+            {
+              "german": "verfault",
+              "english": "rotten",
+              "pos": "adj"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "dramatisch",
+            "Freundin",
+            "schätzen",
+            "altmodisch"
+          ],
+          "gaps": [
+            {
+              "german": "schätzen",
+              "english": "treasure",
+              "answer": "treasure",
+              "pos": "verb"
+            },
+            {
+              "german": "Freundin",
+              "english": "girlfriend",
+              "answer": "girlfriend",
+              "pos": "noun"
+            },
+            {
+              "german": "altmodisch",
+              "english": "old-fashioned",
+              "answer": "old-fashioned",
+              "pos": "adj"
+            },
+            {
+              "german": "dramatisch",
+              "english": "dramatically",
+              "answer": "dramatically",
+              "pos": "adv"
+            }
+          ],
+          "text": "Some families throw everything away; mine keeps every single thing. We {1} a shoe box that has travelled through four houses. Inside there is a photograph of my father's first {2}. Her hair and her coat look wonderfully {3} to us today. Prices for such coats have risen {4} since then. My father laughs and says he simply forgot to throw it out. The box will go to my sister one day."
+        }
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 1 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-12",
+          "liste_version": 2,
+          "liste_fingerabdruck": "7f5358049389"
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part II Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "task1": {
+          "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+          "items": [
+            {
+              "german": "Flohmarkt",
+              "english": "flea market",
+              "pos": "noun"
+            },
+            {
+              "german": "adoptieren",
+              "english": "adopt",
+              "pos": "verb"
+            },
+            {
+              "german": "Kanone",
+              "english": "cannon",
+              "pos": "noun"
+            },
+            {
+              "german": "gehören",
+              "english": "belong to",
+              "pos": "verb"
+            },
+            {
+              "german": "Sprengstoff",
+              "english": "explosive",
+              "pos": "noun"
+            },
+            {
+              "german": "verblasst",
+              "english": "faded",
+              "pos": "adj"
+            },
+            {
+              "german": "zerbrechlich",
+              "english": "fragile",
+              "pos": "adj"
+            },
+            {
+              "german": "Matrose",
+              "english": "sailor",
+              "pos": "noun"
+            }
+          ]
+        },
+        "task2": {
+          "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+          "word_bank_label": "Words:",
+          "word_bank": [
+            "staubig",
+            "engagieren",
+            "Waffe",
+            "inzwischen"
+          ],
+          "gaps": [
+            {
+              "german": "engagieren",
+              "english": "engage",
+              "answer": "engage",
+              "pos": "verb"
+            },
+            {
+              "german": "Waffe",
+              "english": "weapon",
+              "answer": "weapon",
+              "pos": "noun"
+            },
+            {
+              "german": "staubig",
+              "english": "dusty",
+              "answer": "dusty",
+              "pos": "adj"
+            },
+            {
+              "german": "inzwischen",
+              "english": "meanwhile",
+              "answer": "meanwhile",
+              "pos": "adv"
+            }
+          ],
+          "text": "Our school visited the town museum last Tuesday morning. The guide tried to {1} us with stories about the old town. In the first room we saw a very old {2} behind thick glass. It lay in a quiet and {3} corner that nobody seemed to notice. Two boys went outside to wait. The rest of us, {4}, stayed inside and asked questions. I want to go back again in the spring."
+        }
+      }
+    }
+  },
+  "fassung": 1,
+  "abgeleitet_von": {
+    "paket": "unit_01.json",
+    "listen_zuvor": [
+      1
+    ],
+    "neu_gewaehlt": [
+      "description",
+      "forever",
+      "identify",
+      "wristband"
+    ],
+    "ersetzt": [
+      {
+        "raus": "document",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "anecdote",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "theme park",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "picnic",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "romantic",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "on board",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "emotionally",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "waterfall",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "historic",
+        "rein": "(im Chat)"
+      },
+      {
+        "raus": "capsule",
+        "rein": "(im Chat)"
+      }
+    ],
+    "saetze_uebernommen": 53
+  }
+}

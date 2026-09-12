@@ -957,6 +957,924 @@
        }
       }
      }
+    },
+    {
+     "version": 2,
+     "datei": "unit_01_v2.json",
+     "abdruck": "7f5358049389",
+     "erzeugt": "2026-09-12",
+     "aufgewertet": [
+      {
+       "en": "priceless",
+       "de": "unbezahlbar",
+       "ersetzt": "romantic",
+       "begruendung": "Die Liste hat \"worthless\" für die eine Seite, für die andere nur das Verb \"treasure\". \"priceless\" ist das Gegenstück als Adjektiv und trifft den Kern der Unit: Ein Erinnerungsstück hat keinen Preis, sondern einen Wert."
+      },
+      {
+       "en": "shabby",
+       "de": "schäbig",
+       "ersetzt": "picnic",
+       "begruendung": "Zwischen \"damaged\" (kaputt) und \"old-fashioned\" (aus der Mode) fehlt der abgenutzte Zustand, den ein lange gebrauchter Gegenstand hat. Für eine Klasse auf B1.1 ist das sonst \"not new and not nice\"."
+      },
+      {
+       "en": "handwriting",
+       "de": "Handschrift",
+       "ersetzt": "on board",
+       "begruendung": "Alte Briefe sind in dieser Unit das häufigste Erinnerungsstück, und woran man sie erkennt, lässt sich nicht benennen. Ein Wort, das die Klasse auch ausserhalb dieses Themas laufend braucht."
+      },
+      {
+       "en": "scratch",
+       "de": "Kratzer",
+       "ersetzt": "emotionally",
+       "begruendung": "\"damaged\" sagt nur, dass etwas kaputt ist. Um zu beschreiben, woran man einem Gegenstand sein Alter ansieht, braucht es die konkrete Spur - und \"scratch\" ist die alltäglichste davon."
+      },
+      {
+       "en": "wrap up",
+       "de": "einwickeln",
+       "ersetzt": "historic",
+       "begruendung": "Aufbewahren ist das, was man mit Erinnerungsstücken tut, und die Liste hat dafür nur \"get rid of\" - also das Gegenteil. \"wrap up\" schliesst die Lücke und ist im Alltag ohnehin ständig gebraucht."
+      },
+      {
+       "en": "dusty",
+       "de": "staubig",
+       "ersetzt": "theme park",
+       "begruendung": "\"attic\" steht in der Liste, aber kein Wort, um ihn zu beschreiben. \"dusty\" ist das Adjektiv des Dachbodens und ersetzt die Verlegenheitslösung \"very old and dirty\" durch ein Wort."
+      },
+      {
+       "en": "faded",
+       "de": "verblasst",
+       "ersetzt": "document",
+       "begruendung": "Die Liste kann Gegenstände beschädigen (\"damaged\"), verderben (\"rotten\") und entwerten (\"worthless\") - aber nicht verblassen lassen. Genau das tun Fotografien, Stoffe und Erinnerungen, und zwar in beiden Bedeutungen: \"a faded photograph\" wie \"a faded memory\". Für eine Unit über Erinnerungsstücke ist das die auffälligste Lücke."
+      },
+      {
+       "en": "ancestor",
+       "de": "Vorfahre",
+       "ersetzt": "waterfall",
+       "begruendung": "Die Unit reicht über die eigene Kindheit hinaus zurück, die Liste aber nicht: \"childhood\" ist die früheste Zeitangabe darin. \"ancestor\" öffnet das Thema um die Generationen davor."
+      },
+      {
+       "en": "flea market",
+       "de": "Flohmarkt",
+       "ersetzt": "capsule",
+       "begruendung": "Woher alte Gegenstände kommen, kann die Liste nicht sagen. Der Flohmarkt ist der Ort dafür, im Englischen genauso geläufig wie im Deutschen, und für Jugendliche ein vertrautes Wochenendthema."
+      },
+      {
+       "en": "inherit",
+       "de": "erben",
+       "ersetzt": "anecdote",
+       "begruendung": "Wie Gegenstände überhaupt in eine Familie kommen, lässt sich mit dieser Liste nicht sagen: \"belong to\" nennt den Besitz, \"adopt\" gehört zu Menschen. \"inherit\" ist der Vorgang, um den es in dieser Unit geht, und er kommt im Sprechen über Familienerinnerungen ständig vor."
+      }
+     ],
+     "offen": 0,
+     "fassungen": [],
+     "woerter": [
+      {
+       "nr": 1,
+       "test": 1,
+       "en": "priceless",
+       "de": "unbezahlbar",
+       "pos": "adj",
+       "satz": "To us the letters are priceless.",
+       "score": 3.0,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 2,
+       "test": 1,
+       "en": "shabby",
+       "de": "schäbig",
+       "pos": "adj",
+       "satz": "He still wears that shabby old jacket.",
+       "score": 2.4,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 3,
+       "test": 1,
+       "en": "handwriting",
+       "de": "Handschrift",
+       "pos": "noun",
+       "satz": "I knew the letter by her handwriting.",
+       "score": 2.6,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 4,
+       "test": 1,
+       "en": "scratch",
+       "de": "Kratzer",
+       "pos": "noun",
+       "satz": "There is a deep scratch across the lid.",
+       "score": 2.7,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 5,
+       "test": 1,
+       "en": "wrap up",
+       "de": "einwickeln",
+       "pos": "verb",
+       "satz": "Please wrap up the glasses in newspaper.",
+       "score": 3.1,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 6,
+       "test": 1,
+       "en": "instructive",
+       "de": "lehrreich",
+       "pos": "adj",
+       "satz": "The visit to the war museum was very instructive.",
+       "score": 2.8,
+       "zipf": 2.98,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1"
+      },
+      {
+       "nr": 7,
+       "test": 1,
+       "en": "graceful",
+       "de": "elegant",
+       "pos": "adj",
+       "satz": "Her grandmother was still a graceful dancer at seventy.",
+       "score": 2.6,
+       "zipf": 3.39,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 8,
+       "test": 1,
+       "en": "desperately",
+       "de": "verzweifelt",
+       "pos": "adv",
+       "satz": "He searched desperately for the ring he had lost.",
+       "score": 3.5,
+       "zipf": 3.98,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 9,
+       "test": 1,
+       "en": "orphanage",
+       "de": "Waisenhaus",
+       "pos": "noun",
+       "satz": "She spent her first six years in an orphanage.",
+       "score": 4.1,
+       "zipf": 3.38,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 10,
+       "test": 1,
+       "en": "beg",
+       "de": "betteln",
+       "pos": "verb",
+       "satz": "The boy had to beg for food on the streets.",
+       "score": 2.6,
+       "zipf": 4.05,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 11,
+       "test": 1,
+       "en": "apologize",
+       "de": "sich entschuldigen",
+       "pos": "verb",
+       "satz": "He wrote a letter to apologize for the broken vase.",
+       "score": 3.9,
+       "zipf": 4.16,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 12,
+       "test": 1,
+       "en": "damaged",
+       "de": "beschädigt",
+       "pos": "adj",
+       "satz": "The photograph was badly damaged by the rain.",
+       "score": 1.1,
+       "zipf": 4.39,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 13,
+       "test": 1,
+       "en": "disappointing",
+       "de": "enttäuschend",
+       "pos": "adj",
+       "satz": "The ending of the film was rather disappointing.",
+       "score": 3.8,
+       "zipf": 4.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 14,
+       "test": 1,
+       "en": "fashionable",
+       "de": "modisch",
+       "pos": "adj",
+       "satz": "That coat was fashionable when my mother was young.",
+       "score": 3.8,
+       "zipf": 3.65,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 15,
+       "test": 1,
+       "en": "useless",
+       "de": "nutzlos",
+       "pos": "adj",
+       "satz": "The old camera is useless without its battery.",
+       "score": 2.7,
+       "zipf": 4.22,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 16,
+       "test": 1,
+       "en": "worthless",
+       "de": "wertlos",
+       "pos": "adj",
+       "satz": "Without its original box, the toy is almost worthless.",
+       "score": 1.9,
+       "zipf": 3.82,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 17,
+       "test": 1,
+       "en": "identify",
+       "de": "identifizieren",
+       "pos": "verb",
+       "satz": "Can you identify the man in this photograph?",
+       "score": 1.4,
+       "zipf": 4.56,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 18,
+       "test": 1,
+       "en": "fisherman",
+       "de": "Angler, Fischer",
+       "pos": "noun",
+       "satz": "An old fisherman showed us the harbour at dawn.",
+       "score": 1.8,
+       "zipf": 3.49,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 13"
+      },
+      {
+       "nr": 19,
+       "test": 1,
+       "en": "thankfully",
+       "de": "glücklicherweise",
+       "pos": "adv",
+       "satz": "Thankfully, nothing was broken inside the heavy parcel.",
+       "score": 4.0,
+       "zipf": 3.8,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 20,
+       "test": 1,
+       "en": "afterwards",
+       "de": "danach",
+       "pos": "adv",
+       "satz": "We visited the museum and had tea afterwards.",
+       "score": 3.0,
+       "zipf": 4.42,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 21,
+       "test": 1,
+       "en": "campsite",
+       "de": "Zeltplatz",
+       "pos": "noun",
+       "satz": "Our tent stood at the edge of the campsite.",
+       "score": 2.2,
+       "zipf": 3.09,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 22,
+       "test": 1,
+       "en": "civil war",
+       "de": "Bürgerkrieg",
+       "pos": "noun",
+       "satz": "These letters were written during the civil war.",
+       "score": 2.4,
+       "zipf": 4.33,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 23,
+       "test": 1,
+       "en": "hook",
+       "de": "Haken",
+       "pos": "noun",
+       "satz": "His coat hangs on a hook behind the door.",
+       "score": 2.4,
+       "zipf": 4.37,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 24,
+       "test": 1,
+       "en": "survive",
+       "de": "überleben",
+       "pos": "verb",
+       "satz": "Only a few letters survived the big fire.",
+       "score": 1.1,
+       "zipf": 4.52,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 25,
+       "test": 1,
+       "en": "attic",
+       "de": "Dachboden",
+       "pos": "noun",
+       "satz": "We found a dusty suitcase up in the attic.",
+       "score": 1.6,
+       "zipf": 3.63,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 26,
+       "test": 1,
+       "en": "description",
+       "de": "Beschreibung",
+       "pos": "noun",
+       "satz": "His description of the old house was very exact.",
+       "score": 4.7,
+       "zipf": 4.73,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 27,
+       "test": 1,
+       "en": "wristband",
+       "de": "Armband",
+       "pos": "noun",
+       "satz": "The festival wristband is still on my arm.",
+       "score": 2.0,
+       "zipf": 2.81,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 28,
+       "test": 1,
+       "en": "regret",
+       "de": "bedauern",
+       "pos": "verb",
+       "satz": "I regret selling my grandfather's watch last year.",
+       "score": 2.6,
+       "zipf": 4.37,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 29,
+       "test": 1,
+       "en": "look forward to",
+       "de": "sich auf etw. freuen",
+       "pos": "verb",
+       "satz": "We look forward to the summer holidays every year.",
+       "score": 4.3,
+       "zipf": 4.52,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 30,
+       "test": 1,
+       "en": "perform",
+       "de": "spielen, auftreten",
+       "pos": "verb",
+       "satz": "The class will perform a short play tonight.",
+       "score": 1.9,
+       "zipf": 4.66,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 9"
+      },
+      {
+       "nr": 1,
+       "test": 2,
+       "en": "dusty",
+       "de": "staubig",
+       "pos": "adj",
+       "satz": "Nobody had opened the dusty box for years.",
+       "score": 2.4,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 2,
+       "test": 2,
+       "en": "faded",
+       "de": "verblasst",
+       "pos": "adj",
+       "satz": "The blue on the old curtains has faded.",
+       "score": 2.2,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 3,
+       "test": 2,
+       "en": "ancestor",
+       "de": "Vorfahre",
+       "pos": "noun",
+       "satz": "My ancestors came from a village near Cork.",
+       "score": 2.6,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 4,
+       "test": 2,
+       "en": "flea market",
+       "de": "Flohmarkt",
+       "pos": "noun",
+       "satz": "We found the lamp at a flea market.",
+       "score": 0.3,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 5,
+       "test": 2,
+       "en": "inherit",
+       "de": "erben",
+       "pos": "verb",
+       "satz": "She will inherit her grandmother's ring one day.",
+       "score": 2.6,
+       "zipf": 0.0,
+       "quelle": "fancy",
+       "abschnitt": ""
+      },
+      {
+       "nr": 6,
+       "test": 2,
+       "en": "dramatically",
+       "de": "dramatisch",
+       "pos": "adv",
+       "satz": "The value of those old coins rose dramatically.",
+       "score": 2.7,
+       "zipf": 3.95,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 7,
+       "test": 2,
+       "en": "adopt",
+       "de": "adoptieren",
+       "pos": "verb",
+       "satz": "They decided to adopt a child from another country.",
+       "score": 1.8,
+       "zipf": 4.19,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 8,
+       "test": 2,
+       "en": "treasure",
+       "de": "schätzen",
+       "pos": "verb",
+       "satz": "I treasure the letters my grandfather sent me.",
+       "score": 3.7,
+       "zipf": 4.17,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 9,
+       "test": 2,
+       "en": "immense",
+       "de": "riesig",
+       "pos": "adj",
+       "satz": "The old library holds an immense collection of maps.",
+       "score": 2.7,
+       "zipf": 3.88,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 10,
+       "test": 2,
+       "en": "fragile",
+       "de": "zerbrechlich",
+       "pos": "adj",
+       "satz": "Please wrap the glass carefully, because it is fragile.",
+       "score": 2.2,
+       "zipf": 3.86,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 11,
+       "test": 2,
+       "en": "old-fashioned",
+       "de": "altmodisch",
+       "pos": "adj",
+       "satz": "My uncle still writes with an old-fashioned pen.",
+       "score": 4.1,
+       "zipf": 3.93,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 12,
+       "test": 2,
+       "en": "rotten",
+       "de": "verfault",
+       "pos": "adj",
+       "satz": "We found rotten apples at the back of the box.",
+       "score": 2.7,
+       "zipf": 3.81,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 13,
+       "test": 2,
+       "en": "unpopular",
+       "de": "unbeliebt",
+       "pos": "adj",
+       "satz": "His decision was unpopular with the whole class.",
+       "score": 2.8,
+       "zipf": 3.72,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 14,
+       "test": 2,
+       "en": "smelly",
+       "de": "stinkend",
+       "pos": "adj",
+       "satz": "He finally threw away the smelly old football boots.",
+       "score": 2.9,
+       "zipf": 3.29,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 15,
+       "test": 2,
+       "en": "memory stick",
+       "de": "Speicherstick",
+       "pos": "noun",
+       "satz": "All my holiday photos are saved on a memory stick.",
+       "score": 3.1,
+       "zipf": 4.16,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 16,
+       "test": 2,
+       "en": "girlfriend",
+       "de": "Freundin",
+       "pos": "noun",
+       "satz": "He showed the silver ring to his girlfriend.",
+       "score": 3.4,
+       "zipf": 4.68,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 13"
+      },
+      {
+       "nr": 17,
+       "test": 2,
+       "en": "childhood",
+       "de": "Kindheit",
+       "pos": "noun",
+       "satz": "These pictures take me back to my childhood in Wales.",
+       "score": 2.6,
+       "zipf": 4.51,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 18,
+       "test": 2,
+       "en": "memorize",
+       "de": "sich etw. merken",
+       "pos": "verb",
+       "satz": "She had to memorize the long poem before Friday.",
+       "score": 3.2,
+       "zipf": 3.22,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 19,
+       "test": 2,
+       "en": "eventful",
+       "de": "ereignisreich",
+       "pos": "adj",
+       "satz": "Our journey through Scotland was long and eventful.",
+       "score": 2.6,
+       "zipf": 3.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 20,
+       "test": 2,
+       "en": "sailor",
+       "de": "Matrose",
+       "pos": "noun",
+       "satz": "His grandfather worked as a sailor for thirty years.",
+       "score": 2.2,
+       "zipf": 3.78,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 21,
+       "test": 2,
+       "en": "meanwhile",
+       "de": "inzwischen",
+       "pos": "adv",
+       "satz": "I packed the bags; meanwhile, Tom made the sandwiches.",
+       "score": 2.4,
+       "zipf": 4.48,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 22,
+       "test": 2,
+       "en": "come across",
+       "de": "auf etw. stoßen",
+       "pos": "verb",
+       "satz": "I came across an old diary yesterday.",
+       "score": 3.6,
+       "zipf": 4.65,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 16"
+      },
+      {
+       "nr": 23,
+       "test": 2,
+       "en": "cannon",
+       "de": "Kanone",
+       "pos": "noun",
+       "satz": "An old cannon still stands outside the castle gate.",
+       "score": 1.8,
+       "zipf": 4.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 24,
+       "test": 2,
+       "en": "explosive",
+       "de": "Sprengstoff",
+       "pos": "noun",
+       "satz": "The soldiers hid the explosive under the bridge.",
+       "score": 2.2,
+       "zipf": 3.97,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 25,
+       "test": 2,
+       "en": "weapon",
+       "de": "Waffe",
+       "pos": "noun",
+       "satz": "The museum shows an old weapon from 1850.",
+       "score": 2.4,
+       "zipf": 4.54,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 26,
+       "test": 2,
+       "en": "forever",
+       "de": "(für) immer",
+       "pos": "adv",
+       "satz": "She promised to keep the ring forever.",
+       "score": 2.6,
+       "zipf": 4.74,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 27,
+       "test": 2,
+       "en": "belong to",
+       "de": "gehören",
+       "pos": "verb",
+       "satz": "All these letters belong to my grandmother.",
+       "score": 2.2,
+       "zipf": 3.78,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 28,
+       "test": 2,
+       "en": "engage",
+       "de": "engagieren",
+       "pos": "verb",
+       "satz": "Our art teacher tried to engage the whole class.",
+       "score": 2.3,
+       "zipf": 4.36,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 29,
+       "test": 2,
+       "en": "remind of",
+       "de": "jmd. an etw. erinnern",
+       "pos": "verb",
+       "satz": "These songs remind me of our summer in Italy.",
+       "score": 3.0,
+       "zipf": 3.77,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 30,
+       "test": 2,
+       "en": "get rid of",
+       "de": "los werden",
+       "pos": "verb",
+       "satz": "It was hard to get rid of the old furniture.",
+       "score": 2.5,
+       "zipf": 3.9,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 9"
+      }
+     ],
+     "echt": {
+      "t1A": {
+       "woerter": [
+        "description",
+        "look forward to",
+        "orphanage",
+        "thankfully",
+        "apologize",
+        "disappointing",
+        "fashionable",
+        "desperately",
+        "wrap up",
+        "afterwards",
+        "priceless",
+        "instructive"
+       ],
+       "luecken": [
+        "look forward to",
+        "description",
+        "disappointing",
+        "thankfully"
+       ],
+       "schnitt": 3.67,
+       "textstufe": 3.08,
+       "textmass": {
+        "woerter": 72,
+        "satzlaenge": 12.0,
+        "lesbarkeit": 81.9,
+        "grad": 4.8,
+        "nebensaetze": 0.5
+       }
+      },
+      "t1B": {
+       "woerter": [
+        "damaged",
+        "survive",
+        "identify",
+        "attic",
+        "fisherman",
+        "perform",
+        "worthless",
+        "wristband",
+        "campsite",
+        "civil war",
+        "hook",
+        "shabby"
+       ],
+       "luecken": [
+        "identify",
+        "civil war",
+        "shabby",
+        "hook"
+       ],
+       "schnitt": 1.85,
+       "textstufe": 1.0,
+       "textmass": {
+        "woerter": 55,
+        "satzlaenge": 9.2,
+        "lesbarkeit": 96.0,
+        "grad": 2.1,
+        "nebensaetze": 0.0
+       }
+      },
+      "t2A": {
+       "woerter": [
+        "old-fashioned",
+        "treasure",
+        "come across",
+        "girlfriend",
+        "memorize",
+        "memory stick",
+        "remind of",
+        "smelly",
+        "unpopular",
+        "dramatically",
+        "immense",
+        "rotten"
+       ],
+       "luecken": [
+        "treasure",
+        "girlfriend",
+        "old-fashioned",
+        "dramatically"
+       ],
+       "schnitt": 3.16,
+       "textstufe": 2.61,
+       "textmass": {
+        "woerter": 72,
+        "satzlaenge": 10.3,
+        "lesbarkeit": 81.2,
+        "grad": 4.5,
+        "nebensaetze": 0.29
+       }
+      },
+      "t2B": {
+       "woerter": [
+        "flea market",
+        "adopt",
+        "cannon",
+        "belong to",
+        "explosive",
+        "faded",
+        "fragile",
+        "sailor",
+        "engage",
+        "dusty",
+        "meanwhile",
+        "weapon"
+       ],
+       "luecken": [
+        "engage",
+        "weapon",
+        "dusty",
+        "meanwhile"
+       ],
+       "schnitt": 2.03,
+       "textstufe": 2.05,
+       "textmass": {
+        "woerter": 72,
+        "satzlaenge": 10.3,
+        "lesbarkeit": 89.5,
+        "grad": 3.3,
+        "nebensaetze": 0.14
+       }
+      }
+     }
     }
    ]
   },

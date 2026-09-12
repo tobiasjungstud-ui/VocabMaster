@@ -262,7 +262,19 @@ textarea{
   width:100%; padding:8px 10px; background:var(--paper);
   border:1px solid var(--line-2); border-radius:var(--r); margin:0 0 12px;
 }
-.tabellenrahmen{overflow-x:auto}
+/* Ein Fenster im Fenster: rund fünfzehn Zeilen auf einmal, der Rest
+   rollt darin. Sonst schiebt die 60-Wörter-Tabelle alles andere aus dem
+   Bild und man scrollt für jeden Blick auf die Liste die ganze Seite. */
+.tabellenrahmen{
+  overflow:auto; max-height:min(660px, 70vh);
+  border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface);
+}
+/* Die Kopfzeile bleibt beim Rollen stehen, sonst weiss man nach zehn
+   Zeilen nicht mehr, welche Spalte welche ist. */
+.tabellenrahmen thead th{
+  position:sticky; top:0; z-index:1; background:var(--sunk);
+}
 table{width:100%; border-collapse:collapse; font-size:13px}
 thead th{
   text-align:left; padding:7px 10px; border-bottom:1px solid var(--line-2);

@@ -374,9 +374,9 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <span>Prüfung Teil II · <strong>Niveau B</strong><span class="sub">aus Test 2</span></span></label>
       </section>
 
-      <section>
+      <section id="anspruchfeld">
         <span class="legende">Anspruch der Prüfung</span>
-        <div class="regler a">
+        <div class="regler a" id="anspruchA">
           <div class="regler-kopf">
             <b>Niveau A</b><span class="cefr">B1.2–B2.1</span>
             <span class="wert" id="wertA">3.5</span>
@@ -385,7 +385,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <input type="range" id="zielA" min="0" max="10" step="0.1" value="3.5"></div>
           <div class="skala"><span>leicht</span><span class="normal" id="normWortA">0–10</span><span>schwer</span></div>
         </div>
-        <div class="regler b">
+        <div class="regler b" id="anspruchB">
           <div class="regler-kopf">
             <b>Niveau B</b><span class="cefr">A2.2–B1.1</span>
             <span class="wert" id="wertB">1.7</span>
@@ -397,9 +397,9 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <button class="zurueck" id="zurueck" hidden>auf die Voreinstellung dieser Unit zurück</button>
       </section>
 
-      <section>
+      <section id="textfeld">
         <span class="legende">Schwierigkeit des Lückentexts</span>
-        <div class="regler a">
+        <div class="regler a" id="textreglerA">
           <div class="regler-kopf">
             <b>Niveau A</b><span class="cefr" id="tcefrA">B1.2–B2.1</span>
             <span class="wert" id="twertA">3.0</span>
@@ -409,7 +409,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <div class="skala"><span>kurz</span><span class="normal" id="normTextA">0–10</span><span>verschachtelt</span></div>
           <div class="zielband" id="tbandA"></div>
         </div>
-        <div class="regler b">
+        <div class="regler b" id="textreglerB">
           <div class="regler-kopf">
             <b>Niveau B</b><span class="cefr" id="tcefrB">A2.2–B1.1</span>
             <span class="wert" id="twertB">1.7</span>
@@ -424,22 +424,25 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 
       <section>
         <span class="legende">Feinheiten</span>
-        <div class="paar">
-          <div class="feld"><label for="anzahl">Wörter je Prüfung</label>
-            <input type="number" id="anzahl" min="6" max="20" step="2" value="12"></div>
-          <div class="feld"><label for="luecken">davon Lücken</label>
-            <input type="number" id="luecken" min="2" max="6" value="4"></div>
-        </div>
-        <div class="feld" style="margin-top:10px">
-          <label for="variante">Fassung</label>
-          <select id="variante"></select>
-          <p class="hinweis" id="fassunghinweis"></p>
+        <div id="pruefmasse">
+          <div class="paar">
+            <div class="feld"><label for="anzahl">Wörter je Prüfung</label>
+              <input type="number" id="anzahl" min="6" max="20" step="2" value="12"></div>
+            <div class="feld"><label for="luecken">davon Lücken</label>
+              <input type="number" id="luecken" min="2" max="6" value="4"></div>
+          </div>
+          <div class="feld" style="margin-top:10px">
+            <label for="variante">Fassung</label>
+            <select id="variante"></select>
+            <p class="hinweis" id="fassunghinweis"></p>
+          </div>
         </div>
         <div class="feld" style="margin-top:10px">
           <label for="listenwahl">Vokabelliste</label>
         <select id="listenwahl"></select>
         <p class="hinweis" id="listenhinweis"></p>
 
+        <div id="fancyfeld">
         <label id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
         <div class="dreier">
           <div class="feld"><label for="fancy">einzelne Wörter</label>
@@ -458,6 +461,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <textarea id="fancywoerter" hidden
           placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
         <p class="hinweis" id="fancyhinweis"></p>
+        </div>
 
         <label class="tick" for="paed"><input type="checkbox" id="paed">
           <span>Nach pädagogischen Kriterien ranken<span class="sub">sonst wie bisher: nach Häufigkeit</span></span></label>
@@ -784,8 +788,10 @@ function posten(titel, wert, betont){
 
 function zeichneTeile(){
   const teile = $("teile");
+  const b = bestellt();
   teile.innerHTML = "";
   for(const teil of [1,2]){
+    if(!b.teil(teil)) continue;
     const sortiert = testWoerter(teil);
     const aA = auswahlFuer(teil, "A", sortiert);
     const aB = auswahlFuer(teil, "B", sortiert);
@@ -893,6 +899,40 @@ function gewaehlteTeile(){
       text:"Prüfung Teil " + (teil === 1 ? "I" : "II") + " Niveau " + niv});
   }
   return t;
+}
+
+/* Was gerade bestellt ist - danach richtet sich, was überhaupt sichtbar
+   ist. Ein Regler für den Anspruch der Prüfung, wenn keine Prüfung bestellt
+   ist, stellt eine Frage, die niemand gestellt hat; und wer ihn verschiebt,
+   glaubt danach, etwas eingestellt zu haben. */
+function bestellt(){
+  const t = gewaehlteTeile();
+  const niv = n => t.some(x => x.art === "pruefung" && x.niveau === n);
+  return {
+    liste: t.some(x => x.art === "liste"),
+    pruefungen: t.some(x => x.art === "pruefung"),
+    A: niv("A"), B: niv("B"),
+    teil: n => t.some(x => x.art === "pruefung" && x.teil === n),
+  };
+}
+
+/* Blendet aus, was zur Bestellung nicht gehört. Ausgeblendet, nicht nur
+   gesperrt: Ein grauer Regler sieht aus wie etwas, das man gleich brauchen
+   wird. */
+function zeichneSichtbarkeit(){
+  const b = bestellt();
+  $("anspruchfeld").hidden = !b.pruefungen;
+  $("anspruchA").hidden = !b.A;
+  $("anspruchB").hidden = !b.B;
+  $("textfeld").hidden = !b.pruefungen;
+  $("textreglerA").hidden = !b.A;
+  $("textreglerB").hidden = !b.B;
+  $("pruefmasse").hidden = !b.pruefungen;
+  // Die Vokabelliste selbst wird auch von den Prüfungen gebraucht - sie
+  // sagt, an welcher Liste sie hängen. Die aufgewerteten Fächer dagegen
+  // gehören zur neuen Liste und damit zur Bestellung "Vokabelliste".
+  $("fancyfeld").hidden = !b.liste;
+  $("teile").hidden = !b.pruefungen;
 }
 
 function auftrag(){
@@ -1120,7 +1160,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -1143,8 +1183,11 @@ $("unit").addEventListener("change", e => {
   $("wertB").textContent = state.ziel.B.toFixed(1);
   alles();
 });
+// Ein Kreuz mehr oder weniger ändert nicht nur den Auftragssatz, sondern
+// auch, welche Einstellungen überhaupt zur Sache gehören - und ob eine neue
+// Liste zur Wahl steht. Deshalb der ganze Durchgang.
 ["bLi","b1A","b1B","b2A","b2B"].forEach(id =>
-  $(id).addEventListener("change", zeichneAuftrag));
+  $(id).addEventListener("change", alles));
 
 for(const niv of ["A","B"]){
   $("ziel" + niv).addEventListener("input", e => {
@@ -1270,10 +1313,17 @@ function zeichneListenwahl(){
       + (li.offen ? " · " + li.offen + " offen" : "");
     wahl.appendChild(o);
   }
-  const o = document.createElement("option");
-  o.value = "0";
-  o.textContent = "＋ neue Liste V" + neueVersion() + " anlegen";
-  wahl.appendChild(o);
+  // Eine neue Liste anzulegen, ohne sie zu bestellen, ergäbe ein Paket,
+  // das niemand angefordert hat. Die Wahl steht deshalb nur da, wo die
+  // Vokabelliste angekreuzt ist.
+  if($("bLi").checked){
+    const o = document.createElement("option");
+    o.value = "0";
+    o.textContent = "＋ neue Liste V" + neueVersion() + " anlegen";
+    wahl.appendChild(o);
+  } else if(state.listeVersion === 0){
+    state.listeVersion = u.listen[u.listen.length - 1].version;
+  }
   wahl.value = String(state.listeVersion);
   if(!wahl.value || wahl.selectedIndex < 0){
     state.listeVersion = u.listen[0].version;

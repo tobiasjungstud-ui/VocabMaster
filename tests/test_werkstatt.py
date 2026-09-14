@@ -203,3 +203,57 @@ def test_der_ausloeser_haelt_sich_an_die_datenbank():
     )
     # Ohne beide Fähigkeiten muss der Knopf aus sein, statt ins Leere zu greifen.
     assert "!db || !selbst" in körper
+
+
+# ---------------------------------------------------------------------------
+# Nur zeigen, was zur Bestellung gehört
+# ---------------------------------------------------------------------------
+#: Welche Einstellung an welcher Bedingung hängt. Ein Regler für den Anspruch
+#: der Prüfung, wenn keine Prüfung bestellt ist, stellt eine Frage, die
+#: niemand gestellt hat - und wer ihn verschiebt, glaubt danach, etwas
+#: eingestellt zu haben.
+SICHTBARKEIT = {
+    "anspruchfeld": "b.pruefungen",
+    "anspruchA": "b.A",
+    "anspruchB": "b.B",
+    "textfeld": "b.pruefungen",
+    "textreglerA": "b.A",
+    "textreglerB": "b.B",
+    "pruefmasse": "b.pruefungen",
+    "teile": "b.pruefungen",
+    "fancyfeld": "b.liste",
+}
+
+
+def test_prueferei_verschwindet_ohne_pruefung():
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function zeichneSichtbarkeit()"):]
+    körper = körper[:körper.index("\n}")]
+    for kennung, bedingung in SICHTBARKEIT.items():
+        zeile = f'$("{kennung}").hidden = !{bedingung};'
+        assert zeile in körper, f"{kennung} hängt nicht an {bedingung}"
+    # Und jedes Feld, das die Seite versteckt, steht auch in der Tabelle -
+    # sonst wächst die eine Liste und die andere nicht.
+    versteckt = set(re.findall(r'\$\("(\w+)"\)\.hidden', körper))
+    assert versteckt == set(SICHTBARKEIT)
+
+
+def test_ein_kreuz_zeichnet_die_ganze_seite_neu():
+    """Sonst bleiben Regler stehen, die es nicht mehr gibt.
+
+    Der Haken ändert nicht nur den Auftragssatz: Er entscheidet auch, ob
+    eine neue Liste zur Wahl steht und welche Teile das Lineal zeigt.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert '$(id).addEventListener("change", alles));' in seite
+    assert "zeichneSichtbarkeit();" in seite[seite.index("function alles()"):]
+
+
+def test_eine_neue_liste_gibt_es_nur_mit_bestellter_liste():
+    """Sonst entstünde ein Paket, das niemand angefordert hat."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function zeichneListenwahl()"):]
+    körper = körper[:körper.index("\n}\n")]
+    assert 'if($("bLi").checked){' in körper
+    # Und eine schon getroffene Wahl darf nicht als Leiche stehenbleiben.
+    assert "state.listeVersion === 0" in körper

@@ -689,6 +689,46 @@ def _text_uebernehmen(alt: dict[str, Any], neu: dict[str, Any]) -> None:
         neu["task2"].pop("text_ueberholt", None)
 
 
+#: Die drei Arten offener Fächer. Alle drei werden nach denselben Massstäben
+#: gewählt, aber es sind verschiedene Bestellungen: Wer acht Wörter will,
+#: will nicht acht Wendungen und erst recht keine acht Satzanfänge.
+ARTEN = {
+    "wort": "ein einzelnes Wort",
+    "ausdruck": "eine Wendung aus mehreren Wörtern (Phrasal Verb, feste "
+                "Verbindung, Redewendung)",
+    "chunk": "ein Chunk - ein Satzanfang zum Weiterschreiben, der die "
+             "Fortsetzung dem Schüler überlässt; in der deutschen Spalte "
+             "steht die Entsprechung, ebenfalls angefangen",
+}
+
+#: Dieselben drei in Kurzform - für Berichte, wo die ganze Erklärung nur
+#: die Zeile sprengt.
+ARTEN_KURZ = {
+    "wort": "einzelnes Wort",
+    "ausdruck": "Wendung",
+    "chunk": "Satzanfang",
+}
+
+
+#: Woran ein Chunk zu erkennen ist: Er hört nicht auf, sondern lädt zum
+#: Weiterschreiben ein. Die Auslassungspunkte sind das einzige sichere
+#: Zeichen dafür - ohne sie ist eine mehrteilige Angabe eine Wendung.
+_CHUNK_ENDE = ("…", "...")
+
+
+def _art_von(englisch: str) -> str:
+    """Die Art eines selbst angegebenen Eintrags - aus der Schreibung.
+
+    Geraten wird hier nichts, was sich nicht ansehen lässt: Punkte am Ende
+    machen einen Satzanfang, mehrere Wörter eine Wendung, alles andere ist
+    ein einzelnes Wort.
+    """
+    text = englisch.strip()
+    if text.endswith(_CHUNK_ENDE):
+        return "chunk"
+    return "ausdruck" if len(text.split()) > 1 else "wort"
+
+
 def _fancy_platzhalter(
     nummer: int,
     ersetzt: str = "",
@@ -696,8 +736,9 @@ def _fancy_platzhalter(
     thema: str = "",
     leitwoerter: Iterable[str] = (),
     cefr: str = "",
+    art: str = "wort",
 ) -> dict[str, Any]:
-    """Ein offenes Fach für ein aufgewertetes Wort.
+    """Ein offenes Fach für ein aufgewertetes Wort oder eine Wendung.
 
     Hier steht **kein Massstab und kein Beispielwort**. Beides gehörte
     hartkodiert in den Quelltext, und damit wäre die Auswahl auf Dauer
@@ -709,8 +750,10 @@ def _fancy_platzhalter(
     Die Begründung gehört ins Feld ``begruendung`` - die Themenkontrolle
     liest sie, und sie bleibt im Paket nachlesbar.
     """
+    art = art if art in ARTEN else "wort"
     eintrag = _list_entry(nummer, "", "", "fancy")
     lage = [
+        f"Gesucht ist {ARTEN[art]}.",
         f"Wortfeld der Unit: {thema}." if thema else "",
         f"Leitwörter: {', '.join(leitwoerter)}." if leitwoerter else "",
         f"Niveau der Liste: {cefr}." if cefr else "",
@@ -721,6 +764,7 @@ def _fancy_platzhalter(
         "Offenes Fach - englisch, deutsch, satz und begruendung im Chat "
         "setzen. " + " ".join(t for t in lage if t)
     )
+    eintrag["art"] = art
     eintrag["ersetzt"] = ersetzt
     eintrag["begruendung"] = ""
     return eintrag
@@ -795,6 +839,8 @@ def neue_liste(
     weitere: Iterable[Pack] = (),
     ranking: str = "zipf",
     stufe: str = "",
+    ausdruecke: int = 0,
+    chunks: int = 0,
 ) -> Pack:
     """Eine neue Fassung der **Vokabelliste** - V2, V3, ...
 
@@ -810,18 +856,29 @@ def neue_liste(
     Bericht.
 
     ``eigene`` sind selbst angegebene Wörter (``"englisch=deutsch"``),
-    ``fancy`` die Zahl der zusätzlichen Fächer, die im Chat gefüllt werden.
-    Sie treten an die Stelle der zugänglichsten Wörter der frischen Auswahl -
-    die Liste bleibt bei 60, sie muss auf eine A4-Seite passen.
+    ``fancy`` die Zahl der offenen Fächer für einzelne Wörter, ``ausdruecke``
+    die für Wendungen und ``chunks`` die für Satzanfänge zum
+    Weiterschreiben. Alle drei werden im Chat gefüllt und nach denselben
+    Massstäben gewählt; getrennt gezählt werden sie, weil es verschiedene
+    Bestellungen sind - wer acht Wörter will, will nicht acht Redewendungen
+    und nicht acht Satzanfänge.
+
+    Alle Fächer treten an die Stelle der zugänglichsten Wörter der frischen
+    Auswahl - die Liste bleibt bei 60, sie muss auf eine A4-Seite passen.
 
     Beispielsätze werden übernommen, wo dasselbe Wort schon einen hatte:
     Ein Satz gehört zum Wort, nicht zur Liste.
     """
     settings = settings or Settings()
     vorgaben = [_wortangabe(t) for t in eigene]
-    plaetze = int(fancy) + len(vorgaben)
-    if plaetze < 0:
+    if int(fancy) < 0 or int(ausdruecke) < 0 or int(chunks) < 0:
         raise ValueError("Die Zahl der Fächer kann nicht negativ sein.")
+    # Erst die selbst angegebenen, dann die offenen Wort-, dann die
+    # Ausdrucks-, zuletzt die Chunk-Fächer - so steht im Paket, was wofür
+    # gedacht ist.
+    arten = (["wort"] * len(vorgaben) + ["wort"] * int(fancy)
+             + ["ausdruck"] * int(ausdruecke) + ["chunk"] * int(chunks))
+    plaetze = len(arten)
 
     quellen = [pack, *weitere]
     schon = [e.get("englisch", "") for p in quellen for e in p.all_entries]
@@ -872,16 +929,18 @@ def neue_liste(
         weichen = sorted(kandidaten[:plaetze], key=lambda x: (x[1], x[2]))
         belegung: list[tuple[str, str] | None] = list(vorgaben)
         belegung += [None] * (len(weichen) - len(belegung))
-        for (note, test, i), vorgabe in zip(weichen, belegung, strict=True):
+        for (note, test, i), vorgabe, art in zip(
+                weichen, belegung, arten, strict=True):
             alt_e = neu.data["liste"][test][i]
             raus = alt_e.get("englisch", "")
             if vorgabe is None:
                 neu.data["liste"][test][i] = _fancy_platzhalter(
-                    alt_e["nr"], raus, note, thema, leit, cefr
+                    alt_e["nr"], raus, note, thema, leit, cefr, art
                 )
             else:
                 englisch, deutsch = vorgabe
                 eintrag = _list_entry(alt_e["nr"], englisch, deutsch, "fancy")
+                eintrag["art"] = _art_von(englisch)
                 eintrag["ersetzt"] = raus
                 eintrag["begruendung"] = ""
                 alt_satz = saetze.get(englisch.lower())
@@ -897,6 +956,8 @@ def neue_liste(
         "listen_zuvor": sorted(p.liste_version for p in quellen),
         "neu_gewaehlt": sorted(w for w in jetzt if w.lower() not in frueher),
         "ersetzt": [{"raus": a, "rein": b} for a, b in ersetzt],
+        "faecher": {"wort": int(fancy), "ausdruck": int(ausdruecke),
+                    "chunk": int(chunks), "selbst_angegeben": len(vorgaben)},
         "saetze_uebernommen": uebernommen,
     }
     # Die Prüfungen stammen aus `scaffold` und hängen damit schon an der

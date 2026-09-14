@@ -99,3 +99,15 @@ def test_gebaute_seite_ist_vollstaendig():
         "vokabelwerkstatt.html passt nicht zu daten.json - "
         "`python werkstatt/bauen.py` ausführen."
     )
+
+
+def test_die_drei_arten_stehen_auch_auf_der_seite():
+    """Was `neue_liste` bestellen kann, muss die Werkstatt anbieten können.
+
+    Die Wendungen waren einmal in der Anwendung fertig und auf der Seite
+    nicht vorhanden - da nützen sie niemandem.
+    """
+    seite = (WERKSTATT / "vokabelwerkstatt.html").read_text("utf-8")
+    for feld in ("fancy", "ausdruecke", "chunks"):
+        assert f'id="{feld}"' in seite, f"Zählfeld {feld} fehlt"
+        assert f'state.{feld}' in seite, f"{feld} landet nicht im Auftrag"

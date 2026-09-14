@@ -118,7 +118,10 @@ Reihenfolge:
    Prüfbericht und gehört in die Chat-Antwort.
 
 Über 40 % ist eine Ausnahme, kein Fehler: Die Anwendung baut trotzdem, meldet
-den Anteil aber als Warnung. Dann besonders sorgfältig gegenlesen.
+den Anteil aber als Warnung. Dann besonders sorgfältig gegenlesen. Das gilt
+auch, wenn die Grenze durch Wörter, Wendungen und Satzanfänge zusammen
+überschritten wird — drei Sorten Fächer summieren sich schnell. Ein Test
+wacht darüber, dass daraus kein Fehler wird.
 
 Stand mit der aktuellen Wortliste: Unit 1, 2, 3, 7 und 8 kommen ohne
 Ergänzung aus; Unit 4 braucht 2 Wörter, Unit 5 vier, Unit 6 fünfzehn (25 %).
@@ -246,6 +249,24 @@ frischen Auswahl. Das sind zuverlässig die Abschreibwörter: in Unit 1
 `--fancy N` öffnet N Fächer, die **im Chat** gefüllt werden. Das Fach
 liefert die **Lage**, nicht das Ergebnis: Wortfeld der Unit, Leitwörter,
 Niveauband, und welches Wort mit welcher Prüfnote gewichen ist.
+
+### Drei Arten von Fächern
+
+Ein Einzelwort, eine Wendung und ein Satzanfang werden nach denselben
+Massstäben gewählt, aber es sind **verschiedene Bestellungen**: Wer acht
+Wörter will, will nicht acht Redewendungen.
+
+| Flagge | Art | was hineingehört |
+|---|---|---|
+| `--fancy N` | `wort` | ein einzelnes Wort |
+| `--ausdrücke N` | `ausdruck` | eine Wendung aus mehreren Wörtern — Phrasal Verb, feste Verbindung, Redewendung |
+| `--chunks N` | `chunk` | ein Satzanfang zum Weiterschreiben; die Fortsetzung schreibt die Klasse |
+
+Jedes Fach trägt seine Art im Feld `art` und nennt sie in seinem `hinweis`.
+Bei `--wort` wird die Art an der Schreibung erkannt: Auslassungspunkte am
+Ende machen einen Satzanfang, mehrere Wörter eine Wendung, alles andere ein
+Einzelwort. Auf der Werkstatt-Seite stehen dafür drei Zählfelder
+nebeneinander.
 
 Wonach ausgewählt wird, gehört ausdrücklich **nicht** in den Quelltext.
 Steht dort erst einmal ein Kriterienkatalog mit Musterwörtern, bekommt jede

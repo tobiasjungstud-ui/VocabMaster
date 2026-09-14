@@ -128,6 +128,8 @@ input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--accent)}
 .zurueck[hidden]{display:none}
 
 .paar{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.dreier{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
+@media (max-width:520px){ .dreier{grid-template-columns:1fr} }
 .feld label{display:block; font-size:11.5px; color:var(--ink-2); margin-bottom:4px}
 .feld select, .rail select{
   width:100%; padding:7px 8px; background:var(--paper);
@@ -431,15 +433,20 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <select id="listenwahl"></select>
         <p class="hinweis" id="listenhinweis"></p>
 
-        <label for="fancy" id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
-        <div class="paar">
-          <div class="feld"><input type="number" id="fancy" min="0" max="20" value="0"></div>
-          <div class="feld">
-            <select id="fancyquelle">
-              <option value="claude" selected>von Claude wählen lassen</option>
-              <option value="selbst">ich gebe sie selbst an</option>
-            </select>
-          </div>
+        <label id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
+        <div class="dreier">
+          <div class="feld"><label for="fancy">einzelne Wörter</label>
+            <input type="number" id="fancy" min="0" max="20" value="0"></div>
+          <div class="feld"><label for="ausdruecke">Wendungen</label>
+            <input type="number" id="ausdruecke" min="0" max="20" value="0"></div>
+          <div class="feld"><label for="chunks">Satzanfänge</label>
+            <input type="number" id="chunks" min="0" max="20" value="0"></div>
+        </div>
+        <div class="feld" style="margin-top:8px">
+          <select id="fancyquelle">
+            <option value="claude" selected>von Claude wählen lassen</option>
+            <option value="selbst">ich gebe sie selbst an</option>
+          </select>
         </div>
         <textarea id="fancywoerter" hidden
           placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
@@ -598,7 +605,8 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
-               listeVersion:1, fancy:0, fancyQuelle:"claude", fancyWoerter:"",
+               listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
+               fancyQuelle:"claude", fancyWoerter:"",
                datenbank:"", paed:false, stufe:""};
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
@@ -897,6 +905,8 @@ function auftrag(){
     // Aufgewertete Wörter gibt es nur zu einer neuen Liste. Sonst bliebe ein
     // vorher eingetippter Wert im Auftrag stehen und widerspräche der Wahl.
     fancy:legtNeueListeAn() ? state.fancy : 0,
+    ausdruecke:legtNeueListeAn() ? state.ausdruecke : 0,
+    chunks:legtNeueListeAn() ? state.chunks : 0,
     fancyQuelle:state.fancyQuelle,
     fancyWoerter:legtNeueListeAn()
       ? state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean) : [],
@@ -955,11 +965,20 @@ function befehlstext(a){
   // Absichtlich ohne Massstab und ohne Beispielwörter: wonach ein
   // aufgewertetes Wort gewählt wird, hängt am Wortfeld dieser Unit und wird
   // im Chat entschieden. Stünde es hier, käme für jede Unit dasselbe zurück.
+  // Wort, Wendung und Satzanfang sind verschiedene Bestellungen und werden
+  // deshalb einzeln genannt - "acht Fächer" liesse offen, wovon.
   const offen = Math.max(0, a.fancy - a.fancyWoerter.length);
-  if(offen > 0)
-    zeilen.push(offen + (a.fancyWoerter.length ? " weitere" : "") +
-                " aufgewertete Wörter für „" + a.thema + "“ selbst wählen, " +
-                "je mit Begründung.");
+  const faecher = [];
+  if(offen > 0) faecher.push(offen + (offen === 1 ? " einzelnes Wort" : " einzelne Wörter"));
+  if(a.ausdruecke > 0) faecher.push(a.ausdruecke + (a.ausdruecke === 1
+    ? " Wendung (Phrasal Verb, feste Verbindung)"
+    : " Wendungen (Phrasal Verbs, feste Verbindungen)"));
+  if(a.chunks > 0) faecher.push(a.chunks + (a.chunks === 1
+    ? " Satzanfang zum Weiterschreiben (Chunk)"
+    : " Satzanfänge zum Weiterschreiben (Chunks)"));
+  if(faecher.length)
+    zeilen.push("Aufgewertet für „" + a.thema + "“ selbst wählen: " +
+                faecher.join(", ") + " — je mit Begründung.");
   if(a.mehrereDatenbanken) zeilen.push("Datenbank: " + a.datenbank + ".");
   if(a.paed)
     zeilen.push("Wortauswahl nach pädagogischen Kriterien ranken, Stufe " +
@@ -1209,10 +1228,12 @@ function zeichneListenhinweis(){
   // hiesse, ihre Prüfungen ungültig zu machen - deshalb sind sie hier aus,
   // statt die Listenwahl im Rücken umzustellen.
   $("fancy").disabled = !neu;
+  $("ausdruecke").disabled = !neu;
+  $("chunks").disabled = !neu;
   $("fancyquelle").disabled = !neu;
   $("fancywoerter").disabled = !neu;
   $("fancylabel").textContent = neu
-    ? "Aufgewertete Wörter für V" + neueVersion()
+    ? "Aufgewertet für V" + neueVersion() + " — Wörter, Wendungen, Satzanfänge"
     : "Aufgewertete Wörter — nur für eine neue Liste";
 
   if(neu){
@@ -1233,14 +1254,14 @@ function zeichneListenhinweis(){
 
   const eigene = state.fancyWoerter.split("\n")
                       .map(z => z.trim()).filter(Boolean).length;
-  const gesamt = Math.max(state.fancy, eigene);
-  const restlich = Math.max(0, state.fancy - eigene);
+  const gesamt = Math.max(state.fancy, eigene) + state.ausdruecke + state.chunks;
+  const restlich = Math.max(0, gesamt - eigene);
   $("fancyhinweis").textContent = !neu
     ? "Eine bestehende Liste wird nicht verändert — ihre Prüfungen hängen daran."
     : gesamt === 0
       ? "Aufgewertete Wörter treten an die Stelle der zugänglichsten — die Liste "
         + "bleibt bei 60. Wonach gewählt wird, entscheidet das Wortfeld der Unit."
-      : gesamt + " Wörter ersetzen die " + gesamt + " zugänglichsten der Liste " +
+      : gesamt + " Fächer ersetzen die " + gesamt + " zugänglichsten Wörter der Liste " +
         "(sie bleibt bei 60, eine A4-Seite)" +
         (eigene ? " · " + eigene + " von Ihnen" : "") +
         (restlich ? " · " + restlich + " wähle ich" : "") + ".";
@@ -1261,6 +1282,13 @@ $("fancy").addEventListener("change", e => {
   e.target.value = state.fancy;
   zeichneListenhinweis(); zeichneAuftrag();
 });
+for(const feld of ["ausdruecke", "chunks"]){
+  $(feld).addEventListener("change", e => {
+    state[feld] = Math.max(0, Math.min(20, +e.target.value || 0));
+    e.target.value = state[feld];
+    zeichneListenhinweis(); zeichneAuftrag();
+  });
+}
 $("fancyquelle").addEventListener("change", e => {
   state.fancyQuelle = e.target.value;
   $("fancywoerter").hidden = state.fancyQuelle !== "selbst";

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import sys
+from collections import Counter
 from dataclasses import replace
 from pathlib import Path
 
@@ -37,6 +38,7 @@ from .niveau import (
     ziele_fuer_textstufe,
 )
 from .pack import (
+    ARTEN_KURZ,
     Pack,
     _schwierigkeit,
     ausgleichen,
@@ -439,7 +441,8 @@ def cmd_liste_neu(args) -> int:
 
     try:
         neu = neue_liste(pack, db, args.fancy, args.wort or (), settings, weitere,
-                         ranking=_ranking(args), stufe=getattr(args, "stufe", ""))
+                         ranking=_ranking(args), stufe=getattr(args, "stufe", ""),
+                         ausdruecke=args.ausdruecke, chunks=args.chunks)
     except ValueError as fehler:
         print(str(fehler))
         return 1
@@ -470,11 +473,14 @@ def cmd_liste_neu(args) -> int:
             print(f"    {e['raus']:<20} -> {e['rein']}")
     offen = [e for e in neu.all_entries if e.get("herkunft") == "fancy"
              and not e.get("englisch")]
+    nach_art = Counter(e.get("art", "wort") for e in offen)
     print(f"\n  Die vier Prüfungen sind frisch gegen V{neu.liste_version} "
           "aufgesetzt - ihre Lückentexte werden im Chat neu geschrieben.")
     if offen:
+        teile = [f"{n}× {ARTEN_KURZ.get(a, a)}"
+                 for a, n in sorted(nach_art.items()) if n]
         print(f"\nJetzt im Chat entscheiden: {len(offen)} offene Fächer "
-              "(englisch, deutsch, satz, begruendung).")
+              f"({', '.join(teile)}) - englisch, deutsch, satz, begruendung.")
         print(f"  Wortfeld: {neu.thema}")
         leit = neu.data.get("leitwoerter", [])
         if leit:
@@ -702,7 +708,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p.add_argument("paket", help="das bestehende Paket, z. B. kuratiert/unit_01.json")
     p.add_argument("--fancy", type=int, default=0,
-                   help="so viele Fächer für im Chat gewählte Wörter")
+                   help="so viele Fächer für im Chat gewählte einzelne Wörter")
+    p.add_argument("--ausdrücke", "--ausdruecke", dest="ausdruecke",
+                   type=int, default=0,
+                   help="so viele Fächer für Wendungen aus mehreren Wörtern "
+                        "(Phrasal Verbs, feste Verbindungen)")
+    p.add_argument("--chunks", type=int, default=0,
+                   help="so viele Fächer für Satzanfänge zum Weiterschreiben")
     p.add_argument("--wort", action="append", metavar="EN=DE",
                    help="selbst angegebenes Wort als 'englisch=deutsch' "
                         "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")

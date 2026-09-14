@@ -8,11 +8,16 @@ Lösungsschlüssel danach auf Wörter zeigt, die nicht mehr darin stehen.
 
 from __future__ import annotations
 
+import copy
+from collections import Counter
+
 import pytest
 
-from vocabmaster.checks import pruefe_paket
+from vocabmaster.checks import Pruefbericht, pruefe_neuwoerter, pruefe_paket
 from vocabmaster.documents import dateiname
 from vocabmaster.pack import (
+    ARTEN,
+    _art_von,
     _wortangabe,
     liste_fingerabdruck,
     neue_liste,
@@ -228,3 +233,66 @@ def test_niveau_b_steht_im_kopf(pack):
         else:
             assert "Niv." not in kopf, f"Niveau A trägt keinen Zusatz: {kopf}"
         assert ("Part I" if teil == 1 else "Part II") in kopf
+
+
+# ---------------------------------------------------------------------------
+# Drei Arten offener Fächer
+# ---------------------------------------------------------------------------
+def test_die_drei_arten_werden_getrennt_bestellt(pack, db, settings):
+    """Wer acht Wörter will, will nicht acht Wendungen.
+
+    Die drei Zahlen sind verschiedene Bestellungen und müssen im Paket
+    getrennt ankommen - sonst füllt der Chat drei Wörter, wo ein Satzanfang
+    hingehört.
+    """
+    neu = neue_liste(pack, db, fancy=3, settings=settings,
+                     ausdruecke=2, chunks=1)
+    offen = [e for e in neu.all_entries
+             if e.get("herkunft") == "fancy" and not e.get("englisch")]
+    assert len(offen) == 6
+    assert Counter(e["art"] for e in offen) == {
+        "wort": 3, "ausdruck": 2, "chunk": 1,
+    }
+    assert neu.data["abgeleitet_von"]["faecher"] == {
+        "wort": 3, "ausdruck": 2, "chunk": 1, "selbst_angegeben": 0,
+    }
+
+
+def test_jedes_fach_sagt_welche_art_gesucht_ist(pack, db, settings):
+    neu = neue_liste(pack, db, settings=settings, ausdruecke=1, chunks=1)
+    nach_art = {
+        e["art"]: e["hinweis"] for e in neu.all_entries
+        if e.get("herkunft") == "fancy" and not e.get("englisch")
+    }
+    assert set(nach_art) == {"ausdruck", "chunk"}
+    for art, hinweis in nach_art.items():
+        assert ARTEN[art] in hinweis, "das Fach muss seine Art benennen"
+    assert nach_art["ausdruck"] != nach_art["chunk"]
+
+
+@pytest.mark.parametrize("angabe,erwartet", [
+    ("inherit", "wort"),
+    ("wrap up", "ausdruck"),
+    ("What stood out to me was …", "chunk"),
+    ("One of the strongest points is ...", "chunk"),
+])
+def test_selbst_angegebene_arten_erkennt_die_schreibung(angabe, erwartet):
+    """Ein Chunk hört nicht auf - daran, und nur daran, ist er zu erkennen."""
+    assert _art_von(angabe) == erwartet
+
+
+def test_zu_viele_ergaenzte_woerter_sind_eine_warnung_kein_fehler(pack, settings):
+    """Der Anteil darf über 40 % steigen. Gebaut wird trotzdem.
+
+    Mit drei Sorten Fächer kommt eine Liste leicht über die Grenze. Das ist
+    eine Ausnahme, die man gegenlesen muss - kein Grund, die Arbeit
+    liegenzulassen.
+    """
+    viele = copy.deepcopy(pack)
+    for eintrag in viele.all_entries[:40]:
+        eintrag["herkunft"] = "ergänzt"
+    bericht = Pruefbericht()
+    pruefe_neuwoerter(viele, settings, bericht)
+    assert not bericht.fehler, "über der Grenze wird gebaut, nicht abgebrochen"
+    assert any("Ausnahme" in w.text for w in bericht.warnungen)
+    assert "67%" in bericht.kennzahlen["neuwoerter"]

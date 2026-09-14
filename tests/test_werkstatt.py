@@ -254,6 +254,7 @@ def test_eine_neue_liste_gibt_es_nur_mit_bestellter_liste():
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     körper = seite[seite.index("function zeichneListenwahl()"):]
     körper = körper[:körper.index("\n}\n")]
-    assert 'if($("bLi").checked){' in körper
+    assert 'const neuErlaubt = $("bLi").checked;' in körper
+    assert "if(neuErlaubt) kasten.appendChild(neuzeile(u));" in körper
     # Und eine schon getroffene Wahl darf nicht als Leiche stehenbleiben.
-    assert "state.listeVersion === 0" in körper
+    assert "if(!neuErlaubt && state.listeVersion === 0)" in körper

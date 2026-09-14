@@ -492,6 +492,24 @@ Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
 sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
 eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
 
+### Der Unit-Block steht in der Leiste
+
+Unter der Unit-Wahl steht alles, was man über die Unit wissen muss, bevor
+man etwas bestellt: Thema, Seiten im Lehrmittel, die fünf Kennzahlen der
+Herkunft — und darunter **alle Vokabellisten dieser Unit nebeneinander**,
+wählbar.
+
+Je Liste eine Zeile, die in einem Blick beantwortet, warum man diese und
+nicht die andere nimmt: Umfang, Abdruck, was daran aufgewertet ist, wie
+viele Fächer noch offen sind, welche Fassungen schon daran hängen und wann
+sie entstand. Dazu, als letzte Zeile, „＋ neue Liste anlegen" — aber nur,
+wenn die Vokabelliste angekreuzt ist (siehe unten).
+
+Die Kennzahlen stehen **untereinander, nicht nebeneinander**: Fünf Spalten
+in einer 296 px breiten Leiste ergäben 55 px je Spalte, die Beschriftungen
+brächen um. Untereinander lesen sich die ersten drei ausserdem als das, was
+sie sind — ein Trichter von 213 über 141 aussortierte auf 60.
+
 ### Sichtbar ist nur, was zur Bestellung gehört
 
 Die Seite blendet aus, was gerade nicht zur Sache gehört — **ausgeblendet,
@@ -504,7 +522,7 @@ gleich brauchen wird.
 | die Regler für Niveau B (beide Abschnitte) | keine Prüfung für Niveau B angekreuzt ist — und umgekehrt für A |
 | Teil I bzw. Teil II im Lineal | dieser Teil nicht angekreuzt ist |
 | die Fächer für aufgewertete Wörter | die Vokabelliste nicht angekreuzt ist |
-| „＋ neue Liste anlegen" in der Listenwahl | die Vokabelliste nicht angekreuzt ist |
+| die Zeile „＋ neue Liste anlegen" | die Vokabelliste nicht angekreuzt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher
 Liste sie hängen. War „neue Liste" gewählt und wird die Vokabelliste

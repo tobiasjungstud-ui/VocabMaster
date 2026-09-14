@@ -86,7 +86,6 @@ select{
   width:100%; padding:9px 10px; background:var(--paper);
   border:1px solid var(--line-2); border-radius:var(--r);
 }
-.unit-thema{font-size:12.5px; color:var(--ink-2); margin-top:8px; line-height:1.45}
 
 .tick{display:flex; align-items:flex-start; gap:9px; padding:5px 0; cursor:pointer}
 .tick input{margin:2px 0 0; accent-color:var(--accent); width:15px; height:15px}
@@ -172,19 +171,69 @@ textarea{
 .tafel-kopf h2{font-family:var(--serif); font-size:19px; font-weight:600}
 .tafel-kopf .note{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:auto}
 
-.unitkopf{padding:20px 18px 18px}
+/* Unit-Block in der Leiste: 296px breit, also zählt jede Zeile. Der Titel
+   trägt die Unit, die Kennzahlen stehen als Raster darunter - fünf kurze
+   Spalten lesen sich schneller als fünf Sätze. */
+.unitkarte{margin-top:10px}
+.unitkarte .unittitel{
+  font-family:var(--serif); font-size:17px; font-weight:600;
+  line-height:1.25; margin-top:2px; letter-spacing:-.01em;
+}
+.unitkarte .seiten{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:4px}
+/* Fünf Zahlen nebeneinander ergäben in 296px fünf Spalten zu 55px - die
+   Beschriftungen brächen um und man läse Trümmer. Untereinander stehen
+   sie ungebrochen da, und die ersten drei lesen sich als das, was sie
+   sind: ein Trichter von 213 über 141 aussortierte auf 60. */
+.herkunft{
+  margin:12px 0 0; border:1px solid var(--line);
+  border-radius:var(--r); overflow:hidden; background:var(--paper);
+}
+.herkunft div{
+  display:flex; align-items:baseline; gap:8px;
+  padding:4px 9px; border-top:1px solid var(--line);
+}
+.herkunft div:first-child{border-top:0}
+.herkunft dt{
+  font-family:var(--mono); font-size:9.5px; letter-spacing:.05em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+.herkunft dd{
+  margin:0 0 0 auto; font-family:var(--mono); font-size:13px;
+  font-weight:600; font-variant-numeric:tabular-nums;
+}
+.herkunft .betont dt{color:var(--nivB)}
+.herkunft .betont dd{color:var(--nivB)}
+
+/* Die Listen der Unit nebeneinander - man wählt hier, und man sieht im
+   selben Blick, worin sie sich unterscheiden. */
+.listenzeile{
+  display:block; width:100%; text-align:left; cursor:pointer;
+  padding:7px 9px; border:1px solid var(--line); background:var(--paper);
+  border-radius:var(--r); margin-bottom:5px; font:inherit; color:inherit;
+}
+.listenzeile:hover{border-color:var(--line-2)}
+.listenzeile[aria-checked="true"]{
+  border-color:var(--accent); background:var(--accent-soft);
+  box-shadow:inset 2px 0 0 var(--accent);
+}
+.listenzeile .kopf{display:flex; align-items:baseline; gap:7px}
+.listenzeile .vcode{font-family:var(--mono); font-size:12.5px; font-weight:600}
+.listenzeile[aria-checked="true"] .vcode{color:var(--accent)}
+.listenzeile .umfang{font-size:11.5px; color:var(--ink-2)}
+.listenzeile .abdruck{
+  margin-left:auto; font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
+}
+.listenzeile .merkmale{
+  margin-top:3px; font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
+  line-height:1.45; overflow-wrap:anywhere;
+}
+.listenzeile.neu{border-style:dashed}
+.listenzeile.neu .vcode{color:var(--ok)}
+
 .unitnr{
-  font-family:var(--serif); font-size:13px; letter-spacing:.14em;
+  font-family:var(--serif); font-size:11px; letter-spacing:.14em;
   text-transform:uppercase; color:var(--accent); font-weight:600;
 }
-.unitkopf h2{font-family:var(--serif); font-size:29px; font-weight:600; margin:4px 0 0; letter-spacing:-.015em}
-.unitkopf .seiten{font-family:var(--mono); font-size:12px; color:var(--ink-3); margin-top:6px}
-.herkunft{display:flex; flex-wrap:wrap; gap:0; margin-top:16px; border:1px solid var(--line); border-radius:var(--r); overflow:hidden}
-.herkunft div{flex:1 1 96px; padding:9px 12px; border-right:1px solid var(--line); background:var(--paper)}
-.herkunft div:last-child{border-right:0}
-.herkunft dt{font-family:var(--mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3)}
-.herkunft dd{margin:2px 0 0; font-family:var(--mono); font-size:17px; font-weight:600; font-variant-numeric:tabular-nums}
-.herkunft .betont dd{color:var(--nivB)}
 
 /* ---------- Lineal ---------- */
 .teil{padding:18px}
@@ -357,7 +406,16 @@ td.satz{color:var(--ink-2); font-size:12.5px}
       <section>
         <label class="legende" for="unit">Unit</label>
         <select id="unit"></select>
-        <p class="unit-thema" id="unitThema"></p>
+        <div class="unitkarte">
+          <div class="unitnr" id="unitNr"></div>
+          <div class="unittitel" id="unitTitel"></div>
+          <div class="seiten" id="unitSeiten"></div>
+        </div>
+        <dl class="herkunft" id="herkunft"></dl>
+
+        <span class="legende" style="margin-top:16px">Vokabellisten dieser Unit</span>
+        <div id="listenwahl" role="radiogroup" aria-label="Vokabelliste"></div>
+        <p class="hinweis" id="listenhinweis"></p>
       </section>
 
       <section>
@@ -438,10 +496,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           </div>
         </div>
         <div class="feld" style="margin-top:10px">
-          <label for="listenwahl">Vokabelliste</label>
-        <select id="listenwahl"></select>
-        <p class="hinweis" id="listenhinweis"></p>
-
         <div id="fancyfeld">
         <label id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
         <div class="dreier">
@@ -496,15 +550,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           </div>
           <div class="status" id="status"></div>
           <ul class="liste-auftraege" id="auftragsbuch"></ul>
-        </div>
-      </div>
-
-      <div class="tafel">
-        <div class="unitkopf">
-          <div class="unitnr" id="unitNr"></div>
-          <h2 id="unitTitel"></h2>
-          <div class="seiten" id="unitSeiten"></div>
-          <dl class="herkunft" id="herkunft"></dl>
         </div>
       </div>
 
@@ -768,7 +813,6 @@ function zeichneKopf(){
   $("unitNr").textContent = u.unit === 0 ? "Starter Unit" : "Unit " + u.unit;
   $("unitTitel").textContent = u.thema;
   $("unitSeiten").textContent = "Lehrmittel S. " + u.seiten + " · Hauptteil";
-  $("unitThema").textContent = u.thema;
   const h = u.herkunft;
   $("herkunft").innerHTML =
     posten("im Hauptteil", h.hauptteil) +
@@ -1302,33 +1346,81 @@ function zeichneFassungswahl(){
 }
 
 function zeichneListenwahl(){
-  const u = unitDaten(), wahl = $("listenwahl");
-  wahl.innerHTML = "";
-  for(const li of u.listen){
-    const o = document.createElement("option");
-    o.value = String(li.version);
-    o.textContent = "V" + li.version + " — " + li.woerter.length + " Wörter"
-      + (li.version === 1 ? " (Grundliste)" : "")
-      + (li.aufgewertet.length ? " · " + li.aufgewertet.length + " aufgewertet" : "")
-      + (li.offen ? " · " + li.offen + " offen" : "");
-    wahl.appendChild(o);
-  }
-  // Eine neue Liste anzulegen, ohne sie zu bestellen, ergäbe ein Paket,
-  // das niemand angefordert hat. Die Wahl steht deshalb nur da, wo die
-  // Vokabelliste angekreuzt ist.
-  if($("bLi").checked){
-    const o = document.createElement("option");
-    o.value = "0";
-    o.textContent = "＋ neue Liste V" + neueVersion() + " anlegen";
-    wahl.appendChild(o);
-  } else if(state.listeVersion === 0){
+  const u = unitDaten(), kasten = $("listenwahl");
+  // Eine neue Liste anzulegen, ohne sie zu bestellen, ergäbe ein Paket, das
+  // niemand angefordert hat. Die Zeile steht deshalb nur da, wo die
+  // Vokabelliste angekreuzt ist - und eine schon getroffene Wahl darf dann
+  // nicht als Leiche stehenbleiben.
+  const neuErlaubt = $("bLi").checked;
+  if(!neuErlaubt && state.listeVersion === 0)
     state.listeVersion = u.listen[u.listen.length - 1].version;
-  }
-  wahl.value = String(state.listeVersion);
-  if(!wahl.value || wahl.selectedIndex < 0){
+  if(!u.listen.some(li => li.version === state.listeVersion) && state.listeVersion !== 0)
     state.listeVersion = u.listen[0].version;
-    wahl.value = String(state.listeVersion);
-  }
+
+  kasten.innerHTML = "";
+  for(const li of u.listen) kasten.appendChild(listenzeile(li));
+  if(neuErlaubt) kasten.appendChild(neuzeile(u));
+}
+
+/* Eine Zeile je Liste. Sie muss in einem Blick beantworten, warum man
+   diese und nicht die andere nimmt: wie viele Wörter, was daran aufgewertet
+   ist, welche Prüfungen schon daran hängen - und der Abdruck, an dem eine
+   Prüfung ihre Liste wiedererkennt. */
+function listenzeile(li){
+  const k = document.createElement("button");
+  k.type = "button";
+  k.className = "listenzeile";
+  k.setAttribute("role", "radio");
+  k.setAttribute("aria-checked", String(li.version === state.listeVersion));
+  const merkmale = [];
+  if(li.version === 1) merkmale.push("Grundliste");
+  if(li.aufgewertet.length) merkmale.push(li.aufgewertet.length + " aufgewertet");
+  if(li.offen) merkmale.push(li.offen + " offen");
+  merkmale.push(li.fassungen.length
+    ? "Fassung " + li.fassungen.join(", ")
+    : "noch keine Fassung");
+  if(li.erzeugt) merkmale.push(kurzdatum(li.erzeugt));
+  k.innerHTML =
+    '<span class="kopf"><span class="vcode">V' + li.version + '</span>' +
+    '<span class="umfang">' + li.woerter.length + ' Wörter</span>' +
+    '<span class="abdruck">' + esc(li.abdruck) + '</span></span>' +
+    '<span class="merkmale">' + esc(merkmale.join(" · ")) + '</span>';
+  k.addEventListener("click", () => listeWaehlen(li.version));
+  return k;
+}
+
+/* "2026-09-10" kostet in einer 296px breiten Zeile mehr Platz, als es
+   wert ist; das Jahr steht ohnehin für alle gleich da. */
+function kurzdatum(iso){
+  const d = new Date(iso);
+  return isNaN(d) ? iso
+    : d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"});
+}
+
+function neuzeile(u){
+  const k = document.createElement("button");
+  k.type = "button";
+  k.className = "listenzeile neu";
+  k.setAttribute("role", "radio");
+  k.setAttribute("aria-checked", String(state.listeVersion === 0));
+  k.innerHTML =
+    '<span class="kopf"><span class="vcode">＋ V' + neueVersion() + '</span>' +
+    '<span class="umfang">neu anlegen</span></span>' +
+    '<span class="merkmale">frisch aus der Datenbank gewählt · aus V' +
+    u.listen[u.listen.length - 1].version + ' · die bestehenden bleiben</span>';
+  k.addEventListener("click", () => listeWaehlen(0));
+  return k;
+}
+
+function listeWaehlen(version){
+  state.listeVersion = version;
+  if(!state.eigen) vorgabenSetzen();
+  if(!state.textEigen) textVorgabenSetzen();
+  $("wertA").textContent = state.ziel.A.toFixed(1);
+  $("wertB").textContent = state.ziel.B.toFixed(1);
+  $("twertA").textContent = state.text.A.toFixed(1);
+  $("twertB").textContent = state.text.B.toFixed(1);
+  alles();
 }
 
 function zeichneListenhinweis(){
@@ -1352,13 +1444,11 @@ function zeichneListenhinweis(){
       "Wörter sind die von V" + basisListe().version + ".";
   } else {
     const li = listenDaten();
+    // Abdruck und Fassungen stehen schon in der gewählten Zeile. Was dort
+    // nicht steht, ist der Dateiname, unter dem alles abgelegt wird.
     $("listenhinweis").textContent =
-      "Die Prüfungen werden an V" + li.version + " gebunden (Dateiname Unit" +
-      String(state.unit).padStart(2, "0") + "_V" + li.version + "_…, Abdruck " +
-      li.abdruck + ")." +
-      (li.fassungen.length
-        ? " Dazu bestehen bereits Fassung " + li.fassungen.join(", ") + "."
-        : "");
+      "Die Prüfungen werden an V" + li.version + " gebunden — Unit" +
+      String(state.unit).padStart(2, "0") + "_V" + li.version + "_…";
   }
 
   const eigene = state.fancyWoerter.split("\n")
@@ -1376,16 +1466,6 @@ function zeichneListenhinweis(){
         (restlich ? " · " + restlich + " wähle ich" : "") + ".";
 }
 
-$("listenwahl").addEventListener("change", e => {
-  state.listeVersion = +e.target.value;
-  if(!state.eigen) vorgabenSetzen();
-  if(!state.textEigen) textVorgabenSetzen();
-  $("wertA").textContent = state.ziel.A.toFixed(1);
-  $("wertB").textContent = state.ziel.B.toFixed(1);
-  $("twertA").textContent = state.text.A.toFixed(1);
-  $("twertB").textContent = state.text.B.toFixed(1);
-  alles();
-});
 $("fancy").addEventListener("change", e => {
   state.fancy = Math.max(0, Math.min(20, +e.target.value || 0));
   e.target.value = state.fancy;

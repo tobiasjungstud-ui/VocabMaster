@@ -492,6 +492,53 @@ Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
 sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
 eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
 
+### Der Auslöser — der Knopf weckt den Chat
+
+Neben „Befehl kopieren" steht **„Auftrag auslösen"**. Er tut zweierlei, und
+die Reihenfolge ist nicht beliebig:
+
+1. Er legt den Auftrag in die Artifact-Datenbank (`auftraege/<kennung>`,
+   mit `erledigt: false`).
+2. Er **veröffentlicht die Seite neu**. Das ist die Klingel: Eine neue
+   Fassung weckt die Chat-Sitzung, ein Schreibvorgang in die Datenbank
+   weckt sie **nicht**.
+
+Andersherum wachte der Chat auf und fände nichts vor.
+
+Im Chat heisst das: Bei einer Weckmeldung zu diesem Artifact die offenen
+Aufträge lesen (`auftraege`, `erledigt: false`), genau das bauen, was
+darin steht — die Stückzahl gilt wie im kopierten Befehl —, und den Auftrag
+danach auf `erledigt: true` setzen. Die Seite zeigt bis dahin „ausgelöst".
+
+**Damit das geht, trägt die Seite ihre eigene Vorlage mit** (`__QUELLE__`).
+Eingebettet ist die *Vorlage mit ihren Platzhaltern*, nicht die gebaute
+Seite — sonst müsste die Datei sich selbst enthalten. Daraus setzt sie sich
+im Browser Zeichen für Zeichen so zusammen, wie `bauen.py` es tut.
+
+Deshalb gilt in beiden Umsetzungen dieselbe Reihenfolge, und **`__QUELLE__`
+steht zuletzt**:
+
+```
+__DATEN__   →  daten.json
+__KLINGEL__ →  die Kennung des auslösenden Auftrags (normalerweise null)
+__QUELLE__  →  vorlage.html selbst        ← zuletzt
+```
+
+Wird die Quelle früher eingesetzt, trifft die nächste Ersetzung ihr eigenes
+Vorkommen darin: Die zweite Fassung lässt sich noch bauen, die dritte nicht
+mehr. Genau so ist es beim ersten Versuch passiert. Zwei Tests wachen
+darüber — einer liest die Reihenfolge im Quelltext, einer prüft, dass die
+mitgetragene Vorlage alle drei Platzhalter unversehrt behält.
+
+**Nach einem ausgelösten Auftrag ist die lokale Datei nicht mehr die
+veröffentlichte**: Die Seite hat sich mit einer gesetzten Klingel neu
+veröffentlicht, `werkstatt/vokabelwerkstatt.html` trägt `null`. Vor dem
+nächsten Veröffentlichen also erst lesen, nicht blind überschreiben.
+
+Fehlen die Fähigkeiten (`db`, `artifact`) — etwa in einer Vorschau oder
+einer geteilten Ansicht —, ist der Knopf aus und sagt es; „Befehl kopieren"
+bleibt der Weg von Hand.
+
 ## Tests
 
 `pytest` und `ruff check src app.py tests werkstatt` müssen grün sein. Die Tests bauen

@@ -321,6 +321,13 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 .liste-auftraege .wann{font-family:var(--mono); font-size:11px; color:var(--ink-3)}
 .liste-auftraege .was{font-weight:500}
 .liste-auftraege .erledigt{margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--ok)}
+.liste-auftraege .wartet{margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--warn)}
+.knopf.haupt{background:var(--accent); border-color:var(--accent); color:#FFFDF8; font-weight:600}
+:root[data-theme="dark"] .knopf.haupt, :root:not([data-theme="light"]) .knopf.haupt{color:#0E1117}
+@media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .knopf.haupt{color:#FFFDF8} }
+.knopf.haupt:hover{filter:brightness(1.08); color:#FFFDF8}
+:root[data-theme="dark"] .knopf.haupt:hover, :root:not([data-theme="light"]) .knopf.haupt:hover{color:#0E1117}
+.knopf.haupt:disabled{opacity:.45; cursor:not-allowed; filter:none}
 
 .fussnote{
   margin-top:26px; padding-top:16px; border-top:1px solid var(--line);
@@ -479,8 +486,8 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <div class="auftrag">
           <div class="befehl" id="befehl"></div>
           <div class="knopfreihe">
+            <button class="knopf haupt" id="ausloesen">Auftrag auslösen</button>
             <button class="knopf" id="kopieren">Befehl kopieren</button>
-            <button class="knopf" id="ablegen">Im Auftragsbuch ablegen</button>
             <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
           </div>
           <div class="status" id="status"></div>
@@ -530,6 +537,14 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 </div>
 
 <script id="daten" type="application/json">__DATEN__</script>
+<!-- Die Seite trägt ihre eigene Vorlage mit. Nur so kann sie sich selbst
+     neu veröffentlichen - und das ist die Klingel: eine Neuveröffentlichung
+     weckt die Sitzung, ein Schreibvorgang in die Datenbank nicht.
+     Eingebettet ist die Vorlage mit ihren Platzhaltern, nicht die gebaute
+     Seite; sonst müsste sie sich selbst enthalten. Daraus setzt die Seite
+     sich Zeichen für Zeichen so zusammen, wie es bauen.py tut. -->
+<script id="vorlagenquelle" type="application/json">__QUELLE__</script>
+<script id="klingel" type="application/json">__KLINGEL__</script>
 <script>
 (function(){
 "use strict";
@@ -1014,7 +1029,7 @@ function zeichneAuftrag(){
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
-let db = null, downloads = null;
+let db = null, downloads = null, selbst = null;
 const buch = [];
 
 function zeichneBuch(){
@@ -1026,7 +1041,9 @@ function zeichneBuch(){
     return "<li><span class='wann'>" + wann + "</span><span class='was'>Unit " + e.unit +
       "</span><span style='color:var(--ink-3)'>" +
       esc((e.teile || []).map(t => t.text).join(", ")) + "</span>" +
-      (e.erledigt ? "<span class='erledigt'>erledigt</span>" : "") + "</li>";
+      (e.erledigt ? "<span class='erledigt'>erledigt</span>"
+                  : "<span class='wartet'>" +
+                    (e.ausgeloest ? "ausgelöst" : "abgelegt") + "</span>") + "</li>";
   }).join("");
 }
 
@@ -1041,7 +1058,49 @@ async function starteDb(){
         zeichneBuch();
       }, () => {});
   }catch(e){ db = null; }
+  zeichneAusloeser();
 }
+/* Die Klingel. `artifact.publish` legt eine neue Fassung dieser Seite an,
+   und genau darauf horcht die Chat-Sitzung - auf einen Schreibvorgang in
+   die Datenbank horcht sie nicht. Der Auftrag selbst steht deshalb in der
+   Datenbank (dort liest ihn der Chat nach), die Neuveröffentlichung sagt
+   nur Bescheid, dass einer da ist. */
+async function starteArtifact(){
+  try{
+    selbst = await window.claude?.use?.("artifact");
+  }catch(e){ selbst = null; }
+  zeichneAusloeser();
+}
+
+/* Die Seite baut sich selbst zusammen - in derselben Reihenfolge wie
+   `bauen.py`: erst die Daten, dann die eingebettete Vorlage, zuletzt die
+   Klingel. Wer die Reihenfolge tauscht, ersetzt den Platzhalter in der
+   eingebetteten Vorlage gleich mit, und die übernächste Fassung kann sich
+   nicht mehr selbst bauen. Ein Test wacht darüber. */
+function bauePlatte(klingel){
+  // Die Namen werden zusammengesetzt, nicht hingeschrieben: stünde einer
+  // hier als ganzes Wort, käme er in der Vorlage zweimal vor, und bauen.py
+  // wüsste nicht mehr, welches der beiden Vorkommen gemeint ist.
+  const P = n => "__" + n + "__";
+  const quelle = JSON.parse($("vorlagenquelle").textContent);
+  const daten = $("daten").textContent;
+  const fuerScript = w => JSON.stringify(w).split("</").join("<\\/");
+  // Die Quelle zuletzt: Sie muss alle drei Platzhalter unversehrt
+  // behalten, sonst kann die übernächste Fassung sich nicht mehr bauen.
+  return quelle
+    .replace(P("DATEN"), () => daten)
+    .replace(P("KLINGEL"), () => fuerScript(klingel))
+    .replace(P("QUELLE"), () => fuerScript(quelle));
+}
+
+function zeichneAusloeser(){
+  const k = $("ausloesen");
+  k.disabled = !db || !selbst;
+  k.title = k.disabled
+    ? "In dieser Ansicht nicht verfügbar — den Befehl kopieren."
+    : "Legt den Auftrag ab und weckt die Chat-Sitzung.";
+}
+
 async function starteDownloads(){
   try{
     downloads = await window.claude?.use?.("downloads");
@@ -1340,21 +1399,42 @@ $("kopieren").addEventListener("click", async () => {
   }
 });
 
-$("ablegen").addEventListener("click", async () => {
+$("ausloesen").addEventListener("click", async () => {
   const a = auftrag();
   if(!a.teile.length){ melde("Nichts ausgewählt.", "fehler"); return; }
-  if(!db){
-    melde("Das Auftragsbuch steht in dieser Ansicht nicht zur Verfügung — " +
-          "den Befehl stattdessen kopieren.", "fehler");
+  if(!db || !selbst){
+    melde("Auslösen steht in dieser Ansicht nicht zur Verfügung — " +
+          "den Befehl stattdessen kopieren und im Chat einfügen.", "fehler");
     return;
   }
+  const knopf = $("ausloesen");
+  knopf.disabled = true;
+  const id = "u" + String(a.unit).padStart(2, "0") + "-" + Date.now();
   try{
-    const id = "u" + String(a.unit).padStart(2, "0") + "-" + Date.now();
-    await db.doc("auftraege/" + id).set(Object.assign({erledigt:false}, a));
-    melde("Abgelegt. Im Chat genügt jetzt: „Nimm den nächsten Auftrag.“", "ok");
+    // Erst ablegen, dann klingeln. Andersherum wachte der Chat auf und
+    // fände nichts vor.
+    await db.doc("auftraege/" + id).set(
+      Object.assign({erledigt:false, ausgeloest:true, id:id}, a));
   }catch(e){
+    knopf.disabled = false;
     melde("Ablegen ist fehlgeschlagen: " + (e && e.message ? e.message : "unbekannt"),
           "fehler");
+    return;
+  }
+  melde("Abgelegt — wecke die Sitzung …");
+  try{
+    await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
+    // Bis hierher kommt die Seite selten: nach `publish` lädt jede offene
+    // Ansicht die neue Fassung, diese eingeschlossen.
+    melde("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
+  }catch(e){
+    knopf.disabled = false;
+    const code = e && e.code ? e.code : "";
+    melde(code === "conflict"
+      ? "Eine neuere Fassung der Seite ist dazwischengekommen. Der Auftrag "
+        + "liegt im Buch — im Chat genügt: „Nimm den nächsten Auftrag.“"
+      : "Die Sitzung liess sich nicht wecken. Der Auftrag liegt im Buch — "
+        + "im Chat genügt: „Nimm den nächsten Auftrag.“", "fehler");
   }
 });
 
@@ -1377,7 +1457,16 @@ $("wertB").textContent = state.ziel.B.toFixed(1);
 $("twertA").textContent = state.text.A.toFixed(1);
 $("twertB").textContent = state.text.B.toFixed(1);
 alles();
+zeichneAusloeser();
 starteDb();
+starteArtifact();
 starteDownloads();
+
+/* Eine benannte Naht für den Test. Dass die Seite sich Zeichen für Zeichen
+   so zusammensetzt wie bauen.py, ist die Voraussetzung dafür, dass der
+   Auslöser die Seite nicht beschädigt - und das lässt sich nur prüfen,
+   wenn der Test an die Funktion herankommt. Sonst wird hier nichts nach
+   aussen gereicht. */
+window.WERKSTATT_PRUEFUNG = {bauePlatte};
 })();
 </script>

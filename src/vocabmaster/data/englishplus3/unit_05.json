@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 5,
  "titel": "Unit 5",
- "thema": "",
+ "thema": "Lebenswege, Zukunftspläne und Alter",
  "seiten": "48-57",
- "leitwoerter": [],
+ "leitwoerter": [
+  "ambitious",
+  "get married",
+  "retire young",
+  "life expectancy",
+  "get a degree",
+  "settle down",
+  "get a job",
+  "age group",
+  "get old",
+  "earn money"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

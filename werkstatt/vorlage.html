@@ -1033,17 +1033,52 @@ function handarbeitVerwerfen(){
   if(state.autoNeu){ $("bLi").checked = false; state.autoNeu = false; }
 }
 
-function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
+/* Welche Units gerade gelten — die der **gewählten** Datenbank.
+   Vorher trug `daten.json` genau eine Unit-Liste, und das Auswahlfeld
+   schrieb nur eine Zeile in den Auftrag: Wer English Plus 3 wählte, sah
+   die Themen von English Plus 4, ohne dass es ihm jemand sagte. */
+function gewaehlteDatenbank(){
+  return (DATA.datenbanken || []).find(d => d.name === state.datenbank) || null;
+}
+function einheiten(){
+  const d = gewaehlteDatenbank();
+  return (d && d.units) ? d.units : (DATA.units || []);
+}
+
+function unitDaten(){ return einheiten().find(u => u.unit === state.unit); }
 
 /* Die gewählte Vokabelliste dieser Unit. Voreingestellt ist die erste
    erzeugte - das ist der Normalfall: eine Liste, dazu über die Zeit mehrere
    verschiedene Prüfungen. */
+/* Eine Unit **ohne** Vokabelliste ist ein echter Zustand, kein Fehler: Ein
+   frisch eingelesenes Lehrmittel hat für keine seiner Units eine, und genau
+   dort fängt man an. Statt zwanzig Abfragen auf `undefined` bekommt sie
+   diese leere Liste — null Wörter, Version 0, und aus ihr entsteht V1.
+   Gezeigt wird die 0 nirgends; wo eine Nummer hingehört, fragt die Seite
+   vorher `hatListe()`. */
+/* Eine Vokabelliste hat 60 Wörter - sie muss auf eine A4-Seite passen.
+   Die Zahl steht hier, damit die Waage auch dann etwas zu wiegen hat, wenn
+   es noch keine Liste gibt, an der man sie ablesen könnte. */
+const LISTENUMFANG = 60;
+
+const OHNE_LISTE = {
+  version: 0, woerter: [], aufgewertet: [], pruefungen: [], fassungen: [],
+  fingerabdruck: "", offen: 0, erzeugt: "", echt: {}, liste_blatt: "",
+};
+
+function hatListe(){
+  const u = unitDaten();
+  return !!(u && u.listen && u.listen.length);
+}
+
 function listenDaten(){
   const u = unitDaten();
+  if(!u || !u.listen.length) return OHNE_LISTE;
   return u.listen.find(l => l.version === state.listeVersion) || u.listen[0];
 }
 function neueVersion(){
   const u = unitDaten();
+  if(!u || !u.listen.length) return 1;   // die erste dieser Unit
   return Math.max(...u.listen.map(l => l.version)) + 1;
 }
 /* Eine neue Liste entsteht, wenn sie bestellt ist - das Häkchen
@@ -1086,7 +1121,7 @@ function vorgabenSetzen(){
    Lückentexte, die im Paket liegen. Deshalb steht sie auch als Strich auf
    der Bahn - man sieht, wie weit man sich von ihr entfernt. */
 function normalWort(niveau){
-  const werte = DATA.units.flatMap(u => u.listen.flatMap(li =>
+  const werte = einheiten().flatMap(u => u.listen.flatMap(li =>
     [1,2].map(t => (li.echt || {})["t" + t + niveau]).filter(Boolean)
          .map(x => x.schnitt)));
   return werte.length ? werte.reduce((a,b) => a+b, 0) / werte.length : 0;
@@ -1188,7 +1223,9 @@ function zeichneHerkunft(li){
   const ausListe = li.woerter.filter(aus).length;
   const ergaenzt = li.woerter.length - ausListe;
   $("herkunft").innerHTML =
-    '<div class="kopfzeile"><dt>V' + li.version + '</dt><dd></dd></div>' +
+    '<div class="kopfzeile"><dt>' +
+      (li.version ? 'V' + li.version : 'noch keine Liste') +
+      '</dt><dd></dd></div>' +
     posten("im Hauptteil", h.hauptteil) +
     posten("aussortiert", h.gefiltert) +
     posten("in dieser Liste", ausListe) +
@@ -1351,10 +1388,16 @@ function lehrmittelBefehl(d, beleg){
     "vocabmaster db import data/" + d.datei + " --name " + d.name +
     " --titel " + anf(d.titel) +
     (d.beschreibung ? " --beschreibung " + anf(d.beschreibung) : "") +
-    "\n\nDanach werkstatt/export.py, werkstatt/beilagen.py und " +
+    "\n\nDann die Themen ableiten — das gehört zum Import wie die " +
+    "Häufigkeiten: „vocabmaster --datenbank " + d.name + " db themen --offen“ " +
+    "zeigt je Unit den Beleg; daraus je Unit eine Zeile Thema und acht bis " +
+    "zwölf Leitwörter in themen.json eintragen, jedes Leitwort gegen die " +
+    "Unit prüfen, noch einmal importieren.\n\n" +
+    "Danach werkstatt/export.py, werkstatt/beilagen.py und " +
     "werkstatt/bauen.py laufen lassen und die Seite neu veröffentlichen, " +
-    "damit " + d.name + " in der Auswahl steht. " +
-    "Erwartet: eine neue Datenbank — keine Vokabelliste, keine Prüfung.";
+    "damit " + d.name + " mit seinen Themen in der Auswahl steht. " +
+    "Erwartet: eine neue Datenbank mit Thema je Unit — keine Vokabelliste, " +
+    "keine Prüfung.";
 }
 
 function zeichneLehrmittel(){
@@ -1705,7 +1748,10 @@ function nachHandgriff(){
 
 function wortwahlZeichnen(){
   const links = spalteDabei(), rechts = spalteWeg();
-  const ziel = anzeigeListe().woerter.length;
+  // Wonach die Waage sich richtet: der Umfang der Liste, die man ansieht -
+  // und wenn es noch keine gibt, die 60, auf die jede Liste kommt. "0 von 0
+  // - passt" wäre die Auskunft, alles sei in Ordnung.
+  const ziel = anzeigeListe().woerter.length || LISTENUMFANG;
   const w = $("waage");
   const ab = links.length - ziel;
   w.textContent = links.length + " von " + ziel +
@@ -1979,8 +2025,14 @@ function befehlstext(a){
   // zu bauen - auch wenn links nur die Vokabelliste angekreuzt war. Deshalb
   // steht der Satz nur da, wo wirklich Prüfungen bestellt sind.
   if(a.neueListe){
-    zeilen.push("Sie entsteht aus V" + a.basisVersion +
-                "; die bestehenden Listen bleiben unangetastet." +
+    // Die **erste** Liste einer Unit entsteht aus nichts: Sie wird frisch
+    // aus der Datenbank gewählt. "Sie entsteht aus V0" wäre eine Herkunft,
+    // die es nicht gibt.
+    zeilen.push((a.basisVersion
+                  ? "Sie entsteht aus V" + a.basisVersion +
+                    "; die bestehenden Listen bleiben unangetastet."
+                  : "Es ist die erste Liste dieser Unit — frisch aus der " +
+                    "Datenbank gewählt.") +
                 (a.hatPruefungen
                   ? " Die Prüfungen beziehen sich auf V" + a.listeVersion + "."
                   : " Künftige Prüfungen dieser Unit beziehen sich dann auf V" +
@@ -2295,15 +2347,28 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
-DATA.units.forEach(u => {
-  const o = document.createElement("option");
-  o.value = u.unit;
-  o.textContent = (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit) +
-    " — " + u.thema + (u.seiten ? " · S. " + u.seiten : "");
-  $("unit").appendChild(o);
-});
+/* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
+   es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es
+   dort gibt. Sonst stünde eine Nummer darin, die das andere Lehrmittel gar
+   nicht hat. */
+function zeichneUnitwahl(){
+  const wahl = $("unit"), liste = einheiten();
+  const vorher = state.unit;
+  wahl.innerHTML = "";
+  for(const u of liste){
+    const o = document.createElement("option");
+    o.value = u.unit;
+    const name = u.titel || (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit);
+    o.textContent = name + (u.thema ? " — " + u.thema : " — (Thema offen)") +
+      (u.seiten ? " · S. " + u.seiten : "");
+    wahl.appendChild(o);
+  }
+  if(!liste.some(u => u.unit === vorher))
+    state.unit = liste.length ? liste[0].unit : 0;
+  wahl.value = String(state.unit);
+}
 $("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +
   esc(DATA.quelle.importiert) + " · SHA-256 " +
   esc(String(DATA.quelle.pruefsumme_sha256).slice(0, 12));
@@ -2312,7 +2377,7 @@ $("unit").addEventListener("change", e => {
   state.unit = +e.target.value;
   // Die Handarbeit gehörte zur alten Unit; ihre Wörter gibt es hier nicht.
   handarbeitVerwerfen();
-  state.listeVersion = unitDaten().listen[0].version;
+  state.listeVersion = hatListe() ? unitDaten().listen[0].version : 0;
   if(!state.eigen) vorgabenSetzen();
   if(!state.textEigen) textVorgabenSetzen();
   $("twertA").textContent = state.text.A.toFixed(1);
@@ -2455,10 +2520,21 @@ function zeichneFassungswahl(){
 
 function zeichneListenwahl(){
   const u = unitDaten(), kasten = $("listenwahl");
+  kasten.innerHTML = "";
+  if(!u || !u.listen.length){
+    // Es gibt noch keine. Die Übersicht sagt das, statt leer dazustehen -
+    // dort fragt man sich sonst, ob etwas nicht geladen hat.
+    const leer = document.createElement("p");
+    leer.className = "hinweis";
+    leer.style.margin = "0";
+    leer.textContent = "Noch keine Vokabelliste für diese Unit. Die erste "
+      + "entsteht mit dem Häkchen „Neue Vokabelliste V1\u201c.";
+    kasten.appendChild(leer);
+    return;
+  }
   // Die Übersicht führt nur, was es gibt. Bestellt wird nebenan.
   if(!u.listen.some(li => li.version === state.listeVersion))
     state.listeVersion = u.listen[0].version;
-  kasten.innerHTML = "";
   for(const li of u.listen) kasten.appendChild(listenzeile(li));
 }
 
@@ -2551,11 +2627,13 @@ function zeichneListenhinweis(){
   $("bLiLabel").textContent = "Neue Vokabelliste V" + neueVersion();
 
   if(neu){
-    $("listenhinweis").textContent =
-      "V" + neueVersion() + " entsteht aus der oben gewählten V" +
-      basisListe().version + ". Die bestehenden bleiben unangetastet; " +
-      "die Vorschau zeigt so lange die Wörter von V" +
-      basisListe().version + ".";
+    $("listenhinweis").textContent = hatListe()
+      ? "V" + neueVersion() + " entsteht aus der oben gewählten V" +
+        basisListe().version + ". Die bestehenden bleiben unangetastet; " +
+        "die Vorschau zeigt so lange die Wörter von V" +
+        basisListe().version + "."
+      : "V1 ist die erste Liste dieser Unit — sie wird frisch aus der "
+        + "Datenbank gewählt. Eine Vorschau gibt es deshalb noch nicht.";
   } else {
     const li = listenDaten();
     const weitere = fassungsliste(li);
@@ -2629,7 +2707,14 @@ $("variante").addEventListener("change", e => {
   zeichneFassungswahl(); zeichneAuftrag();
 });
 $("datenbank").addEventListener("change", e => {
-  state.datenbank = e.target.value; zeichneDatenbankwahl(); zeichneAuftrag();
+  state.datenbank = e.target.value;
+  // Die Handarbeit gilt für Wörter **dieses** Lehrmittels. Beim Wechsel
+  // fällt sie weg, wie beim Wechsel der Unit - sonst stünde im Auftrag ein
+  // Wort, das es dort gar nicht gibt.
+  handarbeitVerwerfen();
+  if($("wortwahl").open) $("wortwahl").close();
+  state.liste = null;
+  alles();
 });
 $("paed").addEventListener("change", e => {
   state.paed = e.target.checked; zeichneRanking(); zeichneAuftrag();

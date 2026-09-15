@@ -285,7 +285,19 @@ def _dokumente(ordner: Path) -> dict[str, int]:
     return {d.name: d.stat().st_size for d in sorted(ordner.glob("*.docx"))}
 
 
-def baue(pakete: Path, db: Database, settings: Settings) -> dict:
+def _gehoert_dazu(pack: dict, db: Database) -> bool:
+    """Gehört dieses Paket zu dieser Datenbank?
+
+    An der Prüfsumme der Wortliste, nicht am Dateinamen: Zwei Lehrmittel
+    dürfen dieselbe Unit-Nummer haben, und `unit_01.json` sagt nicht,
+    aus welchem der beiden es stammt.
+    """
+    eigen = str(db.quelle.get("pruefsumme_sha256", ""))
+    hat = str((pack.get("quelle") or {}).get("pruefsumme_sha256", ""))
+    return bool(eigen) and eigen == hat
+
+
+def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, dict]:
     # Die Themen der **geladenen** Datenbank, nicht die einer Datei, die für
     # alle gälte. Sie stecken schon in den Unit-Dateien: `Database.load`
     # liest sie von dort, und dort hat sie der Import hingeschrieben.
@@ -304,6 +316,8 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
     quelle = None
     for datei in sorted(pakete.glob("unit_*.json")):
         pack = json.loads(datei.read_text("utf-8"))
+        if not _gehoert_dazu(pack, db):
+            continue
         unit = int(pack["unit"])
         version = int(pack.get("liste_version", 1))
         if int(pack.get("fassung", 1)) > 1:
@@ -322,12 +336,17 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
         quelle = quelle or pack["quelle"]
         roh.setdefault(unit, []).append(pack)
 
+    # Über **alle** Units der Datenbank, nicht nur über die mit Paketen. Ein
+    # frisch eingelesenes Lehrmittel hat noch keine einzige Vokabelliste -
+    # seine Units gibt es trotzdem, und aus ihnen wird die erste bestellt.
+    alle_units = sorted({r.unit for r in db.rows if r.unit is not None})
     units = []
-    for unit in sorted(roh):
+    for unit in alle_units:
         thema = themen.get(unit, {})
         zipf = _zipf_tabelle(db, unit)
         listen = []
-        for pack in sorted(roh[unit], key=lambda p: int(p.get("liste_version", 1))):
+        for pack in sorted(roh.get(unit, []),
+                           key=lambda p: int(p.get("liste_version", 1))):
             version = int(pack.get("liste_version", 1))
             woerter = _woerter(pack, zipf)
             aufgewertet = [
@@ -366,10 +385,12 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
                 "liste_blatt": dateiname(unit, "VocabularyList",
                                          liste_version=version),
             })
+        erstes = (roh.get(unit) or [{}])[0]
         units.append({
             "unit": unit,
-            "titel": roh[unit][0].get("unit_label") or f"Unit {unit}",
-            "thema": roh[unit][0].get("thema") or thema.get("thema", ""),
+            "titel": (erstes.get("unit_label") or thema.get("titel")
+                      or (f"Unit {unit}" if unit else "Starter Unit")),
+            "thema": erstes.get("thema") or thema.get("thema", ""),
             "seiten": thema.get("seiten", ""),
             "leitwoerter": thema.get("leitwoerter", []),
             "herkunft": _herkunft(db, unit, settings),
@@ -380,18 +401,50 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
             "hauptteil": _hauptteil(db, unit),
         })
 
+    return units, quelle or {}
+
+
+def baue(pakete: Path, db: Database, settings: Settings) -> dict:
+    """Alles, was die Oberfläche zeigt — **je Datenbank** ihre eigenen Units.
+
+    Vorher trug `daten.json` genau eine Unit-Liste: die der Grunddatenbank.
+    Das Auswahlfeld schrieb nur eine Zeile in den Auftrag, die Units darunter
+    blieben dieselben. Wer English Plus 3 wählte, sah die Themen von
+    English Plus 4 — und keine Meldung sagte ihm, dass er das Falsche
+    ansieht.
+    """
+    eigene, quelle = _einheiten(pakete, db, settings)
+
+    datenbanken = []
+    for eintrag in _dbs.alle():
+        satz = {
+            "name": eintrag.name, "titel": eintrag.titel,
+            "beschreibung": eintrag.beschreibung,
+            "vorhanden": eintrag.vorhanden,
+            "quelle": eintrag.quelle.get("datei", ""),
+            "importiert": eintrag.quelle.get("importiert", ""),
+            "units": [],
+        }
+        if eintrag.vorhanden:
+            if eintrag.verzeichnis.resolve() == (db.pfad or Path()).resolve():
+                satz["units"] = eigene
+            else:
+                satz["units"] = _einheiten(
+                    pakete, Database.load(eintrag.verzeichnis), settings)[0]
+        # `units` war bisher die Unit-**zahl**; sie steht jetzt in der Liste.
+        satz["anzahl_units"] = len(satz["units"]) or eintrag.units
+        # Wie viele Units noch kein Thema haben. Die Seite sagt es, statt
+        # ein leeres Feld zu zeigen, das nach einem Fehler aussieht.
+        satz["ohne_thema"] = sum(1 for u in satz["units"] if not u.get("thema"))
+        datenbanken.append(satz)
+
     return {
-        "quelle": quelle or {},
+        "quelle": quelle,
         "dokumente": _dokumente(GEBAUT),
-        # Welche Vokabeldatenbanken registriert sind. Die Seite zeigt sie
-        # zur Auswahl; gebaut wird im Chat mit --datenbank <Name>.
-        "datenbanken": [
-            {"name": d.name, "titel": d.titel, "beschreibung": d.beschreibung,
-             "units": d.units, "vorhanden": d.vorhanden,
-             "quelle": d.quelle.get("datei", ""),
-             "importiert": d.quelle.get("importiert", "")}
-            for d in _dbs.alle()
-        ],
+        # Welche Vokabeldatenbanken registriert sind, **mit ihren Units**.
+        # Die Seite zeigt die der gewählten; gebaut wird im Chat mit
+        # --datenbank <Name>.
+        "datenbanken": datenbanken,
         "aktive_datenbank": _dbs.GRUNDEINTRAG["name"],
         # Die Stufen des pädagogischen Rankings, mit ihren Bändern.
         "ranking_stufen": [
@@ -417,7 +470,9 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
             }
             for n, p in PROFILES.items()
         },
-        "units": units,
+        # Die Units der Grunddatenbank - der Stand, mit dem die Seite
+        # aufgeht. Beim Wechsel holt sie die der gewählten Datenbank.
+        "units": eigene,
     }
 
 

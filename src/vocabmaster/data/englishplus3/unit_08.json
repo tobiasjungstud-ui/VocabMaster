@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 8,
  "titel": "Unit 8",
- "thema": "",
+ "thema": "Film, Fernsehen und Geschichten",
  "seiten": "78-87",
- "leitwoerter": [],
+ "leitwoerter": [
+  "genre",
+  "thriller",
+  "comedy",
+  "science fiction",
+  "actor",
+  "screen",
+  "adaptation",
+  "episode",
+  "award",
+  "viewer"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

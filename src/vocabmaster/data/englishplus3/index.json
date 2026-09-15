@@ -12,7 +12,7 @@
    "unit": 0,
    "datei": "unit_00.json",
    "titel": "Starter Unit",
-   "thema": "",
+   "thema": "Alltag, Freizeit und Erlebtes",
    "anzahl": 70,
    "anzahl_hauptteil": 70
   },
@@ -20,7 +20,7 @@
    "unit": 1,
    "datei": "unit_01.json",
    "titel": "Unit 1",
-   "thema": "",
+   "thema": "Moden, Spielzeug und Trends vergangener Jahrzehnte",
    "anzahl": 143,
    "anzahl_hauptteil": 95
   },
@@ -28,7 +28,7 @@
    "unit": 2,
    "datei": "unit_02.json",
    "titel": "Unit 2",
-   "thema": "",
+   "thema": "Die Sinne — Riechen, Schmecken und Hören",
    "anzahl": 146,
    "anzahl_hauptteil": 106
   },
@@ -36,7 +36,7 @@
    "unit": 3,
    "datei": "unit_03.json",
    "titel": "Unit 3",
-   "thema": "",
+   "thema": "Abenteuersport und Natur im Freien",
    "anzahl": 142,
    "anzahl_hauptteil": 99
   },
@@ -44,7 +44,7 @@
    "unit": 4,
    "datei": "unit_04.json",
    "titel": "Unit 4",
-   "thema": "",
+   "thema": "Material, Abfall und Umwelt",
    "anzahl": 135,
    "anzahl_hauptteil": 93
   },
@@ -52,7 +52,7 @@
    "unit": 5,
    "datei": "unit_05.json",
    "titel": "Unit 5",
-   "thema": "",
+   "thema": "Lebenswege, Zukunftspläne und Alter",
    "anzahl": 91,
    "anzahl_hauptteil": 57
   },
@@ -60,7 +60,7 @@
    "unit": 6,
    "datei": "unit_06.json",
    "titel": "Unit 6",
-   "thema": "",
+   "thema": "Schule, Ausbildung und Berufswege",
    "anzahl": 124,
    "anzahl_hauptteil": 85
   },
@@ -68,7 +68,7 @@
    "unit": 7,
    "datei": "unit_07.json",
    "titel": "Unit 7",
-   "thema": "",
+   "thema": "Hilfsbereitschaft, Engagement und Zivilcourage",
    "anzahl": 120,
    "anzahl_hauptteil": 75
   },
@@ -76,7 +76,7 @@
    "unit": 8,
    "datei": "unit_08.json",
    "titel": "Unit 8",
-   "thema": "",
+   "thema": "Film, Fernsehen und Geschichten",
    "anzahl": 111,
    "anzahl_hauptteil": 70
   }

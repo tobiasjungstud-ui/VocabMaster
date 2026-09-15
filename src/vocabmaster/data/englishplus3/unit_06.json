@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 6,
  "titel": "Unit 6",
- "thema": "",
+ "thema": "Schule, Ausbildung und Berufswege",
  "seiten": "58-67",
- "leitwoerter": [],
+ "leitwoerter": [
+  "apprenticeship",
+  "secondary school",
+  "boarding school",
+  "pass exams",
+  "get a qualification",
+  "attend university",
+  "school rule",
+  "homeschooling",
+  "paramedic",
+  "apply for a course"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

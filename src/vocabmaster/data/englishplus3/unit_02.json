@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 2,
  "titel": "Unit 2",
- "thema": "",
+ "thema": "Die Sinne — Riechen, Schmecken und Hören",
  "seiten": "18-27",
- "leitwoerter": [],
+ "leitwoerter": [
+  "sense of smell",
+  "scent",
+  "odour",
+  "flavour",
+  "fragrance",
+  "perfume",
+  "texture",
+  "sensation",
+  "deaf",
+  "delicious"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

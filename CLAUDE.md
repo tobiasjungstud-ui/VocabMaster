@@ -102,22 +102,58 @@ eine: `load_themes()` ohne Pfad findet nichts. Fehlt einer Datenbank ihre
 Datei, bleiben Thema und Leitwörter leer — ehrlich leer ist besser als
 fremd gefüllt.
 
-Beim Import entsteht die Datei als **Gerüst**, wenn es noch keine gibt.
-Darin steht nur, was in der Wortliste wirklich steht: Unit-Nummer und
-Seitenbereich des Hauptteils. Thema und Leitwörter bleiben leer — die
-stehen im Lehrmittel, nicht in der Wortliste, und ein geratenes Thema wäre
-schlimmer als ein leeres. Der Import sagt es auch:
+#### Themen ableiten gehört zum Import — Standardverfahren
 
-```
-Themen: …/englishplus3/themen.json angelegt — je Unit Nummer und
-Seitenbereich aus der Wortliste, Thema und Leitwörter leer.
-  Sie stehen im Lehrmittel, nicht in der Wortliste. Eintragen, dann noch
-  einmal importieren.
+Die Wortliste eines Lehrmittels nennt kein Thema. Deshalb entsteht beim
+Import die `themen.json` als **offene Fächer**, je Unit eines — nach
+demselben Muster wie die aufgewerteten Wörter: Das Fach liefert die
+**Lage**, nicht das Ergebnis. Darin steht, was in der Wortliste wirklich
+steht: Unit-Nummer, Seitenbereich des Hauptteils und ein **Beleg**, die
+achtzehn seltensten Wörter der Unit. `go` und `make` stehen in jeder Unit
+und sagen nichts; `coasteering` und `orienteering` sagen alles.
+
+Gefüllt werden die Fächer **im Chat**, und zwar bei jedem Import, ohne dass
+danach gefragt werden muss:
+
+```bash
+vocabmaster --datenbank EnglishPlus3 db themen --offen   # die Fächer mit Beleg
 ```
 
-Eingetragen wird von Hand; danach noch einmal importieren, damit die
-Unit-Dateien es übernehmen. Eine bestehende Datei wird **nie**
-überschrieben — von Hand eingetragene Themen sind das Wertvollste daran.
+Je Unit eine Zeile Thema und acht bis zwölf Leitwörter, die das Wortfeld
+aufspannen. **Jedes Leitwort muss in seiner Unit vorkommen** — geprüft
+gegen die Wortliste, nicht aus dem Gedächtnis. Dann eintragen und noch
+einmal importieren, damit die Unit-Dateien es übernehmen; der Import sagt
+selbst, wenn Fächer offen sind. So sind auch die Themen von English Plus 4
+entstanden, und so sind die von English Plus 3 entstanden.
+
+Ein geratenes Thema in den Quelltext zu schreiben wäre das Gegenteil davon:
+Es sähe aus wie eine Angabe, und jede Unit bekäme dieselbe. Ein Test hält
+fest, dass das Gerüst kein Thema erfindet. Eine bestehende Datei wird
+**nie** überschrieben — eingetragene Themen sind das Wertvollste daran.
+
+#### Jede Datenbank bringt ihre Units mit
+
+`daten.json` trug einmal genau **eine** Unit-Liste: die der Grunddatenbank.
+Das Auswahlfeld schrieb nur eine Zeile in den Auftrag, die Units darunter
+blieben dieselben. Wer English Plus 3 wählte, las die Themen von English
+Plus 4 — und nichts sagte ihm, dass er das Falsche ansieht.
+
+Jetzt trägt jeder Eintrag in `datenbanken` seine eigenen Units (`units`),
+und die Seite liest **eine** Stelle (`einheiten()`), die die der gewählten
+Datenbank liefert. Ein Paket gehört zu der Datenbank, deren
+**Prüfsumme** es trägt — nicht zu der, deren Unit-Nummer es hat; zwei
+Lehrmittel dürfen dieselbe Unit 3 haben. Beim Wechsel fällt das Unit-Feld
+auf die erste Unit zurück, die es dort gibt, und die Handarbeit geht weg —
+sie bezöge sich sonst auf Wörter eines anderen Lehrmittels.
+
+**Eine Unit ohne Vokabelliste ist ein echter Zustand, kein Fehler.** Ein
+frisch eingelesenes Lehrmittel hat für keine seiner Units eine, und genau
+dort fängt man an. Die Seite zeigt sie trotzdem — mit Hauptteil,
+Kennzahlen und der Wortwahl, in der rechts alles steht und links nichts.
+Das Häkchen heisst dann „Neue Vokabelliste V1", der Auftrag sagt „die erste
+Liste dieser Unit — frisch aus der Datenbank gewählt", nicht „entsteht aus
+V0". Die Waage wiegt gegen die 60, auf die jede Liste kommt. Sieben Tests
+wachen darüber.
 
 Die Oberfläche liest die Themen nicht mehr aus einer Datei, sondern aus der
 geladenen Datenbank (`Database.themen`); dort stehen sie ohnehin, weil der
@@ -548,9 +584,11 @@ eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
 
 Unter der Datenbankwahl steht **„＋ Neues Lehrmittel"**. Das Fenster sammelt,
 was `vocabmaster db import` braucht — Name, Titel, eine Zeile zur Einordnung,
-die Excel-Wortliste — und schreibt daraus den fertigen Befehl samt Nachlauf
-(`export.py`, `beilagen.py`, `bauen.py`, neu veröffentlichen). Auslösen und
-Kopieren gehen denselben Weg wie jeder andere Auftrag.
+die Excel-Wortliste — und schreibt daraus den fertigen Befehl samt Nachlauf:
+Themen ableiten (`db themen --offen`, eintragen, noch einmal importieren),
+dann `export.py`, `beilagen.py`, `bauen.py`, neu veröffentlichen. Erwartet
+ist „eine neue Datenbank **mit Thema je Unit**". Auslösen und Kopieren gehen
+denselben Weg wie jeder andere Auftrag.
 
 Die Seite **legt die Datenbank nicht selbst an**: Die Excel-Datei einlesen,
 in Units zerlegen und die Häufigkeiten rechnen ist Python.

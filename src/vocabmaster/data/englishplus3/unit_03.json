@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 3,
  "titel": "Unit 3",
- "thema": "",
+ "thema": "Abenteuersport und Natur im Freien",
  "seiten": "28-37",
- "leitwoerter": [],
+ "leitwoerter": [
+  "kayaking",
+  "hiking",
+  "surfing",
+  "skydiving",
+  "instructor",
+  "wildlife",
+  "cave",
+  "cliff",
+  "skill",
+  "achievement"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 4,
  "titel": "Unit 4",
- "thema": "",
+ "thema": "Material, Abfall und Umwelt",
  "seiten": "38-47",
- "leitwoerter": [],
+ "leitwoerter": [
+  "recycle",
+  "pollution",
+  "rubbish",
+  "plastic",
+  "resource",
+  "waterproof",
+  "throw away",
+  "reduce",
+  "solar",
+  "battery"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 1,
  "titel": "Unit 1",
- "thema": "",
+ "thema": "Moden, Spielzeug und Trends vergangener Jahrzehnte",
  "seiten": "8-17",
- "leitwoerter": [],
+ "leitwoerter": [
+  "fad",
+  "craze",
+  "toy",
+  "decade",
+  "viral",
+  "hoodie",
+  "jeans",
+  "gadget",
+  "games console",
+  "fashion"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

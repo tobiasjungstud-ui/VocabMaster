@@ -167,6 +167,57 @@ def cmd_db_units(args) -> int:
     return 0
 
 
+def cmd_db_themen(args) -> int:
+    """Die offenen Themenfächer einer Datenbank — mit ihrem Beleg.
+
+    Ein Fach liefert die **Lage**, nicht das Ergebnis: Seitenbereich und die
+    seltensten Wörter der Unit. Das Thema selbst und die Leitwörter schreibt
+    der Chat und trägt sie in die Datei ein; danach noch einmal importieren.
+    """
+    ziel = _settings(args).database
+    pfad = themen_pfad(ziel)
+    themen = load_themes(pfad)
+    if not themen:
+        print(f"Keine Themendatei unter {pfad}.")
+        print("Sie entsteht beim Import: vocabmaster db import <wortliste> "
+              "--name <Name>")
+        return 1
+
+    offen = [u for u, th in sorted(themen.items()) if not th.get("thema")]
+    print(f"{pfad}")
+    print(f"{len(themen)} Units, davon {len(offen)} ohne Thema.\n")
+
+    for unit, th in sorted(themen.items()):
+        if args.offen and th.get("thema"):
+            continue
+        kopf = th.get("titel") or f"Unit {unit}"
+        seiten = f" · S. {th['seiten']}" if th.get("seiten") else ""
+        print(f"{kopf}{seiten}")
+        if th.get("thema"):
+            print(f"  Thema: {th['thema']}")
+            if th.get("leitwoerter"):
+                print(f"  Leitwörter: {', '.join(th['leitwoerter'])}")
+        else:
+            print("  Thema: — offen —")
+            beleg = th.get("beleg") or []
+            if beleg:
+                print("  Beleg (die seltensten Wörter des Hauptteils):")
+                for e in beleg:
+                    print(f"    {e.get('en', ''):<28} {e.get('de', '')}")
+            else:
+                print("  (kein Beleg hinterlegt — die Datei stammt aus einem "
+                      "älteren Import)")
+        print()
+
+    if offen:
+        print(f"Offen: {len(offen)} Units. Thema und acht bis zwölf Leitwörter "
+              "je Unit in")
+        print(f"  {pfad}")
+        print("eintragen, dann 'vocabmaster db import … --name …' noch einmal "
+              "laufen lassen.")
+    return 0
+
+
 def cmd_db_suche(args) -> int:
     db = _db(args)
     treffer = db.search(args.text, args.limit)
@@ -681,6 +732,12 @@ def build_parser() -> argparse.ArgumentParser:
     p = dbsub.add_parser("units", help="Übersicht über alle Units")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")
     p.set_defaults(func=cmd_db_units)
+
+    p = dbsub.add_parser("themen",
+                         help="offene Themenfächer einer Datenbank, mit Beleg")
+    p.add_argument("--offen", action="store_true",
+                   help="nur die Units ohne Thema")
+    p.set_defaults(func=cmd_db_themen)
 
     p = dbsub.add_parser("suche", help="in der Wortliste suchen")
     p.add_argument("text")

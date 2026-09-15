@@ -458,15 +458,37 @@ def load_themes(path: str | Path | None = None) -> dict[int, dict[str, Any]]:
     return {int(k): v for k, v in payload.get("themen", {}).items()}
 
 
+#: Wie viele Wörter als Beleg in ein offenes Themenfach kommen.
+BELEG_WOERTER = 18
+
+
+def _beleg(zeilen: list[Row]) -> list[dict[str, str]]:
+    """Die Wörter, an denen sich das Wortfeld einer Unit ablesen lässt.
+
+    Die **seltensten** des Hauptteils. `go` und `make` stehen in jeder Unit
+    und sagen nichts; `coasteering` und `orienteering` sagen alles. Das ist
+    aus der Wortliste gezogen, nicht ausgedacht: Der Beleg liefert die
+    **Lage**, das Thema schreibt der Chat.
+    """
+    haupt = [z for z in zeilen if z.kind == "hauptteil"] or list(zeilen)
+    selten = sorted(haupt, key=lambda z: (z.zipf if z.zipf is not None else 9.0))
+    return [{"en": z.english, "de": z.german} for z in selten[:BELEG_WOERTER]]
+
+
 def themen_geruest(
     result: ImportResult, verzeichnis: str | Path, titel: str = ""
 ) -> Path | None:
-    """Legt eine leere ``themen.json`` an, wenn die Datenbank noch keine hat.
+    """Legt die ``themen.json`` als **offene Fächer** an, wenn es keine gibt.
 
-    Geschrieben wird nur das, was **in der Wortliste steht**: die Unit-Nummer
-    und der Seitenbereich ihres Hauptteils. Thema und Leitwörter bleiben leer
-    - die stehen im Lehrmittel, nicht in der Wortliste, und ein geratenes
-    Thema wäre schlimmer als ein leeres: Es sähe aus wie eine Angabe.
+    Geschrieben wird nur, was in der Wortliste steht: Unit-Nummer,
+    Seitenbereich des Hauptteils und ein **Beleg** — die seltensten Wörter
+    der Unit, an denen ihr Wortfeld ablesbar ist.
+
+    Thema und Leitwörter bleiben **leer**. Sie stehen im Lehrmittel, nicht in
+    der Wortliste; ein geratenes Thema wäre schlimmer als ein leeres, weil es
+    aussähe wie eine Angabe. Gefüllt werden die Fächer im Chat — nach
+    demselben Muster wie die aufgewerteten Wörter: Das Fach liefert die Lage,
+    nicht das Ergebnis.
 
     Gibt den Pfad zurück, wenn eine Datei entstanden ist, sonst ``None``.
     """
@@ -480,29 +502,42 @@ def themen_geruest(
             continue
         seiten.setdefault(row.unit, []).append(row.page)
 
+    nach_unit: dict[int, list[Row]] = {}
+    for row in result.rows:
+        if row.unit is not None:
+            nach_unit.setdefault(row.unit, []).append(row)
+
     themen = {}
-    for unit in sorted({r.unit for r in result.rows if r.unit is not None}):
+    for unit in sorted(nach_unit):
         s = seiten.get(unit, [])
         themen[str(unit)] = {
             "titel": "Starter Unit" if unit == 0 else f"Unit {unit}",
             "thema": "",
             "seiten": f"{min(s)}-{max(s)}" if s else "",
             "leitwoerter": [],
+            "hinweis": ("Offen: das Wortfeld dieser Unit in einer Zeile, dazu "
+                        "acht bis zwölf Leitwörter. Der Beleg darunter zeigt "
+                        "die Lage; beides gehört in den Chat."),
+            "beleg": _beleg(nach_unit[unit]),
         }
 
     ziel.parent.mkdir(parents=True, exist_ok=True)
     ziel.write_text(json.dumps({
         "_hinweis": [
-            "Thema und Leitwörter je Unit dieser Datenbank. Die Wortliste des",
-            "Lehrmittels enthält sie nicht, deshalb stehen sie hier - und",
-            "deshalb sind sie beim Import leer geblieben.",
-            "Diese Datei darf von Hand geändert werden: Sie wird beim Import",
-            "gelesen, nie überschrieben. Danach neu importieren, damit die",
-            "Unit-Dateien sie übernehmen.",
-            "'leitwoerter' sind der Massstab der Themenkongruenz-Prüfung: ein",
-            "selbst ergänztes Wort muss zum Wortfeld der Unit passen. Solange",
-            "sie leer sind, misst die Prüfung nur an den Beispielsätzen.",
-            "Der Seitenbereich stammt aus der Wortliste selbst.",
+            "Offene Themenfächer dieser Datenbank - je Unit eines.",
+            "Die Wortliste des Lehrmittels nennt kein Thema, deshalb steht es",
+            "hier, und deshalb ist es beim Import leer geblieben. Gefüllt wird",
+            "im Chat, wie die aufgewerteten Wörter: Das Fach liefert die Lage",
+            "('beleg' - die seltensten Wörter der Unit), nicht das Ergebnis.",
+            "'thema' ist eine Zeile, die sagt, worum es in der Unit geht.",
+            "'leitwoerter' sind acht bis zwölf Wörter, die ihr Wortfeld",
+            "aufspannen; sie sind der Massstab der Themenkongruenz-Pruefung.",
+            "Solange sie leer sind, misst die Pruefung nur an den",
+            "Beispielsaetzen.",
+            "Danach 'vocabmaster db import' noch einmal laufen lassen, damit",
+            "die Unit-Dateien es uebernehmen. Diese Datei wird dabei gelesen,",
+            "nie ueberschrieben.",
+            "Unit-Nummer, Seitenbereich und Beleg stammen aus der Wortliste.",
         ],
         "quelle": titel or result.source,
         "themen": themen,

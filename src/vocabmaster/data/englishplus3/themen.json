@@ -1,71 +1,169 @@
 {
  "_hinweis": [
-  "Thema und Leitwörter je Unit dieser Datenbank. Die Wortliste des",
-  "Lehrmittels enthält sie nicht, deshalb stehen sie hier - und",
-  "deshalb sind sie beim Import leer geblieben.",
+  "Thema und Leitwörter je Unit dieser Datenbank (English Plus 3).",
+  "Sie stehen nicht in der Wortliste des Lehrmittels; abgeleitet wurden",
+  "sie im Chat aus dem Wortfeld jeder Unit und gegen ihren Hauptteil",
+  "geprüft - jedes Leitwort kommt in seiner Unit wirklich vor.",
   "Diese Datei darf von Hand geändert werden: Sie wird beim Import",
-  "gelesen, nie überschrieben. Danach neu importieren, damit die",
-  "Unit-Dateien sie übernehmen.",
+  "gelesen, nie überschrieben. Danach noch einmal importieren, damit die",
+  "Unit-Dateien es übernehmen.",
   "'leitwoerter' sind der Massstab der Themenkongruenz-Prüfung: ein",
-  "selbst ergänztes Wort muss zum Wortfeld der Unit passen. Solange",
-  "sie leer sind, misst die Prüfung nur an den Beispielsätzen.",
-  "Der Seitenbereich stammt aus der Wortliste selbst."
+  "selbst ergänztes Wort muss zum Wortfeld der Unit passen."
  ],
- "quelle": "English Plus 3",
+ "quelle": "ep2e_level3_german_wordlist.xlsx",
  "themen": {
   "0": {
    "titel": "Starter Unit",
-   "thema": "",
+   "thema": "Alltag, Freizeit und Erlebtes",
    "seiten": "",
-   "leitwoerter": []
+   "leitwoerter": [
+    "weekend",
+    "festival",
+    "concert",
+    "tournament",
+    "meal",
+    "relax",
+    "chat",
+    "interview",
+    "memory",
+    "remember"
+   ]
   },
   "1": {
    "titel": "Unit 1",
-   "thema": "",
+   "thema": "Moden, Spielzeug und Trends vergangener Jahrzehnte",
    "seiten": "8-17",
-   "leitwoerter": []
+   "leitwoerter": [
+    "fad",
+    "craze",
+    "toy",
+    "decade",
+    "viral",
+    "hoodie",
+    "jeans",
+    "gadget",
+    "games console",
+    "fashion"
+   ]
   },
   "2": {
    "titel": "Unit 2",
-   "thema": "",
+   "thema": "Die Sinne — Riechen, Schmecken und Hören",
    "seiten": "18-27",
-   "leitwoerter": []
+   "leitwoerter": [
+    "sense of smell",
+    "scent",
+    "odour",
+    "flavour",
+    "fragrance",
+    "perfume",
+    "texture",
+    "sensation",
+    "deaf",
+    "delicious"
+   ]
   },
   "3": {
    "titel": "Unit 3",
-   "thema": "",
+   "thema": "Abenteuersport und Natur im Freien",
    "seiten": "28-37",
-   "leitwoerter": []
+   "leitwoerter": [
+    "kayaking",
+    "hiking",
+    "surfing",
+    "skydiving",
+    "instructor",
+    "wildlife",
+    "cave",
+    "cliff",
+    "skill",
+    "achievement"
+   ]
   },
   "4": {
    "titel": "Unit 4",
-   "thema": "",
+   "thema": "Material, Abfall und Umwelt",
    "seiten": "38-47",
-   "leitwoerter": []
+   "leitwoerter": [
+    "recycle",
+    "pollution",
+    "rubbish",
+    "plastic",
+    "resource",
+    "waterproof",
+    "throw away",
+    "reduce",
+    "solar",
+    "battery"
+   ]
   },
   "5": {
    "titel": "Unit 5",
-   "thema": "",
+   "thema": "Lebenswege, Zukunftspläne und Alter",
    "seiten": "48-57",
-   "leitwoerter": []
+   "leitwoerter": [
+    "ambitious",
+    "get married",
+    "retire young",
+    "life expectancy",
+    "get a degree",
+    "settle down",
+    "get a job",
+    "age group",
+    "get old",
+    "earn money"
+   ]
   },
   "6": {
    "titel": "Unit 6",
-   "thema": "",
+   "thema": "Schule, Ausbildung und Berufswege",
    "seiten": "58-67",
-   "leitwoerter": []
+   "leitwoerter": [
+    "apprenticeship",
+    "secondary school",
+    "boarding school",
+    "pass exams",
+    "get a qualification",
+    "attend university",
+    "school rule",
+    "homeschooling",
+    "paramedic",
+    "apply for a course"
+   ]
   },
   "7": {
    "titel": "Unit 7",
-   "thema": "",
+   "thema": "Hilfsbereitschaft, Engagement und Zivilcourage",
    "seiten": "68-77",
-   "leitwoerter": []
+   "leitwoerter": [
+    "volunteer",
+    "petition",
+    "protest",
+    "donate",
+    "donation",
+    "brave",
+    "generous",
+    "reward",
+    "homeless",
+    "encourage"
+   ]
   },
   "8": {
    "titel": "Unit 8",
-   "thema": "",
+   "thema": "Film, Fernsehen und Geschichten",
    "seiten": "78-87",
-   "leitwoerter": []
+   "leitwoerter": [
+    "genre",
+    "thriller",
+    "comedy",
+    "science fiction",
+    "actor",
+    "screen",
+    "adaptation",
+    "episode",
+    "award",
+    "viewer"
+   ]
   }
  }
 }

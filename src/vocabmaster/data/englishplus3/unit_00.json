@@ -2,9 +2,20 @@
  "schema": 1,
  "unit": 0,
  "titel": "Starter Unit",
- "thema": "",
+ "thema": "Alltag, Freizeit und Erlebtes",
  "seiten": "",
- "leitwoerter": [],
+ "leitwoerter": [
+  "weekend",
+  "festival",
+  "concert",
+  "tournament",
+  "meal",
+  "relax",
+  "chat",
+  "interview",
+  "memory",
+  "remember"
+ ],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

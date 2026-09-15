@@ -51,8 +51,11 @@ def test_angezeigte_auswahl_steht_so_in_den_paketen(abgelegt):
     jede für sich - eine Prüfung von V2 darf nicht gegen V1 gehalten werden,
     das ist gerade der Fehler, den `listenbezug` verhindern soll.
     """
+    # Eine Unit ohne Liste ist erlaubt - die Starter Unit hat keine, und ein
+    # frisch eingelesenes Lehrmittel hat für keine eine. Geprüft wird, was da
+    # ist; aber mindestens eine Liste muss es geben, sonst misst das nichts.
+    assert any(u["listen"] for u in abgelegt["units"]), "keine einzige Liste"
     for unit in abgelegt["units"]:
-        assert unit["listen"], f"Unit {unit['unit']} ohne Vokabelliste"
         for li in unit["listen"]:
             wo = f"Unit {unit['unit']} V{li['version']}"
             for schluessel, auswahl in li["echt"].items():
@@ -317,7 +320,7 @@ def test_die_waage_misst_gegen_die_gewaehlte_liste():
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     körper = seite[seite.index("function wortwahlZeichnen()"):]
     körper = körper[:körper.index("\n}")]
-    assert "const ziel = anzeigeListe().woerter.length;" in körper
+    assert "const ziel = anzeigeListe().woerter.length || LISTENUMFANG;" in körper
     assert "links.length - ziel" in körper
 
 

@@ -5,6 +5,85 @@
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
   "importiert": "2026-09-10"
  },
+ "dokumente": {
+  "Unit01_V1_Test_PartII_NiveauA.docx": 13820,
+  "Unit01_V1_Test_PartII_NiveauA_Loesung.docx": 13954,
+  "Unit01_V1_Test_PartII_NiveauB.docx": 13769,
+  "Unit01_V1_Test_PartII_NiveauB_Loesung.docx": 13883,
+  "Unit01_V1_Test_PartI_NiveauA.docx": 13821,
+  "Unit01_V1_Test_PartI_NiveauA_Fassung2.docx": 13834,
+  "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx": 13954,
+  "Unit01_V1_Test_PartI_NiveauA_Fassung3.docx": 13811,
+  "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx": 13950,
+  "Unit01_V1_Test_PartI_NiveauA_Loesung.docx": 13960,
+  "Unit01_V1_Test_PartI_NiveauB.docx": 13693,
+  "Unit01_V1_Test_PartI_NiveauB_Loesung.docx": 13799,
+  "Unit01_V1_VocabularyList.docx": 41992,
+  "Unit01_V2_VocabularyList.docx": 41989,
+  "Unit02_V1_Test_PartII_NiveauA.docx": 13807,
+  "Unit02_V1_Test_PartII_NiveauA_Loesung.docx": 13942,
+  "Unit02_V1_Test_PartII_NiveauB.docx": 13723,
+  "Unit02_V1_Test_PartII_NiveauB_Loesung.docx": 13838,
+  "Unit02_V1_Test_PartI_NiveauA.docx": 13836,
+  "Unit02_V1_Test_PartI_NiveauA_Loesung.docx": 13985,
+  "Unit02_V1_Test_PartI_NiveauB.docx": 13725,
+  "Unit02_V1_Test_PartI_NiveauB_Loesung.docx": 13833,
+  "Unit02_V1_VocabularyList.docx": 41943,
+  "Unit03_V1_Test_PartII_NiveauA.docx": 13774,
+  "Unit03_V1_Test_PartII_NiveauA_Loesung.docx": 13912,
+  "Unit03_V1_Test_PartII_NiveauB.docx": 13706,
+  "Unit03_V1_Test_PartII_NiveauB_Loesung.docx": 13817,
+  "Unit03_V1_Test_PartI_NiveauA.docx": 13796,
+  "Unit03_V1_Test_PartI_NiveauA_Loesung.docx": 13937,
+  "Unit03_V1_Test_PartI_NiveauB.docx": 13738,
+  "Unit03_V1_Test_PartI_NiveauB_Loesung.docx": 13851,
+  "Unit03_V1_VocabularyList.docx": 41865,
+  "Unit04_V1_Test_PartII_NiveauA.docx": 13815,
+  "Unit04_V1_Test_PartII_NiveauA_Loesung.docx": 13960,
+  "Unit04_V1_Test_PartII_NiveauB.docx": 13721,
+  "Unit04_V1_Test_PartII_NiveauB_Loesung.docx": 13841,
+  "Unit04_V1_Test_PartI_NiveauA.docx": 13806,
+  "Unit04_V1_Test_PartI_NiveauA_Loesung.docx": 13939,
+  "Unit04_V1_Test_PartI_NiveauB.docx": 13710,
+  "Unit04_V1_Test_PartI_NiveauB_Loesung.docx": 13821,
+  "Unit04_V1_VocabularyList.docx": 41736,
+  "Unit05_V1_Test_PartII_NiveauA.docx": 13809,
+  "Unit05_V1_Test_PartII_NiveauA_Loesung.docx": 13930,
+  "Unit05_V1_Test_PartII_NiveauB.docx": 13703,
+  "Unit05_V1_Test_PartII_NiveauB_Loesung.docx": 13810,
+  "Unit05_V1_Test_PartI_NiveauA.docx": 13814,
+  "Unit05_V1_Test_PartI_NiveauA_Loesung.docx": 13947,
+  "Unit05_V1_Test_PartI_NiveauB.docx": 13708,
+  "Unit05_V1_Test_PartI_NiveauB_Loesung.docx": 13811,
+  "Unit05_V1_VocabularyList.docx": 41743,
+  "Unit06_V1_Test_PartII_NiveauA.docx": 13813,
+  "Unit06_V1_Test_PartII_NiveauA_Loesung.docx": 13958,
+  "Unit06_V1_Test_PartII_NiveauB.docx": 13726,
+  "Unit06_V1_Test_PartII_NiveauB_Loesung.docx": 13839,
+  "Unit06_V1_Test_PartI_NiveauA.docx": 13819,
+  "Unit06_V1_Test_PartI_NiveauA_Loesung.docx": 13949,
+  "Unit06_V1_Test_PartI_NiveauB.docx": 13736,
+  "Unit06_V1_Test_PartI_NiveauB_Loesung.docx": 13855,
+  "Unit06_V1_VocabularyList.docx": 41834,
+  "Unit07_V1_Test_PartII_NiveauA.docx": 13811,
+  "Unit07_V1_Test_PartII_NiveauA_Loesung.docx": 13942,
+  "Unit07_V1_Test_PartII_NiveauB.docx": 13745,
+  "Unit07_V1_Test_PartII_NiveauB_Loesung.docx": 13865,
+  "Unit07_V1_Test_PartI_NiveauA.docx": 13816,
+  "Unit07_V1_Test_PartI_NiveauA_Loesung.docx": 13950,
+  "Unit07_V1_Test_PartI_NiveauB.docx": 13703,
+  "Unit07_V1_Test_PartI_NiveauB_Loesung.docx": 13811,
+  "Unit07_V1_VocabularyList.docx": 41767,
+  "Unit08_V1_Test_PartII_NiveauA.docx": 13825,
+  "Unit08_V1_Test_PartII_NiveauA_Loesung.docx": 13944,
+  "Unit08_V1_Test_PartII_NiveauB.docx": 13719,
+  "Unit08_V1_Test_PartII_NiveauB_Loesung.docx": 13839,
+  "Unit08_V1_Test_PartI_NiveauA.docx": 13819,
+  "Unit08_V1_Test_PartI_NiveauA_Loesung.docx": 13960,
+  "Unit08_V1_Test_PartI_NiveauB.docx": 13722,
+  "Unit08_V1_Test_PartI_NiveauB_Loesung.docx": 13829,
+  "Unit08_V1_VocabularyList.docx": 41713
+ },
  "datenbanken": [
   {
    "name": "EnglishPlus4",
@@ -1012,7 +1091,502 @@
         "nebensaetze": 0.0
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "come across",
+         "de": "auf etw. stoßen",
+         "luecke": false,
+         "score": 3.6
+        },
+        {
+         "en": "desperately",
+         "de": "verzweifelt",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "girlfriend",
+         "de": "Freundin",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "afterwards",
+         "de": "danach",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "remind of",
+         "de": "jmd. an etw. erinnern",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "smelly",
+         "de": "stinkend",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "unpopular",
+         "de": "unbeliebt",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "treasure",
+         "de": "schätzen",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "luecke": true,
+         "score": 4.0
+        }
+       ],
+       "text": "Every autumn our class visits an old stone house beside the river. The women who live there {1} the letters and photographs more than any furniture. A hundred years ago the {2} in this village looked after eighty children. One of them showed us a doll with a painted face that looked wonderfully {3}. She had almost thrown it away, but her sister {4} kept it in a drawer. We always come home with a new story to tell.",
+       "blatt": "Unit01_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "earring",
+         "de": "Ohrring",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "teddy bear",
+         "de": "Teddybär",
+         "luecke": false,
+         "score": 0.2
+        },
+        {
+         "en": "object",
+         "de": "Gegenstand",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "attic",
+         "de": "Dachboden",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "adopt",
+         "de": "adoptieren",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "perform",
+         "de": "spielen, auftreten",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "hook",
+         "de": "Haken",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "weapon",
+         "de": "Waffe",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "beg",
+         "de": "betteln",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "civil war",
+         "de": "Bürgerkrieg",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "valuable",
+         "de": "wertvoll",
+         "luecke": true,
+         "score": 1.6
+        },
+        {
+         "en": "meanwhile",
+         "de": "inzwischen",
+         "luecke": true,
+         "score": 2.4
+        }
+       ],
+       "text": "My grandmother grew up in a poor family. Some children in her street had to {1} for food. Her father lost his shop during the {2}. The family kept one small ring that was very {3}. Her mother worked in a factory. Her father {4} looked for a new job.",
+       "blatt": "Unit01_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit01_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "apologize",
+         "de": "sich entschuldigen",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "memorize",
+         "de": "sich etw. merken",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "instructive",
+         "de": "lehrreich",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "rotten",
+         "de": "verfault",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "graceful",
+         "de": "elegant",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "childhood",
+         "de": "Kindheit",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "regret",
+         "de": "bedauern",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "get rid of",
+         "de": "los werden",
+         "luecke": false,
+         "score": 2.5
+        },
+        {
+         "en": "look forward to",
+         "de": "sich auf etw. freuen",
+         "luecke": true,
+         "score": 4.3
+        },
+        {
+         "en": "memory stick",
+         "de": "Speicherstick",
+         "luecke": true,
+         "score": 3.1
+        },
+        {
+         "en": "rural",
+         "de": "ländlich",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "dramatically",
+         "de": "dramatisch",
+         "luecke": true,
+         "score": 2.7
+        }
+       ],
+       "text": "Last winter my father cleared out the old garage behind our house. Every year we {1} the week when the whole family comes to help. Beside a pile of tools lay a broken {2} with three thousand holiday pictures on it. Most of the photographs show the quiet {3} roads around my grandparents' farm. Since then the village has changed {4}, and two new streets cross the fields. My father wants to print the best pictures for her birthday.",
+       "blatt": "Unit01_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit01_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "picnic",
+         "de": "Picknick",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "crypt",
+         "de": "Krypta",
+         "luecke": false,
+         "score": 0.5
+        },
+        {
+         "en": "on board",
+         "de": "an Bord",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "damaged",
+         "de": "beschädigt",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "fisherman",
+         "de": "Angler, Fischer",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "cannon",
+         "de": "Kanone",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "worthless",
+         "de": "wertlos",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "explosive",
+         "de": "Sprengstoff",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "survive",
+         "de": "überleben",
+         "luecke": true,
+         "score": 1.1
+        },
+        {
+         "en": "campsite",
+         "de": "Zeltplatz",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "fragile",
+         "de": "zerbrechlich",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "sailor",
+         "de": "Matrose",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "Last summer we spent a week beside a big lake. Only two of our old tents {1} the heavy autumn storm. We put the rest away and walked back. Our {2} stood between the trees near the water. My uncle kept an old map in his bag. The paper was brown and very {3}. He found it in an old wooden box. His grandfather had been a {4} on a large ship.",
+       "blatt": "Unit01_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit01_V1_Test_PartII_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 2,
+       "woerter": [
+        {
+         "en": "eventful",
+         "de": "ereignisreich",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "beg",
+         "de": "betteln",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "meanwhile",
+         "de": "inzwischen",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "civil war",
+         "de": "Bürgerkrieg",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "immense",
+         "de": "riesig",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "weapon",
+         "de": "Waffe",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "treasure",
+         "de": "schätzen",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "luecke": true,
+         "score": 3.8
+        },
+        {
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "luecke": true,
+         "score": 4.0
+        },
+        {
+         "en": "fashionable",
+         "de": "modisch",
+         "luecke": true,
+         "score": 3.8
+        },
+        {
+         "en": "useless",
+         "de": "nutzlos",
+         "luecke": true,
+         "score": 2.7
+        }
+       ],
+       "text": "My grandmother kept a wooden box under her bed. She used to {1} the letters inside it more than her jewellery. Most of them came from a friend she met at the {2} in Dublin. We had hoped to see their young faces clearly, so the faded photographs are rather {3}. The letters themselves, {4}, are still easy to read. In every picture she wears a hat that was once very {5}, though nobody would choose it today. To a stranger the whole box might seem {6}, but for our family it holds a life.",
+       "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung2.docx",
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 3,
+       "woerter": [
+        {
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "luecke": false,
+         "score": 4.0
+        },
+        {
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "treasure",
+         "de": "schätzen",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "come across",
+         "de": "auf etw. stoßen",
+         "luecke": false,
+         "score": 3.6
+        },
+        {
+         "en": "desperately",
+         "de": "verzweifelt",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "girlfriend",
+         "de": "Freundin",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "unpopular",
+         "de": "unbeliebt",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "remind of",
+         "de": "jmd. an etw. erinnern",
+         "luecke": true,
+         "score": 3.0
+        },
+        {
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "smelly",
+         "de": "stinkend",
+         "luecke": true,
+         "score": 2.9
+        },
+        {
+         "en": "afterwards",
+         "de": "danach",
+         "luecke": true,
+         "score": 3.0
+        }
+       ],
+       "text": "My father keeps an old biscuit tin on his desk. Those old photographs {1} him of a summer nobody else remembers. His parents left him at the {2} in Cork when he was four. The tin is the only thing he carried away from there. A pair of football boots lies at the bottom, still a little {3} after forty years. He washed them once, and {4} he never wore them again. My mother laughs at the whole box, but she never touches it.",
+       "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung3.docx",
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit01_V1_VocabularyList.docx"
     },
     {
      "version": 2,
@@ -1930,7 +2504,338 @@
         "nebensaetze": 0.14
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "apologize",
+         "de": "sich entschuldigen",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "fashionable",
+         "de": "modisch",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "desperately",
+         "de": "verzweifelt",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "wrap up",
+         "de": "einwickeln",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "afterwards",
+         "de": "danach",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "priceless",
+         "de": "unbezahlbar",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "instructive",
+         "de": "lehrreich",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "look forward to",
+         "de": "sich auf etw. freuen",
+         "luecke": true,
+         "score": 4.3
+        },
+        {
+         "en": "description",
+         "de": "Beschreibung",
+         "luecke": true,
+         "score": 4.7
+        },
+        {
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "luecke": true,
+         "score": 3.8
+        },
+        {
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "luecke": true,
+         "score": 4.0
+        }
+       ],
+       "text": "Every July my cousins and I {1} the same weekend at my aunt's house. She keeps a small notebook with a {2} of every object in her attic. Last year the box we opened held nothing but old bus tickets. That was rather {3} after so much waiting. The summer before, {4}, we had found a bundle of letters. My aunt read two of them aloud and then put the bundle back.",
+       "blatt": "Unit01_V2_Test_PartI_NiveauA.docx",
+       "loesung": "Unit01_V2_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "damaged",
+         "de": "beschädigt",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "survive",
+         "de": "überleben",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "attic",
+         "de": "Dachboden",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "fisherman",
+         "de": "Angler, Fischer",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "perform",
+         "de": "spielen, auftreten",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "worthless",
+         "de": "wertlos",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "wristband",
+         "de": "Armband",
+         "luecke": false,
+         "score": 2.0
+        },
+        {
+         "en": "campsite",
+         "de": "Zeltplatz",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "identify",
+         "de": "identifizieren",
+         "luecke": true,
+         "score": 1.4
+        },
+        {
+         "en": "civil war",
+         "de": "Bürgerkrieg",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "shabby",
+         "de": "schäbig",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "hook",
+         "de": "Haken",
+         "luecke": true,
+         "score": 2.4
+        }
+       ],
+       "text": "My grandfather kept an old coat in the hall. He could {1} every soldier in the photograph. They had all fought in the same {2}. He wore it for thirty years and it looks {3} now. Today it still hangs on the very same {4} by the door. My mother says it will stay there.",
+       "blatt": "Unit01_V2_Test_PartI_NiveauB.docx",
+       "loesung": "Unit01_V2_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "come across",
+         "de": "auf etw. stoßen",
+         "luecke": false,
+         "score": 3.6
+        },
+        {
+         "en": "memorize",
+         "de": "sich etw. merken",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "memory stick",
+         "de": "Speicherstick",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "remind of",
+         "de": "jmd. an etw. erinnern",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "smelly",
+         "de": "stinkend",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "unpopular",
+         "de": "unbeliebt",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "immense",
+         "de": "riesig",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "rotten",
+         "de": "verfault",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "treasure",
+         "de": "schätzen",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "girlfriend",
+         "de": "Freundin",
+         "luecke": true,
+         "score": 3.4
+        },
+        {
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "dramatically",
+         "de": "dramatisch",
+         "luecke": true,
+         "score": 2.7
+        }
+       ],
+       "text": "Some families throw everything away; mine keeps every single thing. We {1} a shoe box that has travelled through four houses. Inside there is a photograph of my father's first {2}. Her hair and her coat look wonderfully {3} to us today. Prices for such coats have risen {4} since then. My father laughs and says he simply forgot to throw it out. The box will go to my sister one day.",
+       "blatt": "Unit01_V2_Test_PartII_NiveauA.docx",
+       "loesung": "Unit01_V2_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "flea market",
+         "de": "Flohmarkt",
+         "luecke": false,
+         "score": 0.3
+        },
+        {
+         "en": "adopt",
+         "de": "adoptieren",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "cannon",
+         "de": "Kanone",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "belong to",
+         "de": "gehören",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "explosive",
+         "de": "Sprengstoff",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "faded",
+         "de": "verblasst",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "fragile",
+         "de": "zerbrechlich",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "sailor",
+         "de": "Matrose",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "engage",
+         "de": "engagieren",
+         "luecke": true,
+         "score": 2.3
+        },
+        {
+         "en": "weapon",
+         "de": "Waffe",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "dusty",
+         "de": "staubig",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "meanwhile",
+         "de": "inzwischen",
+         "luecke": true,
+         "score": 2.4
+        }
+       ],
+       "text": "Our school visited the town museum last Tuesday morning. The guide tried to {1} us with stories about the old town. In the first room we saw a very old {2} behind thick glass. It lay in a quiet and {3} corner that nobody seemed to notice. Two boys went outside to wait. The rest of us, {4}, stayed inside and asked questions. I want to go back again in the spring.",
+       "blatt": "Unit01_V2_Test_PartII_NiveauB.docx",
+       "loesung": "Unit01_V2_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit01_V2_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -4946,7 +5851,338 @@
         "nebensaetze": 0.2
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "conclusion",
+         "de": "Fazit",
+         "luecke": false,
+         "score": 4.7
+        },
+        {
+         "en": "transition",
+         "de": "Übergang",
+         "luecke": false,
+         "score": 4.7
+        },
+        {
+         "en": "indicate",
+         "de": "auf etw. hinweisen",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "reuse",
+         "de": "wieder verwenden",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "projectile",
+         "de": "Geschoss",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "questionnaire",
+         "de": "Fragebogen",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "homeless",
+         "de": "obdachlos",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "undecided",
+         "de": "unentschieden",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "get involved with",
+         "de": "sich engagieren",
+         "luecke": true,
+         "score": 4.4
+        },
+        {
+         "en": "general election",
+         "de": "Parlamentswahlen",
+         "luecke": true,
+         "score": 6.4
+        },
+        {
+         "en": "accustomed",
+         "de": "gewöhnt (an etw.)",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "forensic scientist",
+         "de": "Kriminaltechniker(in)",
+         "luecke": true,
+         "score": 6.1
+        }
+       ],
+       "text": "Last year our school started a project about town politics. Students from every class could {1} the work in their free time. Some of them spent two afternoons a week at the town hall. We went there again shortly before the {2} and spoke to three candidates. By the end of the month we had grown {3} to long evenings and slow discussions. One Friday a {4} even came to explain how a case is built. Nobody in the room asked to leave early.",
+       "blatt": "Unit02_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit02_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "detective",
+         "de": "Detektiv(in)",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "electronic",
+         "de": "elektronisch",
+         "luecke": false,
+         "score": 0.8
+        },
+        {
+         "en": "scooter",
+         "de": "Roller",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "drop out",
+         "de": "ausscheiden",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "rush into",
+         "de": "überstürzen",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "dependent",
+         "de": "abhängig",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "thankful",
+         "de": "dankbar",
+         "luecke": false,
+         "score": 2.3
+        },
+        {
+         "en": "harmful",
+         "de": "schädlich",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "pause",
+         "de": "anhalten",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "seaside",
+         "de": "Küste",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "decisive",
+         "de": "entschlossen",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "propose",
+         "de": "vorschlagen",
+         "luecke": true,
+         "score": 2.6
+        }
+       ],
+       "text": "Our class had to plan a day trip in June. The teacher let us {1} and think for ten minutes. Half of the group wanted to go to the {2}. Others preferred a long walk in the hills. Anna was quick and {3} about the whole plan. In the end she was the first to {4} a picnic in the park.",
+       "blatt": "Unit02_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit02_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "environmental studies",
+         "de": "Umweltforschung",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "charity",
+         "de": "Stiftung",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "commit",
+         "de": "sich verpflichten",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "thoughtful",
+         "de": "aufmerksam",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "careers advice",
+         "de": "Berufsberatung",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "lecture",
+         "de": "Vortrag",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "in favour",
+         "de": "dafür sein",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "hesitate",
+         "de": "zögern",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "participate",
+         "de": "teilnehmen",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "disadvantage",
+         "de": "Nachteil",
+         "luecke": true,
+         "score": 4.8
+        },
+        {
+         "en": "disposable",
+         "de": "zum Wegwerfen",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "frankly",
+         "de": "offen gesagt",
+         "luecke": true,
+         "score": 2.8
+        }
+       ],
+       "text": "Every summer the town runs a clean-up week along the canal. Anybody over fourteen may {1} without paying a fee. The only real {2} is that the work starts at seven in the morning. Volunteers collect plastic bottles and other {3} packaging from the water. Most of them, {4}, would rather sleep until nine. Coffee and cake at eleven keep the group together. The town still finds two hundred helpers every year.",
+       "blatt": "Unit02_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit02_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "certificate",
+         "de": "Zertifikat",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "organize",
+         "de": "organisieren",
+         "luecke": false,
+         "score": 1.3
+        },
+        {
+         "en": "haircut",
+         "de": "Haarschnitt",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "shelter",
+         "de": "Schutz",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "leaflet",
+         "de": "Prospekt",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "postpone",
+         "de": "verschieben",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "tasteful",
+         "de": "geschmackvoll",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "calculate",
+         "de": "ausrechnen",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "be held",
+         "de": "abgehalten werden",
+         "luecke": true,
+         "score": 2.7
+        },
+        {
+         "en": "caravan",
+         "de": "Wohnwagen",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "careless",
+         "de": "unvorsichtig",
+         "luecke": true,
+         "score": 2.7
+        },
+        {
+         "en": "fearless",
+         "de": "furchtlos",
+         "luecke": true,
+         "score": 2.7
+        }
+       ],
+       "text": "The village fair will {1} on the last Sunday in June. My uncle sleeps in his old {2} during the whole weekend. Last year a visitor was very {3} with a small fire near the tents. A young woman stayed {4} and put it out with two buckets. Since then the fair has its own fire watch.",
+       "blatt": "Unit02_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit02_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit02_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -7692,7 +8928,338 @@
         "nebensaetze": 0.0
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "shop assistant",
+         "de": "Verkäufer(in)",
+         "luecke": false,
+         "score": 4.5
+        },
+        {
+         "en": "clothes retailer",
+         "de": "Modehändler",
+         "luecke": false,
+         "score": 4.3
+        },
+        {
+         "en": "pollution",
+         "de": "Verschmutzung",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "rip-off",
+         "de": "Abzocke",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "trolley",
+         "de": "Einkaufswagen",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "massive",
+         "de": "enorm",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "spice",
+         "de": "Gewürz",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "promote",
+         "de": "werben",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "appreciate",
+         "de": "schätzen",
+         "luecke": true,
+         "score": 4.0
+        },
+        {
+         "en": "facial recognition",
+         "de": "Gesichtserkennung",
+         "luecke": true,
+         "score": 6.7
+        },
+        {
+         "en": "equivalent",
+         "de": "gleichwertig",
+         "luecke": true,
+         "score": 3.3
+        },
+        {
+         "en": "occasionally",
+         "de": "gelegentlich",
+         "luecke": true,
+         "score": 4.0
+        }
+       ],
+       "text": "In small shops most buyers still {1} a friendly welcome more than a clever screen. In some large stores a camera with {2} counts how long you stand in front of a shelf. The data it collects is roughly {3} to a short interview with every customer. Shops promise that the pictures are deleted at the end of the day. Customers {4} notice the small sign beside the door. Most people walk straight past it.",
+       "blatt": "Unit03_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit03_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "portable",
+         "de": "portabel",
+         "luecke": false,
+         "score": 0.3
+        },
+        {
+         "en": "dose",
+         "de": "Dosis",
+         "luecke": false,
+         "score": 0.8
+        },
+        {
+         "en": "perfume",
+         "de": "Parfüm",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "ceremony",
+         "de": "Zeremonie",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "influencer",
+         "de": "Einflussperson, Beeinflusser(in)",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "bar code",
+         "de": "Strichcode",
+         "luecke": false,
+         "score": 2.1
+        },
+        {
+         "en": "violent",
+         "de": "gewalttätig",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "haunted house",
+         "de": "Geisterhaus",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "measure",
+         "de": "messen",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "checkout",
+         "de": "Kasse",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "nasty",
+         "de": "böse",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "bargain",
+         "de": "Schnäppchen",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "Our class visited a big clothes shop last Tuesday. A worker showed us how they {1} the shelves every morning. The longest queue of the day forms at the {2}. Two machines were broken on Tuesday. One customer was quite {3} about the waiting time. In the end she still found a real {4} in the sale.",
+       "blatt": "Unit03_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit03_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "special offer",
+         "de": "Sonderangebot",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "window shopping",
+         "de": "Schaufensterbummel",
+         "luecke": false,
+         "score": 4.0
+        },
+        {
+         "en": "advertisement",
+         "de": "Anzeige",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "mountain range",
+         "de": "Bergkette",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "pineapple",
+         "de": "Ananas",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "puzzle",
+         "de": "Rätsel",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "genuinely",
+         "de": "wirklich",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "subscriber",
+         "de": "Abonnent(in)",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "appeal",
+         "de": "gefallen",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "fragrance",
+         "de": "Duft",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "convenient",
+         "de": "geeignet",
+         "luecke": true,
+         "score": 3.4
+        },
+        {
+         "en": "approximately",
+         "de": "etwa",
+         "luecke": true,
+         "score": 4.0
+        }
+       ],
+       "text": "Bright colours and short videos {1} to younger buyers more than long texts. One famous soap company built its whole campaign around a single {2}. Buying the bottle online was quick and {3}, and the parcel arrived within two days. The firm sold {4} half a million bottles in the first month. Nobody in the office had expected such a result. Sales dropped again as soon as the videos stopped.",
+       "blatt": "Unit03_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit03_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "exotic",
+         "de": "exotisch",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "habit",
+         "de": "Angewohnheit",
+         "luecke": false,
+         "score": 1.3
+        },
+        {
+         "en": "scan",
+         "de": "scannen",
+         "luecke": false,
+         "score": 1.4
+        },
+        {
+         "en": "producer",
+         "de": "Hersteller",
+         "luecke": false,
+         "score": 1.5
+        },
+        {
+         "en": "recommend",
+         "de": "empfehlen",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "virtual store",
+         "de": "virtueller Laden",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "label",
+         "de": "Etikett",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "verdict",
+         "de": "Urteil",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "afford",
+         "de": "sich etw. leisten",
+         "luecke": true,
+         "score": 2.3
+        },
+        {
+         "en": "venom",
+         "de": "Gift",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "minimum",
+         "de": "minimal",
+         "luecke": true,
+         "score": 0.1
+        },
+        {
+         "en": "comedian",
+         "de": "Komiker(in)",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "A small company sells face cream in green bottles. Not many families can {1} the highest price. The cream contains a drop of bee {2} from Turkey. They keep the price low but set a strict {3} order of two pots. In the advert a well-known {4} tells a short joke.",
+       "blatt": "Unit03_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit03_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit03_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -9908,7 +11475,338 @@
         "nebensaetze": 0.33
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "hang out with",
+         "de": "mit jdm. rumhängen",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "calm down",
+         "de": "sich beruhigen",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "assertive",
+         "de": "durchsetzungsfähig",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "captive",
+         "de": "in Gefangenschaft halten",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "affect",
+         "de": "beeinflussen",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "instructor",
+         "de": "Lehrer(in)",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "energetic",
+         "de": "dynamisch",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "concentrate",
+         "de": "konzentrieren",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "have a laugh with",
+         "de": "Spaß haben",
+         "luecke": true,
+         "score": 5.0
+        },
+        {
+         "en": "relaxation",
+         "de": "Entspannung",
+         "luecke": true,
+         "score": 5.3
+        },
+        {
+         "en": "obvious",
+         "de": "offensichtlich",
+         "luecke": true,
+         "score": 3.2
+        },
+        {
+         "en": "mammal",
+         "de": "Säugetier",
+         "luecke": true,
+         "score": 4.1
+        }
+       ],
+       "text": "Every Thursday after school I {1} the other volunteers at the animal park. For most of us the work is pure {2} after a long day. It soon becomes {3} which animals enjoy company and which prefer to be alone. The otter, a small {4} with very quick paws, always comes to the fence first. Visitors often stay there for thirty minutes. Nobody wants to leave before the last feeding.",
+       "blatt": "Unit04_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit04_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "stressful",
+         "de": "stressig",
+         "luecke": false,
+         "score": 0.9
+        },
+        {
+         "en": "wasp",
+         "de": "Wespe",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "bored",
+         "de": "gelangweilt",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "mood",
+         "de": "Stimmung",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "behaviour",
+         "de": "Verhalten",
+         "luecke": false,
+         "score": 1.7
+        },
+        {
+         "en": "tone",
+         "de": "Tonfall",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "lick",
+         "de": "lecken",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "fed up",
+         "de": "genervt",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "sing along",
+         "de": "mitsingen",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "shark",
+         "de": "Hai",
+         "luecke": true,
+         "score": 1.9
+        },
+        {
+         "en": "grumpy",
+         "de": "mürrisch",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "disgusted",
+         "de": "angewidert",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "Last week our class went to the big sea life centre. A guide let us {1} the fish for a whole hour. The largest {2} swam slowly past the glass. My friend Tom looked {3} because he had missed breakfast. When the guide opened a bucket of dead fish, he was completely {4} by the smell.",
+       "blatt": "Unit04_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit04_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "annoyance",
+         "de": "Ärgernis",
+         "luecke": false,
+         "score": 4.5
+        },
+        {
+         "en": "open-minded",
+         "de": "aufgeschlossen",
+         "luecke": false,
+         "score": 4.4
+        },
+        {
+         "en": "broken-hearted",
+         "de": "untröstlich",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "sadness",
+         "de": "Traurigkeit",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "considerate",
+         "de": "rücksichtsvoll",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "cold-blooded",
+         "de": "kaltblütig",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "left-handed",
+         "de": "linkshändig",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "traffic light",
+         "de": "Ampel",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "turn down",
+         "de": "etw. leise stellen",
+         "luecke": true,
+         "score": 3.1
+        },
+        {
+         "en": "embarrassment",
+         "de": "Verlegenheit",
+         "luecke": true,
+         "score": 5.3
+        },
+        {
+         "en": "sympathetic",
+         "de": "mitleidig",
+         "luecke": true,
+         "score": 5.0
+        },
+        {
+         "en": "excitement",
+         "de": "Aufregung",
+         "luecke": true,
+         "score": 5.2
+        }
+       ],
+       "text": "My cousin sang at a school concert for the first time in April. Halfway through the song someone forgot to {1} the microphone. Her face went red with {2} and she stopped for several seconds. The audience stayed quiet and {3}, and one teacher began to clap. She finished the last verse in complete {4} and everybody stood up. Her mother filmed the whole evening from the back row. The video still makes the family laugh.",
+       "blatt": "Unit04_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit04_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "melodic",
+         "de": "melodisch",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "therapy",
+         "de": "Therapie",
+         "luecke": false,
+         "score": 0.3
+        },
+        {
+         "en": "frightening",
+         "de": "beängstigend",
+         "luecke": false,
+         "score": 1.7
+        },
+        {
+         "en": "anger",
+         "de": "Wut",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "boredom",
+         "de": "Langeweile",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "motorist",
+         "de": "Autofahrer(in)",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "bright side",
+         "de": "Sonnenseite",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "convey",
+         "de": "vermitteln",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "distract",
+         "de": "ablenken",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "anxiety",
+         "de": "Angst",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "mechanical",
+         "de": "mechanisch",
+         "luecke": true,
+         "score": 2.0
+        },
+        {
+         "en": "speed up",
+         "de": "beschleunigen",
+         "luecke": true,
+         "score": 2.6
+        }
+       ],
+       "text": "My brother took his first driving lesson last month. The teacher told him not to {1} the other drivers. Before the lesson he felt real {2} about the traffic. His movements were stiff and {3} at the start. After twenty minutes he began to {4} a little more. His teacher smiled and said nothing.",
+       "blatt": "Unit04_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit04_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit04_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -12154,7 +14052,338 @@
         "nebensaetze": 0.17
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "alien",
+         "de": "Außerirdische(r)",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "skyscraper",
+         "de": "Wolkenkratzer",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "durable",
+         "de": "langlebig",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "adapt",
+         "de": "anpassen",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "mimic",
+         "de": "nachahmen",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "predict",
+         "de": "voraussagen",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "make sense",
+         "de": "sinnvoll sein",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "resistant",
+         "de": "widerstandsfähig",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "become extinct",
+         "de": "aussterben",
+         "luecke": true,
+         "score": 5.9
+        },
+        {
+         "en": "breakthrough",
+         "de": "Durchbruch",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "kind-hearted",
+         "de": "gutherzig",
+         "luecke": true,
+         "score": 3.5
+        },
+        {
+         "en": "pharmacist",
+         "de": "Apotheker(in)",
+         "luecke": true,
+         "score": 3.6
+        }
+       ],
+       "text": "Several kinds of frog may {1} before the end of this century. Scientists in Australia hope for a {2} in the next few years. The farmer who owns the land is {3} and very patient. He has already turned two of his fields into small ponds. His neighbour, a retired {4}, tests the water every Sunday morning. Together they have counted more than nine hundred young frogs. The university now pays for the equipment.",
+       "blatt": "Unit05_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit05_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "universe",
+         "de": "Universum",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "zoology",
+         "de": "Zoologie",
+         "luecke": false,
+         "score": 0.1
+        },
+        {
+         "en": "elite",
+         "de": "elitär",
+         "luecke": false,
+         "score": 0.5
+        },
+        {
+         "en": "anatomy",
+         "de": "Anatomie",
+         "luecke": false,
+         "score": 0.5
+        },
+        {
+         "en": "lens",
+         "de": "Linse",
+         "luecke": false,
+         "score": 0.8
+        },
+        {
+         "en": "slide show",
+         "de": "Diashow",
+         "luecke": false,
+         "score": 0.9
+        },
+        {
+         "en": "inspire",
+         "de": "inspirieren",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "volcano",
+         "de": "Vulkan",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "imitate",
+         "de": "imitieren",
+         "luecke": true,
+         "score": 1.5
+        },
+        {
+         "en": "discovery",
+         "de": "Entdeckung",
+         "luecke": true,
+         "score": 1.9
+        },
+        {
+         "en": "risky",
+         "de": "riskant",
+         "luecke": true,
+         "score": 1.2
+        },
+        {
+         "en": "enemy",
+         "de": "Feind(in)",
+         "luecke": true,
+         "score": 1.3
+        }
+       ],
+       "text": "Our science teacher likes to {1} the sound of a rocket. Last week he told us about a famous {2} from 1928. He warned us twice that looking straight at the sun is {3}. Nobody laughed at that moment. Then he showed a photo of a moth and its only natural {4} in this country.",
+       "blatt": "Unit05_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit05_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "exploration",
+         "de": "Erforschung",
+         "luecke": false,
+         "score": 5.3
+        },
+        {
+         "en": "cure",
+         "de": "heilen, Heilung",
+         "luecke": false,
+         "score": 4.4
+        },
+        {
+         "en": "invention",
+         "de": "Erfindung",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "creation",
+         "de": "Schöpfung",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "solar panel",
+         "de": "Solarkollektor",
+         "luecke": false,
+         "score": 4.0
+        },
+        {
+         "en": "gravity",
+         "de": "Schwerkraft",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "underwater",
+         "de": "unter Wasser",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "sticky",
+         "de": "klebrig",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "accelerate",
+         "de": "beschleunigen",
+         "luecke": true,
+         "score": 4.9
+        },
+        {
+         "en": "imagination",
+         "de": "Vorstellungskraft",
+         "luecke": true,
+         "score": 5.6
+        },
+        {
+         "en": "essential",
+         "de": "unentbehrlich",
+         "luecke": true,
+         "score": 4.5
+        },
+        {
+         "en": "aspiration",
+         "de": "Ehrgeiz",
+         "luecke": true,
+         "score": 5.3
+        }
+       ],
+       "text": "The fastest modern trains {1} far more quietly than the models of thirty years ago. The first engineers needed both patience and {2} to reach that point. Careful testing in a wind tunnel is still {3} before any new design leaves the factory. For many young engineers the greatest {4} is to build something nobody has built before. Their teachers say the next ten years will be busy. Three of the class have already found a placement.",
+       "blatt": "Unit05_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit05_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "creative",
+         "de": "kreativ",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "robotics",
+         "de": "Robotik",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "clinic",
+         "de": "Klinik",
+         "luecke": false,
+         "score": 0.5
+        },
+        {
+         "en": "antibiotics",
+         "de": "Antibiotikum",
+         "luecke": false,
+         "score": 0.8
+        },
+        {
+         "en": "implant",
+         "de": "implantieren",
+         "luecke": false,
+         "score": 1.3
+        },
+        {
+         "en": "practical",
+         "de": "praktisch",
+         "luecke": false,
+         "score": 1.5
+        },
+        {
+         "en": "unicorn",
+         "de": "Einhorn",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "selfish",
+         "de": "egoistisch",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "innovate",
+         "de": "innovieren",
+         "luecke": true,
+         "score": 1.6
+        },
+        {
+         "en": "guinea pig",
+         "de": "Versuchskaninchen",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "hollow",
+         "de": "hohl",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "beak",
+         "de": "Schnabel",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "Very small companies often {1} faster than big ones. Our class was the first {2} for a new science app. The app shows animals in three dimensions. The bones of a bird are light and {3}. That is why they can fly so far. A small bird uses its strong {4} to open hard seeds.",
+       "blatt": "Unit05_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit05_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit05_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -14320,7 +16549,338 @@
         "nebensaetze": 0.4
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "voluntary",
+         "de": "freiwillig, ehrenamtlich",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "determined",
+         "de": "entschlossen",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "couch potato",
+         "de": "Stubenhocker(in)",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "nature-lover",
+         "de": "Naturliebhaber(in)",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "chore",
+         "de": "Arbeit, Pflicht",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "bully",
+         "de": "Tyrann(in)",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "ambitious",
+         "de": "ehrgeizig",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "impatient",
+         "de": "ungeduldig",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "conform",
+         "de": "sich an etw. anpassen",
+         "luecke": true,
+         "score": 3.3
+        },
+        {
+         "en": "loneliness",
+         "de": "Einsamkeit",
+         "luecke": true,
+         "score": 5.3
+        },
+        {
+         "en": "trustworthy",
+         "de": "vertrauenswürdig",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "adventurous",
+         "de": "abenteuerlich",
+         "luecke": true,
+         "score": 3.5
+        }
+       ],
+       "text": "In every new class a few pupils quietly {1} within the first week. Others need longer and feel real {2} until they find one good friend. What helps most is a partner who is patient and {3}. Our teacher puts the quiet ones with the more {4} pupils on every school trip. The plan has worked for eleven years now. Parents mention it at every meeting with the head. Only one family has ever asked for a change.",
+       "blatt": "Unit06_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit06_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "wildlife",
+         "de": "Wildtiere",
+         "luecke": false,
+         "score": 0.6
+        },
+        {
+         "en": "confused",
+         "de": "verwirrt",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "extrovert",
+         "de": "Extravertierte(r)",
+         "luecke": false,
+         "score": 1.4
+        },
+        {
+         "en": "suitable",
+         "de": "geeignet",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "reliable",
+         "de": "zuverlässig",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "stubborn",
+         "de": "stur",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "sunshine",
+         "de": "Sonnenschein",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "poser",
+         "de": "Angeber(in)",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "breathe",
+         "de": "atmen",
+         "luecke": true,
+         "score": 1.3
+        },
+        {
+         "en": "role model",
+         "de": "Vorbild",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "rewarding",
+         "de": "bereichernd",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "nursery",
+         "de": "Kindergarten",
+         "luecke": true,
+         "score": 2.4
+        }
+       ],
+       "text": "My older sister helps with small children every Wednesday afternoon. She teaches them to {1} slowly when they are upset. For many of them she has become a real {2}. The work is tiring but very {3}. She has done it since she was fifteen. Next year she wants to train at a bigger {4} in the next town.",
+       "blatt": "Unit06_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit06_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "requirement",
+         "de": "Anforderung",
+         "luecke": false,
+         "score": 4.8
+        },
+        {
+         "en": "curious",
+         "de": "neugierig",
+         "luecke": false,
+         "score": 4.3
+        },
+        {
+         "en": "peer pressure",
+         "de": "Gruppenzwang",
+         "luecke": false,
+         "score": 4.3
+        },
+        {
+         "en": "vacancy",
+         "de": "freie Stelle",
+         "luecke": false,
+         "score": 4.3
+        },
+        {
+         "en": "sensible",
+         "de": "vernünftig",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "extraordinary",
+         "de": "außergewöhnlich",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "chill out",
+         "de": "sich entspannen",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "inhabitant",
+         "de": "Bewohner(in)",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "socialize",
+         "de": "unter Leute kommen",
+         "luecke": true,
+         "score": 3.7
+        },
+        {
+         "en": "hands-on experience",
+         "de": "praktische Erfahrung",
+         "luecke": true,
+         "score": 6.3
+        },
+        {
+         "en": "beneficial",
+         "de": "vorteilhaft",
+         "luecke": true,
+         "score": 5.2
+        },
+        {
+         "en": "independence",
+         "de": "Selbstständigkeit",
+         "luecke": true,
+         "score": 5.6
+        }
+       ],
+       "text": "Two weeks in a local firm teach more than a whole term of theory. Pupils learn to {1} with adults they have never met before. Most of them return with real {2} and a much clearer plan. Even a short placement is {3} for anybody who is unsure about the future. The greatest gain is a new sense of {4} that lasts for years. Our school has done this since 2009.",
+       "blatt": "Unit06_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit06_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "landscape",
+         "de": "Landschaft",
+         "luecke": false,
+         "score": 0.2
+        },
+        {
+         "en": "introvert",
+         "de": "Introvertierte(r)",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "confident",
+         "de": "selbstsicher",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "rebellious",
+         "de": "rebellisch",
+         "luecke": false,
+         "score": 1.3
+        },
+        {
+         "en": "hippy",
+         "de": "Hippie",
+         "luecke": false,
+         "score": 1.3
+        },
+        {
+         "en": "complicated",
+         "de": "kompliziert",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "rocket",
+         "de": "Rakete",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "task",
+         "de": "Aufgabe",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "involve",
+         "de": "einbeziehen",
+         "luecke": true,
+         "score": 1.1
+        },
+        {
+         "en": "outlook",
+         "de": "Einstellung",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "generous",
+         "de": "großzügig",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "modest",
+         "de": "bescheiden",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "Our football coach likes to {1} every player in the plan. She has a positive {2} even after a bad match. Nobody on the team sits on the bench all season. Last winter a local shop was very {3} and paid for new shirts. The captain stayed {4} when the newspaper wrote about her.",
+       "blatt": "Unit06_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit06_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit06_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -16086,7 +18646,338 @@
         "nebensaetze": 0.2
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "ancient ruin",
+         "de": "alte Ruine",
+         "luecke": false,
+         "score": 4.9
+        },
+        {
+         "en": "heavy traffic",
+         "de": "dichter Verkehr",
+         "luecke": false,
+         "score": 4.5
+        },
+        {
+         "en": "contemporary",
+         "de": "zeitgenössisch",
+         "luecke": false,
+         "score": 3.9
+        },
+        {
+         "en": "capacity",
+         "de": "Kapazität",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "technique",
+         "de": "Verfahren",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "chatty",
+         "de": "gesprächig",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "elevated",
+         "de": "erhöht",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "bury",
+         "de": "vergraben",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "restore",
+         "de": "wiederherstellen",
+         "luecke": true,
+         "score": 3.0
+        },
+        {
+         "en": "leisure facilities",
+         "de": "Freizeiteinrichtungen",
+         "luecke": true,
+         "score": 5.4
+        },
+        {
+         "en": "accidental",
+         "de": "zufällig",
+         "luecke": true,
+         "score": 5.6
+        },
+        {
+         "en": "proclamation",
+         "de": "Verkündigung",
+         "luecke": true,
+         "score": 5.3
+        }
+       ],
+       "text": "The council decided to {1} the old market hall instead of pulling it down. The new plan adds a library and several {2} on the upper floor. The discovery of a Roman floor under the stage was completely {3}. A copy of the king's {4} from 1642 now hangs beside the entrance. Visitors come from the whole county at weekends. The coffee shop opens at nine every day. School classes book the guided tour weeks ahead.",
+       "blatt": "Unit07_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit07_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "skeleton",
+         "de": "Skelett",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "sports stadium",
+         "de": "Sportstadion",
+         "luecke": false,
+         "score": 0.1
+        },
+        {
+         "en": "oasis",
+         "de": "Oase",
+         "luecke": false,
+         "score": 0.8
+        },
+        {
+         "en": "jug",
+         "de": "Krug",
+         "luecke": false,
+         "score": 1.4
+        },
+        {
+         "en": "replace",
+         "de": "ersetzen",
+         "luecke": false,
+         "score": 1.5
+        },
+        {
+         "en": "speculate",
+         "de": "spekulieren",
+         "luecke": false,
+         "score": 1.5
+        },
+        {
+         "en": "pub",
+         "de": "Kneipe",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "suburbs",
+         "de": "Vororte",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "transform",
+         "de": "verwandeln",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "arch",
+         "de": "Bogen",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "lit up",
+         "de": "erhellt",
+         "luecke": true,
+         "score": 1.9
+        },
+        {
+         "en": "demolish",
+         "de": "abreißen",
+         "luecke": true,
+         "score": 2.6
+        }
+       ],
+       "text": "The city wants to {1} the old station into a museum. Local people voted for the plan in March. Workers cleaned the stone {2} above the main door. At night the whole front is {3} in a soft yellow light. Nobody wants to {4} the building any more. The work will take about two years.",
+       "blatt": "Unit07_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit07_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "incredible",
+         "de": "unglaublich",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "bullet hole",
+         "de": "Einschussloch",
+         "luecke": false,
+         "score": 3.8
+        },
+        {
+         "en": "mural",
+         "de": "Wandgemälde",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "open-air cinema",
+         "de": "Freilichtkino",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "proposal",
+         "de": "Vorschlag",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "monument",
+         "de": "Denkmal",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "distinctive",
+         "de": "unverwechselbar",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "litter",
+         "de": "Abfall",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "unearth",
+         "de": "ausgraben",
+         "luecke": true,
+         "score": 2.8
+        },
+        {
+         "en": "music venue",
+         "de": "Veranstaltungsort für Musik",
+         "luecke": true,
+         "score": 4.0
+        },
+        {
+         "en": "retractable",
+         "de": "einziehbar",
+         "luecke": true,
+         "score": 3.8
+        },
+        {
+         "en": "partially",
+         "de": "zum Teil",
+         "luecke": true,
+         "score": 3.2
+        }
+       ],
+       "text": "Builders beside the canal often {1} something older than the city itself. The old gasworks reopened last spring as a busy {2}. The building had stood empty for thirty years. Its roof is {3} and opens in ninety seconds. In summer the hall stands {4} open to the evening air. Tickets for July sold out in four days. The owners plan a second stage for next year. Neighbours complained about the noise only twice.",
+       "blatt": "Unit07_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit07_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "install",
+         "de": "installieren",
+         "luecke": false,
+         "score": 0.3
+        },
+        {
+         "en": "destroy",
+         "de": "zerstören",
+         "luecke": false,
+         "score": 0.6
+        },
+        {
+         "en": "spectacular",
+         "de": "spektakulär",
+         "luecke": false,
+         "score": 0.9
+        },
+        {
+         "en": "renovate",
+         "de": "renovieren",
+         "luecke": false,
+         "score": 1.2
+        },
+        {
+         "en": "spire",
+         "de": "Turmspitze",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "replica",
+         "de": "Nachbau",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "industrial site",
+         "de": "Industriestandort",
+         "luecke": false,
+         "score": 2.3
+        },
+        {
+         "en": "hawk",
+         "de": "Falke",
+         "luecke": false,
+         "score": 2.3
+        },
+        {
+         "en": "reconstruct",
+         "de": "rekonstruieren",
+         "luecke": true,
+         "score": 2.3
+        },
+        {
+         "en": "avenue",
+         "de": "(breite) Straße",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "vibrant",
+         "de": "lebendig",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "green space",
+         "de": "Grünfläche",
+         "luecke": true,
+         "score": 2.5
+        }
+       ],
+       "text": "The city plans to {1} the old wooden bridge next year. A wide {2} will lead from the station to the river. The whole quarter has become quite {3} since the market reopened. Families walk there on Sunday afternoons. Beside the water they will create a new {4} with trees and benches.",
+       "blatt": "Unit07_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit07_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit07_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [
@@ -17972,7 +20863,338 @@
         "nebensaetze": 0.17
        }
       }
-     }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "punishment",
+         "de": "Strafe",
+         "luecke": false,
+         "score": 4.3
+        },
+        {
+         "en": "cyberbullying",
+         "de": "Internetmobbing",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "safety deposit box",
+         "de": "Bankschließfach",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "ingredient",
+         "de": "Zutaten",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "pickpocket",
+         "de": "Taschendieb(in)",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "newsreader",
+         "de": "Nachrichtensprecher(in)",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "cybercrime",
+         "de": "Internetkriminalität",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "threatening",
+         "de": "bedrohend",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "arrest",
+         "de": "verhaften",
+         "luecke": true,
+         "score": 3.0
+        },
+        {
+         "en": "suggestion",
+         "de": "Vorschlag",
+         "luecke": true,
+         "score": 5.1
+        },
+        {
+         "en": "irresponsible",
+         "de": "unverantwortlich",
+         "luecke": true,
+         "score": 4.6
+        },
+        {
+         "en": "unbelievable",
+         "de": "unglaublich",
+         "luecke": true,
+         "score": 4.4
+        }
+       ],
+       "text": "The police could not {1} anybody in the first three weeks. Then a neighbour made one simple {2} that changed the whole case. Leaving the back door open all night had been {3} rather than criminal. The final explanation sounded {4} to everyone in the small courtroom. The trial lasted only two afternoons. Local papers wrote about it for a week. Nobody in the town has forgotten the story. The window is now closed every evening.",
+       "blatt": "Unit08_V1_Test_PartI_NiveauA.docx",
+       "loesung": "Unit08_V1_Test_PartI_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "dominoes",
+         "de": "Domino",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "hacking",
+         "de": "Hacken",
+         "luecke": false,
+         "score": 0.4
+        },
+        {
+         "en": "harsh",
+         "de": "hart",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "infamous",
+         "de": "berüchtigt",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "fame",
+         "de": "Ruhm",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "guard",
+         "de": "Wächter(in)",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "vault",
+         "de": "Tresor",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "ban",
+         "de": "Verbot",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "ruin",
+         "de": "ruinieren",
+         "luecke": true,
+         "score": 2.1
+        },
+        {
+         "en": "mystery",
+         "de": "Geheimnis",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "unexpected",
+         "de": "unerwartet",
+         "luecke": true,
+         "score": 2.5
+        },
+        {
+         "en": "burglar",
+         "de": "Einbrecher(in)",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "One wet night in March something strange happened at the museum. Rain can {1} old paintings in a few hours. For two days the open window was a real {2}. The staff checked every room twice. Then a completely {3} phone call reached the police. A young {4} had left his gloves on the stairs.",
+       "blatt": "Unit08_V1_Test_PartI_NiveauB.docx",
+       "loesung": "Unit08_V1_Test_PartI_NiveauB_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "nuisance",
+         "de": "Ärgernis",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "loyal",
+         "de": "treu",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "unfortunate",
+         "de": "unglücklich",
+         "luecke": false,
+         "score": 3.3
+        },
+        {
+         "en": "diving bell",
+         "de": "Taucherglocke",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "shoplifting",
+         "de": "Ladendiebstahl",
+         "luecke": false,
+         "score": 3.1
+        },
+        {
+         "en": "mugger",
+         "de": "Straßenräuber(in)",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "jail cell",
+         "de": "Gefängniszelle",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "unlock",
+         "de": "entriegeln",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "drill",
+         "de": "bohren",
+         "luecke": true,
+         "score": 3.0
+        },
+        {
+         "en": "prison sentence",
+         "de": "Haftstrafe",
+         "luecke": true,
+         "score": 4.8
+        },
+        {
+         "en": "immature",
+         "de": "unreif/kindisch",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "offence",
+         "de": "Straftat",
+         "luecke": true,
+         "score": 4.5
+        }
+       ],
+       "text": "The two brothers used a heavy machine to {1} through the shop wall. In November the court gave them a short {2}. The judge called their behaviour {3} rather than truly dangerous. Breaking into an empty building still counts as a serious {4} here. Both of them now clean the park on Saturdays. The mayor says the arrangement works well. Nobody has tried the same thing since. The shop installed a new alarm in spring.",
+       "blatt": "Unit08_V1_Test_PartII_NiveauA.docx",
+       "loesung": "Unit08_V1_Test_PartII_NiveauA_Loesung.docx"
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "robber",
+         "de": "Räuber(in)",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "trolling",
+         "de": "Trollen",
+         "luecke": false,
+         "score": 0.3
+        },
+        {
+         "en": "victim",
+         "de": "Opfer",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "security system",
+         "de": "Sicherheitssystem",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "announce",
+         "de": "durchsagen",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "crown",
+         "de": "Krone",
+         "luecke": false,
+         "score": 2.1
+        },
+        {
+         "en": "fraud",
+         "de": "Betrug",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "dishonest",
+         "de": "unehrlich",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "admit",
+         "de": "zugeben",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "martial art",
+         "de": "Kampfsport",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "abusive",
+         "de": "beleidigend",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "decade",
+         "de": "Jahrzehnt",
+         "luecke": true,
+         "score": 2.2
+        }
+       ],
+       "text": "The man took two days to {1} what he had done. He had learned a {2} many years before. Online he had written {3} messages to three young players. His trainer spoke for him in court. The judge listened carefully to both sides. The club had known him for almost a {4} of quiet work.",
+       "blatt": "Unit08_V1_Test_PartII_NiveauB.docx",
+       "loesung": "Unit08_V1_Test_PartII_NiveauB_Loesung.docx"
+      }
+     ],
+     "liste_blatt": "Unit08_V1_VocabularyList.docx"
     }
    ],
    "hauptteil": [

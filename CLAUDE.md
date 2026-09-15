@@ -484,9 +484,13 @@ Niveau, Wörter und Lücken je Prüfung. Sie rechnet nichts selbst: sie zeigt,
 was in `kuratiert/` steht, und schreibt daraus den Auftragssatz für den Chat.
 
 ```bash
-python werkstatt/export.py   # daten.json aus kuratiert/ und der Datenbank
-python werkstatt/bauen.py    # vokabelwerkstatt.html aus vorlage.html
+python werkstatt/export.py    # daten.json aus kuratiert/ und der Datenbank
+python werkstatt/beilagen.py  # die gebauten Word-Dateien als JSON daneben
+python werkstatt/bauen.py     # vokabelwerkstatt.html aus vorlage.html
 ```
+
+Beim Veröffentlichen gehen die Beilagen **mit** — sonst lädt die Seite
+Dokumente herunter, die nicht mehr zu dem passen, was sie anzeigt.
 
 Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
 sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
@@ -559,6 +563,44 @@ Die Kennzahlen stehen **untereinander, nicht nebeneinander**: Fünf Spalten
 in einer 296 px breiten Leiste ergäben 55 px je Spalte, die Beschriftungen
 brächen um. Untereinander lesen sich die ersten drei ausserdem als das, was
 sie sind — ein Trichter von 213 über 141 aussortierte auf 60.
+
+### Prüfungen ansehen — und herunterladen
+
+Jede Listenzeile trägt neben „anpassen" den Griff **„Prüfungen ansehen"**.
+Er öffnet ein Fenster mit einer Karte je Prüfung dieser Liste — die vier
+Grundprüfungen und jede weitere Fassung:
+
+* welche zwölf Wörter geprüft werden, welche davon Lücke sind, Ø der
+  Prüfnoten,
+* der **Lückentext** mit nummerierten Lücken und die Lösung darunter,
+* Knöpfe **Blatt** und **Lösung**, die die Word-Datei herunterladen.
+
+Was in einer gebauten Prüfung steht, liess sich vorher nur im Word-Dokument
+nachsehen — also gerade dann nicht, wenn man wissen wollte, ob man sie
+überhaupt bauen soll.
+
+**Angeboten wird nur, was gebaut ist.** `daten.json` führt die Dateien aus
+`out/` mit ihrer Grösse; steht eine Prüfung im Paket, ohne dass je ein
+Dokument daraus wurde, sagt die Karte das, statt einen Knopf anzubieten, der
+ins Leere greift.
+
+#### Warum die Dokumente als JSON danebenliegen
+
+Neben einer veröffentlichten Seite lassen sich **nur übliche Web-Medientypen
+ausliefern** — eine `.docx` gehört nicht dazu, der Dienst weist sie ab.
+`werkstatt/beilagen.py` packt deshalb jede Datei in ein
+`<name>.docx.json` (Base64). Die Seite holt es beim Klick, packt es aus und
+reicht es über die Fähigkeit `downloads` weiter; der Betrachter bestätigt
+und bekommt es unter seinem richtigen Namen. Ein Link im Browser täte es
+nicht: Von der Seite angestossene Downloads sind in der Ansicht gesperrt.
+
+**Die Grösse ist der Abgleich.** Vor dem Weiterreichen vergleicht die Seite
+die ausgepackte Datei mit der Grösse, die in `daten.json` steht. Wer `out/`
+neu baut und die Seite nicht neu veröffentlicht, bekommt „die beiliegende
+Datei passt nicht zu dem, was hier steht" statt einer Prüfung mit dem
+falschen Lückentext. Zwei Tests prüfen dieselbe Kette schon vorher:
+`daten.json` gegen `out/`, und die Beilagen gegen `daten.json` — samt einer
+Stichprobe, die wirklich ausgepackt und Byte für Byte verglichen wird.
 
 ### Wortauswahl von Hand — dabei und nicht dabei
 

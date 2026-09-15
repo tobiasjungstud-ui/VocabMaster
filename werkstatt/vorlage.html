@@ -233,12 +233,13 @@ textarea{
   margin-top:3px; font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
   line-height:1.45; overflow-wrap:anywhere;
 }
-.listenzeile .zeilenfuss{display:flex; margin-top:5px}
-.listenzeile .anpassen{
-  margin-left:auto; font-size:11px; color:var(--accent); cursor:pointer;
+.listenzeile .zeilenfuss{display:flex; gap:12px; margin-top:5px}
+.listenzeile .anpassen, .listenzeile .pruefen{
+  font-size:11px; color:var(--accent); cursor:pointer;
   text-decoration:underline; text-underline-offset:2px;
 }
-.listenzeile .anpassen:hover{text-decoration-thickness:2px}
+.listenzeile .anpassen{margin-left:auto}
+.listenzeile .anpassen:hover, .listenzeile .pruefen:hover{text-decoration-thickness:2px}
 .herkunft .kopfzeile{background:var(--sunk)}
 .herkunft .kopfzeile dt{
   font-family:var(--mono); font-size:10px; font-weight:600; color:var(--accent);
@@ -344,6 +345,60 @@ dialog#wortwahl::backdrop{background:rgba(23,26,34,.45)}
 .fensterkopf h2{font-family:var(--serif); font-size:19px; font-weight:600}
 .fensterkopf .waage{margin-left:auto}
 .fensterleib{padding:14px 18px 18px; overflow:auto; min-height:0}
+
+/* ---------- Prüfungen ansehen ---------- */
+dialog#pruefungsfenster{
+  width:min(860px, 94vw); max-height:90vh; padding:0; border:0;
+  border-radius:var(--r); background:var(--surface); color:var(--ink);
+  box-shadow:0 24px 60px -20px rgba(23,26,34,.55);
+  flex-direction:column; overflow:hidden;
+}
+dialog#pruefungsfenster[open]{display:flex}
+dialog#pruefungsfenster::backdrop{background:rgba(23,26,34,.45)}
+.pruefkarte{
+  border:1px solid var(--line); border-radius:var(--r); margin-bottom:14px;
+  overflow:hidden;
+}
+.pruefkarte:last-child{margin-bottom:0}
+.pruefkarte.a{border-color:var(--nivA-line)}
+.pruefkarte.b{border-color:var(--nivB-line)}
+.pruefkarte > h3{
+  margin:0; padding:9px 12px; display:flex; flex-wrap:wrap; gap:6px 12px;
+  align-items:baseline; font-family:var(--mono); font-size:12px; font-weight:600;
+}
+.pruefkarte.a > h3{background:var(--nivA-soft); color:var(--nivA)}
+.pruefkarte.b > h3{background:var(--nivB-soft); color:var(--nivB)}
+.pruefkarte > h3 .mass{font-weight:500; font-size:10.5px; color:var(--ink-3)}
+.pruefkarte > h3 .griffe{margin-left:auto; display:flex; gap:6px}
+.pruefkarte > h3 .knopf{padding:3px 9px; font-size:11.5px; font-weight:500}
+.pruefleib{padding:12px}
+.pruefwoerter{
+  display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+  gap:2px 14px; margin-bottom:12px;
+}
+@media (max-width:520px){ .pruefwoerter{grid-template-columns:1fr} }
+.pruefwort{display:flex; gap:7px; align-items:baseline; font-size:12.5px; min-width:0}
+.pruefwort .nr{font-family:var(--mono); font-size:10px; color:var(--ink-3); width:1.4em; flex:none}
+.pruefwort .en{font-weight:500; overflow-wrap:anywhere}
+.pruefwort .de{color:var(--ink-3); font-size:11px; margin-left:auto; text-align:right; overflow-wrap:anywhere}
+.pruefwort.luecke .en::after{
+  content:"Lücke"; font-family:var(--mono); font-size:8.5px; letter-spacing:.04em;
+  margin-left:6px; padding:1px 4px; border-radius:2px;
+  background:var(--sunk); color:var(--ink-3); vertical-align:1px;
+}
+.lueckentext{
+  padding:11px 13px; border-radius:var(--r); background:var(--sunk);
+  border:1px solid var(--line); font-size:13px; line-height:1.75;
+}
+.lueckentext b{
+  font-family:var(--mono); font-size:11.5px; padding:0 8px;
+  border-bottom:1px solid var(--line-2); color:var(--ink-3); font-weight:400;
+}
+.loesungszeile{
+  margin-top:8px; font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  line-height:1.6; overflow-wrap:anywhere;
+}
+.pruefhinweis{margin:10px 0 0; font-size:11.5px; color:var(--ink-3); line-height:1.5}
 
 /* ---------- Wortauswahl: dabei und nicht dabei ---------- */
 .waage{
@@ -706,6 +761,15 @@ td.satz{color:var(--ink-2); font-size:12.5px}
   </div>
 </div>
 
+<dialog id="pruefungsfenster" aria-labelledby="pruefungsTitel">
+  <div class="fensterkopf">
+    <h2 id="pruefungsTitel">Prüfungen</h2>
+    <span class="waage" id="pruefungsZahl"></span>
+    <button class="knopf" id="pruefungenZu" type="button">Fertig</button>
+  </div>
+  <div class="fensterleib" id="pruefungsleib"></div>
+</dialog>
+
 <dialog id="wortwahl" aria-labelledby="wortwahlTitel">
   <div class="fensterkopf">
     <h2 id="wortwahlTitel">Liste anpassen</h2>
@@ -1007,6 +1071,150 @@ function zeichneHerkunft(li){
 function posten(titel, wert, betont){
   return '<div class="' + (betont ? "betont" : "") + '"><dt>' + titel +
          "</dt><dd>" + wert + "</dd></div>";
+}
+
+/* ---------------- Prüfungen ansehen ----------------
+   Was in einer gebauten Prüfung steht, liess sich bisher nur im Word-
+   Dokument nachsehen - also gerade dann nicht, wenn man wissen wollte, ob
+   man es überhaupt bauen soll. Das Fenster zeigt es aus dem Paket: die
+   zwölf Wörter, welche davon Lücke sind, den Lückentext und die Lösung. */
+const DOKUMENTE = DATA.dokumente || {};
+function istGebaut(datei){ return Object.hasOwn(DOKUMENTE, datei); }
+
+function pruefungsfensterAuf(li){
+  const f = $("pruefungsfenster");
+  $("pruefungsTitel").textContent =
+    "Prüfungen zu V" + li.version + " · " + unitDaten().titel;
+  const prs = li.pruefungen || [];
+  $("pruefungsZahl").textContent = prs.length +
+    (prs.length === 1 ? " Prüfung" : " Prüfungen");
+  $("pruefungsZahl").className = "waage";
+  const leib = $("pruefungsleib");
+  leib.innerHTML = "";
+  if(!prs.length){
+    leib.innerHTML = '<p class="pruefhinweis">Zu dieser Liste ist noch ' +
+      "keine Prüfung angelegt.</p>";
+  } else {
+    for(const pr of prs) leib.appendChild(pruefkarte(pr, li));
+  }
+  // Die Vokabelliste selbst gehört dazu: Wer die Prüfungen ansieht, will
+  // meist auch das Blatt, das die Klasse dazu gelernt hat.
+  if(istGebaut(li.liste_blatt)){
+    const zeile = document.createElement("p");
+    zeile.className = "pruefhinweis";
+    zeile.style.display = "flex";
+    zeile.style.alignItems = "center";
+    zeile.style.gap = "10px";
+    zeile.textContent = "Die Vokabelliste dazu: " + li.liste_blatt;
+    zeile.appendChild(ladeknopf("Blatt", li.liste_blatt));
+    leib.insertBefore(zeile, leib.firstChild);
+  }
+  if(!f.open) f.showModal();
+}
+
+function pruefkarte(pr, li){
+  const k = document.createElement("div");
+  k.className = "pruefkarte " + pr.niveau.toLowerCase();
+  const luecken = pr.woerter.filter(w => w.luecke);
+  const noten = pr.woerter.map(w => Number(w.score) || 0);
+  const schnitt = noten.length
+    ? (noten.reduce((a, b) => a + b, 0) / noten.length) : 0;
+  const gebaut = istGebaut(pr.blatt);
+
+  const kopf = document.createElement("h3");
+  kopf.innerHTML =
+    "Teil " + (pr.teil === 1 ? "I" : "II") + " · Niveau " + pr.niveau +
+    " · Fassung " + pr.fassung +
+    '<span class="mass">' + pr.woerter.length + " Wörter, davon " +
+    luecken.length + " Lücken · Ø " + schnitt.toFixed(1) + "/10</span>";
+  const griffe = document.createElement("span");
+  griffe.className = "griffe";
+  if(gebaut){
+    griffe.appendChild(ladeknopf("Blatt", pr.blatt));
+    if(istGebaut(pr.loesung)) griffe.appendChild(ladeknopf("Lösung", pr.loesung));
+  }
+  kopf.appendChild(griffe);
+  k.appendChild(kopf);
+
+  const leib = document.createElement("div");
+  leib.className = "pruefleib";
+  leib.innerHTML =
+    '<div class="pruefwoerter">' + pr.woerter.map((w, i) =>
+      '<div class="pruefwort' + (w.luecke ? " luecke" : "") + '">' +
+      '<span class="nr">' + (i + 1) + '</span>' +
+      '<span class="en">' + esc(w.en) + '</span>' +
+      '<span class="de">' + esc(w.de) + '</span></div>').join("") + "</div>" +
+    (pr.text
+      ? '<div class="lueckentext">' + lueckentext(pr.text) + "</div>" +
+        '<p class="loesungszeile">Lösung: ' +
+        luecken.map((w, i) => (i + 1) + " " + esc(w.en)).join(" · ") + "</p>"
+      : '<p class="pruefhinweis">Der Lückentext ist noch nicht ' +
+        "geschrieben.</p>") +
+    '<p class="pruefhinweis">' + (gebaut
+      ? esc(pr.blatt)
+      : "Noch kein Word-Dokument gebaut — im Chat mit „vocabmaster bauen" +
+        " " + esc("kuratiert/…") + "\" entsteht es.") + "</p>";
+  k.appendChild(leib);
+  return k;
+}
+
+/* Die Lücken stehen im Paket als {1}, {2} ... - im Blatt sind es Striche
+   mit Nummer, und genau so gehören sie hierher. */
+function lueckentext(text){
+  const teile = String(text).split(/(\{\d+\})/g);
+  return teile.map(t => /^\{\d+\}$/.test(t)
+    ? "<b>" + t.slice(1, -1) + "</b>"
+    : esc(t)).join("");
+}
+
+function ladeknopf(was, datei){
+  const k = document.createElement("button");
+  k.type = "button";
+  k.className = "knopf";
+  k.textContent = was;
+  k.addEventListener("click", () => herunterladen(k, was, datei));
+  return k;
+}
+
+/* Die Word-Datei liegt als Beilage neben der Seite. Der Browser darf sie
+   nicht selbst herunterladen - das übernimmt die Fähigkeit `downloads`,
+   und der Betrachter bestätigt. Geht eines von beidem nicht, sagt es der
+   Knopf, statt stumm nichts zu tun. */
+async function herunterladen(knopf, was, datei){
+  const vorher = knopf.textContent;
+  knopf.disabled = true;
+  knopf.textContent = "…";
+  try{
+    if(!downloads) throw {code: "unavailable"};
+    // Neben der Seite lassen sich nur übliche Web-Medientypen ausliefern -
+    // eine .docx gehört nicht dazu. Sie liegt deshalb als JSON daneben und
+    // wird hier ausgepackt; `werkstatt/beilagen.py` packt sie ein.
+    const antwort = await fetch(datei + ".json");
+    if(!antwort.ok) throw {code: "fehlt"};
+    const paket = await antwort.json();
+    const roh = Uint8Array.from(atob(paket.base64), z => z.charCodeAt(0));
+    // Die Beilage muss zu dem passen, was die Seite anzeigt. Wer `out/` neu
+    // baut und die Seite nicht neu veröffentlicht, hätte sonst eine Prüfung
+    // mit einem anderen Lückentext in der Hand, als hier dasteht.
+    if(roh.length !== DOKUMENTE[datei]) throw {code: "veraltet"};
+    await downloads.save({filename: datei, data: new Blob([roh])});
+    knopf.textContent = "✓ " + vorher;
+    setTimeout(() => { knopf.textContent = vorher; }, 2000);
+  }catch(e){
+    const code = e && e.code ? e.code : "";
+    knopf.textContent = code === "declined" ? vorher : "ging nicht";
+    knopf.title = code === "unavailable"
+      ? "Herunterladen steht in dieser Ansicht nicht zur Verfügung."
+      : code === "fehlt"
+        ? "Die Datei liegt nicht bei dieser Fassung der Seite."
+      : code === "veraltet"
+        ? "Die beiliegende Datei passt nicht zu dem, was hier steht — "
+          + "die Seite muss neu veröffentlicht werden."
+        : "Nicht gespeichert" + (code ? " (" + code + ")" : "") + ".";
+    setTimeout(() => { knopf.textContent = vorher; }, 2500);
+  }finally{
+    knopf.disabled = false;
+  }
 }
 
 /* ---------------- Wortauswahl: dabei und nicht dabei ----------------
@@ -1838,8 +2046,9 @@ function listenzeile(li){
     '<span class="umfang">' + li.woerter.length + ' Wörter</span>' +
     '<span class="abdruck">' + esc(li.abdruck) + '</span></span>' +
     '<span class="merkmale">' + esc(merkmale.join(" · ")) + '</span>' +
-    '<span class="zeilenfuss"><span class="anpassen" role="button" ' +
-    'tabindex="0">anpassen</span></span>';
+    '<span class="zeilenfuss"><span class="pruefen" role="button" ' +
+    'tabindex="0">Prüfungen ansehen</span>' +
+    '<span class="anpassen" role="button" tabindex="0">anpassen</span></span>';
   k.addEventListener("click", () => listeWaehlen(li.version));
   // Der Griff gehört in die Zeile, nicht darunter: Er meint diese Liste.
   const griff = k.querySelector(".anpassen");
@@ -1851,6 +2060,14 @@ function listenzeile(li){
   griff.addEventListener("click", oeffnen);
   griff.addEventListener("keydown", e => {
     if(e.key === "Enter" || e.key === " ") oeffnen(e);
+  });
+  // Die Prüfungen gehören zu **dieser** Liste - der Griff sitzt deshalb in
+  // ihrer Zeile und nimmt sie gleich mit.
+  const schauen = k.querySelector(".pruefen");
+  const zeigen = e => { e.stopPropagation(); pruefungsfensterAuf(li); };
+  schauen.addEventListener("click", zeigen);
+  schauen.addEventListener("keydown", e => {
+    if(e.key === "Enter" || e.key === " ") zeigen(e);
   });
   // Die Kennzahlen folgen der Maus - man vergleicht, ohne zu wählen.
   k.addEventListener("mouseenter", () => zeichneHerkunft(li));
@@ -1990,6 +2207,7 @@ $("herkunft").addEventListener("click", e => {
 });
 
 $("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
+$("pruefungenZu").addEventListener("click", () => $("pruefungsfenster").close());
 
 function fensterAuf(){
   if(!bestellt().liste) return;

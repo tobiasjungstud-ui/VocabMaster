@@ -10,3 +10,4 @@ dist/
 out/
 ~$*.docx
 .DS_Store
+werkstatt/beilagen/

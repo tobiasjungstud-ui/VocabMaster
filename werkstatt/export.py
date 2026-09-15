@@ -23,6 +23,7 @@ from vocabmaster import datenbanken as _dbs  # noqa: E402
 from vocabmaster import paedagogik as _paed  # noqa: E402
 from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
+from vocabmaster.documents import dateiname  # noqa: E402
 from vocabmaster.exam.difficulty import score  # noqa: E402
 from vocabmaster.exam.english import readability  # noqa: E402
 from vocabmaster.list.dedup import deduplicate  # noqa: E402
@@ -205,6 +206,49 @@ def _echte_auswahl(pack: dict, woerter: list[dict]) -> dict[str, dict]:
     return heraus
 
 
+def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
+    """Was in **einer** Prüfung wirklich steht - Wörter, Lücken, Text.
+
+    Die Oberfläche zeigte bisher nur, welche Wörter eine Prüfung *hätte*.
+    Zum Nachsehen, wie die gebaute Prüfung aussieht, braucht es ihren
+    Lückentext und die Lösung dazu; beides steht im Paket und kam nie an.
+
+    Ein Fassungspaket trägt nur die eine Prüfung, für die es angelegt wurde -
+    deshalb wird hier übersprungen, was fehlt, statt es zu erfinden.
+    """
+    nach_en = {w["en"].lower(): w for w in woerter}
+    unit = int(pack["unit"])
+    version = int(pack.get("liste_version", 1))
+    heraus = []
+    for teil, tnr in (("teil1", 1), ("teil2", 2)):
+        for niveau in ("A", "B"):
+            pruef = pack.get("pruefungen", {}).get(teil, {}).get(niveau)
+            if not pruef:
+                continue
+            uebersetzen = [i["english"] for i in pruef["task1"]["items"]]
+            luecken = [g["answer"] for g in pruef["task2"].get("gaps") or []]
+            alle = uebersetzen + [w for w in luecken if w not in uebersetzen]
+            gemeint = lambda w: nach_en.get(w.lower(), {})  # noqa: E731
+            heraus.append({
+                "teil": tnr,
+                "niveau": niveau,
+                "fassung": fassung,
+                "woerter": [{
+                    "en": w,
+                    "de": gemeint(w).get("de", ""),
+                    "luecke": w in luecken,
+                    "score": gemeint(w).get("score", 0.0),
+                } for w in alle],
+                "text": pruef["task2"].get("text", ""),
+                "blatt": dateiname(unit, "Test", teil=tnr, niveau=niveau,
+                                   fassung=fassung, liste_version=version),
+                "loesung": dateiname(unit, "Test", teil=tnr, niveau=niveau,
+                                     loesung=True, fassung=fassung,
+                                     liste_version=version),
+            })
+    return heraus
+
+
 def _herkunft(db: Database, unit: int, settings: Settings) -> dict[str, int]:
     """Wie die Auswahl zustande kam - dieselbe Rechnung wie beim Gerüst."""
     r = plan_unit(db, unit, settings).report
@@ -215,6 +259,30 @@ def _herkunft(db: Database, unit: int, settings: Settings) -> dict[str, int]:
         "ergaenzt": r.fehlend,
         "zusatzteile": len(r.aus_zusatzteilen),
     }
+
+
+#: Wohin `vocabmaster bauen` schreibt. Was dort liegt, kann die Oberfläche
+#: zum Herunterladen anbieten - was nicht, darf sie nicht anbieten.
+GEBAUT = WURZEL / "out"
+
+
+def _dokumente(ordner: Path) -> dict[str, int]:
+    """Welche Word-Dateien wirklich gebaut sind - mit ihrer Grösse.
+
+    Ein Knopf, der eine Datei verspricht, die es nicht gibt, ist schlimmer
+    als kein Knopf: Man merkt es erst, wenn man sie braucht. Ein Paket kann
+    fertige Prüfungen enthalten, ohne dass je ein Dokument daraus wurde -
+    `bauen --nur liste` tut genau das.
+
+    Die Grösse ist der Abgleich: Die Dokumente werden als Beilage neben der
+    Seite veröffentlicht, und wer `out/` neu baut, ohne die Seite neu zu
+    veröffentlichen, hätte sonst eine Beilage, die nicht mehr zu dem passt,
+    was die Seite anzeigt. Eine Prüfung mit dem falschen Lückentext
+    auszuteilen ist der teuerste Fehler, den dieses Programm machen kann.
+    """
+    if not ordner.is_dir():
+        return {}
+    return {d.name: d.stat().st_size for d in sorted(ordner.glob("*.docx"))}
 
 
 def baue(pakete: Path, db: Database, settings: Settings) -> dict:
@@ -231,6 +299,7 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
     # eine an. Welche, muss die Oberfläche sagen können - sonst liest sich
     # "Fassung 2, 3" wie eine zweite und dritte Vokabelliste.
     fassungen: dict[tuple[int, int], list[dict]] = {}
+    fassungspakete: dict[tuple[int, int], list[dict]] = {}
     quelle = None
     for datei in sorted(pakete.glob("unit_*.json")):
         pack = json.loads(datei.read_text("utf-8"))
@@ -247,6 +316,7 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
                             "teil": tnr,
                             "niveau": niveau,
                         })
+            fassungspakete.setdefault((unit, version), []).append(pack)
             continue
         quelle = quelle or pack["quelle"]
         roh.setdefault(unit, []).append(pack)
@@ -283,6 +353,17 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
                 ),
                 "woerter": woerter,
                 "echt": _echte_auswahl(pack, woerter),
+                "pruefungen": (
+                    _pruefungen(pack, 1, woerter)
+                    + [pr
+                       for weiteres in sorted(
+                           fassungspakete.get((unit, version), []),
+                           key=lambda p: int(p.get("fassung", 1)))
+                       for pr in _pruefungen(
+                           weiteres, int(weiteres.get("fassung", 1)), woerter)]
+                ),
+                "liste_blatt": dateiname(unit, "VocabularyList",
+                                         liste_version=version),
             })
         units.append({
             "unit": unit,
@@ -300,6 +381,7 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
 
     return {
         "quelle": quelle or {},
+        "dokumente": _dokumente(GEBAUT),
         # Welche Vokabeldatenbanken registriert sind. Die Seite zeigt sie
         # zur Auswahl; gebaut wird im Chat mit --datenbank <Name>.
         "datenbanken": [

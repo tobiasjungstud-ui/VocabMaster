@@ -476,14 +476,54 @@ def test_der_bestellte_befehl_ist_der_echte():
 
 def test_die_wortliste_geht_nicht_durch_den_auftrag():
     """Eine halbe Megabyte in einem Auftragssatz geht schief, ohne dass man
-    es sieht. Die Datei wird im Chat angehängt - eine Geste, die trägt."""
+    es sieht.
+
+    Die Datei geht deshalb ihren eigenen Weg — in Stücken durch die
+    Datenbank. Der Auftrag selbst trägt weiterhin nur, was man lesen kann:
+    Name, Grösse und den Zeiger auf den Upload.
+    """
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     körper = seite[seite.index("function lehrmittelDaten("):]
     körper = körper[:körper.index("\n}")]
     # Nur Name und Grösse, nie der Inhalt.
     assert "datei ? datei.name" in körper
-    assert "readAsDataURL" not in seite and "arrayBuffer()" not in körper
-    assert "hänge ich im Chat an" in seite
+    for bytes_ in ("arrayBuffer()", "readAsDataURL", "base64Von"):
+        assert bytes_ not in körper, f"{bytes_} liest Inhalt in den Auftrag"
+
+    # Und der ausgelöste Auftrag nennt den Upload, statt ihn mitzuführen.
+    auslöser = seite[seite.index("async function lehrmittelAusloesen("):]
+    auslöser = auslöser[:auslöser.index("\n}")]
+    assert "upload: beleg.id" in auslöser
+    assert "pruefsumme: beleg.pruefsumme" in auslöser
+    assert "beleg.text" not in auslöser
+
+
+def test_der_kopf_wird_zuletzt_geschrieben():
+    """Ein abgebrochener Upload darf nicht wie ein ganzer aussehen.
+
+    Der Kopf ist das Zeichen, dass alle Stücke liegen — steht er vor ihnen,
+    zeigt ein Auftrag auf eine Wortliste, von der die Hälfte fehlt.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("async function hochladen("):]
+    körper = körper[:körper.index("\n}")]
+    stücke = körper.index('db.doc("uploads/" + id + "/teile/')
+    kopf = körper.index('db.doc("uploads/" + id).set(')
+    assert stücke < kopf, "der Kopf steht vor den Stücken"
+    assert "fertig: true" in körper[kopf:]
+    # Und er trägt, woran sich der Empfänger festhalten kann.
+    for feld in ("pruefsumme:", "teile:", "zeichen:", "groesse:"):
+        assert feld in körper[kopf:], f"{feld} fehlt im Kopf"
+
+
+def test_erst_die_datei_dann_der_auftrag():
+    """Andersherum zeigte der Auftrag auf einen Upload, den es nicht gibt."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("async function lehrmittelAusloesen("):]
+    körper = körper[:körper.index("\n}")]
+    assert körper.index("await hochladen(") < körper.index("await ausloesen(")
+    # Und ohne Datenbank sagt das Fenster das, statt es zu versuchen.
+    assert "if(!db || !selbst)" in körper
 
 
 # ---------------------------------------------------------------------------

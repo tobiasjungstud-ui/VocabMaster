@@ -487,6 +487,7 @@ was in `kuratiert/` steht, und schreibt daraus den Auftragssatz für den Chat.
 python werkstatt/export.py    # daten.json aus kuratiert/ und der Datenbank
 python werkstatt/beilagen.py  # die gebauten Word-Dateien als JSON daneben
 python werkstatt/bauen.py     # vokabelwerkstatt.html aus vorlage.html
+python werkstatt/abholen.py   # eine hinaufgereichte Wortliste zusammensetzen
 ```
 
 Beim Veröffentlichen gehen die Beilagen **mit** — sonst lädt die Seite
@@ -507,11 +508,54 @@ Kopieren gehen denselben Weg wie jeder andere Auftrag.
 Die Seite **legt die Datenbank nicht selbst an**: Die Excel-Datei einlesen,
 in Units zerlegen und die Häufigkeiten rechnen ist Python.
 
-**Die Wortliste geht nicht durch den Auftrag.** Sie wiegt rund eine halbe
-Megabyte; ein halbes Megabyte in einem Auftragssatz ist ein Weg, der
-schiefgeht, ohne dass man es sieht. Die Seite nimmt deshalb nur Name und
-Grösse der Datei auf und sagt: im Chat anhängen. Eine Geste, die trägt. Ein
-Test hält fest, dass der Inhalt nirgends eingelesen wird.
+#### Die Wortliste geht mit — aber nicht durch den Auftragssatz
+
+Ein Dateifeld sieht aus wie ein Upload. Eine Zeit lang war es keiner: Die
+Seite notierte Name und Grösse, die Datei blieb auf dem Rechner, und wer das
+Kleingedruckte nicht las, wartete auf einen Import, der nie begann. Genau so
+ist es einmal passiert.
+
+Die Datei geht deshalb jetzt wirklich hinauf — **aber nicht im
+Auftragssatz**. Der Grund, aus dem das dort verboten war, gilt unverändert:
+Eine halbe Megabyte in einem Auftragssatz ist ein Weg, der schiefgeht, ohne
+dass man es sieht. Sie nimmt stattdessen ihren eigenen Weg durch die
+Datenbank:
+
+```
+uploads/<kennung>/teile/0000    64 KiB Base64
+uploads/<kennung>/teile/0001    …
+uploads/<kennung>               der Kopf: Name, Grösse, Stückzahl, SHA-256
+```
+
+Drei Dinge halten das zusammen:
+
+* **Der Kopf wird zuletzt geschrieben.** Er ist das Zeichen, dass alle
+  Stücke liegen. Ein Upload, der unterwegs abbricht, hat keinen Kopf — und
+  was keinen Kopf hat, wird nie eingelesen.
+* **Der Auftrag trägt nur den Zeiger** (`upload`, `pruefsumme`, `teile`),
+  nie die Bytes. Ein Test hält fest, dass `lehrmittelDaten` weiterhin nichts
+  vom Inhalt sieht.
+* **Die Prüfsumme ist die Geste, die trägt.** Eine halb angekommene
+  Wortliste sieht aus wie eine ganze, bis mitten im Schuljahr Einheiten
+  fehlen, die niemand vermisst hat.
+
+Zusammengesetzt wird im Chat:
+
+```bash
+python werkstatt/abholen.py <verzeichnis> -o data/
+```
+
+`<verzeichnis>` ist, wohin die Dokumente ausgeschrieben wurden. Das Werkzeug
+prüft die Stückzahl, die Zeichenzahl, die Bytezahl und die Prüfsumme und
+schreibt **keine Datei**, wenn etwas davon nicht stimmt — mit einer halben
+Wortliste täte man nichts Sinnvolles. Der Dateiname aus dem Kopf wird auf
+seinen blossen Namen gestutzt; er ist ein Name, kein Ziel. Acht Tests bauen
+je genau einen Weg ein, auf dem etwas verlorengehen könnte.
+
+Der Weg von Hand bleibt: „Befehl kopieren" kann keine Datei mitnehmen, dort
+geht sie weiterhin als Anhang durch den Chat. Der Befehlssatz sagt, welcher
+der beiden Wege gerade gemeint ist, und das Dateifeld sagt es schon **vor**
+der Auswahl.
 
 **Die Kennung folgt dem Titel.** Name und Titel waren zwei Felder für
 dieselbe Sache — man tippte „English Plus 3" und gleich daneben „EP 3". Die

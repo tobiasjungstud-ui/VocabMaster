@@ -842,7 +842,8 @@ td.satz{color:var(--ink-2); font-size:12.5px}
       <input type="text" id="dbTitel" placeholder="English Plus 2nd edition, Level 3" autocomplete="off"></div>
     <div class="feld" style="margin-top:10px"><label for="dbBeschreibung">Eine Zeile zur Einordnung</label>
       <input type="text" id="dbBeschreibung" placeholder="Welche Klasse, welches Jahr" autocomplete="off"></div>
-    <div class="feld" style="margin-top:10px"><label for="dbDatei">Excel-Wortliste</label>
+    <div class="feld" style="margin-top:10px"><label for="dbDatei">Excel-Wortliste
+        <span class="beilaeufig">— geht beim Auslösen mit</span></label>
       <input type="file" id="dbDatei" accept=".xls,.xlsx"></div>
     <p class="pruefhinweis" id="dbdateihinweis"></p>
     <!-- Die Kennung ist keine zweite Angabe, sondern die technische Form
@@ -1273,11 +1274,80 @@ function lehrmittelEinwand(d){
   return null;
 }
 
-function lehrmittelBefehl(d){
+/* ---------------- Die Wortliste wirklich hinaufreichen ----------------
+   Ein Dateifeld sieht aus wie ein Upload. Bisher war es keiner: Die Seite
+   notierte Name und Grösse, die Datei blieb auf dem Rechner, und wer das
+   Kleingedruckte nicht las, wartete auf einen Import, der nie begann.
+
+   Jetzt geht die Datei wirklich hinauf - aber nicht im Auftragssatz. Sie
+   wandert in Stücken durch die Datenbank, jedes Stück ein eigenes
+   Dokument; der Auftrag trägt nur den Zeiger darauf. Der Grund, aus dem
+   das früher gar nicht ging, bleibt damit gewahrt: Ein halbes Megabyte in
+   einem Auftragssatz geht schief, ohne dass man es sieht.
+
+   Die Prüfsumme ist die Geste, die trägt, und der Kopf wird **zuletzt**
+   geschrieben - erst wenn alle Stücke liegen. Ein abgebrochener Upload
+   hat deshalb keinen Kopf, und was keinen Kopf hat, wird nie eingelesen. */
+/* 64 KiB Base64 je Dokument. Wie gross ein Dokument sein darf, steht
+   nirgends zugesichert - und eine Wortliste, die am Stück nicht
+   durchgeht, geht in Stücken durch. Mehr Dokumente kosten nichts. */
+const TEILGROESSE = 64 * 1024;
+
+function base64Von(bytes){
+  // In Scheiben: `String.fromCharCode(...bytes)` sprengt bei einer halben
+  // Megabyte den Aufrufstapel.
+  let s = "";
+  for(let i = 0; i < bytes.length; i += 0x8000)
+    s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(s);
+}
+
+async function pruefsummeVon(puffer){
+  const h = await crypto.subtle.digest("SHA-256", puffer);
+  return Array.from(new Uint8Array(h))
+    .map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function hochladen(datei, kennung, melden){
+  const puffer = await datei.arrayBuffer();
+  const pruefsumme = await pruefsummeVon(puffer);
+  const text = base64Von(new Uint8Array(puffer));
+
+  const teile = [];
+  for(let i = 0; i < text.length; i += TEILGROESSE)
+    teile.push(text.slice(i, i + TEILGROESSE));
+
+  const id = kennung + "-" + Date.now();
+  for(let n = 0; n < teile.length; n++){
+    melden("Wortliste hinaufreichen — Stück " + (n + 1) + " von " + teile.length + " …");
+    await db.doc("uploads/" + id + "/teile/" + String(n).padStart(4, "0"))
+      .set({nummer: n, text: teile[n]});
+  }
+  // Der Kopf zuletzt. Er ist das Zeichen, dass alles liegt.
+  await db.doc("uploads/" + id).set({
+    id: id, datei: datei.name, groesse: datei.size,
+    pruefsumme: pruefsumme, teile: teile.length, zeichen: text.length,
+    erzeugt: new Date().toISOString(), fertig: true,
+  });
+  return {id: id, pruefsumme: pruefsumme, teile: teile.length};
+}
+
+/* Ein Auftrag, der ausgelöst wird, trägt den Zeiger auf die
+   hinaufgereichte Datei; ein kopierter Befehl kann das nicht - dort geht
+   die Datei weiterhin als Anhang durch den Chat. Der Satz sagt deshalb,
+   welcher der beiden Wege gerade gemeint ist. */
+function lehrmittelBefehl(d, beleg){
   const anf = t => '"' + String(t).replace(/"/g, "'") + '"';
+  const woher = beleg
+    ? "Die Excel-Wortliste " + anf(d.datei) + " liegt in der Datenbank " +
+      "unter uploads/" + beleg.id + " — " + beleg.teile +
+      (beleg.teile === 1 ? " Stück" : " Stücke") + ", SHA-256 " +
+      beleg.pruefsumme.slice(0, 16) + "…. Mit werkstatt/abholen.py " +
+      "zusammensetzen und nach data/ legen, dann:"
+    : "Die Excel-Wortliste " + anf(d.datei) + " hänge ich im Chat an; " +
+      "zuerst nach data/ legen, dann:";
   return "Neue Vokabeldatenbank " + d.name + " anlegen — " + anf(d.titel) +
-    ". Die Excel-Wortliste " + anf(d.datei) + " hänge ich im Chat an; " +
-    "zuerst nach data/ legen, dann:\n\n" +
+    ". " + woher + "\n\n" +
     "vocabmaster db import data/" + d.datei + " --name " + d.name +
     " --titel " + anf(d.titel) +
     (d.beschreibung ? " --beschreibung " + anf(d.beschreibung) : "") +
@@ -1294,10 +1364,16 @@ function zeichneLehrmittel(){
   $("dbwarnung").hidden = !einwand;
   $("dbnamehinweis").textContent = kennungVonHand
     ? "— von Hand gesetzt" : "— folgt dem Titel";
-  $("dbdateihinweis").textContent = d.datei
-    ? d.datei + " · " + Math.round(d.dateigroesse / 1024) + " KB — die Datei " +
-      "selbst hängen Sie im Chat an; sie geht nicht durch den Auftrag."
-    : "Noch keine Datei gewählt.";
+  // Das Feld sagt, was mit der Datei geschieht - vorher, nicht nachher.
+  const massEinheit = Math.round(d.dateigroesse / 1024) + " KB";
+  $("dbdateihinweis").textContent = !d.datei
+    ? (db ? "Noch keine Datei gewählt — sie wird beim Auslösen mit hinaufgereicht."
+          : "Noch keine Datei gewählt.")
+    : db
+      ? d.datei + " · " + massEinheit + " — wird beim Auslösen in Stücken " +
+        "hinaufgereicht, mit Prüfsumme. Der Auftrag selbst trägt nur den Zeiger."
+      : d.datei + " · " + massEinheit + " — in dieser Ansicht bleibt die Datei " +
+        "hier: den Befehl kopieren und sie im Chat anhängen.";
   $("dbbefehl").textContent = einwand
     ? "Sobald oben alles steht, steht hier der Befehl."
     : lehrmittelBefehl(d);
@@ -1327,10 +1403,35 @@ async function lehrmittelAusloesen(){
   const d = lehrmittelDaten();
   const einwand = lehrmittelEinwand(d);
   if(einwand){ lehrmittelStockt(einwand); return; }
+  const knopf = $("dbAusloesen");
+  if(!db || !selbst){
+    dbMelde("Auslösen steht in dieser Ansicht nicht zur Verfügung — den " +
+            "Befehl stattdessen kopieren und die Datei im Chat anhängen.",
+            "fehler");
+    return;
+  }
+  // Erst die Datei, dann der Auftrag. Andersherum zeigte der Auftrag auf
+  // einen Upload, den es noch nicht gibt.
+  let beleg;
+  knopf.disabled = true;
+  try{
+    beleg = await hochladen($("dbDatei").files[0],
+                            "wl-" + d.name.toLowerCase(), t => dbMelde(t));
+  }catch(e){
+    knopf.disabled = false;
+    dbMelde("Die Wortliste liess sich nicht hinaufreichen: " +
+            (e && e.message ? e.message : "unbekannt") +
+            " — der Befehl lässt sich weiterhin kopieren.", "fehler");
+    return;
+  }
+  knopf.disabled = false;
   const fertig = await ausloesen(
-    Object.assign({befehl: lehrmittelBefehl(d)}, d),
-    "db-" + d.name.toLowerCase(), $("dbAusloesen"), dbMelde);
-  if(fertig) dbMelde("Ausgelöst. Jetzt die Excel-Datei im Chat anhängen.", "ok");
+    Object.assign({befehl: lehrmittelBefehl(d, beleg), upload: beleg.id,
+                   pruefsumme: beleg.pruefsumme, teile: beleg.teile}, d),
+    "db-" + d.name.toLowerCase(), knopf, dbMelde);
+  if(fertig)
+    dbMelde("Ausgelöst — die Wortliste liegt oben (" + beleg.teile +
+            (beleg.teile === 1 ? " Stück" : " Stücke") + ").", "ok");
 }
 
 /* ---------------- Prüfungen ansehen ----------------
@@ -2678,6 +2779,6 @@ for(const [kennung, art] of [["vorWort","wort"], ["vorAusdruck","ausdruck"],
    Auslöser die Seite nicht beschädigt - und das lässt sich nur prüfen,
    wenn der Test an die Funktion herankommt. Sonst wird hier nichts nach
    aussen gereicht. */
-window.WERKSTATT_PRUEFUNG = {bauePlatte, buchSetzen};
+window.WERKSTATT_PRUEFUNG = {bauePlatte, buchSetzen, hochladen, base64Von};
 })();
 </script>

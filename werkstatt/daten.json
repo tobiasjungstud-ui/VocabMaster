@@ -154,8 +154,16 @@
      "aufgewertet": [],
      "offen": 0,
      "fassungen": [
-      2,
-      3
+      {
+       "nummer": 2,
+       "teil": 1,
+       "niveau": "A"
+      },
+      {
+       "nummer": 3,
+       "teil": 1,
+       "niveau": "A"
+      }
      ],
      "woerter": [
       {

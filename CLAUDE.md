@@ -492,6 +492,26 @@ Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
 sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
 eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
 
+### Die Leiste hat zwei Ebenen
+
+Zehn gleich aussehende Abschnitte untereinander, und man weiss nicht mehr,
+welcher Regler wozu gehört. Die Leiste ist deshalb in **Gruppen mit
+Übertitel** geteilt; die bisherigen Beschriftungen sind die Untertitel
+darin:
+
+| Gruppe | was darin steht |
+|---|---|
+| **Datenbank** | welche Wortliste |
+| **Unitwahl** | Unit, ihre Kennzahlen, ihre Vokabellisten, „Liste anpassen" |
+| **Was soll entstehen** | die fünf Häkchen |
+| **Einstellungen der Vokabelliste** | aufgewertete Fächer, pädagogisches Ranking |
+| **Prüfungssettings** | Anspruch der Prüfung, Schwierigkeit des Lückentexts, Feinheiten |
+| **Auftrag** | Notiz, „Auftrag erstellen" |
+
+Ausgeblendet wird die **ganze Gruppe**, nicht das einzelne Feld: Bliebe der
+Übertitel „Prüfungssettings" über einer leeren Fläche stehen, suchte man
+darunter nach etwas, das es nicht gibt.
+
 ### Der Unit-Block steht in der Leiste
 
 Unter der Unit-Wahl steht alles, was man über die Unit wissen muss, bevor
@@ -501,8 +521,19 @@ wählbar.
 
 Je Liste eine Zeile, die in einem Blick beantwortet, warum man diese und
 nicht die andere nimmt: Umfang, Abdruck, was daran aufgewertet ist, wie
-viele Fächer noch offen sind, welche Fassungen schon daran hängen und wann
-sie entstand. Dazu, als letzte Zeile, „＋ neue Liste anlegen" — aber nur,
+viele Fächer noch offen sind, wie viele Prüfungen daran hängen und wann
+sie entstand.
+
+**„Fassung" ist das Wort, das sich mit „Vokabelliste" verwechselt.** Die
+Zeile hiess einmal „Grundliste · Fassung 2, 3" — das las sich, als sei V1
+zugleich die zweite und dritte Fassung von irgendetwas. Eine Fassung ist
+aber die erneute Ausgabe **einer einzelnen Prüfung** zu dieser einen Liste:
+dieselben 60 Wörter, neuer Lückentext, andere Aufteilung von Lücken und
+Übersetzungen. `vocabmaster fassung … --teil 1 --niveau A` legt genau eine
+an, nicht vier. Deshalb steht in der Zeile jetzt `4 Prüfungen · 2 weitere
+Fassungen`, und der Hinweis darunter nennt die Prüfung beim Namen: „Teil I
+Niveau A als Fassung 2 und Teil I Niveau A als Fassung 3". Dafür trägt
+`daten.json` je Fassung Nummer, Teil und Niveau. Dazu, als letzte Zeile, „＋ neue Liste anlegen" — aber nur,
 wenn die Vokabelliste angekreuzt ist (siehe unten).
 
 Die Kennzahlen stehen **untereinander, nicht nebeneinander**: Fünf Spalten

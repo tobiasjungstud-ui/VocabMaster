@@ -80,8 +80,19 @@ button,input,select,textarea{font:inherit; color:inherit}
   box-shadow:var(--shadow); overflow:hidden;
 }
 @media (max-width:900px){ .rail{position:static} }
-.rail section{padding:16px 16px 18px; border-bottom:1px solid var(--line)}
-.rail section:last-of-type{border-bottom:0}
+/* Zwei Ebenen: Die Gruppe sagt, worum es geht (Unitwahl, Prüfungssettings),
+   die Beschriftung darin, welche Schraube das ist. Ohne die obere Ebene
+   stehen zehn gleich aussehende Abschnitte untereinander, und man weiss
+   nicht mehr, welcher Regler wozu gehört. */
+.gruppe{border-bottom:2px solid var(--line-2)}
+.gruppe:last-child{border-bottom:0}
+.gruppentitel{
+  display:block; padding:14px 16px 0;
+  font-family:var(--serif); font-size:14px; font-weight:600;
+  letter-spacing:-.005em; color:var(--accent);
+}
+.rail section{padding:12px 16px 16px; border-bottom:1px solid var(--line)}
+.gruppe section:last-child{border-bottom:0; padding-bottom:18px}
 .legende{
   font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
   text-transform:uppercase; color:var(--ink-3); margin-bottom:11px; display:block;
@@ -495,30 +506,36 @@ td.satz{color:var(--ink-2); font-size:12.5px}
   <div class="werkbank">
     <!-- ============ Steuerleiste ============ -->
     <aside class="rail">
-      <section>
-        <label class="legende" for="datenbank">Datenbank</label>
-        <select id="datenbank"></select>
-        <p class="hinweis" id="dbhinweis"></p>
-      </section>
+      <div class="gruppe">
+        <span class="gruppentitel">Datenbank</span>
+        <section>
+          <select id="datenbank"></select>
+          <p class="hinweis" id="dbhinweis"></p>
+        </section>
+      </div>
 
-      <section>
-        <label class="legende" for="unit">Unit</label>
-        <select id="unit"></select>
-        <div class="unitkarte">
-          <div class="unitnr" id="unitNr"></div>
-          <div class="unittitel" id="unitTitel"></div>
-          <div class="seiten" id="unitSeiten"></div>
-        </div>
-        <dl class="herkunft" id="herkunft"></dl>
+      <div class="gruppe">
+        <span class="gruppentitel">Unitwahl</span>
+        <section>
+          <select id="unit"></select>
+          <div class="unitkarte">
+            <div class="unitnr" id="unitNr"></div>
+            <div class="unittitel" id="unitTitel"></div>
+            <div class="seiten" id="unitSeiten"></div>
+          </div>
+          <dl class="herkunft" id="herkunft"></dl>
+        </section>
+        <section>
+          <span class="legende">Vokabellisten dieser Unit</span>
+          <div id="listenwahl" role="radiogroup" aria-label="Vokabelliste"></div>
+          <p class="hinweis" id="listenhinweis"></p>
+          <button class="knopf breit" id="listeAnpassen" type="button">Liste anpassen</button>
+        </section>
+      </div>
 
-        <span class="legende" style="margin-top:16px">Vokabellisten dieser Unit</span>
-        <div id="listenwahl" role="radiogroup" aria-label="Vokabelliste"></div>
-        <p class="hinweis" id="listenhinweis"></p>
-        <button class="knopf breit" id="listeAnpassen" type="button">Liste anpassen</button>
-      </section>
-
-      <section>
-        <span class="legende">Was soll entstehen</span>
+      <div class="gruppe">
+        <span class="gruppentitel">Was soll entstehen</span>
+        <section>
         <label class="tick" for="bLi"><input type="checkbox" id="bLi" checked>
           <span>Vokabelliste<span class="sub">60 Wörter · beide Gruppen</span></span></label>
         <label class="tick a" for="b1A"><input type="checkbox" id="b1A" checked>
@@ -529,8 +546,47 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <span>Prüfung Teil II · <strong>Niveau A</strong><span class="sub">aus Test 2</span></span></label>
         <label class="tick b" for="b2B"><input type="checkbox" id="b2B" checked>
           <span>Prüfung Teil II · <strong>Niveau B</strong><span class="sub">aus Test 2</span></span></label>
-      </section>
+        </section>
+      </div>
 
+      <div class="gruppe" id="gruppeListe">
+        <span class="gruppentitel">Einstellungen der Vokabelliste</span>
+        <section>
+        <div id="fancyfeld">
+        <span class="legende" id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</span>
+        <div class="dreier">
+          <div class="feld"><label for="fancy">einzelne Wörter</label>
+            <input type="number" id="fancy" min="0" max="20" value="0"></div>
+          <div class="feld"><label for="ausdruecke">Wendungen</label>
+            <input type="number" id="ausdruecke" min="0" max="20" value="0"></div>
+          <div class="feld"><label for="chunks">Satzanfänge</label>
+            <input type="number" id="chunks" min="0" max="20" value="0"></div>
+        </div>
+        <div class="feld" style="margin-top:8px">
+          <select id="fancyquelle">
+            <option value="claude" selected>von Claude wählen lassen</option>
+            <option value="selbst">ich gebe sie selbst an</option>
+          </select>
+        </div>
+        <textarea id="fancywoerter" hidden
+          placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
+        <p class="hinweis" id="fancyhinweis"></p>
+        </div>
+        </section>
+        <section>
+          <span class="legende">Wortauswahl</span>
+        <label class="tick" for="paed"><input type="checkbox" id="paed">
+          <span>Nach pädagogischen Kriterien ranken<span class="sub">sonst wie bisher: nach Häufigkeit</span></span></label>
+        <div id="paedfeld" hidden>
+          <label for="stufe">Schwierigkeitsstufe</label>
+          <select id="stufe"></select>
+          <p class="hinweis" id="stufehinweis"></p>
+        </div>
+        </section>
+      </div>
+
+      <div class="gruppe" id="gruppePruefung">
+        <span class="gruppentitel">Prüfungssettings</span>
       <section id="anspruchfeld">
         <span class="legende">Anspruch der Prüfung</span>
         <div class="regler a" id="anspruchA">
@@ -579,8 +635,8 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <button class="zurueck" id="tzurueck" hidden>auf die Normallage zurück</button>
       </section>
 
-      <section>
-        <span class="legende">Feinheiten</span>
+        <section>
+          <span class="legende">Feinheiten</span>
         <div id="pruefmasse">
           <div class="paar">
             <div class="feld"><label for="anzahl">Wörter je Prüfung</label>
@@ -594,45 +650,18 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <p class="hinweis" id="fassunghinweis"></p>
           </div>
         </div>
-        <div class="feld" style="margin-top:10px">
-        <div id="fancyfeld">
-        <label id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</label>
-        <div class="dreier">
-          <div class="feld"><label for="fancy">einzelne Wörter</label>
-            <input type="number" id="fancy" min="0" max="20" value="0"></div>
-          <div class="feld"><label for="ausdruecke">Wendungen</label>
-            <input type="number" id="ausdruecke" min="0" max="20" value="0"></div>
-          <div class="feld"><label for="chunks">Satzanfänge</label>
-            <input type="number" id="chunks" min="0" max="20" value="0"></div>
-        </div>
-        <div class="feld" style="margin-top:8px">
-          <select id="fancyquelle">
-            <option value="claude" selected>von Claude wählen lassen</option>
-            <option value="selbst">ich gebe sie selbst an</option>
-          </select>
-        </div>
-        <textarea id="fancywoerter" hidden
-          placeholder="ein Wortpaar je Zeile, z. B.&#10;englisch=deutsch&#10;en:wort=Wort  (wenn die Seiten nicht eindeutig sind)"></textarea>
-        <p class="hinweis" id="fancyhinweis"></p>
-        </div>
+        </section>
+      </div>
 
-        <label class="tick" for="paed"><input type="checkbox" id="paed">
-          <span>Nach pädagogischen Kriterien ranken<span class="sub">sonst wie bisher: nach Häufigkeit</span></span></label>
-        <div id="paedfeld" hidden>
-          <label for="stufe">Schwierigkeitsstufe</label>
-          <select id="stufe"></select>
-          <p class="hinweis" id="stufehinweis"></p>
-        </div>
-
-        <label for="notiz">Notiz an mich</label>
+      <div class="gruppe">
+        <span class="gruppentitel">Auftrag</span>
+        <section>
+          <label for="notiz">Notiz an mich</label>
           <textarea id="notiz" placeholder="z. B. Thema des Lückentexts, Wörter die drin sein müssen …"></textarea>
-        </div>
-      </section>
-
-      <section>
-        <button class="bauen" id="bauen">Auftrag erstellen</button>
-        <p class="bauen-hinweis" id="bauenHinweis"></p>
-      </section>
+          <button class="bauen" id="bauen" style="margin-top:12px">Auftrag erstellen</button>
+          <p class="bauen-hinweis" id="bauenHinweis"></p>
+        </section>
+      </div>
     </aside>
 
     <!-- ============ Arbeitsfläche ============ -->
@@ -1273,21 +1302,19 @@ function bestellt(){
    wird. */
 function zeichneSichtbarkeit(){
   const b = bestellt();
-  $("anspruchfeld").hidden = !b.pruefungen;
+  // Ganze Gruppen, nicht einzelne Felder: Bliebe der Übertitel
+  // "Prüfungssettings" über einer leeren Fläche stehen, suchte man darunter
+  // nach etwas, das es nicht gibt.
+  $("gruppePruefung").hidden = !b.pruefungen;
+  $("gruppeListe").hidden = !b.liste;
   $("anspruchA").hidden = !b.A;
   $("anspruchB").hidden = !b.B;
-  $("textfeld").hidden = !b.pruefungen;
   $("textreglerA").hidden = !b.A;
   $("textreglerB").hidden = !b.B;
-  $("pruefmasse").hidden = !b.pruefungen;
-  // Die Vokabelliste selbst wird auch von den Prüfungen gebraucht - sie
-  // sagt, an welcher Liste sie hängen. Die aufgewerteten Fächer dagegen
-  // gehören zur neuen Liste und damit zur Bestellung "Vokabelliste".
-  $("fancyfeld").hidden = !b.liste;
-  // Von Hand an der Auswahl drehen ergibt nur Sinn, wenn eine Liste
-  // entstehen soll - eine bestehende wird nicht angerührt. Steht das
-  // Fenster gerade offen, geht es zu: Sonst bearbeitet man weiter, was
-  // gar nicht mehr bestellt ist.
+  // Die Vokabellisten-Wahl gehört zur Unit und bleibt deshalb stehen - sie
+  // sagt auch den Prüfungen, an welcher Liste sie hängen. Nur der Knopf zur
+  // Handarbeit geht mit der Bestellung. Steht das Fenster offen, geht es
+  // zu: Sonst bearbeitet man weiter, was nicht mehr bestellt ist.
   $("listeAnpassen").hidden = !b.liste;
   if(!b.liste && $("wortwahl").open) $("wortwahl").close();
   $("teile").hidden = !b.pruefungen;
@@ -1673,9 +1700,21 @@ $("tzurueck").addEventListener("click", () => {
   zeichneTextband(); zeichneAuftrag();
 });
 
+/* Die Fassungsnummern dieser Liste - die 1 gibt es immer, sie steckt im
+   Paket der Liste selbst. Jede weitere Fassung ist die erneute Ausgabe
+   **einer** Prüfung, nicht der ganzen Liste; die Nummern können sich
+   deshalb wiederholen, wenn zwei Prüfungen dieselbe Nummer tragen. */
 function fassungen(){
   const li = anzeigeListe();
-  return [1, ...(li.fassungen || [])].sort((a, b) => a - b);
+  const nummern = new Set([1, ...(li.fassungen || []).map(f => f.nummer)]);
+  return [...nummern].sort((a, b) => a - b);
+}
+
+/* Und welche Prüfung dahintersteht - in Worten. */
+function fassungsliste(li){
+  return (li.fassungen || []).map(f =>
+    "Teil " + (f.teil === 1 ? "I" : "II") + " Niveau " + f.niveau +
+    " als Fassung " + f.nummer);
 }
 function naechsteFassung(){ return Math.max(...fassungen()) + 1; }
 
@@ -1749,8 +1788,10 @@ function zeichneFassungswahl(){
   $("fassunghinweis").textContent = state.variante === 0
     ? "Wird als Fassung " + naechsteFassung() + " hinterlegt — mit Nummer, " +
       "Datum und Listenabdruck. Die bestehenden bleiben unangetastet."
-    : "Bereits hinterlegt: " + fassungen().map(f => "Fassung " + f).join(", ") +
-      ". Jede hat ihre eigene Datei und ihren eigenen Lückentext.";
+    : "Eine Fassung ist eine weitere Ausgabe derselben Prüfung: dieselben " +
+      "60 Wörter, neuer Lückentext, andere Aufteilung von Lücken und " +
+      "Übersetzungen. Bereits hinterlegt: " +
+      (fassungsliste(anzeigeListe()).join(", ") || "nur die erste");
 }
 
 function zeichneListenwahl(){
@@ -1781,13 +1822,18 @@ function listenzeile(li){
   k.setAttribute("role", "radio");
   k.setAttribute("aria-checked", String(li.version === state.listeVersion));
   const merkmale = [];
-  if(li.version === 1) merkmale.push("Grundliste");
-  if(li.aufgewertet.length) merkmale.push(li.aufgewertet.length + " aufgewertet");
-  if(li.offen) merkmale.push(li.offen + " offen");
-  merkmale.push(li.fassungen.length
-    ? "Fassung " + li.fassungen.join(", ")
-    : "noch keine Fassung");
-  if(li.erzeugt) merkmale.push(kurzdatum(li.erzeugt));
+  if(li.version === 1) merkmale.push("die erste Liste der Unit");
+  if(li.aufgewertet.length)
+    merkmale.push(li.aufgewertet.length + " Wörter aufgewertet");
+  if(li.offen) merkmale.push(li.offen + " Felder noch offen");
+  // "Fassung 2, 3" las sich wie eine zweite und dritte Vokabelliste. Eine
+  // Fassung ist aber eine weitere Ausgabe **einer Prüfung** zu dieser einen
+  // Liste - das muss dastehen, sonst zählt man Listen, die es nicht gibt.
+  merkmale.push("4 Prüfungen" + (li.fassungen.length
+    ? " · " + li.fassungen.length + " weitere " +
+      (li.fassungen.length === 1 ? "Fassung" : "Fassungen")
+    : ""));
+  if(li.erzeugt) merkmale.push("angelegt " + kurzdatum(li.erzeugt));
   k.innerHTML =
     '<span class="kopf"><span class="vcode">V' + li.version + '</span>' +
     '<span class="umfang">' + li.woerter.length + ' Wörter</span>' +
@@ -1814,8 +1860,10 @@ function neuzeile(u){
   k.innerHTML =
     '<span class="kopf"><span class="vcode">＋ V' + neueVersion() + '</span>' +
     '<span class="umfang">neu anlegen</span></span>' +
-    '<span class="merkmale">frisch aus der Datenbank gewählt · aus V' +
-    u.listen[u.listen.length - 1].version + ' · die bestehenden bleiben</span>';
+    '<span class="merkmale">60 Wörter, neu aus der Datenbank gewählt · ' +
+    'Wörter aus V1–V' + u.listen[u.listen.length - 1].version +
+    ' werden dabei abgewertet, nicht ausgeschlossen · ' +
+    'die bestehenden Listen bleiben</span>';
   k.addEventListener("click", () => listeWaehlen(0));
   return k;
 }
@@ -1853,11 +1901,17 @@ function zeichneListenhinweis(){
       "Wörter sind die von V" + basisListe().version + ".";
   } else {
     const li = listenDaten();
-    // Abdruck und Fassungen stehen schon in der gewählten Zeile. Was dort
-    // nicht steht, ist der Dateiname, unter dem alles abgelegt wird.
+    const weitere = fassungsliste(li);
+    // Die Zeile oben zählt; hier steht, was gezählt wurde. "Fassung" ist
+    // das Wort, das sich sonst mit "Vokabelliste" verwechselt.
     $("listenhinweis").textContent =
-      "Die Prüfungen werden an V" + li.version + " gebunden — Unit" +
-      String(state.unit).padStart(2, "0") + "_V" + li.version + "_…";
+      "Zu V" + li.version + " gehören die vier Prüfungen — Teil I und II, " +
+      "je Niveau A und B (Unit" + String(state.unit).padStart(2, "0") +
+      "_V" + li.version + "_…). " +
+      (weitere.length
+        ? "Dazu " + weitere.join(" und ") + ": dieselben 60 Wörter, neuer "
+          + "Lückentext."
+        : "Weitere Fassungen einer dieser Prüfungen gibt es noch keine.");
   }
 
   const eigene = state.fancyWoerter.split("\n")

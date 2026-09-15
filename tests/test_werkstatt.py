@@ -213,15 +213,13 @@ def test_der_ausloeser_haelt_sich_an_die_datenbank():
 #: niemand gestellt hat - und wer ihn verschiebt, glaubt danach, etwas
 #: eingestellt zu haben.
 SICHTBARKEIT = {
-    "anspruchfeld": "b.pruefungen",
+    "gruppePruefung": "b.pruefungen",
+    "gruppeListe": "b.liste",
     "anspruchA": "b.A",
     "anspruchB": "b.B",
-    "textfeld": "b.pruefungen",
     "textreglerA": "b.A",
     "textreglerB": "b.B",
-    "pruefmasse": "b.pruefungen",
     "teile": "b.pruefungen",
-    "fancyfeld": "b.liste",
     "listeAnpassen": "b.liste",
 }
 

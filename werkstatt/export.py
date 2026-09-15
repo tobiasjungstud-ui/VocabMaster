@@ -226,7 +226,11 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
     # eigener Eintrag mit ihren eigenen 60 Wörtern; die Oberfläche lässt
     # zwischen ihnen wählen, statt eine davon zu erraten.
     roh: dict[int, list[dict]] = {}
-    fassungen: dict[tuple[int, int], list[int]] = {}
+    # Eine Fassung ist eine weitere Ausgabe **einer** Prüfung, nicht der
+    # ganzen Liste: `vocabmaster fassung ... --teil 1 --niveau A` legt genau
+    # eine an. Welche, muss die Oberfläche sagen können - sonst liest sich
+    # "Fassung 2, 3" wie eine zweite und dritte Vokabelliste.
+    fassungen: dict[tuple[int, int], list[dict]] = {}
     quelle = None
     for datei in sorted(pakete.glob("unit_*.json")):
         pack = json.loads(datei.read_text("utf-8"))
@@ -235,9 +239,14 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
         if int(pack.get("fassung", 1)) > 1:
             # Ein Fassungspaket ist eine weitere Prüfung zu einer bestehenden
             # Liste, keine eigene Liste.
-            fassungen.setdefault((unit, version), []).append(
-                int(pack.get("fassung", 1))
-            )
+            for teil, tnr in (("teil1", 1), ("teil2", 2)):
+                for niveau in ("A", "B"):
+                    if niveau in pack.get("pruefungen", {}).get(teil, {}):
+                        fassungen.setdefault((unit, version), []).append({
+                            "nummer": int(pack.get("fassung", 1)),
+                            "teil": tnr,
+                            "niveau": niveau,
+                        })
             continue
         quelle = quelle or pack["quelle"]
         roh.setdefault(unit, []).append(pack)
@@ -268,7 +277,10 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
                 "erzeugt": pack.get("erzeugt", ""),
                 "aufgewertet": aufgewertet,
                 "offen": offen,
-                "fassungen": sorted(fassungen.get((unit, version), [])),
+                "fassungen": sorted(
+                    fassungen.get((unit, version), []),
+                    key=lambda f: (f["nummer"], f["teil"], f["niveau"]),
+                ),
                 "woerter": woerter,
                 "echt": _echte_auswahl(pack, woerter),
             })

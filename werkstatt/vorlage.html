@@ -552,8 +552,41 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 }
 .liste-auftraege .wann{font-family:var(--mono); font-size:11px; color:var(--ink-3)}
 .liste-auftraege .was{font-weight:500}
-.liste-auftraege .erledigt{margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--ok)}
-.liste-auftraege .wartet{margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase; color:var(--warn)}
+.liste-auftraege li.auftrag{display:block}
+.auftragskopf{display:flex; flex-wrap:wrap; gap:4px 10px; align-items:baseline}
+.auftragskopf .womit{color:var(--ink-3); min-width:0; overflow-wrap:anywhere}
+.auftragskopf .stand{
+  margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em;
+  text-transform:uppercase; flex:none;
+}
+.auftrag.fertig .stand{color:var(--ok)}
+.auftrag.laeuft .stand{color:var(--accent)}
+.auftrag.haengt .stand{color:var(--crit)}
+.auftrag.ruht   .stand{color:var(--warn)}
+/* Ein Balken, damit man auf einen Blick sieht, ob sich etwas bewegt -
+   die Zeile allein beantwortet "läuft es noch?" nicht. */
+.auftrag .balken{
+  height:4px; margin-top:7px; border-radius:2px; background:var(--sunk);
+  overflow:hidden; display:block;
+}
+.auftrag .balken span{display:block; height:100%; background:var(--ink-3); border-radius:2px}
+.auftrag.fertig .balken span{background:var(--ok)}
+.auftrag.laeuft .balken span{background:var(--accent)}
+.auftrag.haengt .balken span{background:var(--crit)}
+.auftrag .schrittzeile{margin-top:7px; font-size:12px; color:var(--ink-2); line-height:1.45}
+.auftrag .schritte{list-style:none; margin:7px 0 0; padding:0; display:flex; flex-direction:column; gap:3px}
+.auftrag .schritte li{
+  display:flex; gap:7px; align-items:baseline; padding:0;
+  border:0; background:none; font-family:var(--mono); font-size:11px;
+  color:var(--ink-3); line-height:1.45;
+}
+.auftrag .schritte li::before{content:"○"; flex:none; width:1em}
+.auftrag .schritte li.arbeit{color:var(--accent)}
+.auftrag .schritte li.arbeit::before{content:"◑"}
+.auftrag .schritte li.erledigt{color:var(--ok)}
+.auftrag .schritte li.erledigt::before{content:"●"}
+.auftrag .schritte li.wartet, .auftrag .schritte li.fehler{color:var(--crit)}
+.auftrag .schritte li.wartet::before, .auftrag .schritte li.fehler::before{content:"◒"}
 .knopf.haupt{background:var(--accent); border-color:var(--accent); color:#FFFDF8; font-weight:600}
 :root[data-theme="dark"] .knopf.haupt, :root:not([data-theme="light"]) .knopf.haupt{color:#0E1117}
 @media (prefers-color-scheme:light){ :root:not([data-theme="dark"]) .knopf.haupt{color:#FFFDF8} }
@@ -1865,19 +1898,83 @@ function zeichneAuftrag(){
 let db = null, downloads = null, selbst = null, muster = null;
 const buch = [];
 
+/* Wie weit ein Auftrag ist. Der Chat schreibt den Stand in dasselbe
+   Dokument zurück, und die Seite horcht darauf - sie erfährt es also, ohne
+   dass jemand nachsehen muss. Die Schritte kommen ebenfalls aus dem
+   Dokument, nicht aus dieser Datei: Was zu einem Auftrag gehört, weiss der
+   Chat, der ihn ausführt. */
+const STAENDE = {
+  abgelegt:  {text:"abgelegt",  klasse:"ruht",   anteil:0},
+  ausgeloest:{text:"ausgelöst", klasse:"ruht",   anteil:0.1},
+  arbeit:    {text:"in Arbeit", klasse:"laeuft", anteil:0.5},
+  wartet:    {text:"wartet",    klasse:"haengt", anteil:0.3},
+  fehler:    {text:"steckt",    klasse:"haengt", anteil:0.3},
+  erledigt:  {text:"erledigt",  klasse:"fertig", anteil:1},
+};
+
+function standVon(e){
+  if(e.erledigt) return "erledigt";
+  if(e.stand && STAENDE[e.stand]) return e.stand;
+  return e.ausgeloest ? "ausgeloest" : "abgelegt";
+}
+
+/* Was der Auftrag bestellt hat - in einer Zeile. */
+function auftragsTitel(e){
+  if(e.art === "datenbank")
+    return "Neues Lehrmittel " + (e.name || "");
+  return "Unit " + e.unit;
+}
+
+function fortschritt(e){
+  const schritte = Array.isArray(e.schritte) ? e.schritte : [];
+  if(!schritte.length) return 0;
+  const fertig = schritte.filter(x => x && x.stand === "erledigt").length;
+  return fertig / schritte.length;
+}
+
+/* Nur für den Test: Aufträge einspeisen, ohne eine Datenbank zu brauchen.
+   Die Stände durchzuspielen ist sonst nicht prüfbar. */
+function buchSetzen(eintraege){
+  buch.length = 0;
+  for(const e of eintraege) buch.push(e);
+  zeichneBuch();
+}
+
 function zeichneBuch(){
-  if(!buch.length){ $("auftragsbuch").innerHTML = ""; return; }
-  $("auftragsbuch").innerHTML = buch.slice(0, 8).map(e => {
-    const d = new Date(e.erzeugt);
-    const wann = d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"}) + " " +
-                 d.toLocaleTimeString("de-CH", {hour:"2-digit", minute:"2-digit"});
-    return "<li><span class='wann'>" + wann + "</span><span class='was'>Unit " + e.unit +
-      "</span><span style='color:var(--ink-3)'>" +
-      esc((e.teile || []).map(t => t.text).join(", ")) + "</span>" +
-      (e.erledigt ? "<span class='erledigt'>erledigt</span>"
-                  : "<span class='wartet'>" +
-                    (e.ausgeloest ? "ausgelöst" : "abgelegt") + "</span>") + "</li>";
-  }).join("");
+  const kasten = $("auftragsbuch");
+  if(!buch.length){ kasten.innerHTML = ""; return; }
+  kasten.innerHTML = "";
+  for(const e of buch.slice(0, 8)) kasten.appendChild(auftragszeile(e));
+}
+
+function auftragszeile(e){
+  const stand = standVon(e), s = STAENDE[stand];
+  const d = new Date(e.erzeugt);
+  const wann = d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"}) + " " +
+               d.toLocaleTimeString("de-CH", {hour:"2-digit", minute:"2-digit"});
+  const schritte = Array.isArray(e.schritte) ? e.schritte : [];
+  const anteil = schritte.length ? fortschritt(e) : s.anteil;
+
+  const li = document.createElement("li");
+  li.className = "auftrag " + s.klasse;
+  li.innerHTML =
+    '<div class="auftragskopf">' +
+      "<span class='wann'>" + wann + "</span>" +
+      "<span class='was'>" + esc(auftragsTitel(e)) + "</span>" +
+      "<span class='womit'>" + esc(e.art === "datenbank"
+        ? (e.titel || "") : (e.teile || []).map(t => t.text).join(", ")) +
+      "</span>" +
+      "<span class='stand'>" + s.text + "</span>" +
+    "</div>" +
+    '<div class="balken"><span style="width:' +
+      Math.round(Math.max(0.04, anteil) * 100) + '%"></span></div>' +
+    (e.schritt ? '<div class="schrittzeile">' + esc(e.schritt) + "</div>" : "") +
+    (schritte.length
+      ? '<ol class="schritte">' + schritte.map(x =>
+          '<li class="' + esc((x && x.stand) || "offen") + '">' +
+          esc((x && x.text) || "") + "</li>").join("") + "</ol>"
+      : "");
+  return li;
 }
 
 async function starteDb(){
@@ -2511,6 +2608,6 @@ for(const [kennung, art] of [["vorWort","wort"], ["vorAusdruck","ausdruck"],
    Auslöser die Seite nicht beschädigt - und das lässt sich nur prüfen,
    wenn der Test an die Funktion herankommt. Sonst wird hier nichts nach
    aussen gereicht. */
-window.WERKSTATT_PRUEFUNG = {bauePlatte};
+window.WERKSTATT_PRUEFUNG = {bauePlatte, buchSetzen};
 })();
 </script>

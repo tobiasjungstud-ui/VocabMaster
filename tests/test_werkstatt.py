@@ -443,3 +443,39 @@ def test_die_wortliste_geht_nicht_durch_den_auftrag():
     assert "datei ? datei.name" in körper
     assert "readAsDataURL" not in seite and "arrayBuffer()" not in körper
     assert "hänge ich im Chat an" in seite
+
+
+# ---------------------------------------------------------------------------
+# Was aus einem ausgelösten Auftrag geworden ist
+# ---------------------------------------------------------------------------
+def test_das_auftragsbuch_zeigt_jeden_stand():
+    """„Nichts ist passiert" war die Frage, die das Buch nicht beantwortete.
+
+    Es zeigte „ausgelöst" und danach nichts mehr — ob der Chat dran ist,
+    ob er wartet, wie weit er ist, stand nirgends.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("const STAENDE = {"):]
+    körper = körper[:körper.index("\n};")]
+    for stand in ("abgelegt", "ausgeloest", "arbeit", "wartet", "fehler",
+                  "erledigt"):
+        assert stand + ":" in körper, f"der Stand {stand} fehlt"
+    # Der Balken zeigt den Anteil erledigter Schritte, sonst den Stand.
+    assert "function fortschritt(" in seite
+    assert 'x.stand === "erledigt"' in seite
+
+
+def test_die_schritte_stehen_im_auftrag_nicht_in_der_seite():
+    """Was zu einem Auftrag gehört, weiss der Chat, der ihn ausführt.
+
+    Stünde die Schrittfolge in der Seite, hätte jeder Auftrag dieselbe —
+    und ein Import sähe aus wie ein Prüfungsbau.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function auftragszeile("):]
+    körper = körper[:körper.index("\n}")]
+    assert "Array.isArray(e.schritte)" in körper
+    for erfunden in ("db import", "Lückentext", "Beispielsätze", "prüfen"):
+        assert erfunden not in körper, (
+            f"{erfunden!r} steht in der Seite statt im Auftrag"
+        )

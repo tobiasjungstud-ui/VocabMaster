@@ -768,7 +768,29 @@ Andersherum wachte der Chat auf und fände nichts vor.
 Im Chat heisst das: Bei einer Weckmeldung zu diesem Artifact die offenen
 Aufträge lesen (`auftraege`, `erledigt: false`), genau das bauen, was
 darin steht — die Stückzahl gilt wie im kopierten Befehl —, und den Auftrag
-danach auf `erledigt: true` setzen. Die Seite zeigt bis dahin „ausgelöst".
+danach auf `erledigt: true` setzen.
+
+#### Der Stand gehört zurück ins Auftragsbuch
+
+„Ausgelöst" und danach nichts mehr — das beantwortet „passiert eigentlich
+gerade etwas?" nicht. **Der Chat schreibt deshalb mit, wie weit er ist**, in
+dasselbe Dokument; die Seite horcht darauf und zeichnet neu, ohne dass
+jemand nachsehen muss:
+
+| Feld | was hineingehört |
+|---|---|
+| `stand` | `abgelegt` · `ausgeloest` · `arbeit` · `wartet` · `fehler` · `erledigt` |
+| `schritt` | ein Satz, was gerade läuft — oder woran es hängt |
+| `schritte` | die Schrittfolge, je `{text, stand}`; der Balken zählt die erledigten |
+
+**Die Schritte stehen im Auftrag, nicht in der Seite.** Was zu einem Auftrag
+gehört, weiss der Chat, der ihn ausführt; stünde die Folge in `vorlage.html`,
+sähe ein Datenbankimport aus wie ein Prüfungsbau. Ein Test wacht darüber,
+dass dort keine Schrittnamen stehen.
+
+Ein Auftrag, der auf etwas wartet, gehört auf `wartet` gesetzt — mit dem
+Grund in `schritt`. Sonst sieht die Seite aus, als sei nichts passiert,
+während in Wirklichkeit etwas fehlt.
 
 **Damit das geht, trägt die Seite ihre eigene Vorlage mit** (`__QUELLE__`).
 Eingebettet ist die *Vorlage mit ihren Platzhaltern*, nicht die gebaute

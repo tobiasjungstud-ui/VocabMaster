@@ -533,8 +533,10 @@ dieselben 60 Wörter, neuer Lückentext, andere Aufteilung von Lücken und
 an, nicht vier. Deshalb steht in der Zeile jetzt `4 Prüfungen · 2 weitere
 Fassungen`, und der Hinweis darunter nennt die Prüfung beim Namen: „Teil I
 Niveau A als Fassung 2 und Teil I Niveau A als Fassung 3". Dafür trägt
-`daten.json` je Fassung Nummer, Teil und Niveau. Dazu, als letzte Zeile, „＋ neue Liste anlegen" — aber nur,
-wenn die Vokabelliste angekreuzt ist (siehe unten).
+`daten.json` je Fassung Nummer, Teil und Niveau.
+
+Als letzte Zeile steht „＋ neue Liste anlegen" — aber nur, wenn die
+Vokabelliste angekreuzt ist (siehe unten).
 
 Die Kennzahlen stehen **untereinander, nicht nebeneinander**: Fünf Spalten
 in einer 296 px breiten Leiste ergäben 55 px je Spalte, die Beschriftungen

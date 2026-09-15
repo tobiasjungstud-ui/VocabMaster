@@ -347,9 +347,52 @@ def test_jeder_handgriff_schreibt_den_auftrag_neu():
     körper = körper[:körper.index("\n}")]
     for handgriff in ("umschalten(state.fest", "wegnehmen(en)", "aufnehmen(en)"):
         assert handgriff in körper
-    # Die beiden Wege ausserhalb der Zeile ziehen den Auftrag selbst nach.
+    # Alle drei gehen durch `nachHandgriff`, und das zeichnet die ganze
+    # Seite neu - der Handgriff kann ja auch das Häkchen umlegen.
     for name in ("function aufnehmen(", "function wegnehmen("):
         block = seite[seite.index(name):]
-        assert "zeichneAuftrag();" in block[:block.index("\n}")]
-    # Und der dritte, der ihn vergessen hatte.
-    assert "umschalten(state.fest, en); wortwahlZeichnen(); zeichneAuftrag();" in seite
+        assert "nachHandgriff();" in block[:block.index("\n}")]
+    assert "umschalten(state.fest, en); nachHandgriff();" in seite
+    nach = seite[seite.index("function nachHandgriff()"):]
+    assert "alles();" in nach[:nach.index("\n}")]
+
+
+# ---------------------------------------------------------------------------
+# Eine bestehende Liste wird nie verändert
+# ---------------------------------------------------------------------------
+def test_handarbeit_erzwingt_eine_neue_liste():
+    """Der teuerste Fehler dieses Programms, in der Oberfläche verhindert.
+
+    An V1 hängen ihre Prüfungen — über den Listenabdruck und über die
+    Word-Dateien, die längst ausgeteilt sein können. Wer ein Wort aus V1
+    nähme, hätte einen Lösungsschlüssel, der auf ein Wort zeigt, das es
+    dort nicht mehr gibt; gemerkt wird das beim Korrigieren.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function neueListeErzwingen()"):]
+    körper = körper[:körper.index("\n}")]
+    assert 'if(handarbeitVorhanden() && !$("bLi").checked){' in körper
+    assert '$("bLi").checked = true;' in körper
+    # Jeder Handgriff muss da durch.
+    for name in ("function aufnehmen(", "function wegnehmen("):
+        block = seite[seite.index(name):]
+        assert "nachHandgriff();" in block[:block.index("\n}")]
+    assert "umschalten(state.fest, en); nachHandgriff();" in seite
+    nach = seite[seite.index("function nachHandgriff()"):]
+    assert "neueListeErzwingen();" in nach[:nach.index("\n}")]
+
+
+def test_das_haekchen_ist_gesperrt_solange_handarbeit_vorliegt():
+    """Sonst nimmt man es wieder weg und ändert doch die bestehende Liste."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert '$("bLi").disabled = geaendert > 0;' in seite
+    # Und der Grund steht an beiden Orten, an denen man ihn braucht.
+    assert '["wortwahlwarnung", "neuhinweis"]' in seite
+
+
+def test_ein_erzwungenes_haekchen_geht_mit_der_handarbeit_wieder_weg():
+    """Es war eine Folge, keine Bestellung — ein selbst gesetztes bleibt."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function handarbeitVerwerfen()"):]
+    körper = körper[:körper.index("\n}")]
+    assert 'if(state.autoNeu){ $("bLi").checked = false; state.autoNeu = false; }' in körper

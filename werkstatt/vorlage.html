@@ -321,6 +321,14 @@ textarea{
 }
 
 /* ---------- Das Fenster „Liste anpassen" ---------- */
+/* Ein Hinweis, der eine Bestellung erklärt, die man nicht selbst gemacht
+   hat. Er muss auffallen, ohne nach Fehler auszusehen - es ist keiner. */
+.warnband{
+  margin:8px 0 0; padding:8px 10px; border-radius:var(--r); font-size:11.5px;
+  line-height:1.5; background:var(--nivB-soft); color:var(--nivB);
+  border:1px solid var(--nivB-line);
+}
+.fensterleib .warnband{margin:0 0 12px; font-size:12.5px}
 .knopf.breit{width:100%; margin-top:10px; text-align:center}
 .knopf.breit b{font-family:var(--mono); font-size:11px; font-weight:600; color:var(--accent)}
 dialog#wortwahl{
@@ -586,6 +594,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <section>
         <label class="tick" for="bLi"><input type="checkbox" id="bLi" checked>
           <span><span id="bLiLabel">Neue Vokabelliste</span><span class="sub">60 Wörter · beide Gruppen · aus der oben gewählten</span></span></label>
+        <p class="warnband" id="neuhinweis" hidden></p>
         <label class="tick a" for="b1A"><input type="checkbox" id="b1A" checked>
           <span>Prüfung Teil I · <strong>Niveau A</strong><span class="sub">aus Test 1</span></span></label>
         <label class="tick b" for="b1B"><input type="checkbox" id="b1B" checked>
@@ -777,6 +786,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     <button class="knopf" id="wortwahlZu" type="button" aria-label="Fenster schliessen">Fertig</button>
   </div>
   <div class="fensterleib">
+    <p class="warnband" id="wortwahlwarnung" hidden></p>
     <div class="vorschlagsleiste" id="vorschlagsleiste" hidden>
       <span class="legende">Vorschläge von Claude</span>
       <button class="knopf" id="vorWort" type="button">Wörter</button>
@@ -893,16 +903,41 @@ const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                // gewählte Liste dieser Unit - wechselt man Unit oder Liste,
                // fällt sie weg, weil sie sich auf andere Wörter bezöge.
                dazu:new Set(), weg:new Set(), fest:new Set(),
-               wsuche:"", wgrund:""};
+               wsuche:"", wgrund:"",
+               // Wurde das Häkchen "Neue Vokabelliste" von der Handarbeit
+               // gesetzt oder von Ihnen? Nur das erste nehmen wir zurück.
+               autoNeu:false};
 
 /* Vorschläge, die Claude in dieser Sitzung geschrieben hat. Sie stehen
    nirgends im Quelltext - sie entstehen auf Knopfdruck und verschwinden
    mit der Seite. */
 let vorschlaege = [];
 
+function handarbeitVorhanden(){
+  return state.dazu.size + state.weg.size + state.fest.size > 0;
+}
+
+/* Eine bestehende Liste wird **nie** verändert.
+
+   An V1 hängen ihre Prüfungen - über den Listenabdruck, und über die
+   Word-Dateien, die längst heruntergeladen und ausgeteilt sein können.
+   Wer ein Wort aus V1 nähme, hätte einen Lösungsschlüssel, der auf ein
+   Wort zeigt, das es dort nicht mehr gibt; gemerkt wird das beim
+   Korrigieren. Handarbeit legt deshalb zwingend eine neue Liste an, und
+   solange sie vorliegt, lässt sich das Häkchen nicht wegnehmen. */
+function neueListeErzwingen(){
+  if(handarbeitVorhanden() && !$("bLi").checked){
+    $("bLi").checked = true;
+    state.autoNeu = true;
+  }
+}
+
 function handarbeitVerwerfen(){
   state.dazu.clear(); state.weg.clear(); state.fest.clear();
   vorschlaege = [];
+  // Das Häkchen war eine Folge der Handarbeit, nicht Ihre Bestellung -
+  // also geht es mit ihr wieder weg. Ein selbst gesetztes bleibt.
+  if(state.autoNeu){ $("bLi").checked = false; state.autoNeu = false; }
 }
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
@@ -1305,7 +1340,7 @@ function wortzeile(w, seite){
   const knoepfe = z.querySelectorAll(".griff");
   if(seite === "dabei"){
     knoepfe[0].addEventListener("click", () => {
-      umschalten(state.fest, en); wortwahlZeichnen(); zeichneAuftrag();
+      umschalten(state.fest, en); nachHandgriff();
     });
     knoepfe[1].addEventListener("click", () => { wegnehmen(en); });
   } else {
@@ -1327,12 +1362,19 @@ function umschalten(menge, en){ menge.has(en) ? menge.delete(en) : menge.add(en)
 function aufnehmen(en){
   state.weg.delete(en);
   if(!anzeigeListe().woerter.some(w => schluessel(w.en) === en)) state.dazu.add(en);
-  wortwahlZeichnen(); zeichneAuftrag();
+  nachHandgriff();
 }
 function wegnehmen(en){
   state.fest.delete(en);
   if(state.dazu.has(en)) state.dazu.delete(en); else state.weg.add(en);
-  wortwahlZeichnen(); zeichneAuftrag();
+  nachHandgriff();
+}
+
+/* Jeder Handgriff kann das Häkchen umlegen und damit halbe Leiste
+   umschalten - deshalb der ganze Durchgang, nicht nur die zwei Spalten. */
+function nachHandgriff(){
+  neueListeErzwingen();
+  alles();
 }
 
 function wortwahlZeichnen(){
@@ -1350,6 +1392,19 @@ function wortwahlZeichnen(){
   fuelle($("spalteWeg"), rechts.filter(passtFilter), "weg");
   const geaendert = state.dazu.size + state.weg.size + state.fest.size;
   $("wzurueck").hidden = !geaendert;
+  // Solange Handarbeit vorliegt, ist die neue Liste keine Wahl mehr.
+  $("bLi").disabled = geaendert > 0;
+  const grund = geaendert
+    ? "An V" + anzeigeListe().version + " wurde von Hand geändert — daraus "
+      + "entsteht V" + neueVersion() + ". V" + anzeigeListe().version +
+      " bleibt unangetastet: Ihre Prüfungen und die schon "
+      + "heruntergeladenen Blätter hängen daran, und ein Lösungsschlüssel, "
+      + "der auf ein fehlendes Wort zeigt, fällt erst beim Korrigieren auf."
+    : "";
+  for(const kennung of ["wortwahlwarnung", "neuhinweis"]){
+    $(kennung).textContent = grund;
+    $(kennung).hidden = !grund;
+  }
   // In der Zeile muss man sehen, dass etwas geändert wurde - sonst
   // schliesst man das Fenster und wundert sich über den Auftragssatz.
   const griff = document.querySelector(
@@ -1527,11 +1582,6 @@ function zeichneSichtbarkeit(){
   $("anspruchB").hidden = !b.B;
   $("textreglerA").hidden = !b.A;
   $("textreglerB").hidden = !b.B;
-  // Die Vokabellisten-Übersicht gehört zur Unit und bleibt stehen - sie
-  // sagt auch den Prüfungen, an welcher Liste sie hängen. Steht das Fenster
-  // offen und wird die Liste abgewählt, geht es zu: Sonst bearbeitet man
-  // weiter, was nicht mehr bestellt ist.
-  if(!b.liste && $("wortwahl").open) $("wortwahl").close();
   $("teile").hidden = !b.pruefungen;
 }
 
@@ -1636,6 +1686,10 @@ function befehlstext(a){
                 faecher.join(", ") + " — je mit Begründung.");
   // Handarbeit an der Auswahl. Die Seite baut nichts - sie sagt, was anders
   // sein soll, und die Stückzahl der Liste bleibt dieselbe.
+  if(a.dazu.length || a.weg.length || a.fest.length)
+    zeilen.push("Die Handarbeit unten ist der Grund für die neue Liste: V" +
+                a.basisVersion + " wird nicht verändert, weil ihre Prüfungen " +
+                "daran hängen.");
   if(a.dazu.length)
     zeilen.push("Zusätzlich in die Liste aufnehmen: " + a.dazu.join(", ") + ".");
   if(a.weg.length)
@@ -2209,8 +2263,10 @@ $("herkunft").addEventListener("click", e => {
 $("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
 $("pruefungenZu").addEventListener("click", () => $("pruefungsfenster").close());
 
+/* Das Fenster steht immer offen - auch ohne angekreuzte Liste. Es ist der
+   Ort, an dem man nachsieht, was in einer Liste steht und was nicht; die
+   Bestellung entsteht erst aus dem, was man dort tut. */
 function fensterAuf(){
-  if(!bestellt().liste) return;
   const f = $("wortwahl");
   if(!f.open) f.showModal();
   wortwahlZeichnen();

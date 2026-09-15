@@ -652,6 +652,35 @@ zufällig noch etwas anderes geklickt wurde, und wer nur ein Wort
 festnagelte, kopierte einen Auftrag ohne seine Vorgabe. Ein Test wacht
 darüber.
 
+#### Eine bestehende Liste wird nie verändert
+
+**Sobald ein Handgriff getan ist, entsteht zwingend eine neue Liste.** Das
+Häkchen „Neue Vokabelliste" setzt sich selbst und lässt sich nicht mehr
+wegnehmen, solange Änderungen vorliegen; der Grund steht im Fenster und
+neben dem Häkchen:
+
+> An V1 wurde von Hand geändert — daraus entsteht V3. V1 bleibt
+> unangetastet: Ihre Prüfungen und die schon heruntergeladenen Blätter
+> hängen daran, und ein Lösungsschlüssel, der auf ein fehlendes Wort zeigt,
+> fällt erst beim Korrigieren auf.
+
+Das ist **der teuerste Fehler, den dieses Programm machen kann**, hier an
+seiner Quelle verhindert. An V1 hängen ihre Prüfungen über den
+Listenabdruck — und über Word-Dateien, die längst heruntergeladen und
+ausgeteilt sein können. Ein Wort aus V1 zu nehmen, hiesse, all das still
+ungültig zu machen. `vocabmaster listen` fände es später als Fehler; die
+ausgeteilten Blätter wären trotzdem falsch.
+
+Das erzwungene Häkchen geht mit „Änderungen verwerfen" wieder weg — es war
+eine Folge, keine Bestellung. Ein selbst gesetztes bleibt. Und der
+Auftragssatz nennt den Zusammenhang:
+„Die Handarbeit unten ist der Grund für die neue Liste: V1 wird nicht
+verändert, weil ihre Prüfungen daran hängen."
+
+Das Fenster selbst öffnet **immer**, auch ohne angekreuzte Liste: Es ist der
+Ort, an dem man nachsieht, was in einer Liste steht — die Bestellung
+entsteht erst aus dem, was man dort tut.
+
 Die Handarbeit gilt für **diese** Liste dieser Unit. Wechselt man Unit oder
 Liste, fällt sie weg — sie bezöge sich sonst auf Wörter, die es dort nicht
 gibt.

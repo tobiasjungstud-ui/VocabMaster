@@ -222,7 +222,7 @@ SICHTBARKEIT = {
     "pruefmasse": "b.pruefungen",
     "teile": "b.pruefungen",
     "fancyfeld": "b.liste",
-    "wortwahl": "b.liste",
+    "listeAnpassen": "b.liste",
 }
 
 
@@ -334,3 +334,20 @@ def test_die_seite_blendet_aus_wie_der_veroeffentlichte_rahmen():
     """
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     assert "[hidden]{display:none!important}" in seite
+
+
+def test_jeder_handgriff_schreibt_den_auftrag_neu():
+    """Auch das Festnageln. Sonst steht die Zeile erst da, wenn zufällig
+    noch etwas anderes geklickt wird - und wer nur ein Wort festnagelt,
+    kopiert einen Auftrag ohne seine Vorgabe."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function wortzeile("):]
+    körper = körper[:körper.index("\n}")]
+    for handgriff in ("umschalten(state.fest", "wegnehmen(en)", "aufnehmen(en)"):
+        assert handgriff in körper
+    # Die beiden Wege ausserhalb der Zeile ziehen den Auftrag selbst nach.
+    for name in ("function aufnehmen(", "function wegnehmen("):
+        block = seite[seite.index(name):]
+        assert "zeichneAuftrag();" in block[:block.index("\n}")]
+    # Und der dritte, der ihn vergessen hatte.
+    assert "umschalten(state.fest, en); wortwahlZeichnen(); zeichneAuftrag();" in seite

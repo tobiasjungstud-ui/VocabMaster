@@ -512,6 +512,17 @@ sie sind — ein Trichter von 213 über 141 aussortierte auf 60.
 
 ### Wortauswahl von Hand — dabei und nicht dabei
 
+Unter dem Unit-Block steht **„Liste anpassen"**. Der Knopf öffnet ein
+Fenster (`<dialog>`, modal) — die Wortauswahl gehört zur Unit, nicht ans
+Seitenende, und sie ist zu gross, um dauernd dazustehen. Ein Klick auf eine
+der fünf Kennzahlen öffnet dasselbe Fenster: „aussortiert: 141" ist die
+Frage „welche denn?", und dort steht die Antwort.
+
+Am Knopf hängt die Zahl der offenen Änderungen (`Liste anpassen · 3`) —
+sonst schliesst man das Fenster und vergisst, was man drinnen getan hat.
+Wird die Vokabelliste abgewählt, während das Fenster offen steht, geht es
+zu: Man bearbeitete sonst weiter, was gar nicht mehr bestellt ist.
+
 Links steht, was in der gewählten Liste ist, rechts alles andere aus dem
 Hauptteil. `−` schickt ein Wort weg, `+` holt eines herüber, `▲` markiert
 es als **muss unbedingt vorkommen**. Oben steht die Waage: `61 von 60 —
@@ -542,6 +553,12 @@ Dasselbe Wort steht in Wortliste und Paket verschieden da — dort mit
 Klammerzusatz, hier ohne. Verglichen wird deshalb über einen
 **normalisierten Schlüssel** (Klammern raus, Kleinschreibung); sonst steht
 ein Wort gleichzeitig links und rechts. Auch das hat ein Test gefunden.
+
+Jeder einzelne Handgriff schreibt den Auftragssatz neu — auch das
+Festnageln. Das war einmal vergessen: Die Zeile erschien erst, wenn
+zufällig noch etwas anderes geklickt wurde, und wer nur ein Wort
+festnagelte, kopierte einen Auftrag ohne seine Vorgabe. Ein Test wacht
+darüber.
 
 Die Handarbeit gilt für **diese** Liste dieser Unit. Wechselt man Unit oder
 Liste, fällt sie weg — sie bezöge sich sonst auf Wörter, die es dort nicht

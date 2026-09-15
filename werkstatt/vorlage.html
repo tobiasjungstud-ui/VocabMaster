@@ -312,6 +312,32 @@ textarea{
   background:var(--nivB-soft); color:var(--nivB); border:1px solid var(--nivB-line);
 }
 
+/* ---------- Das Fenster „Liste anpassen" ---------- */
+.knopf.breit{width:100%; margin-top:10px; text-align:center}
+.knopf.breit b{font-family:var(--mono); font-size:11px; font-weight:600; color:var(--accent)}
+dialog#wortwahl{
+  width:min(1040px, 94vw); max-height:90vh; padding:0; border:0;
+  border-radius:var(--r); background:var(--surface); color:var(--ink);
+  box-shadow:0 24px 60px -20px rgba(23,26,34,.55);
+  /* Ein Dialog ist ohne Inhalt schon da; erst `showModal` zeigt ihn.
+     Die Höhe teilt sich in festen Kopf und rollenden Leib. */
+  flex-direction:column; overflow:hidden;
+}
+dialog#wortwahl[open]{display:flex}
+dialog#wortwahl::backdrop{background:rgba(23,26,34,.45)}
+:root[data-theme="dark"] dialog#wortwahl::backdrop,
+:root:not([data-theme="light"]) dialog#wortwahl::backdrop{background:rgba(0,0,0,.65)}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]) dialog#wortwahl::backdrop{background:rgba(23,26,34,.45)}
+}
+.fensterkopf{
+  display:flex; flex-wrap:wrap; gap:10px 14px; align-items:center;
+  padding:14px 18px; border-bottom:1px solid var(--line); background:var(--surface);
+}
+.fensterkopf h2{font-family:var(--serif); font-size:19px; font-weight:600}
+.fensterkopf .waage{margin-left:auto}
+.fensterleib{padding:14px 18px 18px; overflow:auto; min-height:0}
+
 /* ---------- Wortauswahl: dabei und nicht dabei ---------- */
 .waage{
   margin-left:auto; font-family:var(--mono); font-size:12px;
@@ -488,6 +514,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <span class="legende" style="margin-top:16px">Vokabellisten dieser Unit</span>
         <div id="listenwahl" role="radiogroup" aria-label="Vokabelliste"></div>
         <p class="hinweis" id="listenhinweis"></p>
+        <button class="knopf breit" id="listeAnpassen" type="button">Liste anpassen</button>
       </section>
 
       <section>
@@ -625,37 +652,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         </div>
       </div>
 
-      <div class="tafel" id="wortwahl">
-        <div class="tafel-kopf">
-          <h2>Wortauswahl</h2>
-          <span class="waage" id="waage"></span>
-        </div>
-        <div style="padding:14px 18px 18px">
-          <div class="vorschlagsleiste" id="vorschlagsleiste" hidden>
-            <span class="legende">Vorschläge von Claude</span>
-            <button class="knopf" id="vorWort" type="button">Wörter</button>
-            <button class="knopf" id="vorAusdruck" type="button">Wendungen</button>
-            <button class="knopf" id="vorChunk" type="button">Satzanfänge</button>
-            <p class="hinweis" id="vorhinweis"></p>
-          </div>
-          <div class="werkzeuge">
-            <input type="search" id="wsuche" placeholder="Suchen in beiden Spalten …">
-            <select id="wgrund"></select>
-            <button class="knopf" id="wzurueck" type="button" hidden>Änderungen verwerfen</button>
-          </div>
-          <div class="spalten">
-            <div class="spalte">
-              <h4>In der Liste <b id="zahlDabei"></b></h4>
-              <div class="rollfeld" id="spalteDabei"></div>
-            </div>
-            <div class="spalte">
-              <h4>Nicht dabei <b id="zahlWeg"></b></h4>
-              <div class="rollfeld" id="spalteWeg"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="tafel" id="teile"></div>
 
       <div class="tafel">
@@ -687,6 +683,38 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     </main>
   </div>
 </div>
+
+<dialog id="wortwahl" aria-labelledby="wortwahlTitel">
+  <div class="fensterkopf">
+    <h2 id="wortwahlTitel">Liste anpassen</h2>
+    <span class="waage" id="waage"></span>
+    <button class="knopf" id="wortwahlZu" type="button" aria-label="Fenster schliessen">Fertig</button>
+  </div>
+  <div class="fensterleib">
+    <div class="vorschlagsleiste" id="vorschlagsleiste" hidden>
+      <span class="legende">Vorschläge von Claude</span>
+      <button class="knopf" id="vorWort" type="button">Wörter</button>
+      <button class="knopf" id="vorAusdruck" type="button">Wendungen</button>
+      <button class="knopf" id="vorChunk" type="button">Satzanfänge</button>
+      <p class="hinweis" id="vorhinweis"></p>
+    </div>
+    <div class="werkzeuge">
+      <input type="search" id="wsuche" placeholder="Suchen in beiden Spalten …">
+      <select id="wgrund"></select>
+      <button class="knopf" id="wzurueck" type="button" hidden>Änderungen verwerfen</button>
+    </div>
+    <div class="spalten">
+      <div class="spalte">
+        <h4>In der Liste <b id="zahlDabei"></b></h4>
+        <div class="rollfeld" id="spalteDabei"></div>
+      </div>
+      <div class="spalte">
+        <h4>Nicht dabei <b id="zahlWeg"></b></h4>
+        <div class="rollfeld" id="spalteWeg"></div>
+      </div>
+    </div>
+  </div>
+</dialog>
 
 <script id="daten" type="application/json">__DATEN__</script>
 <!-- Die Seite trägt ihre eigene Vorlage mit. Nur so kann sie sich selbst
@@ -1035,7 +1063,9 @@ function wortzeile(w, seite){
     '<span class="de">' + esc(w.de) + '</span>';
   const knoepfe = z.querySelectorAll(".griff");
   if(seite === "dabei"){
-    knoepfe[0].addEventListener("click", () => { umschalten(state.fest, en); wortwahlZeichnen(); });
+    knoepfe[0].addEventListener("click", () => {
+      umschalten(state.fest, en); wortwahlZeichnen(); zeichneAuftrag();
+    });
     knoepfe[1].addEventListener("click", () => { wegnehmen(en); });
   } else {
     knoepfe[0].addEventListener("click", () => { aufnehmen(en); });
@@ -1077,7 +1107,12 @@ function wortwahlZeichnen(){
   $("zahlWeg").textContent = rechts.length;
   fuelle($("spalteDabei"), links.filter(passtFilter), "dabei");
   fuelle($("spalteWeg"), rechts.filter(passtFilter), "weg");
-  $("wzurueck").hidden = !(state.dazu.size || state.weg.size || state.fest.size);
+  const geaendert = state.dazu.size + state.weg.size + state.fest.size;
+  $("wzurueck").hidden = !geaendert;
+  // Am Knopf muss man sehen, dass drinnen etwas geändert wurde - sonst
+  // vergisst man es und wundert sich über den Auftragssatz.
+  $("listeAnpassen").innerHTML = "Liste anpassen"
+    + (geaendert ? ' · <b>' + geaendert + "</b>" : "");
   zeichneGrundwahl(rechts);
 }
 
@@ -1250,8 +1285,11 @@ function zeichneSichtbarkeit(){
   // gehören zur neuen Liste und damit zur Bestellung "Vokabelliste".
   $("fancyfeld").hidden = !b.liste;
   // Von Hand an der Auswahl drehen ergibt nur Sinn, wenn eine Liste
-  // entstehen soll - eine bestehende wird nicht angerührt.
-  $("wortwahl").hidden = !b.liste;
+  // entstehen soll - eine bestehende wird nicht angerührt. Steht das
+  // Fenster gerade offen, geht es zu: Sonst bearbeitet man weiter, was
+  // gar nicht mehr bestellt ist.
+  $("listeAnpassen").hidden = !b.liste;
+  if(!b.liste && $("wortwahl").open) $("wortwahl").close();
   $("teile").hidden = !b.pruefungen;
 }
 
@@ -1898,10 +1936,18 @@ $("wzurueck").addEventListener("click", () => {
 // Die Kennzahl "aussortiert" ist die Frage "was ist denn nicht dabei?" -
 // ein Klick darauf führt dorthin, wo die Antwort steht.
 $("herkunft").addEventListener("click", e => {
-  const zeile = e.target.closest("div");
-  if(!zeile || $("wortwahl").hidden) return;
-  $("wortwahl").scrollIntoView({behavior:"smooth", block:"start"});
+  if(e.target.closest("div")) fensterAuf();
 });
+$("listeAnpassen").addEventListener("click", fensterAuf);
+$("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
+
+function fensterAuf(){
+  if($("listeAnpassen").hidden) return;
+  const f = $("wortwahl");
+  if(!f.open) f.showModal();
+  wortwahlZeichnen();
+  $("wsuche").focus();
+}
 
 $("kopieren").addEventListener("click", async () => {
   try{

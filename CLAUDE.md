@@ -502,7 +502,7 @@ darin:
 | Gruppe | was darin steht |
 |---|---|
 | **Datenbank** | welche Wortliste |
-| **Unitwahl** | Unit, ihre Kennzahlen, ihre Vokabellisten, „Liste anpassen" |
+| **Unitwahl** | die Unit (mit Thema und Seiten), ihre Vokabellisten, deren Kennzahlen |
 | **Was soll entstehen** | die fünf Häkchen |
 | **Einstellungen der Vokabelliste** | aufgewertete Fächer, pädagogisches Ranking |
 | **Prüfungssettings** | Anspruch der Prüfung, Schwierigkeit des Lückentexts, Feinheiten |
@@ -514,10 +514,11 @@ darunter nach etwas, das es nicht gibt.
 
 ### Der Unit-Block steht in der Leiste
 
-Unter der Unit-Wahl stehen die Seiten im Lehrmittel und darunter **alle
-Vokabellisten dieser Unit**, wählbar. Thema und Nummer stehen **nicht**
-nochmals da: Sie stehen schon im Auswahlfeld darüber, und zweimal dasselbe
-liest niemand zweimal.
+Unter der Unit-Wahl stehen **alle Vokabellisten dieser Unit**, wählbar.
+Sonst nichts: Nummer, Thema **und Seitenbereich** stehen im Auswahlfeld
+selbst — `Unit 1 — Erinnerungen und Gegenstände · S. 8-17`. Dort nützen sie
+etwas, denn dort unterscheidet man die Units voneinander; als eigene Zeile
+darunter wiederholten sie nur, was eine Zeile höher schon stand.
 
 Die **Übersicht führt nur, was es gibt.** Eine Zeile „＋ neue Liste anlegen"
 stand einmal darin — das war dieselbe Bestellung zweimal, denn nebenan unter

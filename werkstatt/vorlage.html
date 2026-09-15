@@ -186,15 +186,6 @@ textarea{
 .tafel-kopf h2{font-family:var(--serif); font-size:19px; font-weight:600}
 .tafel-kopf .note{font-family:var(--mono); font-size:11px; color:var(--ink-3); margin-left:auto}
 
-/* Unit-Block in der Leiste: 296px breit, also zählt jede Zeile. Der Titel
-   trägt die Unit, die Kennzahlen stehen als Raster darunter - fünf kurze
-   Spalten lesen sich schneller als fünf Sätze. */
-.unitkarte{margin-top:10px}
-.unitkarte .unittitel{
-  font-family:var(--serif); font-size:17px; font-weight:600;
-  line-height:1.25; margin-top:2px; letter-spacing:-.01em;
-}
-.unitkarte .seiten{font-family:var(--mono); font-size:10.5px; color:var(--ink-3); margin-top:4px}
 /* Fünf Zahlen nebeneinander ergäben in 296px fünf Spalten zu 55px - die
    Beschriftungen brächen um und man läse Trümmer. Untereinander stehen
    sie ungebrochen da, und die ersten drei lesen sich als das, was sie
@@ -254,10 +245,6 @@ textarea{
   letter-spacing:.06em;
 }
 
-.unitnr{
-  font-family:var(--serif); font-size:11px; letter-spacing:.14em;
-  text-transform:uppercase; color:var(--accent); font-weight:600;
-}
 
 /* ---------- Lineal ---------- */
 .teil{padding:18px}
@@ -527,7 +514,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <span class="gruppentitel">Unitwahl</span>
         <section>
           <select id="unit"></select>
-          <div class="seiten" id="unitSeiten"></div>
         </section>
         <section>
           <span class="legende">Vokabellisten dieser Unit</span>
@@ -995,7 +981,6 @@ function zeichneTextband(){
 /* ---------------- Zeichnen ---------------- */
 function zeichneKopf(){
   const u = unitDaten();
-  $("unitSeiten").textContent = "Lehrmittel S. " + u.seiten + " · Hauptteil";
   const li = anzeigeListe();
   $("listenNote").textContent = "V" + li.version + " · " + li.woerter.length +
     " Wörter · Test 1 und Test 2 · für beide Gruppen dieselbe" +
@@ -1663,7 +1648,8 @@ function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl();
 DATA.units.forEach(u => {
   const o = document.createElement("option");
   o.value = u.unit;
-  o.textContent = (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit) + " — " + u.thema;
+  o.textContent = (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit) +
+    " — " + u.thema + (u.seiten ? " · S. " + u.seiten : "");
   $("unit").appendChild(o);
 });
 $("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +

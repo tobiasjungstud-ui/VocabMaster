@@ -242,8 +242,17 @@ textarea{
   margin-top:3px; font-family:var(--mono); font-size:9.5px; color:var(--ink-3);
   line-height:1.45; overflow-wrap:anywhere;
 }
-.listenzeile.neu{border-style:dashed}
-.listenzeile.neu .vcode{color:var(--ok)}
+.listenzeile .zeilenfuss{display:flex; margin-top:5px}
+.listenzeile .anpassen{
+  margin-left:auto; font-size:11px; color:var(--accent); cursor:pointer;
+  text-decoration:underline; text-underline-offset:2px;
+}
+.listenzeile .anpassen:hover{text-decoration-thickness:2px}
+.herkunft .kopfzeile{background:var(--sunk)}
+.herkunft .kopfzeile dt{
+  font-family:var(--mono); font-size:10px; font-weight:600; color:var(--accent);
+  letter-spacing:.06em;
+}
 
 .unitnr{
   font-family:var(--serif); font-size:11px; letter-spacing:.14em;
@@ -518,18 +527,16 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <span class="gruppentitel">Unitwahl</span>
         <section>
           <select id="unit"></select>
-          <div class="unitkarte">
-            <div class="unitnr" id="unitNr"></div>
-            <div class="unittitel" id="unitTitel"></div>
-            <div class="seiten" id="unitSeiten"></div>
-          </div>
-          <dl class="herkunft" id="herkunft"></dl>
+          <div class="seiten" id="unitSeiten"></div>
         </section>
         <section>
           <span class="legende">Vokabellisten dieser Unit</span>
           <div id="listenwahl" role="radiogroup" aria-label="Vokabelliste"></div>
+          <!-- Die Kennzahlen gehören zu einer bestimmten Liste, nicht zur
+               Unit im Ganzen. Sie zeigen deshalb die Liste, über der die
+               Maus steht - und sonst die gewählte. -->
+          <dl class="herkunft" id="herkunft"></dl>
           <p class="hinweis" id="listenhinweis"></p>
-          <button class="knopf breit" id="listeAnpassen" type="button">Liste anpassen</button>
         </section>
       </div>
 
@@ -537,7 +544,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <span class="gruppentitel">Was soll entstehen</span>
         <section>
         <label class="tick" for="bLi"><input type="checkbox" id="bLi" checked>
-          <span>Vokabelliste<span class="sub">60 Wörter · beide Gruppen</span></span></label>
+          <span><span id="bLiLabel">Neue Vokabelliste</span><span class="sub">60 Wörter · beide Gruppen · aus der oben gewählten</span></span></label>
         <label class="tick a" for="b1A"><input type="checkbox" id="b1A" checked>
           <span>Prüfung Teil I · <strong>Niveau A</strong><span class="sub">aus Test 1</span></span></label>
         <label class="tick b" for="b1B"><input type="checkbox" id="b1B" checked>
@@ -861,13 +868,16 @@ function neueVersion(){
   const u = unitDaten();
   return Math.max(...u.listen.map(l => l.version)) + 1;
 }
-/* Wird eine neue Liste angelegt? Dann gibt es noch keine Wörter zu zeigen -
-   die Vorschau bleibt bei der Liste, aus der sie hervorgeht. */
-function legtNeueListeAn(){ return state.listeVersion === 0; }
-function basisListe(){
-  const u = unitDaten();
-  return u.listen[u.listen.length - 1];
-}
+/* Eine neue Liste entsteht, wenn sie bestellt ist - das Häkchen
+   "Neue Vokabelliste" sagt es. Eine eigene Zeile dafür oben in der
+   Übersicht wäre dieselbe Bestellung zweimal; die Übersicht führt nur, was
+   es gibt.
+
+   Die gewählte Zeile ist dann die **Grundlage**: Aus ihr geht die neue
+   hervor, und ihre Wörter zeigt die Vorschau, solange die neuen noch nicht
+   existieren. */
+function legtNeueListeAn(){ return $("bLi").checked; }
+function basisListe(){ return listenDaten(); }
 function testWoerter(teil){
   return anzeigeListe().woerter.filter(w => w.test === teil)
          .slice().sort((a,b) => b.score - a.score || a.en.localeCompare(b.en));
@@ -985,21 +995,30 @@ function zeichneTextband(){
 /* ---------------- Zeichnen ---------------- */
 function zeichneKopf(){
   const u = unitDaten();
-  $("unitNr").textContent = u.unit === 0 ? "Starter Unit" : "Unit " + u.unit;
-  $("unitTitel").textContent = u.thema;
   $("unitSeiten").textContent = "Lehrmittel S. " + u.seiten + " · Hauptteil";
-  const h = u.herkunft;
-  $("herkunft").innerHTML =
-    posten("im Hauptteil", h.hauptteil) +
-    posten("aussortiert", h.gefiltert) +
-    posten("aus der Liste", h.gewaehlt) +
-    posten("ergänzt", h.ergaenzt, h.ergaenzt > 0) +
-    posten("Zusatzteile", h.zusatzteile, h.zusatzteile > 0);
   const li = anzeigeListe();
   $("listenNote").textContent = "V" + li.version + " · " + li.woerter.length +
     " Wörter · Test 1 und Test 2 · für beide Gruppen dieselbe" +
     (legtNeueListeAn() ? " (Grundlage für V" + neueVersion() + ")" : "");
 }
+/* Die Kennzahlen zu **einer** Liste. Die ersten beiden gehören zur Unit -
+   ob ein Wort Grundwortschatz ist, hängt nicht an der Liste. Die unteren
+   drei zählen die gewählte Liste selbst, und die unterscheiden sich: V2 hat
+   zehn aufgewertete Wörter, V1 keines. */
+function zeichneHerkunft(li){
+  const u = unitDaten(), h = u.herkunft;
+  const aus = w => (w.quelle || "wortliste") === "wortliste";
+  const ausListe = li.woerter.filter(aus).length;
+  const ergaenzt = li.woerter.length - ausListe;
+  $("herkunft").innerHTML =
+    '<div class="kopfzeile"><dt>V' + li.version + '</dt><dd></dd></div>' +
+    posten("im Hauptteil", h.hauptteil) +
+    posten("aussortiert", h.gefiltert) +
+    posten("in dieser Liste", ausListe) +
+    posten("aufgewertet", ergaenzt, ergaenzt > 0) +
+    posten("Zusatzteile", h.zusatzteile, h.zusatzteile > 0);
+}
+
 function posten(titel, wert, betont){
   return '<div class="' + (betont ? "betont" : "") + '"><dt>' + titel +
          "</dt><dd>" + wert + "</dd></div>";
@@ -1138,10 +1157,11 @@ function wortwahlZeichnen(){
   fuelle($("spalteWeg"), rechts.filter(passtFilter), "weg");
   const geaendert = state.dazu.size + state.weg.size + state.fest.size;
   $("wzurueck").hidden = !geaendert;
-  // Am Knopf muss man sehen, dass drinnen etwas geändert wurde - sonst
-  // vergisst man es und wundert sich über den Auftragssatz.
-  $("listeAnpassen").innerHTML = "Liste anpassen"
-    + (geaendert ? ' · <b>' + geaendert + "</b>" : "");
+  // In der Zeile muss man sehen, dass etwas geändert wurde - sonst
+  // schliesst man das Fenster und wundert sich über den Auftragssatz.
+  const griff = document.querySelector(
+    '.listenzeile[aria-checked="true"] .anpassen');
+  if(griff) griff.textContent = geaendert ? "anpassen · " + geaendert : "anpassen";
   zeichneGrundwahl(rechts);
 }
 
@@ -1274,7 +1294,10 @@ function zeichneListe(){
 /* ---------------- Auftrag ---------------- */
 function gewaehlteTeile(){
   const t = [];
-  if($("bLi").checked) t.push({art:"liste", text:"die Vokabelliste"});
+  // Das Häkchen bestellt eine neue Liste - der erste Satz des Auftrags
+  // soll sie beim Namen nennen, nicht bloss "die Vokabelliste".
+  if($("bLi").checked)
+    t.push({art:"liste", text:"die neue Vokabelliste V" + neueVersion()});
   for(const [id, teil, niv] of [["b1A",1,"A"],["b1B",1,"B"],["b2A",2,"A"],["b2B",2,"B"]]){
     if($(id).checked) t.push({art:"pruefung", teil:teil, niveau:niv,
       text:"Prüfung Teil " + (teil === 1 ? "I" : "II") + " Niveau " + niv});
@@ -1311,11 +1334,10 @@ function zeichneSichtbarkeit(){
   $("anspruchB").hidden = !b.B;
   $("textreglerA").hidden = !b.A;
   $("textreglerB").hidden = !b.B;
-  // Die Vokabellisten-Wahl gehört zur Unit und bleibt deshalb stehen - sie
-  // sagt auch den Prüfungen, an welcher Liste sie hängen. Nur der Knopf zur
-  // Handarbeit geht mit der Bestellung. Steht das Fenster offen, geht es
-  // zu: Sonst bearbeitet man weiter, was nicht mehr bestellt ist.
-  $("listeAnpassen").hidden = !b.liste;
+  // Die Vokabellisten-Übersicht gehört zur Unit und bleibt stehen - sie
+  // sagt auch den Prüfungen, an welcher Liste sie hängen. Steht das Fenster
+  // offen und wird die Liste abgewählt, geht es zu: Sonst bearbeitet man
+  // weiter, was nicht mehr bestellt ist.
   if(!b.liste && $("wortwahl").open) $("wortwahl").close();
   $("teile").hidden = !b.pruefungen;
 }
@@ -1388,9 +1410,8 @@ function befehlstext(a){
   // zu bauen - auch wenn links nur die Vokabelliste angekreuzt war. Deshalb
   // steht der Satz nur da, wo wirklich Prüfungen bestellt sind.
   if(a.neueListe){
-    zeilen.push("Dafür eine neue Vokabelliste V" + a.listeVersion +
-                " anlegen (aus V" + a.basisVersion + "; die bestehenden " +
-                "Listen bleiben)." +
+    zeilen.push("Sie entsteht aus V" + a.basisVersion +
+                "; die bestehenden Listen bleiben unangetastet." +
                 (a.hatPruefungen
                   ? " Die Prüfungen beziehen sich auf V" + a.listeVersion + "."
                   : " Künftige Prüfungen dieser Unit beziehen sich dann auf V" +
@@ -1796,19 +1817,11 @@ function zeichneFassungswahl(){
 
 function zeichneListenwahl(){
   const u = unitDaten(), kasten = $("listenwahl");
-  // Eine neue Liste anzulegen, ohne sie zu bestellen, ergäbe ein Paket, das
-  // niemand angefordert hat. Die Zeile steht deshalb nur da, wo die
-  // Vokabelliste angekreuzt ist - und eine schon getroffene Wahl darf dann
-  // nicht als Leiche stehenbleiben.
-  const neuErlaubt = $("bLi").checked;
-  if(!neuErlaubt && state.listeVersion === 0)
-    state.listeVersion = u.listen[u.listen.length - 1].version;
-  if(!u.listen.some(li => li.version === state.listeVersion) && state.listeVersion !== 0)
+  // Die Übersicht führt nur, was es gibt. Bestellt wird nebenan.
+  if(!u.listen.some(li => li.version === state.listeVersion))
     state.listeVersion = u.listen[0].version;
-
   kasten.innerHTML = "";
   for(const li of u.listen) kasten.appendChild(listenzeile(li));
-  if(neuErlaubt) kasten.appendChild(neuzeile(u));
 }
 
 /* Eine Zeile je Liste. Sie muss in einem Blick beantworten, warum man
@@ -1838,8 +1851,24 @@ function listenzeile(li){
     '<span class="kopf"><span class="vcode">V' + li.version + '</span>' +
     '<span class="umfang">' + li.woerter.length + ' Wörter</span>' +
     '<span class="abdruck">' + esc(li.abdruck) + '</span></span>' +
-    '<span class="merkmale">' + esc(merkmale.join(" · ")) + '</span>';
+    '<span class="merkmale">' + esc(merkmale.join(" · ")) + '</span>' +
+    '<span class="zeilenfuss"><span class="anpassen" role="button" ' +
+    'tabindex="0">anpassen</span></span>';
   k.addEventListener("click", () => listeWaehlen(li.version));
+  // Der Griff gehört in die Zeile, nicht darunter: Er meint diese Liste.
+  const griff = k.querySelector(".anpassen");
+  const oeffnen = e => {
+    e.stopPropagation();
+    listeWaehlen(li.version);
+    fensterAuf();
+  };
+  griff.addEventListener("click", oeffnen);
+  griff.addEventListener("keydown", e => {
+    if(e.key === "Enter" || e.key === " ") oeffnen(e);
+  });
+  // Die Kennzahlen folgen der Maus - man vergleicht, ohne zu wählen.
+  k.addEventListener("mouseenter", () => zeichneHerkunft(li));
+  k.addEventListener("mouseleave", () => zeichneHerkunft(anzeigeListe()));
   return k;
 }
 
@@ -1851,22 +1880,6 @@ function kurzdatum(iso){
     : d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"});
 }
 
-function neuzeile(u){
-  const k = document.createElement("button");
-  k.type = "button";
-  k.className = "listenzeile neu";
-  k.setAttribute("role", "radio");
-  k.setAttribute("aria-checked", String(state.listeVersion === 0));
-  k.innerHTML =
-    '<span class="kopf"><span class="vcode">＋ V' + neueVersion() + '</span>' +
-    '<span class="umfang">neu anlegen</span></span>' +
-    '<span class="merkmale">60 Wörter, neu aus der Datenbank gewählt · ' +
-    'Wörter aus V1–V' + u.listen[u.listen.length - 1].version +
-    ' werden dabei abgewertet, nicht ausgeschlossen · ' +
-    'die bestehenden Listen bleiben</span>';
-  k.addEventListener("click", () => listeWaehlen(0));
-  return k;
-}
 
 function listeWaehlen(version){
   if(version !== state.listeVersion) handarbeitVerwerfen();
@@ -1882,23 +1895,20 @@ function listeWaehlen(version){
 
 function zeichneListenhinweis(){
   const neu = legtNeueListeAn();
-  // Die Fancy-Felder gehören zur neuen Liste. Eine bestehende zu verändern
-  // hiesse, ihre Prüfungen ungültig zu machen - deshalb sind sie hier aus,
-  // statt die Listenwahl im Rücken umzustellen.
-  $("fancy").disabled = !neu;
-  $("ausdruecke").disabled = !neu;
-  $("chunks").disabled = !neu;
-  $("fancyquelle").disabled = !neu;
-  $("fancywoerter").disabled = !neu;
-  $("fancylabel").textContent = neu
-    ? "Aufgewertet für V" + neueVersion() + " — Wörter, Wendungen, Satzanfänge"
-    : "Aufgewertete Wörter — nur für eine neue Liste";
+  zeichneHerkunft(anzeigeListe());
+  // Die Gruppe als Ganzes ist schon ausgeblendet, wenn keine Liste bestellt
+  // ist; die Beschriftung sagt nur noch, für welche Fassung die Fächer sind.
+  $("fancylabel").textContent =
+    "Aufgewertet für V" + neueVersion() + " — Wörter, Wendungen, Satzanfänge";
+  // Das Häkchen benennt, was es bestellt.
+  $("bLiLabel").textContent = "Neue Vokabelliste V" + neueVersion();
 
   if(neu){
     $("listenhinweis").textContent =
-      "V" + neueVersion() + " entsteht aus V" + basisListe().version +
-      ". Die bestehenden Listen bleiben unangetastet; die unten gezeigten " +
-      "Wörter sind die von V" + basisListe().version + ".";
+      "V" + neueVersion() + " entsteht aus der oben gewählten V" +
+      basisListe().version + ". Die bestehenden bleiben unangetastet; " +
+      "die Vorschau zeigt so lange die Wörter von V" +
+      basisListe().version + ".";
   } else {
     const li = listenDaten();
     const weitere = fassungsliste(li);
@@ -1992,11 +2002,11 @@ $("wzurueck").addEventListener("click", () => {
 $("herkunft").addEventListener("click", e => {
   if(e.target.closest("div")) fensterAuf();
 });
-$("listeAnpassen").addEventListener("click", fensterAuf);
+
 $("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
 
 function fensterAuf(){
-  if($("listeAnpassen").hidden) return;
+  if(!bestellt().liste) return;
   const f = $("wortwahl");
   if(!f.open) f.showModal();
   wortwahlZeichnen();

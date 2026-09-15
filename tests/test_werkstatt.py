@@ -220,7 +220,6 @@ SICHTBARKEIT = {
     "textreglerA": "b.A",
     "textreglerB": "b.B",
     "teile": "b.pruefungen",
-    "listeAnpassen": "b.liste",
 }
 
 
@@ -248,15 +247,20 @@ def test_ein_kreuz_zeichnet_die_ganze_seite_neu():
     assert "zeichneSichtbarkeit();" in seite[seite.index("function alles()"):]
 
 
-def test_eine_neue_liste_gibt_es_nur_mit_bestellter_liste():
-    """Sonst entstünde ein Paket, das niemand angefordert hat."""
+def test_die_uebersicht_fuehrt_nur_was_es_gibt():
+    """Eine Zeile „＋ neue Liste" wäre dieselbe Bestellung zweimal.
+
+    Bestellt wird mit dem Häkchen „Neue Vokabelliste"; die Übersicht oben
+    zeigt den Bestand und sagt, welche Liste die Grundlage ist.
+    """
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     körper = seite[seite.index("function zeichneListenwahl()"):]
     körper = körper[:körper.index("\n}\n")]
-    assert 'const neuErlaubt = $("bLi").checked;' in körper
-    assert "if(neuErlaubt) kasten.appendChild(neuzeile(u));" in körper
-    # Und eine schon getroffene Wahl darf nicht als Leiche stehenbleiben.
-    assert "if(!neuErlaubt && state.listeVersion === 0)" in körper
+    # Die Übersicht führt nur, was es gibt - bestellt wird nebenan.
+    assert "neuzeile" not in seite, "die Übersicht darf nichts anbieten"
+    assert 'function legtNeueListeAn(){ return $("bLi").checked; }' in seite
+    # Und eine Wahl, die es nicht mehr gibt, darf nicht stehenbleiben.
+    assert "if(!u.listen.some(li => li.version === state.listeVersion))" in körper
 
 
 # ---------------------------------------------------------------------------

@@ -514,13 +514,32 @@ darunter nach etwas, das es nicht gibt.
 
 ### Der Unit-Block steht in der Leiste
 
-Unter der Unit-Wahl steht alles, was man über die Unit wissen muss, bevor
-man etwas bestellt: Thema, Seiten im Lehrmittel, die fünf Kennzahlen der
-Herkunft — und darunter **alle Vokabellisten dieser Unit nebeneinander**,
-wählbar.
+Unter der Unit-Wahl stehen die Seiten im Lehrmittel und darunter **alle
+Vokabellisten dieser Unit**, wählbar. Thema und Nummer stehen **nicht**
+nochmals da: Sie stehen schon im Auswahlfeld darüber, und zweimal dasselbe
+liest niemand zweimal.
 
-Je Liste eine Zeile, die in einem Blick beantwortet, warum man diese und
-nicht die andere nimmt: Umfang, Abdruck, was daran aufgewertet ist, wie
+Die **Übersicht führt nur, was es gibt.** Eine Zeile „＋ neue Liste anlegen"
+stand einmal darin — das war dieselbe Bestellung zweimal, denn nebenan unter
+„Was soll entstehen" steht sie auch. Bestellt wird dort; das Häkchen heisst
+deshalb **„Neue Vokabelliste V3"** und nennt die Nummer, die entsteht. Die
+hier gewählte Zeile ist die **Grundlage**, aus der die neue hervorgeht — und
+zugleich die Liste, an der bestellte Prüfungen hängen.
+
+Jede Zeile trägt ihren eigenen Griff **„anpassen"** — in der Zeile, nicht
+darunter: Er meint diese Liste, und ein Knopf unter allen Zeilen liesse
+offen, welche. Sind Änderungen offen, zählt der Griff sie mit
+(`anpassen · 3`).
+
+Die **Kennzahlen gehören zur Liste, nicht zur Unit**, und stehen deshalb
+unter den Zeilen: Sie zeigen die Liste, über der die Maus steht, sonst die
+gewählte. Die ersten beiden (im Hauptteil, aussortiert) sind für alle Listen
+der Unit gleich — ob ein Wort Grundwortschatz ist, hängt nicht an der Liste.
+Die unteren unterscheiden sich: V1 hat 60 Wörter aus der Wortliste und
+keines aufgewertet, V2 hat 50 und 10.
+
+Die Zeile beantwortet in einem Blick, warum man diese und nicht die andere
+nimmt: Umfang, Abdruck, was daran aufgewertet ist, wie
 viele Fächer noch offen sind, wie viele Prüfungen daran hängen und wann
 sie entstand.
 
@@ -535,9 +554,6 @@ Fassungen`, und der Hinweis darunter nennt die Prüfung beim Namen: „Teil I
 Niveau A als Fassung 2 und Teil I Niveau A als Fassung 3". Dafür trägt
 `daten.json` je Fassung Nummer, Teil und Niveau.
 
-Als letzte Zeile steht „＋ neue Liste anlegen" — aber nur, wenn die
-Vokabelliste angekreuzt ist (siehe unten).
-
 Die Kennzahlen stehen **untereinander, nicht nebeneinander**: Fünf Spalten
 in einer 296 px breiten Leiste ergäben 55 px je Spalte, die Beschriftungen
 brächen um. Untereinander lesen sich die ersten drei ausserdem als das, was
@@ -545,13 +561,13 @@ sie sind — ein Trichter von 213 über 141 aussortierte auf 60.
 
 ### Wortauswahl von Hand — dabei und nicht dabei
 
-Unter dem Unit-Block steht **„Liste anpassen"**. Der Knopf öffnet ein
+Jede Listenzeile trägt den Griff **„anpassen"**. Er öffnet ein
 Fenster (`<dialog>`, modal) — die Wortauswahl gehört zur Unit, nicht ans
 Seitenende, und sie ist zu gross, um dauernd dazustehen. Ein Klick auf eine
 der fünf Kennzahlen öffnet dasselbe Fenster: „aussortiert: 141" ist die
 Frage „welche denn?", und dort steht die Antwort.
 
-Am Knopf hängt die Zahl der offenen Änderungen (`Liste anpassen · 3`) —
+Am Griff hängt die Zahl der offenen Änderungen (`anpassen · 3`) —
 sonst schliesst man das Fenster und vergisst, was man drinnen getan hat.
 Wird die Vokabelliste abgewählt, während das Fenster offen steht, geht es
 zu: Man bearbeitete sonst weiter, was gar nicht mehr bestellt ist.
@@ -625,8 +641,7 @@ gleich brauchen wird.
 | Anspruch der Prüfung, Schwierigkeit des Lückentexts, Wörter/Lücken, Fassung, das Lineal | keine Prüfung angekreuzt ist |
 | die Regler für Niveau B (beide Abschnitte) | keine Prüfung für Niveau B angekreuzt ist — und umgekehrt für A |
 | Teil I bzw. Teil II im Lineal | dieser Teil nicht angekreuzt ist |
-| die Fächer für aufgewertete Wörter, die Wortauswahl von Hand | die Vokabelliste nicht angekreuzt ist |
-| die Zeile „＋ neue Liste anlegen" | die Vokabelliste nicht angekreuzt ist |
+| die ganze Gruppe „Einstellungen der Vokabelliste" | „Neue Vokabelliste" nicht angekreuzt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher
 Liste sie hängen. War „neue Liste" gewählt und wird die Vokabelliste

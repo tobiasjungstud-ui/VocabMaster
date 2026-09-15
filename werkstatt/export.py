@@ -25,6 +25,8 @@ from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
 from vocabmaster.exam.difficulty import score  # noqa: E402
 from vocabmaster.exam.english import readability  # noqa: E402
+from vocabmaster.list.dedup import deduplicate  # noqa: E402
+from vocabmaster.list.leveling import LevelContext, is_usable  # noqa: E402
 from vocabmaster.niveau import (  # noqa: E402
     _GRAD_SPANNE,
     _TEXT_ANKER,
@@ -33,7 +35,80 @@ from vocabmaster.niveau import (  # noqa: E402
     textstufe,
 )
 from vocabmaster.pack import wortart_von  # noqa: E402
-from vocabmaster.pool import plan_unit  # noqa: E402
+from vocabmaster.pool import _bewerten, plan_unit  # noqa: E402
+
+#: Die Begründungen der Auswahl in Gruppen. Die Anwendung schreibt sie als
+#: ganze Sätze und trägt den Zipf-Wert mitten hinein - fünfzehn Sätze für
+#: denselben Grund. Für eine Spalte, in der man nach Gründen sortiert,
+#: braucht es ein kurzes Wort; der ganze Satz bleibt je Wort daneben stehen.
+GRUENDE = (
+    ("Grundwortschatz", "A1/A2-Grundwortschatz"),
+    ("zu häufig", "zu häufig, damit bekannt"),
+    ("Deckungsgleich", "Kognat — aus dem Deutschen abzuschreiben"),
+    ("früheren Unit", "früher schon gelernt"),
+)
+
+
+def _grund(satz: str) -> str:
+    for merkmal, kurz in GRUENDE:
+        if merkmal in satz:
+            return kurz
+    return "aussortiert"
+
+
+def _hauptteil(db: Database, unit: int) -> list[dict]:
+    """Jedes Wort des Hauptteils - mit dem Urteil der Auswahl darüber.
+
+    Damit lässt sich in der Oberfläche nebeneinanderlegen, was in der Liste
+    steht und was nicht, und einzelne Wörter von Hand herüberholen. Die
+    Auswahl selbst rührt das nicht an: Sie trifft weiterhin `plan_unit`,
+    hier wird nur nachgezeichnet, was sie verworfen hat und warum.
+
+    Das Urteil gehört zur **Unit, nicht zur Liste**: Ob ein Wort zum
+    Grundwortschatz zählt, hängt nicht davon ab, welche Liste man gerade
+    ansieht. Ein leeres ``grund`` heisst „brauchbar" - ob ein brauchbares
+    Wort in *dieser* Liste steht, rechnet die Oberfläche aus, denn es kann
+    je Liste anders ausfallen.
+    """
+    rows = db.unit_pool(unit, core_only=True)
+    kandidaten = _bewerten(rows, LevelContext.from_entries(db.earlier(unit)))
+    brauchbar = [c for c in kandidaten if is_usable(c)]
+    _, verloren = deduplicate(brauchbar)
+    zugunsten = {
+        (loser.headword or loser.english).lower(): (winner.headword or winner.english)
+        for loser, winner, _ in verloren
+    }
+
+    heraus = []
+    for c in kandidaten:
+        en = c.english or c.headword or ""
+        if not en:
+            continue
+        if not is_usable(c):
+            satz = c.notes[0] if c.notes else "ohne Begründung aussortiert"
+            grund, text = _grund(satz), satz
+        elif en.lower() in zugunsten:
+            grund = "Doppelung"
+            text = f"Deckt sich mit {zugunsten[en.lower()]}."
+        else:
+            # Brauchbar und nicht doppelt. Ob es in die Liste kam, entscheidet
+            # sich erst je Liste - die Oberfläche weiss das besser als wir.
+            grund = ""
+            text = ""
+        de = c.german or ""
+        pos = wortart_von({"englisch": en, "deutsch": de})
+        heraus.append({
+            "en": en,
+            "de": de,
+            "pos": pos,
+            "grund": grund,
+            "warum": text,
+            "score": round(score(en, de, pos).score, 2),
+            "zipf": round(float(c.zipf or 0.0), 2),
+            "abschnitt": getattr(c, "section", "") or "",
+        })
+    heraus.sort(key=lambda w: (bool(w["grund"]), -w["score"], w["en"]))
+    return heraus
 
 
 def datei_name(unit: int, version: int) -> str:
@@ -205,6 +280,10 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
             "leitwoerter": thema.get("leitwoerter", []),
             "herkunft": _herkunft(db, unit, settings),
             "listen": listen,
+            # Was die Unit hergibt - alles, mit dem Urteil der Auswahl. Die
+            # Oberfläche legt es neben die gewählte Liste, damit man sieht,
+            # was fehlt, und einzelne Wörter von Hand herüberholen kann.
+            "hauptteil": _hauptteil(db, unit),
         })
 
     return {

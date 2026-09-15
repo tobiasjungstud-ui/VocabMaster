@@ -41,6 +41,10 @@
 }
 
 *{box-sizing:border-box}
+/* Den Rahmen mit dieser Regel setzt erst der Veröffentlichungsdienst um die
+   Seite. Wer sie lokal im Browser öffnet, sähe sonst Abschnitte, die
+   ausgeblendet sein sollten - und prüfte etwas anderes, als später steht. */
+[hidden]{display:none!important}
 body{
   margin:0; background:var(--paper); color:var(--ink);
   font-family:var(--sans); font-size:15px; line-height:1.5;
@@ -308,6 +312,74 @@ textarea{
   background:var(--nivB-soft); color:var(--nivB); border:1px solid var(--nivB-line);
 }
 
+/* ---------- Wortauswahl: dabei und nicht dabei ---------- */
+.waage{
+  margin-left:auto; font-family:var(--mono); font-size:12px;
+  font-variant-numeric:tabular-nums; padding:3px 9px; border-radius:2px;
+  border:1px solid var(--line-2); background:var(--paper); color:var(--ink-2);
+}
+.waage.knapp{background:var(--nivB-soft); border-color:var(--nivB-line); color:var(--nivB)}
+.waage.passt{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+.spalten{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+@media (max-width:760px){ .spalten{grid-template-columns:1fr} }
+.spalte{border:1px solid var(--line); border-radius:var(--r); min-width:0; display:flex; flex-direction:column}
+.spalte > h4{
+  margin:0; padding:8px 11px; border-bottom:1px solid var(--line);
+  background:var(--sunk); font-family:var(--mono); font-size:10.5px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--ink-3);
+  font-weight:500; display:flex; gap:8px; align-items:baseline;
+}
+.spalte > h4 b{color:var(--ink-2); font-weight:600; margin-left:auto; font-size:12px}
+.spalte .rollfeld{overflow:auto; max-height:min(520px,60vh)}
+.wortzeile{
+  display:flex; align-items:baseline; gap:8px; padding:4px 10px;
+  border-bottom:1px solid var(--line); font-size:13px; min-width:0;
+}
+.wortzeile:last-child{border-bottom:0}
+.wortzeile .sc{
+  font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; width:2.4em; flex:none; text-align:right;
+}
+.wortzeile .en{font-weight:500; flex:1 1 auto; min-width:0; overflow-wrap:anywhere}
+.wortzeile .de{
+  color:var(--ink-3); font-size:11.5px; margin-left:auto; text-align:right;
+  flex:0 1 auto; min-width:0; max-width:42%; overflow-wrap:anywhere;
+}
+/* Die Marke darf die Zeile nicht sprengen: Ein langer Grund hat das
+   englische Wort schon einmal auf einen Buchstaben je Zeile gequetscht. */
+.wortzeile .grund{
+  font-family:var(--mono); font-size:9px; color:var(--ink-3);
+  border:1px solid var(--line); border-radius:2px; padding:0 4px;
+  flex:0 1 auto; min-width:0; max-width:11em;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.wortzeile.vorschlag{background:var(--accent-soft)}
+.wortzeile.vorschlag .grund{border-color:var(--accent); color:var(--accent)}
+.wortzeile.fest{background:var(--nivA-soft)}
+.wortzeile.dazu .en{color:var(--ok)}
+.griff{
+  flex:none; width:20px; height:20px; padding:0; line-height:1; cursor:pointer;
+  border:1px solid var(--line-2); border-radius:3px; background:var(--paper);
+  font-family:var(--mono); font-size:13px; color:var(--ink-2);
+}
+.griff:hover{border-color:var(--accent); color:var(--accent)}
+.griff.nadel{font-size:10px}
+.griff.nadel[aria-pressed="true"]{background:var(--nivA-soft); border-color:var(--nivA); color:var(--nivA)}
+.werkzeuge{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; align-items:center}
+.werkzeuge select, .werkzeuge input[type=search]{
+  padding:6px 8px; background:var(--paper); border:1px solid var(--line-2);
+  border-radius:var(--r); font-size:12.5px;
+}
+.werkzeuge input[type=search]{flex:1 1 180px; min-width:0}
+.vorschlagsleiste{
+  display:flex; flex-wrap:wrap; gap:8px; align-items:center;
+  padding:10px 11px; margin-bottom:12px; border:1px solid var(--line);
+  border-radius:var(--r); background:var(--sunk);
+}
+.vorschlagsleiste .legende{margin:0}
+.vorschlagsleiste .knopf{padding:5px 10px; font-size:12.5px}
+.vorschlagsleiste .hinweis{margin:0; flex-basis:100%}
+
 /* ---------- Wortliste ---------- */
 .suche{
   width:100%; padding:8px 10px; background:var(--paper);
@@ -553,6 +625,37 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         </div>
       </div>
 
+      <div class="tafel" id="wortwahl">
+        <div class="tafel-kopf">
+          <h2>Wortauswahl</h2>
+          <span class="waage" id="waage"></span>
+        </div>
+        <div style="padding:14px 18px 18px">
+          <div class="vorschlagsleiste" id="vorschlagsleiste" hidden>
+            <span class="legende">Vorschläge von Claude</span>
+            <button class="knopf" id="vorWort" type="button">Wörter</button>
+            <button class="knopf" id="vorAusdruck" type="button">Wendungen</button>
+            <button class="knopf" id="vorChunk" type="button">Satzanfänge</button>
+            <p class="hinweis" id="vorhinweis"></p>
+          </div>
+          <div class="werkzeuge">
+            <input type="search" id="wsuche" placeholder="Suchen in beiden Spalten …">
+            <select id="wgrund"></select>
+            <button class="knopf" id="wzurueck" type="button" hidden>Änderungen verwerfen</button>
+          </div>
+          <div class="spalten">
+            <div class="spalte">
+              <h4>In der Liste <b id="zahlDabei"></b></h4>
+              <div class="rollfeld" id="spalteDabei"></div>
+            </div>
+            <div class="spalte">
+              <h4>Nicht dabei <b id="zahlWeg"></b></h4>
+              <div class="rollfeld" id="spalteWeg"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="tafel" id="teile"></div>
 
       <div class="tafel">
@@ -671,7 +774,22 @@ const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
                anzahl:12, luecken:4, notiz:"", suche:"",
                listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
                fancyQuelle:"claude", fancyWoerter:"",
-               datenbank:"", paed:false, stufe:""};
+               datenbank:"", paed:false, stufe:"",
+               // Handarbeit an der Wortauswahl. Sie gilt für die gerade
+               // gewählte Liste dieser Unit - wechselt man Unit oder Liste,
+               // fällt sie weg, weil sie sich auf andere Wörter bezöge.
+               dazu:new Set(), weg:new Set(), fest:new Set(),
+               wsuche:"", wgrund:""};
+
+/* Vorschläge, die Claude in dieser Sitzung geschrieben hat. Sie stehen
+   nirgends im Quelltext - sie entstehen auf Knopfdruck und verschwinden
+   mit der Seite. */
+let vorschlaege = [];
+
+function handarbeitVerwerfen(){
+  state.dazu.clear(); state.weg.clear(); state.fest.clear();
+  vorschlaege = [];
+}
 
 function unitDaten(){ return DATA.units.find(u => u.unit === state.unit); }
 
@@ -830,6 +948,161 @@ function posten(titel, wert, betont){
          "</dt><dd>" + wert + "</dd></div>";
 }
 
+/* ---------------- Wortauswahl: dabei und nicht dabei ----------------
+   Die Liste fasst sechzig, und welche sechzig es sind, entscheidet die
+   Anwendung. Manchmal weiss man es besser - dann holt man ein Wort von
+   Hand herüber oder schickt eines weg. Die Seite baut deswegen nichts
+   selbst: Sie schreibt in den Auftrag, was anders sein soll. */
+
+/* Was links steht: die Wörter der gewählten Liste, ohne die weggeschickten,
+   dazu die herübergeholten und die angenommenen Vorschläge. */
+function spalteDabei(){
+  const li = anzeigeListe();
+  const heraus = li.woerter
+    .filter(w => !state.weg.has(schluessel(w.en)))
+    .map(w => ({en:w.en, de:w.de, score:w.score, grund:"", quelle:"liste"}));
+  for(const en of state.dazu){
+    const w = ausUnit(en) || ausVorschlaegen(en);
+    if(w) heraus.push(Object.assign({}, w, {quelle:w.art ? "vorschlag" : "unit"}));
+  }
+  return heraus;
+}
+
+/* Und rechts: alles aus dem Hauptteil, was gerade nicht links steht, dazu
+   die noch nicht angenommenen Vorschläge. */
+function spalteWeg(){
+  const u = unitDaten(), links = new Set(spalteDabei().map(w => schluessel(w.en)));
+  const heraus = [];
+  for(const w of vorschlaege){
+    if(!links.has(schluessel(w.en)))
+      heraus.push(Object.assign({}, w, {quelle:"vorschlag"}));
+  }
+  for(const w of (u.hauptteil || [])){
+    if(links.has(schluessel(w.en))) continue;
+    // Ein brauchbares Wort, das in dieser Liste fehlt, ist etwas anderes
+    // als eines, das die Prüfung aussortiert hat - und der häufigste Grund,
+    // hier überhaupt nachzusehen.
+    heraus.push(Object.assign({}, w, {
+      quelle: "unit",
+      grund: w.grund || "brauchbar, nicht in dieser Liste",
+    }));
+  }
+  return heraus;
+}
+
+/* Dasselbe Wort steht in der Wortliste und im Paket verschieden da:
+   dort mit Klammerzusatz, hier ohne. Wer stumpf vergleicht, sieht es in
+   beiden Spalten - drin und gleichzeitig nicht drin. */
+function schluessel(en){
+  return String(en || "").toLowerCase()
+    .replace(/\([^)]*\)/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function ausUnit(en){
+  const u = unitDaten();
+  return (u.hauptteil || []).find(w => schluessel(w.en) === en) || null;
+}
+function ausVorschlaegen(en){
+  return vorschlaege.find(w => schluessel(w.en) === en) || null;
+}
+
+function passtFilter(w){
+  const such = state.wsuche.trim().toLowerCase();
+  if(such && !(w.en + " " + w.de).toLowerCase().includes(such)) return false;
+  if(state.wgrund && (w.grund || "") !== state.wgrund) return false;
+  return true;
+}
+
+function wortzeile(w, seite){
+  const en = schluessel(w.en);
+  const fest = state.fest.has(en);
+  const z = document.createElement("div");
+  z.className = "wortzeile"
+    + (w.quelle === "vorschlag" ? " vorschlag" : "")
+    + (seite === "dabei" && fest ? " fest" : "")
+    + (seite === "dabei" && state.dazu.has(en) ? " dazu" : "");
+  const griffe = seite === "dabei"
+    ? '<button class="griff nadel" type="button" aria-pressed="' + fest +
+      '" title="Muss unbedingt in die Liste">▲</button>' +
+      '<button class="griff" type="button" title="Aus der Liste nehmen">−</button>'
+    : '<button class="griff" type="button" title="In die Liste aufnehmen">+</button>';
+  z.innerHTML = griffe +
+    '<span class="sc">' + (w.quelle === "vorschlag" ? ""
+      : Number(w.score || 0).toFixed(1)) + '</span>' +
+    '<span class="en">' + esc(w.en) + '</span>' +
+    (w.grund ? '<span class="grund" title="' + esc(w.warum || w.grund) + '">' +
+               esc(kurzgrund(w.grund)) + '</span>' : "") +
+    '<span class="de">' + esc(w.de) + '</span>';
+  const knoepfe = z.querySelectorAll(".griff");
+  if(seite === "dabei"){
+    knoepfe[0].addEventListener("click", () => { umschalten(state.fest, en); wortwahlZeichnen(); });
+    knoepfe[1].addEventListener("click", () => { wegnehmen(en); });
+  } else {
+    knoepfe[0].addEventListener("click", () => { aufnehmen(en); });
+  }
+  return z;
+}
+
+/* "Kognat — aus dem Deutschen abzuschreiben" ist als Erklärung richtig und
+   als Etikett zu lang. Der ganze Satz steht im Titel der Marke. */
+function kurzgrund(grund){
+  if(grund.length <= 20) return grund;
+  const kurz = grund.split(/[,—]/)[0].trim();
+  return kurz.length <= 20 ? kurz : kurz.slice(0, 19) + "…";
+}
+
+function umschalten(menge, en){ menge.has(en) ? menge.delete(en) : menge.add(en); }
+
+function aufnehmen(en){
+  state.weg.delete(en);
+  if(!anzeigeListe().woerter.some(w => schluessel(w.en) === en)) state.dazu.add(en);
+  wortwahlZeichnen(); zeichneAuftrag();
+}
+function wegnehmen(en){
+  state.fest.delete(en);
+  if(state.dazu.has(en)) state.dazu.delete(en); else state.weg.add(en);
+  wortwahlZeichnen(); zeichneAuftrag();
+}
+
+function wortwahlZeichnen(){
+  const links = spalteDabei(), rechts = spalteWeg();
+  const ziel = anzeigeListe().woerter.length;
+  const w = $("waage");
+  const ab = links.length - ziel;
+  w.textContent = links.length + " von " + ziel +
+    (ab === 0 ? " — passt" : ab > 0 ? " — " + ab + " zu viel" : " — " + (-ab) + " fehlen");
+  w.className = "waage " + (ab === 0 ? "passt" : "knapp");
+
+  $("zahlDabei").textContent = links.length;
+  $("zahlWeg").textContent = rechts.length;
+  fuelle($("spalteDabei"), links.filter(passtFilter), "dabei");
+  fuelle($("spalteWeg"), rechts.filter(passtFilter), "weg");
+  $("wzurueck").hidden = !(state.dazu.size || state.weg.size || state.fest.size);
+  zeichneGrundwahl(rechts);
+}
+
+function fuelle(kasten, woerter, seite){
+  kasten.innerHTML = "";
+  if(!woerter.length){
+    kasten.innerHTML = '<div class="wortzeile"><span class="de" ' +
+      'style="margin:0">nichts, was zur Suche passt</span></div>';
+    return;
+  }
+  const stapel = document.createDocumentFragment();
+  for(const wort of woerter) stapel.appendChild(wortzeile(wort, seite));
+  kasten.appendChild(stapel);
+}
+
+function zeichneGrundwahl(rechts){
+  const wahl = $("wgrund"), vorher = state.wgrund;
+  const gruende = [...new Set(rechts.map(w => w.grund || "").filter(Boolean))].sort();
+  wahl.innerHTML = '<option value="">alle Gründe</option>' +
+    gruende.map(g => '<option value="' + esc(g) + '">' + esc(kurzgrund(g)) +
+                     "</option>").join("");
+  wahl.value = gruende.includes(vorher) ? vorher : "";
+  state.wgrund = wahl.value;
+}
+
 function zeichneTeile(){
   const teile = $("teile");
   const b = bestellt();
@@ -976,6 +1249,9 @@ function zeichneSichtbarkeit(){
   // sagt, an welcher Liste sie hängen. Die aufgewerteten Fächer dagegen
   // gehören zur neuen Liste und damit zur Bestellung "Vokabelliste".
   $("fancyfeld").hidden = !b.liste;
+  // Von Hand an der Auswahl drehen ergibt nur Sinn, wenn eine Liste
+  // entstehen soll - eine bestehende wird nicht angerührt.
+  $("wortwahl").hidden = !b.liste;
   $("teile").hidden = !b.pruefungen;
 }
 
@@ -1009,6 +1285,7 @@ function auftrag(){
     fancyQuelle:state.fancyQuelle,
     fancyWoerter:legtNeueListeAn()
       ? state.fancyWoerter.split("\n").map(z => z.trim()).filter(Boolean) : [],
+    dazu:[...state.dazu], weg:[...state.weg], fest:[...state.fest],
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
     dokumente:stueckzahl(teile),
@@ -1078,6 +1355,14 @@ function befehlstext(a){
   if(faecher.length)
     zeilen.push("Aufgewertet für „" + a.thema + "“ selbst wählen: " +
                 faecher.join(", ") + " — je mit Begründung.");
+  // Handarbeit an der Auswahl. Die Seite baut nichts - sie sagt, was anders
+  // sein soll, und die Stückzahl der Liste bleibt dieselbe.
+  if(a.dazu.length)
+    zeilen.push("Zusätzlich in die Liste aufnehmen: " + a.dazu.join(", ") + ".");
+  if(a.weg.length)
+    zeilen.push("Aus der Liste weglassen: " + a.weg.join(", ") + ".");
+  if(a.fest.length)
+    zeilen.push("Müssen unbedingt vorkommen: " + a.fest.join(", ") + ".");
   if(a.mehrereDatenbanken) zeilen.push("Datenbank: " + a.datenbank + ".");
   if(a.paed)
     zeilen.push("Wortauswahl nach pädagogischen Kriterien ranken, Stufe " +
@@ -1113,7 +1398,7 @@ function zeichneAuftrag(){
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
-let db = null, downloads = null, selbst = null;
+let db = null, downloads = null, selbst = null, muster = null;
 const buch = [];
 
 function zeichneBuch(){
@@ -1185,6 +1470,89 @@ function zeichneAusloeser(){
     : "Legt den Auftrag ab und weckt die Chat-Sitzung.";
 }
 
+/* ---------------- Vorschläge von Claude ----------------
+   Der Hauptteil einer Unit gibt nicht immer her, was die Klasse braucht -
+   Wendungen und Satzanfänge stehen dort fast nie. Die Seite fragt deshalb
+   auf Knopfdruck nach.
+
+   Was ein gutes Wort ist, steht **nicht hier**. Stünde hier ein
+   Kriterienkatalog mit Musterwörtern, käme für jede Unit dasselbe zurück -
+   dieselben fünf Adjektive für Erinnerungsstücke wie für Bauwerke. Der
+   Auftrag nennt deshalb nur die Lage: das Wortfeld dieser Unit, ihre
+   Leitwörter, das Niveauband und was schon in der Liste steht. */
+const VORSCHLAGSARTEN = {
+  wort: "einzelne Wörter",
+  ausdruck: "Wendungen aus mehreren Wörtern (Phrasal Verbs, feste "
+            + "Verbindungen, Redewendungen)",
+  chunk: "Satzanfänge zum Weiterschreiben, die die Fortsetzung der Klasse "
+         + "überlassen; das deutsche Gegenstück ebenfalls angefangen",
+};
+
+async function starteSample(){
+  try{
+    muster = await window.claude?.use?.("sample");
+  }catch(e){ muster = null; }
+  $("vorschlagsleiste").hidden = !muster;
+}
+
+async function vorschlagen(art, knopf){
+  if(!muster) return;
+  const u = unitDaten();
+  const drin = spalteDabei().map(w => w.en).join(", ");
+  const knoepfe = ["vorWort", "vorAusdruck", "vorChunk"];
+  for(const k of knoepfe) $(k).disabled = true;
+  const vorher = knopf.textContent;
+  knopf.textContent = "…";
+  $("vorhinweis").textContent = "Claude überlegt …";
+  try{
+    const antwort = await muster.json(
+      "Du hilfst beim Zusammenstellen einer Vokabelliste für eine Schulklasse.\n\n" +
+      "Wortfeld der Unit: " + u.thema + "\n" +
+      "Leitwörter: " + (u.leitwoerter || []).join(", ") + "\n" +
+      "Niveau der Klasse: " + NIV.A.cefr + " im sechsten Englischjahr; " +
+      "was eine solche Klasse längst kann, ist kein Zugewinn.\n" +
+      "Schon in der Liste (nichts davon wiederholen, nichts, was damit " +
+      "kollidiert): " + drin + "\n\n" +
+      "Schlage acht " + VORSCHLAGSARTEN[art] + " vor, die dieser Liste " +
+      "wirklich fehlen. Entscheide am Wortfeld dieser Unit und an dem, was " +
+      "oben schon steht, was hier Ausdruck hinzufügt.\n\n" +
+      "Antworte als JSON-Array, je Eintrag {\"en\": englisch, " +
+      "\"de\": deutsch, \"warum\": ein knapper Satz, warum gerade dieses}.",
+      {modelTier: "complex"}
+    );
+    const neu = (Array.isArray(antwort) ? antwort : []).filter(
+      v => v && typeof v.en === "string" && v.en.trim());
+    let gezaehlt = 0;
+    for(const v of neu){
+      const en = String(v.en).trim();
+      if(vorschlaege.some(x => schluessel(x.en) === schluessel(en))) continue;
+      if((u.hauptteil || []).some(x => schluessel(x.en) === schluessel(en))) continue;
+      vorschlaege.push({
+        en: en,
+        de: String(v.de || "").trim(),
+        art: art,
+        score: 0,
+        grund: "Vorschlag",
+        warum: String(v.warum || "").trim(),
+      });
+      gezaehlt++;
+    }
+    $("vorhinweis").textContent = gezaehlt
+      ? gezaehlt + " Vorschläge stehen rechts — mit + in die Liste holen."
+      : "Nichts Neues dazugekommen.";
+    wortwahlZeichnen();
+  }catch(e){
+    const code = e && e.code ? e.code : "";
+    $("vorhinweis").textContent =
+      code === "not_granted" ? "Ohne Ihre Zustimmung geht das nicht."
+      : code === "rate_limited" ? "Zu viele Anfragen — später nochmals."
+      : "Hat nicht geklappt. Die Wörter der Unit stehen weiterhin rechts.";
+  }finally{
+    knopf.textContent = vorher;
+    for(const k of knoepfe) $(k).disabled = false;
+  }
+}
+
 async function starteDownloads(){
   try{
     downloads = await window.claude?.use?.("downloads");
@@ -1204,7 +1572,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 DATA.units.forEach(u => {
   const o = document.createElement("option");
@@ -1218,6 +1586,8 @@ $("quelle").innerHTML = "<b>" + esc(DATA.quelle.datei) + "</b><br>importiert " +
 
 $("unit").addEventListener("change", e => {
   state.unit = +e.target.value;
+  // Die Handarbeit gehörte zur alten Unit; ihre Wörter gibt es hier nicht.
+  handarbeitVerwerfen();
   state.listeVersion = unitDaten().listen[0].version;
   if(!state.eigen) vorgabenSetzen();
   if(!state.textEigen) textVorgabenSetzen();
@@ -1413,6 +1783,7 @@ function neuzeile(u){
 }
 
 function listeWaehlen(version){
+  if(version !== state.listeVersion) handarbeitVerwerfen();
   state.listeVersion = version;
   if(!state.eigen) vorgabenSetzen();
   if(!state.textEigen) textVorgabenSetzen();
@@ -1519,6 +1890,18 @@ $("stufe").addEventListener("change", e => {
 });
 $("notiz").addEventListener("input", e => { state.notiz = e.target.value; zeichneAuftrag(); });
 $("suche").addEventListener("input", e => { state.suche = e.target.value; zeichneListe(); });
+$("wsuche").addEventListener("input", e => { state.wsuche = e.target.value; wortwahlZeichnen(); });
+$("wgrund").addEventListener("change", e => { state.wgrund = e.target.value; wortwahlZeichnen(); });
+$("wzurueck").addEventListener("click", () => {
+  handarbeitVerwerfen(); wortwahlZeichnen(); zeichneAuftrag();
+});
+// Die Kennzahl "aussortiert" ist die Frage "was ist denn nicht dabei?" -
+// ein Klick darauf führt dorthin, wo die Antwort steht.
+$("herkunft").addEventListener("click", e => {
+  const zeile = e.target.closest("div");
+  if(!zeile || $("wortwahl").hidden) return;
+  $("wortwahl").scrollIntoView({behavior:"smooth", block:"start"});
+});
 
 $("kopieren").addEventListener("click", async () => {
   try{
@@ -1591,6 +1974,11 @@ zeichneAusloeser();
 starteDb();
 starteArtifact();
 starteDownloads();
+starteSample();
+for(const [kennung, art] of [["vorWort","wort"], ["vorAusdruck","ausdruck"],
+                             ["vorChunk","chunk"]]){
+  $(kennung).addEventListener("click", e => vorschlagen(art, e.target));
+}
 
 /* Eine benannte Naht für den Test. Dass die Seite sich Zeichen für Zeichen
    so zusammensetzt wie bauen.py, ist die Voraussetzung dafür, dass der

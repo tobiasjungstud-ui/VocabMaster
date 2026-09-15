@@ -510,6 +510,60 @@ in einer 296 px breiten Leiste ergäben 55 px je Spalte, die Beschriftungen
 brächen um. Untereinander lesen sich die ersten drei ausserdem als das, was
 sie sind — ein Trichter von 213 über 141 aussortierte auf 60.
 
+### Wortauswahl von Hand — dabei und nicht dabei
+
+Links steht, was in der gewählten Liste ist, rechts alles andere aus dem
+Hauptteil. `−` schickt ein Wort weg, `+` holt eines herüber, `▲` markiert
+es als **muss unbedingt vorkommen**. Oben steht die Waage: `61 von 60 —
+1 zu viel`.
+
+Die Seite baut davon nichts. Sie schreibt in den Auftrag, was anders sein
+soll:
+
+```
+Zusätzlich in die Liste aufnehmen: … 
+Aus der Liste weglassen: …
+Müssen unbedingt vorkommen: …
+```
+
+Rechts steht zu jedem Wort das **Urteil der Auswahl** — Grundwortschatz,
+zu häufig, Kognat, früher gelernt, Doppelung, oder „brauchbar, nicht in
+dieser Liste". Nach diesem Grund lässt sich filtern; der ganze Satz steht
+im Titel der Marke.
+
+Dieses Urteil gehört zur **Unit, nicht zur Liste**: Ob ein Wort zum
+Grundwortschatz zählt, hängt nicht davon ab, welche Liste man gerade
+ansieht. Ob ein brauchbares Wort in *dieser* Liste steht, rechnet die
+Oberfläche aus — es fällt je Liste anders aus. Wer das gegen alle Listen
+der Unit rechnet, verliert jedes Wort, das nur in V2 steht: Es stünde in
+keiner der beiden Spalten. Ein Test wacht darüber.
+
+Dasselbe Wort steht in Wortliste und Paket verschieden da — dort mit
+Klammerzusatz, hier ohne. Verglichen wird deshalb über einen
+**normalisierten Schlüssel** (Klammern raus, Kleinschreibung); sonst steht
+ein Wort gleichzeitig links und rechts. Auch das hat ein Test gefunden.
+
+Die Handarbeit gilt für **diese** Liste dieser Unit. Wechselt man Unit oder
+Liste, fällt sie weg — sie bezöge sich sonst auf Wörter, die es dort nicht
+gibt.
+
+### Vorschläge von Claude — auf Knopfdruck
+
+Der Hauptteil gibt nicht her, was die Klasse braucht; Wendungen und
+Satzanfänge stehen dort so gut wie nie. Über der rechten Spalte stehen
+deshalb drei Knöpfe — **Wörter, Wendungen, Satzanfänge** —, die Claude
+direkt von der Seite aus fragen (Fähigkeit `sample`). Was zurückkommt,
+steht rechts als Vorschlag und wird mit `+` übernommen wie jedes andere
+Wort.
+
+Der Massstab steht auch hier **nicht im Quelltext**. Der Auftrag an Claude
+nennt nur die Lage: Wortfeld der Unit, Leitwörter, Niveauband und was
+schon in der Liste steht. Stünde dort ein Kriterienkatalog mit
+Musterwörtern, käme für jede Unit dasselbe zurück.
+
+Fehlt die Fähigkeit — Vorschau, geteilte Ansicht —, ist die Leiste
+unsichtbar; die Wörter der Unit stehen weiterhin rechts.
+
 ### Sichtbar ist nur, was zur Bestellung gehört
 
 Die Seite blendet aus, was gerade nicht zur Sache gehört — **ausgeblendet,
@@ -521,7 +575,7 @@ gleich brauchen wird.
 | Anspruch der Prüfung, Schwierigkeit des Lückentexts, Wörter/Lücken, Fassung, das Lineal | keine Prüfung angekreuzt ist |
 | die Regler für Niveau B (beide Abschnitte) | keine Prüfung für Niveau B angekreuzt ist — und umgekehrt für A |
 | Teil I bzw. Teil II im Lineal | dieser Teil nicht angekreuzt ist |
-| die Fächer für aufgewertete Wörter | die Vokabelliste nicht angekreuzt ist |
+| die Fächer für aufgewertete Wörter, die Wortauswahl von Hand | die Vokabelliste nicht angekreuzt ist |
 | die Zeile „＋ neue Liste anlegen" | die Vokabelliste nicht angekreuzt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher

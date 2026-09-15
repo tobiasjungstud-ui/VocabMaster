@@ -222,6 +222,7 @@ SICHTBARKEIT = {
     "pruefmasse": "b.pruefungen",
     "teile": "b.pruefungen",
     "fancyfeld": "b.liste",
+    "wortwahl": "b.liste",
 }
 
 
@@ -258,3 +259,78 @@ def test_eine_neue_liste_gibt_es_nur_mit_bestellter_liste():
     assert "if(neuErlaubt) kasten.appendChild(neuzeile(u));" in körper
     # Und eine schon getroffene Wahl darf nicht als Leiche stehenbleiben.
     assert "if(!neuErlaubt && state.listeVersion === 0)" in körper
+
+
+# ---------------------------------------------------------------------------
+# Wortauswahl von Hand: dabei und nicht dabei
+# ---------------------------------------------------------------------------
+def _schluessel(englisch: str) -> str:
+    """Wie die Seite zwei Schreibungen desselben Wortes zusammenbringt.
+
+    Die Wortliste schreibt den Klammerzusatz mit, das Paket nicht. Wer
+    stumpf vergleicht, sieht dasselbe Wort in beiden Spalten.
+    """
+    return re.sub(r"\s+", " ", re.sub(r"\([^)]*\)", " ", englisch.lower())).strip()
+
+
+def test_der_hauptteil_kommt_vollstaendig_mit(abgelegt):
+    """Links die Liste, rechts der Rest - dafür braucht es den ganzen Rest."""
+    for u in abgelegt["units"]:
+        haupt = u["hauptteil"]
+        assert len(haupt) == u["herkunft"]["hauptteil"], f"Unit {u['unit']}"
+        assert len({w["en"].lower() for w in haupt}) == len(haupt), "doppelte Einträge"
+        for wort in haupt:
+            assert wort["en"] and wort["de"], f"leerer Eintrag in Unit {u['unit']}"
+
+
+def test_das_urteil_gehoert_zur_unit_nicht_zur_liste(abgelegt):
+    """Ob ein Wort Grundwortschatz ist, hängt nicht an der gewählten Liste.
+
+    Der klassische Fehler wäre, das Urteil gegen *alle* Listen der Unit zu
+    rechnen: Ein Wort, das nur in V2 steht, fehlte dann in beiden Spalten,
+    sobald man V1 ansieht.
+    """
+    for u in abgelegt["units"]:
+        nach_en = {_schluessel(w["en"]): w for w in u["hauptteil"]}
+        for liste in u["listen"]:
+            for wort in liste["woerter"]:
+                if wort["quelle"] != "wortliste":
+                    continue  # ergänzte Wörter stehen nicht im Hauptteil
+                eintrag = nach_en.get(_schluessel(wort["en"]))
+                assert eintrag is not None, (
+                    f"{wort['en']} steht in V{liste['version']}, "
+                    f"aber nicht im Hauptteil von Unit {u['unit']}"
+                )
+                assert eintrag["grund"] == "", (
+                    f"{wort['en']} ist in V{liste['version']} gewählt, trägt "
+                    f"aber das Urteil {eintrag['grund']!r}"
+                )
+
+
+def test_die_waage_misst_gegen_die_gewaehlte_liste():
+    """Sonst steht dort eine Zahl, die zu einer anderen Liste gehört."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function wortwahlZeichnen()"):]
+    körper = körper[:körper.index("\n}")]
+    assert "const ziel = anzeigeListe().woerter.length;" in körper
+    assert "links.length - ziel" in körper
+
+
+def test_handarbeit_faellt_beim_wechsel_weg():
+    """Ein herübergeholtes Wort der einen Unit ist in der nächsten keines."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    for stelle in ('$("unit").addEventListener', "function listeWaehlen("):
+        körper = seite[seite.index(stelle):]
+        körper = körper[:körper.index("\n}")]
+        assert "handarbeitVerwerfen()" in körper, f"{stelle} vergisst die Handarbeit"
+
+
+def test_die_seite_blendet_aus_wie_der_veroeffentlichte_rahmen():
+    """`hidden` muss auch beim lokalen Öffnen wirken.
+
+    Die Regel dafür setzt sonst erst der Veröffentlichungsdienst um die
+    Seite - wer sie lokal prüft, sähe Abschnitte, die ausgeblendet sein
+    sollten, und prüfte etwas anderes als das, was später dasteht.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert "[hidden]{display:none!important}" in seite

@@ -93,6 +93,15 @@
    "vorhanden": true,
    "quelle": "english_plus_2e_level_4_german_wordlist.xls",
    "importiert": "2026-09-10"
+  },
+  {
+   "name": "EnglishPlus3",
+   "titel": "English Plus 3",
+   "beschreibung": "",
+   "units": 9,
+   "vorhanden": true,
+   "quelle": "ep2e_level3_german_wordlist.xlsx",
+   "importiert": "2026-09-15"
   }
  ],
  "aktive_datenbank": "EnglishPlus4",

@@ -5,6 +5,12 @@
       "verzeichnis": "wortliste",
       "titel": "English Plus 2nd edition, Level 4",
       "beschreibung": "Die Wortliste, mit der dieses Repository gebaut wurde."
+    },
+    {
+      "name": "EnglishPlus3",
+      "verzeichnis": "englishplus3",
+      "titel": "English Plus 3",
+      "beschreibung": ""
     }
   ]
 }

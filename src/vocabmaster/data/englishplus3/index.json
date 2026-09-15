@@ -1,0 +1,87 @@
+{
+ "schema": 1,
+ "quelle": {
+  "datei": "ep2e_level3_german_wordlist.xlsx",
+  "tabellenblatt": "Sheet1",
+  "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
+  "importiert": "2026-09-15"
+ },
+ "eintraege": 1082,
+ "units": [
+  {
+   "unit": 0,
+   "datei": "unit_00.json",
+   "titel": "Starter Unit",
+   "thema": "Medien, Geräte und Online-Leben",
+   "anzahl": 70,
+   "anzahl_hauptteil": 70
+  },
+  {
+   "unit": 1,
+   "datei": "unit_01.json",
+   "titel": "Unit 1",
+   "thema": "Erinnerungen und Gegenstände",
+   "anzahl": 143,
+   "anzahl_hauptteil": 95
+  },
+  {
+   "unit": 2,
+   "datei": "unit_02.json",
+   "titel": "Unit 2",
+   "thema": "Entscheidungen, Zukunft und Engagement",
+   "anzahl": 146,
+   "anzahl_hauptteil": 106
+  },
+  {
+   "unit": 3,
+   "datei": "unit_03.json",
+   "titel": "Unit 3",
+   "thema": "Werbung, Marketing und Konsum",
+   "anzahl": 142,
+   "anzahl_hauptteil": 99
+  },
+  {
+   "unit": 4,
+   "datei": "unit_04.json",
+   "titel": "Unit 4",
+   "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+   "anzahl": 135,
+   "anzahl_hauptteil": 93
+  },
+  {
+   "unit": 5,
+   "datei": "unit_05.json",
+   "titel": "Unit 5",
+   "thema": "Wissenschaft, Forschung und Biomimikry",
+   "anzahl": 91,
+   "anzahl_hauptteil": 57
+  },
+  {
+   "unit": 6,
+   "datei": "unit_06.json",
+   "titel": "Unit 6",
+   "thema": "Persönlichkeit und soziale Rollen",
+   "anzahl": 124,
+   "anzahl_hauptteil": 85
+  },
+  {
+   "unit": 7,
+   "datei": "unit_07.json",
+   "titel": "Unit 7",
+   "thema": "Bauwerke und Wahrzeichen",
+   "anzahl": 120,
+   "anzahl_hauptteil": 75
+  },
+  {
+   "unit": 8,
+   "datei": "unit_08.json",
+   "titel": "Unit 8",
+   "thema": "Verbrechen, Sicherheit und Krimis",
+   "anzahl": 111,
+   "anzahl_hauptteil": 70
+  }
+ ],
+ "hinweise": [
+  "1 Einträge ohne Angabe in der Spalte 'Section' - für sie gilt die Blocküberschrift."
+ ]
+}

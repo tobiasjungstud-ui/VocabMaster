@@ -513,16 +513,31 @@ schiefgeht, ohne dass man es sieht. Die Seite nimmt deshalb nur Name und
 Grösse der Datei auf und sagt: im Chat anhängen. Eine Geste, die trägt. Ein
 Test hält fest, dass der Inhalt nirgends eingelesen wird.
 
+**Die Kennung folgt dem Titel.** Name und Titel waren zwei Felder für
+dieselbe Sache — man tippte „English Plus 3" und gleich daneben „EP 3". Die
+Kennung ist nur die technische Form des Titels, das Verzeichnis, in dem die
+Wortliste landet; sie füllt sich beim Tippen mit und steht deshalb
+beiläufig unter den drei Angaben, die wirklich zu machen sind. Wer sie
+anfasst, behält sie — das Feld sagt in beiden Fällen, woran es ist
+(„— folgt dem Titel" / „— von Hand gesetzt").
+
 Was die Seite beantworten kann, beantwortet sie sofort:
 
 | Einwand | warum |
 |---|---|
-| Name fehlt / hat Leerzeichen | Er wird zum Verzeichnisnamen |
-| Name schon vergeben | Ein Import darüber **überschriebe** die bestehende Datenbank — das fiele erst auf, wenn sie weg ist |
-| Titel fehlt | Er steht später in der Auswahl |
+| Titel fehlt | Er steht später in der Auswahl, und aus ihm entsteht die Kennung |
+| Kennung leer oder mit Leerzeichen | Sie wird zum Verzeichnisnamen |
+| Kennung schon vergeben | Ein Import darüber **überschriebe** die bestehende Datenbank — das fiele erst auf, wenn sie weg ist |
 | keine oder keine Excel-Datei | Ohne sie gibt es nichts zu importieren |
 
-Solange ein Einwand steht, sind beide Knöpfe aus.
+**Die Knöpfe bleiben dabei anklickbar.** Ein abgeschalteter Knopf schluckt
+den Klick und sagt nichts — genau das ist als „aber nix passiert?"
+angekommen. Ein Einwand hält den Auftrag zwar auf, aber laut: Das Warnband
+merkt auf, der Grund steht in der Statuszeile, und der Cursor springt in
+das Feld, das den Einwand auflöst. Jeder Einwand nennt dieses Feld deshalb
+mit (`{feld, text}`); auf einem Fenster mit vier Feldern sucht man sonst,
+welches gemeint ist. Ein Test wacht darüber, dass kein Knopf wieder
+abgeschaltet wird.
 
 ### Die Leiste hat zwei Ebenen
 

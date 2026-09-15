@@ -370,6 +370,15 @@ dialog#lehrmittel input[type=text]{
 dialog#lehrmittel input[type=file]{
   width:100%; padding:7px 0; font-size:12.5px; color:var(--ink-2);
 }
+dialog#lehrmittel #dbName{font-family:var(--mono); font-size:12.5px}
+.beilaeufig{color:var(--ink-3); font-weight:400}
+/* Ein Einwand, den man erst nach dem Klick sieht, kommt zu spät - er
+   blinkt deshalb einmal auf, wenn man trotzdem drückt. */
+@keyframes aufmerken{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-3px)} 75%{transform:translateX(3px)}
+}
+.warnband.merken{animation:aufmerken .25s ease-in-out 2}
 dialog#pruefungsfenster{
   width:min(860px, 94vw); max-height:90vh; padding:0; border:0;
   border-radius:var(--r); background:var(--surface); color:var(--ink);
@@ -829,17 +838,22 @@ td.satz{color:var(--ink-2); font-size:12.5px}
       Eine Datenbank ist die Wortliste eines Lehrmittels — eine Excel-Datei,
       je Unit ein Block. Sie kommt ohne Codeänderung dazu und bekommt ihr
       eigenes Verzeichnis; die bestehenden bleiben unangetastet.</p>
-    <div class="feld"><label for="dbName">Name — kurz, ohne Leerzeichen</label>
-      <input type="text" id="dbName" placeholder="EnglishPlus3" autocomplete="off"></div>
-    <div class="feld" style="margin-top:10px"><label for="dbTitel">Titel des Lehrmittels</label>
+    <div class="feld"><label for="dbTitel">Titel des Lehrmittels</label>
       <input type="text" id="dbTitel" placeholder="English Plus 2nd edition, Level 3" autocomplete="off"></div>
     <div class="feld" style="margin-top:10px"><label for="dbBeschreibung">Eine Zeile zur Einordnung</label>
       <input type="text" id="dbBeschreibung" placeholder="Welche Klasse, welches Jahr" autocomplete="off"></div>
     <div class="feld" style="margin-top:10px"><label for="dbDatei">Excel-Wortliste</label>
       <input type="file" id="dbDatei" accept=".xls,.xlsx"></div>
-    <p class="warnband" id="dbwarnung" hidden></p>
     <p class="pruefhinweis" id="dbdateihinweis"></p>
+    <!-- Die Kennung ist keine zweite Angabe, sondern die technische Form
+         des Titels. Sie füllt sich mit und lässt sich nur dann von Hand
+         überschreiben, wenn man das wirklich will. -->
+    <div class="feld" style="margin-top:12px">
+      <label for="dbName">Kennung — so heisst das Verzeichnis
+        <span class="beilaeufig" id="dbnamehinweis"></span></label>
+      <input type="text" id="dbName" autocomplete="off"></div>
     <div class="befehl" id="dbbefehl" style="margin-top:14px"></div>
+    <p class="warnband" id="dbwarnung" hidden></p>
     <div class="knopfreihe">
       <button class="knopf haupt" id="dbAusloesen" type="button">Auftrag auslösen</button>
       <button class="knopf" id="dbKopieren" type="button">Befehl kopieren</button>
@@ -1198,11 +1212,30 @@ function posten(titel, wert, betont){
    angehängt - eine Geste, die immer funktioniert. */
 const NAMENSFORM = /^[A-Za-z][A-Za-z0-9_-]{1,31}$/;
 
+/* Titel und Kennung waren zwei Felder für dieselbe Sache - man tippte
+   „English Plus 3" und gleich daneben „EP 3". Die Kennung leitet sich
+   jetzt ab: Sie ist nur die technische Form des Titels, das Verzeichnis,
+   in dem die Wortliste landet. Von Hand überschreiben lässt sie sich
+   weiterhin; wer es tut, behält sie. */
+function kennungAus(titel){
+  const worte = String(titel).split(/[^A-Za-z0-9]+/).filter(Boolean);
+  return worte.map(w => w[0].toUpperCase() + w.slice(1)).join("").slice(0, 32);
+}
+
+/* Ob die Kennung noch dem Titel folgt oder von Hand gesetzt wurde. */
+let kennungVonHand = false;
+
+function kennungNachziehen(){
+  if(kennungVonHand) return;
+  $("dbName").value = kennungAus($("dbTitel").value);
+}
+
 function lehrmittelDaten(){
   const datei = $("dbDatei").files && $("dbDatei").files[0];
   return {
     art: "datenbank",
     name: $("dbName").value.trim(),
+    kennungVonHand: kennungVonHand,
     titel: $("dbTitel").value.trim(),
     beschreibung: $("dbBeschreibung").value.trim(),
     datei: datei ? datei.name : "",
@@ -1214,19 +1247,30 @@ function lehrmittelDaten(){
 /* Was die Seite selbst beantworten kann, beantwortet sie hier - ein Name,
    der schon vergeben ist, fiele sonst erst beim Import auf, nachdem die
    bestehende Datenbank überschrieben wäre. */
+/* Ein Einwand nennt immer auch das Feld, das ihn auflöst - sonst sucht man
+   auf einem Fenster mit vier Feldern, welches gemeint ist. */
 function lehrmittelEinwand(d){
   const belegt = (DATA.datenbanken || []).map(x => x.name.toLowerCase());
-  if(!d.name) return "Der Name fehlt.";
+  if(!d.titel)
+    return {feld:"dbTitel", text:"Der Titel fehlt — er steht später in der " +
+            "Auswahl, und aus ihm entsteht die Kennung."};
+  if(!d.name)
+    return {feld:"dbName", text:"Aus diesem Titel lässt sich keine Kennung " +
+            "bilden. Bitte von Hand eine eingeben."};
   if(!NAMENSFORM.test(d.name))
-    return "Der Name wird zum Verzeichnisnamen: Buchstabe am Anfang, " +
-           "danach Buchstaben, Ziffern, - oder _, keine Leerzeichen.";
+    return {feld:"dbName", text:"Die Kennung wird zum Verzeichnisnamen: " +
+            "Buchstabe am Anfang, danach Buchstaben, Ziffern, - oder _, " +
+            "keine Leerzeichen. Aus „" + d.titel + "“ wäre das „" +
+            kennungAus(d.titel) + "“."};
   if(belegt.includes(d.name.toLowerCase()))
-    return "„" + d.name + "“ gibt es schon. Ein Import unter demselben " +
-           "Namen überschriebe die bestehende Datenbank.";
-  if(!d.titel) return "Der Titel fehlt — er steht später in der Auswahl.";
-  if(!d.datei) return "Noch keine Excel-Wortliste gewählt.";
-  if(!/\.xlsx?$/i.test(d.datei)) return "Das ist keine Excel-Datei.";
-  return "";
+    return {feld:"dbName", text:"„" + d.name + "“ gibt es schon. Ein Import " +
+            "unter derselben Kennung überschriebe die bestehende Datenbank."};
+  if(!d.datei)
+    return {feld:"dbDatei", text:"Noch keine Excel-Wortliste gewählt — ohne " +
+            "sie gibt es nichts zu importieren."};
+  if(!/\.xlsx?$/i.test(d.datei))
+    return {feld:"dbDatei", text:"Das ist keine Excel-Datei."};
+  return null;
 }
 
 function lehrmittelBefehl(d){
@@ -1246,15 +1290,31 @@ function lehrmittelBefehl(d){
 function zeichneLehrmittel(){
   const d = lehrmittelDaten();
   const einwand = lehrmittelEinwand(d);
-  $("dbwarnung").textContent = einwand;
+  $("dbwarnung").textContent = einwand ? einwand.text : "";
   $("dbwarnung").hidden = !einwand;
+  $("dbnamehinweis").textContent = kennungVonHand
+    ? "— von Hand gesetzt" : "— folgt dem Titel";
   $("dbdateihinweis").textContent = d.datei
     ? d.datei + " · " + Math.round(d.dateigroesse / 1024) + " KB — die Datei " +
       "selbst hängen Sie im Chat an; sie geht nicht durch den Auftrag."
-    : "";
-  $("dbbefehl").textContent = einwand ? "—" : lehrmittelBefehl(d);
-  $("dbAusloesen").disabled = !!einwand;
-  $("dbKopieren").disabled = !!einwand;
+    : "Noch keine Datei gewählt.";
+  $("dbbefehl").textContent = einwand
+    ? "Sobald oben alles steht, steht hier der Befehl."
+    : lehrmittelBefehl(d);
+  // Die Knöpfe bleiben **anklickbar**. Ein abgeschalteter Knopf schluckt
+  // den Klick und sagt nichts - genau das ist als „nix passiert"
+  // angekommen. Jetzt antwortet er.
+}
+
+/* Nicht weitermachen, aber auch nicht schweigen. */
+function lehrmittelStockt(einwand){
+  const band = $("dbwarnung");
+  band.classList.remove("merken");
+  void band.offsetWidth;          // Neustart der Animation erzwingen
+  band.classList.add("merken");
+  dbMelde(einwand.text, "fehler");
+  const feld = $(einwand.feld);
+  if(feld) feld.focus();
 }
 
 function dbMelde(text, art){
@@ -1265,7 +1325,8 @@ function dbMelde(text, art){
 
 async function lehrmittelAusloesen(){
   const d = lehrmittelDaten();
-  if(lehrmittelEinwand(d)) return;
+  const einwand = lehrmittelEinwand(d);
+  if(einwand){ lehrmittelStockt(einwand); return; }
   const fertig = await ausloesen(
     Object.assign({befehl: lehrmittelBefehl(d)}, d),
     "db-" + d.name.toLowerCase(), $("dbAusloesen"), dbMelde);
@@ -2494,13 +2555,22 @@ $("lehrmittelZu").addEventListener("click", () => $("lehrmittel").close());
 $("lehrmittelAuf").addEventListener("click", () => {
   zeichneLehrmittel();
   if(!$("lehrmittel").open) $("lehrmittel").showModal();
-  $("dbName").focus();
+  $("dbTitel").focus();
 });
-for(const feld of ["dbName", "dbTitel", "dbBeschreibung"])
-  $(feld).addEventListener("input", zeichneLehrmittel);
+$("dbTitel").addEventListener("input", () => {
+  kennungNachziehen(); zeichneLehrmittel();
+});
+$("dbBeschreibung").addEventListener("input", zeichneLehrmittel);
+$("dbName").addEventListener("input", () => {
+  // Wer die Kennung anfasst, hat sie ab jetzt selbst in der Hand.
+  kennungVonHand = true;
+  zeichneLehrmittel();
+});
 $("dbDatei").addEventListener("change", zeichneLehrmittel);
 $("dbAusloesen").addEventListener("click", lehrmittelAusloesen);
 $("dbKopieren").addEventListener("click", async () => {
+  const einwand = lehrmittelEinwand(lehrmittelDaten());
+  if(einwand){ lehrmittelStockt(einwand); return; }
   try{
     await navigator.clipboard.writeText($("dbbefehl").textContent);
     dbMelde("Befehl kopiert — im Chat einfügen, Excel-Datei anhängen.", "ok");

@@ -419,6 +419,47 @@ def test_ein_belegter_name_wird_abgewiesen():
     assert "!d.titel" in körper and "!d.datei" in körper
 
 
+def test_die_knoepfe_sind_nie_abgeschaltet():
+    """Ein abgeschalteter Knopf schluckt den Klick und sagt nichts.
+
+    Genau das kam als „nix passiert" an: Der Name trug ein Leerzeichen, der
+    Einwand stand blass im Fenster, und der Knopf tat nichts. Jetzt bleibt
+    er anklickbar und antwortet — laut, und mit dem Feld im Fokus, das den
+    Einwand auflöst.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function zeichneLehrmittel()"):]
+    körper = körper[:körper.index("\n}")]
+    for knopf in ("dbAusloesen", "dbKopieren"):
+        assert f'$("{knopf}").disabled' not in körper, \
+            f"{knopf} wird abgeschaltet — der Klick ginge wieder verloren"
+
+    # Und beide Wege führen über denselben lauten Einwand.
+    stockt = seite[seite.index("function lehrmittelStockt("):]
+    stockt = stockt[:stockt.index("\n}")]
+    assert "merken" in stockt          # das Warnband meldet sich
+    assert "focus()" in stockt         # und das Feld, das es auflöst
+    # Beide Aufrufstellen (die Definition zaehlt nicht mit).
+    assert seite.count("if(einwand){ lehrmittelStockt(einwand); return; }") == 2
+
+
+def test_die_kennung_folgt_dem_titel():
+    """Name und Titel waren zwei Felder für dieselbe Sache.
+
+    Die Kennung ist nur die technische Form des Titels — sie füllt sich mit
+    und bleibt nur stehen, wenn jemand sie wirklich von Hand setzt.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function kennungNachziehen()"):]
+    körper = körper[:körper.index("\n}")]
+    assert "if(kennungVonHand) return;" in körper
+    assert 'kennungAus($("dbTitel").value)' in körper
+    # Wer die Kennung anfasst, behält sie.
+    assert "kennungVonHand = true;" in seite
+    # Und das Fenster sagt, in welchem der beiden Zustände es steht.
+    assert "— folgt dem Titel" in seite and "— von Hand gesetzt" in seite
+
+
 def test_der_bestellte_befehl_ist_der_echte():
     """Was im Fenster steht, muss die Anwendung auch verstehen."""
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")

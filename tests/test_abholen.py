@@ -127,3 +127,22 @@ def test_ein_kaputter_upload_schreibt_keine_datei(tmp_path):
     ziel = tmp_path / "data"
     assert abholen.main([str(tmp_path), "-o", str(ziel)]) == 1
     assert not (ziel / "wortliste.xlsx").exists()
+
+
+def test_umlaute_und_leerzeichen_im_namen_bleiben(tmp_path):
+    """Die Datei heisst, wie sie hiess — und der Import findet sie so."""
+    roh = b"PK\x03\x04" + bytes(range(100))
+    _ablegen(tmp_path, roh, name="Wörter Liste 2026.xlsx")
+    ziel = tmp_path / "data"
+    assert abholen.main([str(tmp_path), "-o", str(ziel)]) == 0
+    assert (ziel / "Wörter Liste 2026.xlsx").read_bytes() == roh
+
+
+def test_ein_zweiter_upload_ersetzt_die_datei_gleichen_namens(tmp_path):
+    """Wer eine korrigierte Wortliste noch einmal schickt, meint: die neue."""
+    _ablegen(tmp_path, b"alt" * 50)
+    ziel = tmp_path / "data"
+    abholen.main([str(tmp_path), "-o", str(ziel)])
+    _ablegen(tmp_path, b"neu" * 50)
+    abholen.main([str(tmp_path), "-o", str(ziel)])
+    assert (ziel / "wortliste.xlsx").read_bytes() == b"neu" * 50

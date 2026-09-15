@@ -465,8 +465,10 @@ class ExamChecker:
         }
         target = self.selection["min_mean_difficulty"]
         if mean < target:
+            # Zwei Nachkommastellen: Mit einer stand hier "1.4 is below
+            # 1.4" - der Vergleich rechnete mit 1.36, die Anzeige rundete.
             self.add(WARN, "difficulty",
-                     f"average word difficulty {mean:.1f}/10 is below the "
+                     f"average word difficulty {mean:.2f}/10 is below the "
                      f"target of {target} - prefer harder words")
         easy = [(e, d) for e, d in scored
                 if d.similarity >= 0.7]

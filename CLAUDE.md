@@ -84,6 +84,37 @@ Einordnung weg soll. Eine leere Angabe heisst „nichts gesagt", nicht „leer
 machen". Auch die Reihenfolge der Registratur bleibt — sonst steht die
 Auswahl nach jedem Import anders da. Zwei Tests wachen darüber.
 
+### Ein Import darf eine gute Datenbank nie beschädigen
+
+Drei Wege, auf denen das passieren könnte, sind zu. Je einer ist als Test
+eingebaut (`tests/test_import_sicherheit.py`, 15 Tests):
+
+* **Was keine Wortliste ist, scheitert laut — mit Dateinamen.** Eine leere
+  Datei, eine umbenannte Textdatei, eine `.csv`: „`leer.xlsx`: Die Datei ist
+  leer." statt eines `BadZipFile`-Tracebacks aus einer Bibliothek. Und eine
+  Datei, die zwar parst, aber **keiner einzigen Unit** zuordenbar ist, ist
+  keine Wortliste eines Lehrmittels — eher das falsche Tabellenblatt. Daraus
+  eine Datenbank zu schreiben hiesse, eine gute durch eine leere zu ersetzen.
+* **Geschrieben wird daneben, getauscht wird zuletzt.** `write_database`
+  schreibt in ein Schwesterverzeichnis `<name>.neu` und tauscht erst, wenn
+  alles da ist. Ein Absturz mitten im Schreiben — Platte voll, Prozess
+  abgebrochen — lässt die alte Datenbank Byte für Byte stehen und kein
+  halbes `.neu` liegen. `themen.json` und alles, was zur Datenbank gehört,
+  aber nicht zum Import, wandert beim Tausch mit.
+* **Eine andere Wortliste unter einem Namen, an dem Pakete hängen, wird
+  abgewiesen.** Ein Paket gehört zu der Wortliste, deren Prüfsumme es trägt.
+  `db import level3.xlsx --name EnglishPlus4` sagt: „Dort liegt schon eine
+  andere Wortliste, und 11 Pakete hängen daran: unit_01.json, … Ihre
+  Prüfungen zeigten danach auf Wörter, die es nicht mehr gibt." Wer es
+  wirklich will, sagt `--ersetzen`; die Pakete melden danach `altbestand`.
+  Dieselbe Wortliste noch einmal — nach dem Eintragen der Themen — geht
+  ohne Rückfrage. Eine `index.json`, die da ist, aber nicht lesbar, gilt
+  als „dort liegt etwas, und man weiss nicht, was" — auch das nur mit
+  `--ersetzen`.
+
+Dieselbe Datei unter einem zweiten Namen ist kein Fehler, wird aber
+gesagt: „Dieselbe Wortliste ist schon als 'EnglishPlus3' registriert."
+
 ### Thema und Leitwörter — je Datenbank eine Datei
 
 `src/vocabmaster/data/<verzeichnis>/themen.json` — **in der Datenbank, zu
@@ -766,6 +797,14 @@ reicht es über die Fähigkeit `downloads` weiter; der Betrachter bestätigt
 und bekommt es unter seinem richtigen Namen. Ein Link im Browser täte es
 nicht: Von der Seite angestossene Downloads sind in der Ansicht gesperrt.
 
+**Beim Veröffentlichen liegen die Beilagen neben der Seite, nicht in einem
+Unterordner**: veröffentlichter Pfad `Unit01_V1_VocabularyList.docx.json`,
+Quelle `werkstatt/beilagen/Unit01_V1_VocabularyList.docx.json`. Die Seite
+holt `<datei>.json` relativ zu sich selbst; ein Unterordner im Pfad hiesse
+„Die Datei liegt nicht bei dieser Fassung der Seite" bei jedem Klick. Lokal
+(`file://`) verweigert der Browser den Abruf grundsätzlich — der Knopf sagt
+dann „keine Verbindung, oder die Seite ist lokal geöffnet", nicht „kaputt".
+
 **Die Grösse ist der Abgleich.** Vor dem Weiterreichen vergleicht die Seite
 die ausgepackte Datei mit der Grösse, die in `daten.json` steht. Wer `out/`
 neu baut und die Seite nicht neu veröffentlicht, bekommt „die beiliegende
@@ -964,6 +1003,13 @@ nächsten Veröffentlichen also erst lesen, nicht blind überschreiben.
 Fehlen die Fähigkeiten (`db`, `artifact`) — etwa in einer Vorschau oder
 einer geteilten Ansicht —, ist der Knopf aus und sagt es; „Befehl kopieren"
 bleibt der Weg von Hand.
+
+Nach einem ausgelösten Auftrag bleibt der Knopf gesperrt, **bis sich an der
+Bestellung etwas ändert** — zweimal dieselbe Bestellung wären zwei
+Aufträge. `zeichneAusloeser` läuft deshalb bei jedem Neuzeichnen mit. Und
+der Horcher aufs Auftragsbuch schweigt nicht mehr, wenn er nichts hört: Ein
+leeres Buch und ein Buch, das sich nicht lesen lässt, sind zwei Dinge, und
+das zweite steht jetzt als Zeile darin.
 
 ## Tests
 

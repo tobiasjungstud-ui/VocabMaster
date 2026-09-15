@@ -1593,7 +1593,9 @@ async function herunterladen(knopf, was, datei){
     // Neben der Seite lassen sich nur übliche Web-Medientypen ausliefern -
     // eine .docx gehört nicht dazu. Sie liegt deshalb als JSON daneben und
     // wird hier ausgepackt; `werkstatt/beilagen.py` packt sie ein.
-    const antwort = await fetch(datei + ".json");
+    let antwort;
+    try{ antwort = await fetch(datei + ".json"); }
+    catch(e){ throw {code: "netz"}; }   // kein Netz, oder file:// ohne Erlaubnis
     if(!antwort.ok) throw {code: "fehlt"};
     const paket = await antwort.json();
     const roh = Uint8Array.from(atob(paket.base64), z => z.charCodeAt(0));
@@ -1611,6 +1613,9 @@ async function herunterladen(knopf, was, datei){
       ? "Herunterladen steht in dieser Ansicht nicht zur Verfügung."
       : code === "fehlt"
         ? "Die Datei liegt nicht bei dieser Fassung der Seite."
+      : code === "netz"
+        ? "Die Beilage liess sich nicht laden — keine Verbindung, oder die "
+          + "Seite ist lokal geöffnet."
       : code === "veraltet"
         ? "Die beiliegende Datei passt nicht zu dem, was hier steht — "
           + "die Seite muss neu veröffentlicht werden."
@@ -2200,7 +2205,18 @@ async function starteDb(){
         buch.length = 0;
         schnappschuss.docs.forEach(doc => { if(doc.exists) buch.push(doc.data()); });
         zeichneBuch();
-      }, () => {});
+      }, fehler => {
+        // Ein stummer Horcher sähe aus wie ein leeres Buch. Das ist er
+        // nicht: Er hört nichts, und das gehört hin.
+        const kasten = $("auftragsbuch");
+        kasten.innerHTML = "";
+        const li = document.createElement("li");
+        li.className = "auftrag haengt";
+        li.textContent = "Das Auftragsbuch lässt sich gerade nicht lesen"
+          + (fehler && fehler.message ? " (" + fehler.message + ")" : "")
+          + ". Neu laden hilft meist.";
+        kasten.appendChild(li);
+      });
   }catch(e){ db = null; }
   zeichneAusloeser();
 }
@@ -2347,7 +2363,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
 
 /* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
    es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es

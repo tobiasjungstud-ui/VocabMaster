@@ -35,6 +35,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import shutil
 from dataclasses import asdict, dataclass, field
 from datetime import date
 from pathlib import Path
@@ -231,28 +232,52 @@ def _norm(value: object) -> str:
 
 
 def read_grid(path: str | Path) -> tuple[list[list[str]], str]:
-    """Liest ``.xls`` und ``.xlsx`` in ein Raster aus Zeichenketten."""
+    """Liest ``.xls`` und ``.xlsx`` in ein Raster aus Zeichenketten.
+
+    Was keine Excel-Datei ist, wird als ``ValueError`` gemeldet — mit dem
+    Dateinamen und dem Grund. Vorher kam aus einer leeren oder umbenannten
+    Datei ein roher ``BadZipFile``-Traceback, und der sagte nichts darüber,
+    welche Datei gemeint war.
+    """
     p = Path(path)
-    if p.suffix.lower() == ".xls":
-        import xlrd
+    if not p.is_file():
+        raise FileNotFoundError(f"{p}: Datei nicht gefunden.")
+    if p.stat().st_size == 0:
+        raise ValueError(f"{p.name}: Die Datei ist leer.")
+    if p.suffix.lower() not in (".xls", ".xlsx"):
+        raise ValueError(
+            f"{p.name}: Erwartet wird eine Excel-Datei (.xls oder .xlsx)."
+        )
 
-        book = xlrd.open_workbook(str(p))
-        sheet = book.sheet_by_index(0)
-        grid = [
-            [_norm(sheet.cell_value(r, c)) for c in range(sheet.ncols)]
-            for r in range(sheet.nrows)
-        ]
-        return grid, sheet.name
-
-    from openpyxl import load_workbook
-
-    wb = load_workbook(str(p), data_only=True, read_only=True)
     try:
-        ws = wb.worksheets[0]
-        grid = [[_norm(v) for v in row] for row in ws.iter_rows(values_only=True)]
-        return grid, ws.title
-    finally:
-        wb.close()
+        if p.suffix.lower() == ".xls":
+            import xlrd
+
+            book = xlrd.open_workbook(str(p))
+            sheet = book.sheet_by_index(0)
+            grid = [
+                [_norm(sheet.cell_value(r, c)) for c in range(sheet.ncols)]
+                for r in range(sheet.nrows)
+            ]
+            return grid, sheet.name
+
+        from openpyxl import load_workbook
+
+        wb = load_workbook(str(p), data_only=True, read_only=True)
+        try:
+            ws = wb.worksheets[0]
+            grid = [[_norm(v) for v in row] for row in ws.iter_rows(values_only=True)]
+            return grid, ws.title
+        finally:
+            wb.close()
+    except (ValueError, FileNotFoundError):
+        raise
+    except Exception as exc:  # noqa: BLE001 - die Bibliotheken werfen Verschiedenes
+        # xlrd.XLRDError, zipfile.BadZipFile, KeyError bei kaputten Paketen …
+        # Für den Aufrufer ist es ein Fall: keine lesbare Excel-Datei.
+        raise ValueError(
+            f"{p.name}: keine lesbare Excel-Datei ({type(exc).__name__}: {exc})."
+        ) from exc
 
 
 def _find_header(grid: list[list[str]]) -> tuple[int, dict[str, int]]:
@@ -412,6 +437,16 @@ def import_wordlist(path: str | Path) -> ImportResult:
         )
     if not result.rows:
         raise ValueError("Die Datei enthält keine auswertbaren Vokabelzeilen.")
+    if not result.units():
+        # Zeilen ohne eine einzige erkennbare Unit sind keine Wortliste eines
+        # Lehrmittels - eher das falsche Tabellenblatt oder die falsche
+        # Datei. Daraus eine Datenbank zu schreiben, hiesse eine gute durch
+        # eine leere zu ersetzen.
+        raise ValueError(
+            f"{result.source}: {len(result.rows)} Zeilen gelesen, aber keine "
+            "einzige lässt sich einer Unit zuordnen. Ist das die richtige "
+            "Datei und das richtige Tabellenblatt?"
+        )
     return result
 
 
@@ -563,8 +598,27 @@ def write_database(
     if themes is None:
         themes = load_themes(themen_pfad(directory))
     target = Path(directory)
-    target.mkdir(parents=True, exist_ok=True)
 
+    # Geschrieben wird in ein Schwesterverzeichnis; getauscht wird erst, wenn
+    # alles da ist. Ein Absturz mitten im Schreiben - Platte voll, Prozess
+    # abgebrochen - liesse sonst eine halbe Datenbank zurück, deren
+    # index.json auf Units zeigt, die es nicht gibt. So bleibt bis zum
+    # letzten Moment die alte stehen, und danach steht die neue ganz.
+    neu = target.with_name(target.name + ".neu")
+    if neu.exists():
+        shutil.rmtree(neu)
+    neu.mkdir(parents=True)
+    try:
+        return _schreiben_und_tauschen(result, target, neu, themes)
+    except BaseException:
+        # Nichts Halbes liegen lassen - weder daneben noch im Ziel.
+        shutil.rmtree(neu, ignore_errors=True)
+        raise
+
+
+def _schreiben_und_tauschen(
+    result: ImportResult, target: Path, neu: Path, themes: dict
+) -> list[Path]:
     by_unit: dict[int | None, list[Row]] = {}
     for row in result.rows:
         by_unit.setdefault(row.unit, []).append(row)
@@ -591,7 +645,7 @@ def write_database(
             "anzahl_hauptteil": sum(1 for r in rows if r.is_core),
             "woerter": [asdict(r) for r in sorted(rows, key=lambda r: r.row)],
         }
-        path = target / unit_filename(unit)
+        path = neu / unit_filename(unit)
         path.write_text(
             json.dumps(payload, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
         )
@@ -619,18 +673,38 @@ def write_database(
         "units": index_units,
         "hinweise": result.warnings,
     }
-    index_path = target / "index.json"
+    index_path = neu / "index.json"
     index_path.write_text(
         json.dumps(index, ensure_ascii=False, indent=1) + "\n", encoding="utf-8"
     )
     written.append(index_path)
 
-    # Reste einer früheren, anderen Wortliste entfernen (§ "keine Vermischung").
+    # Was zur Datenbank gehört, aber nicht zum Import - vor allem themen.json
+    # - wandert mit. Sonst ginge beim Tausch verloren, was von Hand
+    # eingetragen wurde.
     keep = {p.name for p in written}
-    for stale in target.glob("unit_*.json"):
-        if stale.name not in keep:
-            stale.unlink()
-            result.warnings.append(
-                f"{stale.name} stammte aus einer früheren Wortliste und wurde gelöscht."
-            )
-    return written
+    if target.is_dir():
+        for datei in target.iterdir():
+            if datei.is_file() and datei.name not in keep \
+                    and not datei.name.startswith("unit_"):
+                shutil.copy2(datei, neu / datei.name)
+        # Reste einer früheren, anderen Wortliste (§ "keine Vermischung"):
+        # Sie werden nicht kopiert, also sind sie nach dem Tausch weg. Gesagt
+        # wird es trotzdem.
+        for stale in sorted(target.glob("unit_*.json")):
+            if stale.name not in keep:
+                result.warnings.append(
+                    f"{stale.name} stammte aus einer früheren Wortliste und "
+                    "wurde gelöscht."
+                )
+
+    # Der Tausch. Zwischen den beiden Umbenennungen liegt kein Schreiben.
+    alt = target.with_name(target.name + ".alt")
+    if alt.exists():
+        shutil.rmtree(alt)
+    if target.exists():
+        target.rename(alt)
+    neu.rename(target)
+    if alt.exists():
+        shutil.rmtree(alt)
+    return [target / p.name for p in written]

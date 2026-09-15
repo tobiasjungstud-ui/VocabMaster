@@ -129,3 +129,22 @@ def test_die_waage_wiegt_gegen_sechzig():
     koerper = koerper[:koerper.index("\n}")]
     assert "|| LISTENUMFANG" in koerper
     assert "const LISTENUMFANG = 60;" in seite
+
+
+def test_ein_paket_gehoert_zur_datenbank_seiner_pruefsumme():
+    """Nicht zur Datenbank seiner Unit-Nummer — die haben beide."""
+    import importlib.util
+    spez = importlib.util.spec_from_file_location(
+        "export", WERKSTATT / "export.py")
+    export = importlib.util.module_from_spec(spez)
+    spez.loader.exec_module(export)
+
+    from vocabmaster.database import Database
+    db = Database.load()
+    eigen = db.quelle["pruefsumme_sha256"]
+    assert export._gehoert_dazu({"unit": 1, "quelle": {"pruefsumme_sha256": eigen}}, db)
+    assert not export._gehoert_dazu({"unit": 1, "quelle": {"pruefsumme_sha256": "0" * 64}}, db)
+    # Ohne Prüfsumme gehört ein Paket zu gar nichts - lieber nirgends als
+    # überall.
+    assert not export._gehoert_dazu({"unit": 1, "quelle": {}}, db)
+    assert not export._gehoert_dazu({"unit": 1}, db)

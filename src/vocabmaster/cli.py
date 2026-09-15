@@ -18,6 +18,7 @@ Der Rückgabewert ist 0, wenn keine Fehler gefunden wurden, sonst 1.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from collections import Counter
 from dataclasses import replace
@@ -88,6 +89,41 @@ def _unit(text: str) -> int:
 
 
 # ---------------------------------------------------------------- Datenbank
+def _bisherige_quelle(ziel: Path) -> dict:
+    """Woher die Datenbank stammt, die schon in ``ziel`` liegt - oder ``{}``.
+
+    Eine ``index.json``, die da ist, aber nicht lesbar, ist **kein** leeres
+    Verzeichnis: Dort liegt etwas, und man weiss nicht, was. Das wird als
+    Quelle mit unbekannter Prüfsumme gemeldet - der Aufrufer entscheidet dann
+    wie bei einer fremden Wortliste, statt still darüberzuschreiben.
+    """
+    index = ziel / "index.json"
+    if not index.is_file():
+        return {}
+    try:
+        return dict(json.loads(index.read_text("utf-8")).get("quelle", {}))
+    except (OSError, json.JSONDecodeError):
+        return {"datei": "(index.json unlesbar)", "pruefsumme_sha256": "?"}
+
+
+def _abhaengige_pakete(pruefsumme: str, ordner: Path) -> list[Path]:
+    """Pakete, die an dieser Wortliste hängen - erkannt an der Prüfsumme.
+
+    Ein Paket gehört zu der Wortliste, deren Prüfsumme es trägt. Wird die
+    Wortliste darunter ausgetauscht, zeigt sein Lösungsschlüssel auf Wörter,
+    die es nicht mehr gibt - und das fällt erst beim Korrigieren auf.
+    """
+    treffer = []
+    for pfad in sorted(ordner.glob("unit_*.json")):
+        try:
+            quelle = json.loads(pfad.read_text("utf-8")).get("quelle", {})
+        except (OSError, json.JSONDecodeError):
+            continue
+        if quelle.get("pruefsumme_sha256") == pruefsumme:
+            treffer.append(pfad)
+    return treffer
+
+
 def cmd_db_import(args) -> int:
     result = import_wordlist(args.quelle)
     if args.ziel:
@@ -100,6 +136,47 @@ def cmd_db_import(args) -> int:
                 else PACKAGE_ROOT / "data" / datenbanken.slug(args.name))
     else:
         ziel = _settings(args).database
+
+    # Liegt dort schon eine **andere** Wortliste? Dann hängt womöglich etwas
+    # daran. Dieselbe noch einmal einzulesen - nach dem Eintragen der Themen
+    # - ist der Normalfall und geht ohne Rückfrage.
+    bisher = _bisherige_quelle(ziel)
+    alte = str(bisher.get("pruefsumme_sha256", ""))
+    if alte == "?" and not args.ersetzen:
+        raise ValueError(
+            f"{ziel.name}/: Dort liegt eine Datenbank, deren index.json nicht "
+            "lesbar ist. Erst nachsehen, was das ist - oder mit --ersetzen "
+            "bewusst darüberschreiben."
+        )
+    if alte and alte != result.checksum:
+        abhaengig = _abhaengige_pakete(alte, KURATIERT)
+        if abhaengig and not args.ersetzen:
+            namen = ", ".join(p.name for p in abhaengig[:5])
+            if len(abhaengig) > 5:
+                namen += f" … ({len(abhaengig)} insgesamt)"
+            raise ValueError(
+                f"{ziel.name}/: Dort liegt schon eine andere Wortliste "
+                f"({bisher.get('datei', '?')}, {alte[:12]}), und "
+                f"{len(abhaengig)} Pakete hängen daran: {namen}. Ihre "
+                "Prüfungen zeigten danach auf Wörter, die es nicht mehr gibt. "
+                "Für ein neues Lehrmittel einen neuen --name wählen; die "
+                "bestehende Datenbank wirklich ersetzen: --ersetzen."
+            )
+        if abhaengig:
+            print(f"Achtung: {len(abhaengig)} Pakete hängen an der bisherigen "
+                  "Wortliste und melden ab jetzt 'altbestand'.")
+        else:
+            print(f"Hinweis: andere Wortliste als bisher "
+                  f"({bisher.get('datei', '?')} → {result.source}); "
+                  "kein Paket hängt an der alten.")
+
+    # Dieselbe Datei schon unter einem anderen Namen? Kein Fehler - aber man
+    # sollte es wissen, bevor zwei Namen dieselbe Datenbank meinen.
+    for d in datenbanken.alle():
+        if (d.vorhanden and d.verzeichnis.resolve() != ziel.resolve()
+                and d.quelle.get("pruefsumme_sha256") == result.checksum):
+            print(f"Hinweis: Dieselbe Wortliste ist schon als '{d.name}' "
+                  f"registriert ({d.verzeichnis.name}/).")
 
     # Das Gerüst **vor** dem Schreiben: Dann übernimmt derselbe Durchlauf
     # schon die Seitenbereiche, und nur Thema und Leitwörter bleiben offen.
@@ -724,6 +801,9 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--name", help="unter diesem Namen registrieren, z. B. EnglishPlus3")
     p.add_argument("--titel", help="Klartextname des Lehrmittels")
     p.add_argument("--beschreibung", help="eine Zeile zur Einordnung")
+    p.add_argument("--ersetzen", action="store_true",
+                   help="eine bestehende Datenbank durch eine andere Wortliste "
+                        "ersetzen, obwohl Pakete an ihr hängen")
     p.set_defaults(func=cmd_db_import)
 
     p = dbsub.add_parser("liste", help="welche Vokabeldatenbanken es gibt")

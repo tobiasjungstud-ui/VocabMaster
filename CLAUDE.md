@@ -496,6 +496,34 @@ Bearbeitet wird nur `vorlage.html`. `daten.json` und `vokabelwerkstatt.html`
 sind gebaut — wer ein Paket ändert, baut beide neu mit, sonst zeigt die Seite
 eine Auswahl, die es nicht mehr gibt. Ein Test wacht darüber.
 
+### Ein neues Lehrmittel bestellen
+
+Unter der Datenbankwahl steht **„＋ Neues Lehrmittel"**. Das Fenster sammelt,
+was `vocabmaster db import` braucht — Name, Titel, eine Zeile zur Einordnung,
+die Excel-Wortliste — und schreibt daraus den fertigen Befehl samt Nachlauf
+(`export.py`, `beilagen.py`, `bauen.py`, neu veröffentlichen). Auslösen und
+Kopieren gehen denselben Weg wie jeder andere Auftrag.
+
+Die Seite **legt die Datenbank nicht selbst an**: Die Excel-Datei einlesen,
+in Units zerlegen und die Häufigkeiten rechnen ist Python.
+
+**Die Wortliste geht nicht durch den Auftrag.** Sie wiegt rund eine halbe
+Megabyte; ein halbes Megabyte in einem Auftragssatz ist ein Weg, der
+schiefgeht, ohne dass man es sieht. Die Seite nimmt deshalb nur Name und
+Grösse der Datei auf und sagt: im Chat anhängen. Eine Geste, die trägt. Ein
+Test hält fest, dass der Inhalt nirgends eingelesen wird.
+
+Was die Seite beantworten kann, beantwortet sie sofort:
+
+| Einwand | warum |
+|---|---|
+| Name fehlt / hat Leerzeichen | Er wird zum Verzeichnisnamen |
+| Name schon vergeben | Ein Import darüber **überschriebe** die bestehende Datenbank — das fiele erst auf, wenn sie weg ist |
+| Titel fehlt | Er steht später in der Auswahl |
+| keine oder keine Excel-Datei | Ohne sie gibt es nichts zu importieren |
+
+Solange ein Einwand steht, sind beide Knöpfe aus.
+
 ### Die Leiste hat zwei Ebenen
 
 Zehn gleich aussehende Abschnitte untereinander, und man weiss nicht mehr,

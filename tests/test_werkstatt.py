@@ -196,13 +196,16 @@ def test_der_ausloeser_haelt_sich_an_die_datenbank():
     Andersherum wachte die Sitzung auf und fände nichts vor.
     """
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
-    körper = seite[seite.index('$("ausloesen").addEventListener'):]
-    körper = körper[:körper.index("\n});")]
+    # Beide Auftragsarten gehen durch dieselbe Funktion.
+    körper = seite[seite.index("async function ausloesen("):]
+    körper = körper[:körper.index("\n}\n")]
     assert körper.index('db.doc("auftraege/"') < körper.index("selbst.publish("), (
         "erst ablegen, dann klingeln"
     )
     # Ohne beide Fähigkeiten muss der Knopf aus sein, statt ins Leere zu greifen.
     assert "!db || !selbst" in körper
+    for aufrufer in ('$("ausloesen").addEventListener', "lehrmittelAusloesen"):
+        assert aufrufer in seite
 
 
 # ---------------------------------------------------------------------------
@@ -396,3 +399,47 @@ def test_ein_erzwungenes_haekchen_geht_mit_der_handarbeit_wieder_weg():
     körper = seite[seite.index("function handarbeitVerwerfen()"):]
     körper = körper[:körper.index("\n}")]
     assert 'if(state.autoNeu){ $("bLi").checked = false; state.autoNeu = false; }' in körper
+
+
+# ---------------------------------------------------------------------------
+# Ein neues Lehrmittel bestellen
+# ---------------------------------------------------------------------------
+def test_ein_belegter_name_wird_abgewiesen():
+    """Ein Import unter demselben Namen überschriebe die bestehende Datenbank.
+
+    Das fiele sonst erst auf, wenn sie weg ist.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function lehrmittelEinwand("):]
+    körper = körper[:körper.index("\n}")]
+    assert "belegt.includes(d.name.toLowerCase())" in körper
+    assert "überschriebe die bestehende Datenbank" in körper
+    # Und der Name wird zum Verzeichnisnamen - also keine Leerzeichen.
+    assert "NAMENSFORM.test(d.name)" in körper
+    assert "!d.titel" in körper and "!d.datei" in körper
+
+
+def test_der_bestellte_befehl_ist_der_echte():
+    """Was im Fenster steht, muss die Anwendung auch verstehen."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function lehrmittelBefehl("):]
+    körper = körper[:körper.index("\n}")]
+    for teil in ("vocabmaster db import data/", "--name ", "--titel ",
+                 "--beschreibung "):
+        assert teil in körper, f"{teil!r} fehlt im bestellten Befehl"
+    # Und der Nachlauf, ohne den die neue Datenbank nicht in der Auswahl steht.
+    for schritt in ("werkstatt/export.py", "werkstatt/beilagen.py",
+                    "werkstatt/bauen.py"):
+        assert schritt in körper
+
+
+def test_die_wortliste_geht_nicht_durch_den_auftrag():
+    """Eine halbe Megabyte in einem Auftragssatz geht schief, ohne dass man
+    es sieht. Die Datei wird im Chat angehängt - eine Geste, die trägt."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function lehrmittelDaten("):]
+    körper = körper[:körper.index("\n}")]
+    # Nur Name und Grösse, nie der Inhalt.
+    assert "datei ? datei.name" in körper
+    assert "readAsDataURL" not in seite and "arrayBuffer()" not in körper
+    assert "hänge ich im Chat an" in seite

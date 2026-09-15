@@ -355,6 +355,21 @@ dialog#wortwahl::backdrop{background:rgba(23,26,34,.45)}
 .fensterleib{padding:14px 18px 18px; overflow:auto; min-height:0}
 
 /* ---------- Prüfungen ansehen ---------- */
+dialog#lehrmittel{
+  width:min(620px, 94vw); max-height:90vh; padding:0; border:0;
+  border-radius:var(--r); background:var(--surface); color:var(--ink);
+  box-shadow:0 24px 60px -20px rgba(23,26,34,.55);
+  flex-direction:column; overflow:hidden;
+}
+dialog#lehrmittel[open]{display:flex}
+dialog#lehrmittel::backdrop{background:rgba(23,26,34,.45)}
+dialog#lehrmittel input[type=text]{
+  width:100%; padding:8px 9px; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r); font-size:13px;
+}
+dialog#lehrmittel input[type=file]{
+  width:100%; padding:7px 0; font-size:12.5px; color:var(--ink-2);
+}
 dialog#pruefungsfenster{
   width:min(860px, 94vw); max-height:90vh; padding:0; border:0;
   border-radius:var(--r); background:var(--surface); color:var(--ink);
@@ -570,6 +585,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <section>
           <select id="datenbank"></select>
           <p class="hinweis" id="dbhinweis"></p>
+          <button class="knopf breit" id="lehrmittelAuf" type="button">＋ Neues Lehrmittel</button>
         </section>
       </div>
 
@@ -769,6 +785,35 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     </main>
   </div>
 </div>
+
+<dialog id="lehrmittel" aria-labelledby="lehrmittelTitel">
+  <div class="fensterkopf">
+    <h2 id="lehrmittelTitel">Neues Lehrmittel</h2>
+    <button class="knopf" id="lehrmittelZu" type="button">Schliessen</button>
+  </div>
+  <div class="fensterleib">
+    <p class="pruefhinweis" style="margin-top:0">
+      Eine Datenbank ist die Wortliste eines Lehrmittels — eine Excel-Datei,
+      je Unit ein Block. Sie kommt ohne Codeänderung dazu und bekommt ihr
+      eigenes Verzeichnis; die bestehenden bleiben unangetastet.</p>
+    <div class="feld"><label for="dbName">Name — kurz, ohne Leerzeichen</label>
+      <input type="text" id="dbName" placeholder="EnglishPlus3" autocomplete="off"></div>
+    <div class="feld" style="margin-top:10px"><label for="dbTitel">Titel des Lehrmittels</label>
+      <input type="text" id="dbTitel" placeholder="English Plus 2nd edition, Level 3" autocomplete="off"></div>
+    <div class="feld" style="margin-top:10px"><label for="dbBeschreibung">Eine Zeile zur Einordnung</label>
+      <input type="text" id="dbBeschreibung" placeholder="Welche Klasse, welches Jahr" autocomplete="off"></div>
+    <div class="feld" style="margin-top:10px"><label for="dbDatei">Excel-Wortliste</label>
+      <input type="file" id="dbDatei" accept=".xls,.xlsx"></div>
+    <p class="warnband" id="dbwarnung" hidden></p>
+    <p class="pruefhinweis" id="dbdateihinweis"></p>
+    <div class="befehl" id="dbbefehl" style="margin-top:14px"></div>
+    <div class="knopfreihe">
+      <button class="knopf haupt" id="dbAusloesen" type="button">Auftrag auslösen</button>
+      <button class="knopf" id="dbKopieren" type="button">Befehl kopieren</button>
+    </div>
+    <div class="status" id="dbstatus"></div>
+  </div>
+</dialog>
 
 <dialog id="pruefungsfenster" aria-labelledby="pruefungsTitel">
   <div class="fensterkopf">
@@ -1106,6 +1151,92 @@ function zeichneHerkunft(li){
 function posten(titel, wert, betont){
   return '<div class="' + (betont ? "betont" : "") + '"><dt>' + titel +
          "</dt><dd>" + wert + "</dd></div>";
+}
+
+/* ---------------- Ein neues Lehrmittel ----------------
+   Eine Datenbank ist die Wortliste eines Lehrmittels. Anlegen kann die
+   Seite sie nicht: Das Einlesen der Excel-Datei, das Zerlegen in Units und
+   das Berechnen der Häufigkeiten ist Python. Die Seite sammelt deshalb, was
+   der Befehl braucht, prüft es so weit sie kann, und bestellt.
+
+   Die Datei selbst geht **nicht** durch den Auftrag: Eine Wortliste wiegt
+   rund eine halbe Megabyte, und ein halbes Megabyte in einem Auftragssatz
+   ist ein Weg, der schiefgeht, ohne dass man es sieht. Sie wird im Chat
+   angehängt - eine Geste, die immer funktioniert. */
+const NAMENSFORM = /^[A-Za-z][A-Za-z0-9_-]{1,31}$/;
+
+function lehrmittelDaten(){
+  const datei = $("dbDatei").files && $("dbDatei").files[0];
+  return {
+    art: "datenbank",
+    name: $("dbName").value.trim(),
+    titel: $("dbTitel").value.trim(),
+    beschreibung: $("dbBeschreibung").value.trim(),
+    datei: datei ? datei.name : "",
+    dateigroesse: datei ? datei.size : 0,
+    erzeugt: new Date().toISOString(),
+  };
+}
+
+/* Was die Seite selbst beantworten kann, beantwortet sie hier - ein Name,
+   der schon vergeben ist, fiele sonst erst beim Import auf, nachdem die
+   bestehende Datenbank überschrieben wäre. */
+function lehrmittelEinwand(d){
+  const belegt = (DATA.datenbanken || []).map(x => x.name.toLowerCase());
+  if(!d.name) return "Der Name fehlt.";
+  if(!NAMENSFORM.test(d.name))
+    return "Der Name wird zum Verzeichnisnamen: Buchstabe am Anfang, " +
+           "danach Buchstaben, Ziffern, - oder _, keine Leerzeichen.";
+  if(belegt.includes(d.name.toLowerCase()))
+    return "„" + d.name + "“ gibt es schon. Ein Import unter demselben " +
+           "Namen überschriebe die bestehende Datenbank.";
+  if(!d.titel) return "Der Titel fehlt — er steht später in der Auswahl.";
+  if(!d.datei) return "Noch keine Excel-Wortliste gewählt.";
+  if(!/\.xlsx?$/i.test(d.datei)) return "Das ist keine Excel-Datei.";
+  return "";
+}
+
+function lehrmittelBefehl(d){
+  const anf = t => '"' + String(t).replace(/"/g, "'") + '"';
+  return "Neue Vokabeldatenbank " + d.name + " anlegen — " + anf(d.titel) +
+    ". Die Excel-Wortliste " + anf(d.datei) + " hänge ich im Chat an; " +
+    "zuerst nach data/ legen, dann:\n\n" +
+    "vocabmaster db import data/" + d.datei + " --name " + d.name +
+    " --titel " + anf(d.titel) +
+    (d.beschreibung ? " --beschreibung " + anf(d.beschreibung) : "") +
+    "\n\nDanach werkstatt/export.py, werkstatt/beilagen.py und " +
+    "werkstatt/bauen.py laufen lassen und die Seite neu veröffentlichen, " +
+    "damit " + d.name + " in der Auswahl steht. " +
+    "Erwartet: eine neue Datenbank — keine Vokabelliste, keine Prüfung.";
+}
+
+function zeichneLehrmittel(){
+  const d = lehrmittelDaten();
+  const einwand = lehrmittelEinwand(d);
+  $("dbwarnung").textContent = einwand;
+  $("dbwarnung").hidden = !einwand;
+  $("dbdateihinweis").textContent = d.datei
+    ? d.datei + " · " + Math.round(d.dateigroesse / 1024) + " KB — die Datei " +
+      "selbst hängen Sie im Chat an; sie geht nicht durch den Auftrag."
+    : "";
+  $("dbbefehl").textContent = einwand ? "—" : lehrmittelBefehl(d);
+  $("dbAusloesen").disabled = !!einwand;
+  $("dbKopieren").disabled = !!einwand;
+}
+
+function dbMelde(text, art){
+  const z = $("dbstatus");
+  z.textContent = text;
+  z.className = "status" + (art ? " " + art : "");
+}
+
+async function lehrmittelAusloesen(){
+  const d = lehrmittelDaten();
+  if(lehrmittelEinwand(d)) return;
+  const fertig = await ausloesen(
+    Object.assign({befehl: lehrmittelBefehl(d)}, d),
+    "db-" + d.name.toLowerCase(), $("dbAusloesen"), dbMelde);
+  if(fertig) dbMelde("Ausgelöst. Jetzt die Excel-Datei im Chat anhängen.", "ok");
 }
 
 /* ---------------- Prüfungen ansehen ----------------
@@ -2262,6 +2393,24 @@ $("herkunft").addEventListener("click", e => {
 
 $("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
 $("pruefungenZu").addEventListener("click", () => $("pruefungsfenster").close());
+$("lehrmittelZu").addEventListener("click", () => $("lehrmittel").close());
+$("lehrmittelAuf").addEventListener("click", () => {
+  zeichneLehrmittel();
+  if(!$("lehrmittel").open) $("lehrmittel").showModal();
+  $("dbName").focus();
+});
+for(const feld of ["dbName", "dbTitel", "dbBeschreibung"])
+  $(feld).addEventListener("input", zeichneLehrmittel);
+$("dbDatei").addEventListener("change", zeichneLehrmittel);
+$("dbAusloesen").addEventListener("click", lehrmittelAusloesen);
+$("dbKopieren").addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText($("dbbefehl").textContent);
+    dbMelde("Befehl kopiert — im Chat einfügen, Excel-Datei anhängen.", "ok");
+  }catch(e){
+    dbMelde("Kopieren hat der Browser abgelehnt. Text von Hand markieren.", "fehler");
+  }
+});
 
 /* Das Fenster steht immer offen - auch ohne angekreuzte Liste. Es ist der
    Ort, an dem man nachsieht, was in einer Liste steht und was nicht; die
@@ -2282,43 +2431,50 @@ $("kopieren").addEventListener("click", async () => {
   }
 });
 
-$("ausloesen").addEventListener("click", async () => {
-  const a = auftrag();
-  if(!a.teile.length){ melde("Nichts ausgewählt.", "fehler"); return; }
+/* Einen Auftrag ablegen und die Sitzung wecken. Beide Auftragsarten - der
+   Bau aus der Leiste und ein neues Lehrmittel - gehen denselben Weg; nur
+   was im Auftrag steht, unterscheidet sie. */
+async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   if(!db || !selbst){
-    melde("Auslösen steht in dieser Ansicht nicht zur Verfügung — " +
+    sagen("Auslösen steht in dieser Ansicht nicht zur Verfügung — " +
           "den Befehl stattdessen kopieren und im Chat einfügen.", "fehler");
-    return;
+    return false;
   }
-  const knopf = $("ausloesen");
   knopf.disabled = true;
-  const id = "u" + String(a.unit).padStart(2, "0") + "-" + Date.now();
+  const id = kennung + "-" + Date.now();
   try{
     // Erst ablegen, dann klingeln. Andersherum wachte der Chat auf und
     // fände nichts vor.
     await db.doc("auftraege/" + id).set(
-      Object.assign({erledigt:false, ausgeloest:true, id:id}, a));
+      Object.assign({erledigt:false, ausgeloest:true, id:id}, auftragsdaten));
   }catch(e){
     knopf.disabled = false;
-    melde("Ablegen ist fehlgeschlagen: " + (e && e.message ? e.message : "unbekannt"),
+    sagen("Ablegen ist fehlgeschlagen: " + (e && e.message ? e.message : "unbekannt"),
           "fehler");
-    return;
+    return false;
   }
-  melde("Abgelegt — wecke die Sitzung …");
+  sagen("Abgelegt — wecke die Sitzung …");
   try{
     await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
     // Bis hierher kommt die Seite selten: nach `publish` lädt jede offene
     // Ansicht die neue Fassung, diese eingeschlossen.
-    melde("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
+    sagen("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
   }catch(e){
     knopf.disabled = false;
     const code = e && e.code ? e.code : "";
-    melde(code === "conflict"
+    sagen(code === "conflict"
       ? "Eine neuere Fassung der Seite ist dazwischengekommen. Der Auftrag "
         + "liegt im Buch — im Chat genügt: „Nimm den nächsten Auftrag.“"
       : "Die Sitzung liess sich nicht wecken. Der Auftrag liegt im Buch — "
         + "im Chat genügt: „Nimm den nächsten Auftrag.“", "fehler");
   }
+  return true;
+}
+
+$("ausloesen").addEventListener("click", async () => {
+  const a = auftrag();
+  if(!a.teile.length){ melde("Nichts ausgewählt.", "fehler"); return; }
+  await ausloesen(a, "u" + String(a.unit).padStart(2, "0"), $("ausloesen"), melde);
 });
 
 $("herunterladen").addEventListener("click", async () => {

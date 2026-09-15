@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 0,
  "titel": "Starter Unit",
- "thema": "Medien, Geräte und Online-Leben",
- "seiten": "4-7",
- "leitwoerter": [
-  "media",
-  "device",
-  "online",
-  "social",
-  "internet",
-  "post",
-  "account",
-  "screen",
-  "app",
-  "connect"
- ],
+ "thema": "",
+ "seiten": "",
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

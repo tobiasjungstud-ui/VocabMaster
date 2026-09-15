@@ -28,7 +28,13 @@ from .checks import FEHLER, WARNUNG, pruefe_paket
 from .config import PACKAGE_ROOT, Settings
 from .database import Database
 from .documents import baue_alles
-from .importer import import_wordlist, write_database
+from .importer import (
+    import_wordlist,
+    load_themes,
+    themen_geruest,
+    themen_pfad,
+    write_database,
+)
 from .niveau import (
     LIST_BOUNDS,
     NIVEAUS,
@@ -95,6 +101,10 @@ def cmd_db_import(args) -> int:
     else:
         ziel = _settings(args).database
 
+    # Das Gerüst **vor** dem Schreiben: Dann übernimmt derselbe Durchlauf
+    # schon die Seitenbereiche, und nur Thema und Leitwörter bleiben offen.
+    geruest = themen_geruest(result, ziel, args.titel or "")
+
     dateien = write_database(result, ziel)
     print(f"{len(result.rows)} Einträge aus {result.source} gelesen.")
     print(f"Prüfsumme SHA-256 {result.checksum[:16]}…, importiert {result.imported}")
@@ -106,6 +116,21 @@ def cmd_db_import(args) -> int:
         )
         print(f"\nAls '{eintrag.name}' registriert - wählbar mit "
               f"--datenbank {eintrag.name}.")
+    # Themen und Leitwörter stehen im Lehrmittel, nicht in der Wortliste.
+    # Wer das nicht gesagt bekommt, merkt es erst, wenn die
+    # Themenkongruenz-Prüfung einer Unit nichts zu messen hat.
+    offen = [u for u, th in load_themes(themen_pfad(ziel)).items()
+             if not th.get("thema")]
+    if geruest is not None:
+        print(f"\nThemen: {geruest} angelegt — je Unit Nummer und "
+              "Seitenbereich aus der Wortliste, Thema und Leitwörter leer.")
+        print("  Sie stehen im Lehrmittel, nicht in der Wortliste. Eintragen, "
+              "dann noch einmal importieren.")
+    elif offen:
+        print(f"\nThemen: {len(offen)} von "
+              f"{len(load_themes(themen_pfad(ziel)))} Units ohne Thema "
+              f"({themen_pfad(ziel)}).")
+
     for hinweis in result.warnings:
         print(f"  Hinweis: {hinweis}")
     return 0

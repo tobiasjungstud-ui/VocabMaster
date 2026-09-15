@@ -130,17 +130,37 @@ def aufloesen(angabe: str | Path | None) -> Path:
 
 def eintragen(name: str, verzeichnis: Path, titel: str = "",
               beschreibung: str = "") -> Datenbank:
-    """Nimmt eine Datenbank in die Registratur auf (oder aktualisiert sie)."""
-    eintraege = [e for e in _roh_lesen() if e.get("name", "").lower() != name.lower()]
+    """Nimmt eine Datenbank in die Registratur auf (oder aktualisiert sie).
+
+    Ein erneuter Import **behält**, was nicht mitgegeben wird. Wer eine
+    Wortliste neu einliest und dabei nur ``--name`` angibt, meint nicht,
+    dass die von Hand geschriebene Einordnung weg soll - sie stand vorher
+    da und niemand hat ihre Löschung bestellt. Eine leere Zeile ist hier
+    „nichts gesagt", nicht „leer machen".
+
+    Die Reihenfolge bleibt ebenfalls: Ein bestehender Eintrag wird an
+    seinem Platz aktualisiert, statt ans Ende zu wandern. Sonst mischt
+    jeder Import die Liste in der Auswahl neu durch.
+    """
+    eintraege = _roh_lesen()
     try:
         relativ = str(verzeichnis.resolve().relative_to(
             (PACKAGE_ROOT / "data").resolve()))
     except ValueError:
         relativ = str(verzeichnis)
-    eintraege.append({
+
+    stelle = next((i for i, e in enumerate(eintraege)
+                   if e.get("name", "").lower() == name.lower()), None)
+    bisher = eintraege[stelle] if stelle is not None else {}
+    eintrag = {
         "name": name, "verzeichnis": relativ,
-        "titel": titel, "beschreibung": beschreibung,
-    })
+        "titel": titel or bisher.get("titel", ""),
+        "beschreibung": beschreibung or bisher.get("beschreibung", ""),
+    }
+    if stelle is None:
+        eintraege.append(eintrag)
+    else:
+        eintraege[stelle] = eintrag
     REGISTER.parent.mkdir(parents=True, exist_ok=True)
     REGISTER.write_text(
         json.dumps({"datenbanken": eintraege}, ensure_ascii=False, indent=2) + "\n",

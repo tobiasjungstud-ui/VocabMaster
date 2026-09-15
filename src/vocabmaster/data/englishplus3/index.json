@@ -12,7 +12,7 @@
    "unit": 0,
    "datei": "unit_00.json",
    "titel": "Starter Unit",
-   "thema": "Medien, Geräte und Online-Leben",
+   "thema": "",
    "anzahl": 70,
    "anzahl_hauptteil": 70
   },
@@ -20,7 +20,7 @@
    "unit": 1,
    "datei": "unit_01.json",
    "titel": "Unit 1",
-   "thema": "Erinnerungen und Gegenstände",
+   "thema": "",
    "anzahl": 143,
    "anzahl_hauptteil": 95
   },
@@ -28,7 +28,7 @@
    "unit": 2,
    "datei": "unit_02.json",
    "titel": "Unit 2",
-   "thema": "Entscheidungen, Zukunft und Engagement",
+   "thema": "",
    "anzahl": 146,
    "anzahl_hauptteil": 106
   },
@@ -36,7 +36,7 @@
    "unit": 3,
    "datei": "unit_03.json",
    "titel": "Unit 3",
-   "thema": "Werbung, Marketing und Konsum",
+   "thema": "",
    "anzahl": 142,
    "anzahl_hauptteil": 99
   },
@@ -44,7 +44,7 @@
    "unit": 4,
    "datei": "unit_04.json",
    "titel": "Unit 4",
-   "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+   "thema": "",
    "anzahl": 135,
    "anzahl_hauptteil": 93
   },
@@ -52,7 +52,7 @@
    "unit": 5,
    "datei": "unit_05.json",
    "titel": "Unit 5",
-   "thema": "Wissenschaft, Forschung und Biomimikry",
+   "thema": "",
    "anzahl": 91,
    "anzahl_hauptteil": 57
   },
@@ -60,7 +60,7 @@
    "unit": 6,
    "datei": "unit_06.json",
    "titel": "Unit 6",
-   "thema": "Persönlichkeit und soziale Rollen",
+   "thema": "",
    "anzahl": 124,
    "anzahl_hauptteil": 85
   },
@@ -68,7 +68,7 @@
    "unit": 7,
    "datei": "unit_07.json",
    "titel": "Unit 7",
-   "thema": "Bauwerke und Wahrzeichen",
+   "thema": "",
    "anzahl": 120,
    "anzahl_hauptteil": 75
   },
@@ -76,7 +76,7 @@
    "unit": 8,
    "datei": "unit_08.json",
    "titel": "Unit 8",
-   "thema": "Verbrechen, Sicherheit und Krimis",
+   "thema": "",
    "anzahl": 111,
    "anzahl_hauptteil": 70
   }

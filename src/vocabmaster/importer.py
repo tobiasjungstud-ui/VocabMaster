@@ -425,13 +425,89 @@ def file_checksum(path: str | Path) -> str:
     return digest.hexdigest()
 
 
+THEMEN_DATEI = "themen.json"
+
+
+def themen_pfad(verzeichnis: str | Path) -> Path:
+    """Wo die Themen **dieser** Datenbank stehen.
+
+    Je Datenbank eine Datei, im Verzeichnis der Datenbank. Das war einmal
+    eine einzige gemeinsame Datei, und das ging genau so schief, wie es
+    musste: Die zweite importierte Datenbank erbte Themen, Seitenbereiche
+    und Leitwörter der ersten. Unit 3 hiess dann „Werbung und Konsum",
+    obwohl in ihr `kayaking` und `skydiving` stehen - und die
+    Themenkongruenz-Prüfung mass gegen das Wortfeld eines anderen
+    Lehrmittels.
+    """
+    return Path(verzeichnis) / THEMEN_DATEI
+
+
 def load_themes(path: str | Path | None = None) -> dict[int, dict[str, Any]]:
-    """Thema und Titel je Unit. Die Datei wird gelesen, nie überschrieben."""
-    target = Path(path or Path(__file__).resolve().parent / "data" / "themen.json")
+    """Thema und Titel je Unit aus **einer** Datei. Gelesen, nie überschrieben.
+
+    ``path`` ist die Datei selbst. Ohne Angabe wird nichts geraten: Es gibt
+    keine Datei, die für jede Datenbank gilt. Wer die Themen einer
+    bestimmten Datenbank will, nimmt :func:`themen_pfad`.
+    """
+    if path is None:
+        return {}
+    target = Path(path)
     if not target.exists():
         return {}
     payload = json.loads(target.read_text(encoding="utf-8"))
     return {int(k): v for k, v in payload.get("themen", {}).items()}
+
+
+def themen_geruest(
+    result: ImportResult, verzeichnis: str | Path, titel: str = ""
+) -> Path | None:
+    """Legt eine leere ``themen.json`` an, wenn die Datenbank noch keine hat.
+
+    Geschrieben wird nur das, was **in der Wortliste steht**: die Unit-Nummer
+    und der Seitenbereich ihres Hauptteils. Thema und Leitwörter bleiben leer
+    - die stehen im Lehrmittel, nicht in der Wortliste, und ein geratenes
+    Thema wäre schlimmer als ein leeres: Es sähe aus wie eine Angabe.
+
+    Gibt den Pfad zurück, wenn eine Datei entstanden ist, sonst ``None``.
+    """
+    ziel = themen_pfad(verzeichnis)
+    if ziel.exists():
+        return None
+
+    seiten: dict[int, list[int]] = {}
+    for row in result.rows:
+        if row.unit is None or row.kind != "hauptteil" or not isinstance(row.page, int):
+            continue
+        seiten.setdefault(row.unit, []).append(row.page)
+
+    themen = {}
+    for unit in sorted({r.unit for r in result.rows if r.unit is not None}):
+        s = seiten.get(unit, [])
+        themen[str(unit)] = {
+            "titel": "Starter Unit" if unit == 0 else f"Unit {unit}",
+            "thema": "",
+            "seiten": f"{min(s)}-{max(s)}" if s else "",
+            "leitwoerter": [],
+        }
+
+    ziel.parent.mkdir(parents=True, exist_ok=True)
+    ziel.write_text(json.dumps({
+        "_hinweis": [
+            "Thema und Leitwörter je Unit dieser Datenbank. Die Wortliste des",
+            "Lehrmittels enthält sie nicht, deshalb stehen sie hier - und",
+            "deshalb sind sie beim Import leer geblieben.",
+            "Diese Datei darf von Hand geändert werden: Sie wird beim Import",
+            "gelesen, nie überschrieben. Danach neu importieren, damit die",
+            "Unit-Dateien sie übernehmen.",
+            "'leitwoerter' sind der Massstab der Themenkongruenz-Prüfung: ein",
+            "selbst ergänztes Wort muss zum Wortfeld der Unit passen. Solange",
+            "sie leer sind, misst die Prüfung nur an den Beispielsätzen.",
+            "Der Seitenbereich stammt aus der Wortliste selbst.",
+        ],
+        "quelle": titel or result.source,
+        "themen": themen,
+    }, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+    return ziel
 
 
 def unit_filename(unit: int | None) -> str:
@@ -447,7 +523,10 @@ def write_database(
     werden **gelöscht**: Aus einer veralteten Wortliste darf nichts
     überleben, was in der aktuellen nicht mehr steht.
     """
-    themes = themes if themes is not None else load_themes()
+    # Ohne Angabe die Themen **dieses** Verzeichnisses - nie die einer
+    # anderen Datenbank.
+    if themes is None:
+        themes = load_themes(themen_pfad(directory))
     target = Path(directory)
     target.mkdir(parents=True, exist_ok=True)
 

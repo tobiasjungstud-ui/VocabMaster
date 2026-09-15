@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 3,
  "titel": "Unit 3",
- "thema": "Werbung, Marketing und Konsum",
+ "thema": "",
  "seiten": "28-37",
- "leitwoerter": [
-  "advertising",
-  "marketing",
-  "shop",
-  "customer",
-  "price",
-  "brand",
-  "influencer",
-  "buy",
-  "product",
-  "value"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 1,
  "titel": "Unit 1",
- "thema": "Erinnerungen und Gegenstände",
+ "thema": "",
  "seiten": "8-17",
- "leitwoerter": [
-  "memory",
-  "remember",
-  "object",
-  "capsule",
-  "past",
-  "childhood",
-  "keep",
-  "container",
-  "damaged",
-  "festival"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

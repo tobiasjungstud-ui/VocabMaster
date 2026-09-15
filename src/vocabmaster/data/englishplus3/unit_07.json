@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 7,
  "titel": "Unit 7",
- "thema": "Bauwerke und Wahrzeichen",
+ "thema": "",
  "seiten": "68-77",
- "leitwoerter": [
-  "building",
-  "structure",
-  "monument",
-  "landmark",
-  "construct",
-  "design",
-  "bridge",
-  "stadium",
-  "city",
-  "architecture"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

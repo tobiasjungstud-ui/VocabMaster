@@ -78,6 +78,51 @@ kaputtes JSON darf die Anwendung nicht lahmlegen. Ein Test wacht darüber.
 Jede Datenbank hat ihr eigenes Verzeichnis; ein Import in eine neue fasst
 die bestehende nicht an.
 
+Ein **erneuter** Import in eine bestehende behält, was nicht mitgegeben
+wird: Wer nur `--name` angibt, meint nicht, dass die von Hand geschriebene
+Einordnung weg soll. Eine leere Angabe heisst „nichts gesagt", nicht „leer
+machen". Auch die Reihenfolge der Registratur bleibt — sonst steht die
+Auswahl nach jedem Import anders da. Zwei Tests wachen darüber.
+
+### Thema und Leitwörter — je Datenbank eine Datei
+
+`src/vocabmaster/data/<verzeichnis>/themen.json` — **in der Datenbank, zu
+der sie gehört.** Das war einmal eine einzige gemeinsame Datei, und das ging
+genau so schief, wie es musste: Die zweite importierte Datenbank erbte
+Thema, Seitenbereich und Leitwörter der ersten. Unit 3 von English Plus 3
+hiess dann „Werbung, Marketing und Konsum", obwohl in ihr `kayaking`,
+`skydiving` und `orienteering` stehen — und die Themenkongruenz-Prüfung mass
+ein ergänztes Wort am Wortfeld eines **anderen Lehrmittels**.
+
+Der Fehler war nicht laut. Er sah aus wie eine Angabe. Ein Test baut ihn
+jetzt nach.
+
+Es gibt deshalb **keine Datei, die für alle gilt**, und keinen Rückfall auf
+eine: `load_themes()` ohne Pfad findet nichts. Fehlt einer Datenbank ihre
+Datei, bleiben Thema und Leitwörter leer — ehrlich leer ist besser als
+fremd gefüllt.
+
+Beim Import entsteht die Datei als **Gerüst**, wenn es noch keine gibt.
+Darin steht nur, was in der Wortliste wirklich steht: Unit-Nummer und
+Seitenbereich des Hauptteils. Thema und Leitwörter bleiben leer — die
+stehen im Lehrmittel, nicht in der Wortliste, und ein geratenes Thema wäre
+schlimmer als ein leeres. Der Import sagt es auch:
+
+```
+Themen: …/englishplus3/themen.json angelegt — je Unit Nummer und
+Seitenbereich aus der Wortliste, Thema und Leitwörter leer.
+  Sie stehen im Lehrmittel, nicht in der Wortliste. Eintragen, dann noch
+  einmal importieren.
+```
+
+Eingetragen wird von Hand; danach noch einmal importieren, damit die
+Unit-Dateien es übernehmen. Eine bestehende Datei wird **nie**
+überschrieben — von Hand eingetragene Themen sind das Wertvollste daran.
+
+Die Oberfläche liest die Themen nicht mehr aus einer Datei, sondern aus der
+geladenen Datenbank (`Database.themen`); dort stehen sie ohnehin, weil der
+Import sie in die Unit-Dateien schreibt.
+
 ## Datengrundlage — nur die neue Wortliste
 
 Einzige Quelle ist `data/english_plus_2e_level_4_german_wordlist.xls`
@@ -96,8 +141,10 @@ Wortliste neu einlesen:
 vocabmaster db import data/english_plus_2e_level_4_german_wordlist.xls
 ```
 
-Thema und Titel je Unit stehen in `src/vocabmaster/data/themen.json` und
-dürfen von Hand geändert werden — der Import liest sie, überschreibt sie nie.
+Thema und Titel je Unit stehen in
+`src/vocabmaster/data/wortliste/themen.json` — der Datei **dieser**
+Datenbank — und dürfen von Hand geändert werden; der Import liest sie,
+überschreibt sie nie.
 
 ## Umfang einer Unit — verbindlich: nur der Hauptteil
 

@@ -286,9 +286,10 @@ def _dokumente(ordner: Path) -> dict[str, int]:
 
 
 def baue(pakete: Path, db: Database, settings: Settings) -> dict:
-    themen = json.loads(
-        (WURZEL / "src" / "vocabmaster" / "data" / "themen.json").read_text("utf-8")
-    )["themen"]
+    # Die Themen der **geladenen** Datenbank, nicht die einer Datei, die für
+    # alle gälte. Sie stecken schon in den Unit-Dateien: `Database.load`
+    # liest sie von dort, und dort hat sie der Import hingeschrieben.
+    themen = db.themen
 
     # Je Unit kann es mehrere Vokabellisten geben (V1, V2, ...). Jede ist ein
     # eigener Eintrag mit ihren eigenen 60 Wörtern; die Oberfläche lässt
@@ -323,7 +324,7 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
 
     units = []
     for unit in sorted(roh):
-        thema = themen.get(str(unit), {})
+        thema = themen.get(unit, {})
         zipf = _zipf_tabelle(db, unit)
         listen = []
         for pack in sorted(roh[unit], key=lambda p: int(p.get("liste_version", 1))):

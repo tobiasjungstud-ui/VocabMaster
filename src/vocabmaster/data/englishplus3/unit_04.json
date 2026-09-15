@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 4,
  "titel": "Unit 4",
- "thema": "Gefühle und Verständigung zwischen Mensch und Tier",
+ "thema": "",
  "seiten": "38-47",
- "leitwoerter": [
-  "feeling",
-  "emotion",
-  "anger",
-  "calm",
-  "communicate",
-  "animal",
-  "behaviour",
-  "therapy",
-  "sense",
-  "express"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

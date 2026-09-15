@@ -1,0 +1,71 @@
+{
+ "_hinweis": [
+  "Thema und Leitwörter je Unit dieser Datenbank. Die Wortliste des",
+  "Lehrmittels enthält sie nicht, deshalb stehen sie hier - und",
+  "deshalb sind sie beim Import leer geblieben.",
+  "Diese Datei darf von Hand geändert werden: Sie wird beim Import",
+  "gelesen, nie überschrieben. Danach neu importieren, damit die",
+  "Unit-Dateien sie übernehmen.",
+  "'leitwoerter' sind der Massstab der Themenkongruenz-Prüfung: ein",
+  "selbst ergänztes Wort muss zum Wortfeld der Unit passen. Solange",
+  "sie leer sind, misst die Prüfung nur an den Beispielsätzen.",
+  "Der Seitenbereich stammt aus der Wortliste selbst."
+ ],
+ "quelle": "English Plus 3",
+ "themen": {
+  "0": {
+   "titel": "Starter Unit",
+   "thema": "",
+   "seiten": "",
+   "leitwoerter": []
+  },
+  "1": {
+   "titel": "Unit 1",
+   "thema": "",
+   "seiten": "8-17",
+   "leitwoerter": []
+  },
+  "2": {
+   "titel": "Unit 2",
+   "thema": "",
+   "seiten": "18-27",
+   "leitwoerter": []
+  },
+  "3": {
+   "titel": "Unit 3",
+   "thema": "",
+   "seiten": "28-37",
+   "leitwoerter": []
+  },
+  "4": {
+   "titel": "Unit 4",
+   "thema": "",
+   "seiten": "38-47",
+   "leitwoerter": []
+  },
+  "5": {
+   "titel": "Unit 5",
+   "thema": "",
+   "seiten": "48-57",
+   "leitwoerter": []
+  },
+  "6": {
+   "titel": "Unit 6",
+   "thema": "",
+   "seiten": "58-67",
+   "leitwoerter": []
+  },
+  "7": {
+   "titel": "Unit 7",
+   "thema": "",
+   "seiten": "68-77",
+   "leitwoerter": []
+  },
+  "8": {
+   "titel": "Unit 8",
+   "thema": "",
+   "seiten": "78-87",
+   "leitwoerter": []
+  }
+ }
+}

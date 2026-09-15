@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 5,
  "titel": "Unit 5",
- "thema": "Wissenschaft, Forschung und Biomimikry",
+ "thema": "",
  "seiten": "48-57",
- "leitwoerter": [
-  "science",
-  "research",
-  "species",
-  "nature",
-  "design",
-  "solution",
-  "experiment",
-  "discover",
-  "technology",
-  "body"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

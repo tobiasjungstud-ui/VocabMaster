@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 8,
  "titel": "Unit 8",
- "thema": "Verbrechen, Sicherheit und Krimis",
+ "thema": "",
  "seiten": "78-87",
- "leitwoerter": [
-  "crime",
-  "criminal",
-  "police",
-  "steal",
-  "security",
-  "prison",
-  "detective",
-  "investigate",
-  "evidence",
-  "suspect"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

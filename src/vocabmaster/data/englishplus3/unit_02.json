@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 2,
  "titel": "Unit 2",
- "thema": "Entscheidungen, Zukunft und Engagement",
+ "thema": "",
  "seiten": "18-27",
- "leitwoerter": [
-  "decision",
-  "choose",
-  "option",
-  "advice",
-  "career",
-  "future",
-  "citizen",
-  "charity",
-  "volunteer",
-  "lifestyle"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

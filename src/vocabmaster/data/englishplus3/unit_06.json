@@ -2,20 +2,9 @@
  "schema": 1,
  "unit": 6,
  "titel": "Unit 6",
- "thema": "Persönlichkeit und soziale Rollen",
+ "thema": "",
  "seiten": "58-67",
- "leitwoerter": [
-  "personality",
-  "character",
-  "leader",
-  "follower",
-  "group",
-  "confident",
-  "sociable",
-  "behave",
-  "friend",
-  "belong"
- ],
+ "leitwoerter": [],
  "quelle": {
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",

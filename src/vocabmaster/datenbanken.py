@@ -24,6 +24,11 @@ from .config import DEFAULT_DATABASE, PACKAGE_ROOT
 #: Die Registratur. Von Hand zu ergänzen oder von ``db import --name``.
 REGISTER = PACKAGE_ROOT / "data" / "datenbanken.json"
 
+#: Wie eine Kennung aussehen darf - dieselbe Regel wie auf der Werkstatt-
+#: Seite. Sie wird ``--datenbank``-Argument und Verzeichnisname; ein
+#: Leerzeichen darin bräche beides.
+NAMENSFORM = re.compile(r"^[A-Za-z][A-Za-z0-9_-]{1,31}$")
+
 #: Der Eintrag, der immer da ist: die Datenbank, mit der alles angefangen
 #: hat. Sie steht auch dann zur Verfügung, wenn die Registratur fehlt oder
 #: unlesbar ist - sonst bräche ein kaputtes JSON die ganze Anwendung.
@@ -158,14 +163,77 @@ def eintragen(name: str, verzeichnis: Path, titel: str = "",
         "beschreibung": beschreibung or bisher.get("beschreibung", ""),
     }
     if stelle is None:
+        if not NAMENSFORM.match(name):
+            raise ValueError(
+                f"{name!r} taugt nicht als Kennung: Buchstabe am Anfang, danach "
+                "Buchstaben, Ziffern, - oder _, keine Leerzeichen, höchstens 32 "
+                "Zeichen. Sie wird zum --datenbank-Argument und zum Verzeichnis."
+            )
         eintraege.append(eintrag)
     else:
         eintraege[stelle] = eintrag
+    _roh_schreiben(eintraege)
+    gefunden = finde(name)
+    assert gefunden is not None
+    return gefunden
+
+
+def _roh_schreiben(eintraege: list[dict]) -> None:
     REGISTER.parent.mkdir(parents=True, exist_ok=True)
     REGISTER.write_text(
         json.dumps({"datenbanken": eintraege}, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
-    gefunden = finde(name)
+
+
+def umbenennen(alt: str, neu: str | None = None, titel: str | None = None,
+               beschreibung: str | None = None) -> Datenbank:
+    """Kennung, Titel oder Einordnung einer Datenbank ändern - **nur** die
+    Registratur. Das Verzeichnis bleibt, wo es ist, und die Wortliste darin
+    wird nicht angefasst; die Pakete hängen ohnehin an der Prüfsumme, nicht
+    am Namen.
+
+    ``None`` heisst „nicht angegeben", ``""`` heisst „leer machen" - beim
+    Umbenennen ist eine leere Einordnung eine Absicht.
+
+    Die Kennung des Grundeintrags lässt sich nicht ändern: Er ist fest im
+    Code hinterlegt und käme beim nächsten Lesen unter seinem alten Namen
+    zurück - dann zeigten zwei Einträge auf dasselbe Verzeichnis.
+    """
+    if neu is None and titel is None and beschreibung is None:
+        raise ValueError("Nichts angegeben - --name, --titel oder --beschreibung.")
+    eintraege = _roh_lesen()
+    stelle = next((i for i, e in enumerate(eintraege)
+                   if e.get("name", "").lower() == alt.lower()), None)
+    if stelle is None:
+        raise ValueError(f"'{alt}' ist nicht registriert (siehe 'db liste').")
+    eintrag = dict(eintraege[stelle])
+
+    if neu is not None and neu.lower() != alt.lower():
+        if not NAMENSFORM.match(neu):
+            raise ValueError(
+                f"{neu!r} taugt nicht als Kennung: Buchstabe am Anfang, danach "
+                "Buchstaben, Ziffern, - oder _, keine Leerzeichen, höchstens 32 "
+                "Zeichen."
+            )
+        if eintrag.get("name") == GRUNDEINTRAG["name"]:
+            raise ValueError(
+                f"Die Kennung '{GRUNDEINTRAG['name']}' ist fest im Code "
+                "hinterlegt und lässt sich nicht ändern - Titel und Einordnung "
+                "schon."
+            )
+        if any(e.get("name", "").lower() == neu.lower() for e in eintraege):
+            raise ValueError(f"'{neu}' gibt es schon.")
+        eintrag["name"] = neu
+    elif neu is not None:
+        eintrag["name"] = neu          # nur die Schreibweise
+    if titel is not None:
+        eintrag["titel"] = titel
+    if beschreibung is not None:
+        eintrag["beschreibung"] = beschreibung
+
+    eintraege[stelle] = eintrag
+    _roh_schreiben(eintraege)
+    gefunden = finde(eintrag["name"])
     assert gefunden is not None
     return gefunden

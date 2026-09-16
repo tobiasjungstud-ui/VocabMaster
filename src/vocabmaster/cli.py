@@ -213,6 +213,23 @@ def cmd_db_import(args) -> int:
     return 0
 
 
+def cmd_db_umbenennen(args) -> int:
+    """Kennung, Titel oder Einordnung ändern - die Wortliste bleibt, wie sie ist."""
+    vorher = datenbanken.finde(args.alt)
+    d = datenbanken.umbenennen(args.alt, neu=args.name, titel=args.titel,
+                               beschreibung=args.beschreibung)
+    if vorher is not None and vorher.name != d.name:
+        print(f"'{vorher.name}' heisst jetzt '{d.name}' - wählbar mit "
+              f"--datenbank {d.name}. Das Verzeichnis bleibt "
+              f"{d.verzeichnis.name}/.")
+    print(f" {d.name:<16} {d.titel}")
+    if d.beschreibung:
+        print(f" {' ':<16} {d.beschreibung}")
+    print("\nDanach werkstatt/export.py und werkstatt/bauen.py laufen lassen, "
+          "damit die Seite den neuen Namen zeigt.")
+    return 0
+
+
 def cmd_db_liste(args) -> int:
     """Welche Vokabeldatenbanken registriert sind."""
     aktiv = _settings(args).database.resolve()
@@ -808,6 +825,15 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = dbsub.add_parser("liste", help="welche Vokabeldatenbanken es gibt")
     p.set_defaults(func=cmd_db_liste)
+
+    p = dbsub.add_parser("umbenennen",
+                         help="Kennung, Titel oder Einordnung einer Datenbank ändern")
+    p.add_argument("alt", help="die bisherige Kennung, z. B. EnglishPlus3")
+    p.add_argument("--name", help="neue Kennung")
+    p.add_argument("--titel", help="neuer Klartextname")
+    p.add_argument("--beschreibung",
+                   help='neue Einordnung - "" leert sie')
+    p.set_defaults(func=cmd_db_umbenennen)
 
     p = dbsub.add_parser("units", help="Übersicht über alle Units")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")

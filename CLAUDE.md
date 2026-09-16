@@ -84,6 +84,28 @@ Einordnung weg soll. Eine leere Angabe heisst „nichts gesagt", nicht „leer
 machen". Auch die Reihenfolge der Registratur bleibt — sonst steht die
 Auswahl nach jedem Import anders da. Zwei Tests wachen darüber.
 
+### Eine Datenbank umbenennen
+
+```bash
+vocabmaster db umbenennen EnglishPlus3 --titel "English Plus 2nd edition, Level 3"
+vocabmaster db umbenennen EnglishPlus3 --name EP3 --beschreibung ""
+```
+
+Geändert wird **nur die Registratur**: Das Verzeichnis bleibt, wo es ist,
+die Wortliste darin wird nicht angefasst, und Vokabellisten und Prüfungen
+hängen ohnehin an der Prüfsumme, nicht am Namen. `None` heisst „nicht
+angegeben", `""` heisst „leer machen" — beim Umbenennen ist eine leere
+Einordnung eine Absicht. Eine vergebene Kennung, eine mit Leerzeichen und
+die Kennung des Grundeintrags werden abgewiesen: Der ist fest im Code
+hinterlegt und käme beim nächsten Lesen unter seinem alten Namen zurück —
+zwei Einträge auf dasselbe Verzeichnis. Titel und Einordnung des
+Grundeintrags lassen sich ändern.
+
+Auf der Seite steht unter der Datenbankwahl der Griff **„umbenennen"**. Er
+öffnet ein Fenster mit den drei Feldern vorbelegt und schreibt daraus den
+Auftrag (`art: "umbenennen"`) — die Seite ändert die Registratur nicht
+selbst. Sieben Tests.
+
 ### Ein Import darf eine gute Datenbank nie beschädigen
 
 Drei Wege, auf denen das passieren könnte, sind zu. Je einer ist als Test
@@ -965,6 +987,13 @@ jemand nachsehen muss:
 | `stand` | `abgelegt` · `ausgeloest` · `arbeit` · `wartet` · `fehler` · `erledigt` |
 | `schritt` | ein Satz, was gerade läuft — oder woran es hängt |
 | `schritte` | die Schrittfolge, je `{text, stand}`; der Balken zählt die erledigten |
+
+**Ein erledigter Auftrag muss nicht ewig im Buch stehen.** Jede Zeile
+trägt ein „×", das `ausgeblendet: true` in dasselbe Dokument schreibt — so
+bleibt sie nach dem Neuladen weg, und der Chat sieht es auch. Solange an
+einem Auftrag gearbeitet wird, gibt es das „×" nicht. Weg ist nichts: Eine
+Fusszeile zählt die ausgeblendeten und holt sie auf Klick zurück, jede mit
+„↩". Ein Test wacht darüber.
 
 **Die Schritte stehen im Auftrag, nicht in der Seite.** Was zu einem Auftrag
 gehört, weiss der Chat, der ihn ausführt; stünde die Folge in `vorlage.html`,

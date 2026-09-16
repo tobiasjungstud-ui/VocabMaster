@@ -563,3 +563,22 @@ def test_die_schritte_stehen_im_auftrag_nicht_in_der_seite():
         assert erfunden not in körper, (
             f"{erfunden!r} steht in der Seite statt im Auftrag"
         )
+
+
+def test_erledigte_auftraege_lassen_sich_ausblenden():
+    """Ein erledigter Auftrag muss nicht ewig im Buch stehen.
+
+    Ausgeblendet wird im Dokument selbst - so bleibt es nach dem Neuladen
+    weg -, und nie, solange daran gearbeitet wird. Weg ist er nicht: Eine
+    Zeile zählt die ausgeblendeten und holt sie zurück.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("async function auftragAusblenden("):]
+    körper = körper[:körper.index("\n}")]
+    assert '.update({ausgeblendet: weg})' in körper
+    zeile = seite[seite.index("function auftragszeile("):]
+    zeile = zeile[:zeile.index("\n}")]
+    assert 'stand === "arbeit" ? "" :' in zeile
+    buch = seite[seite.index("function zeichneBuch()"):]
+    buch = buch[:buch.index("\n}")]
+    assert "state.buchAlle" in buch and "anzeigen" in buch

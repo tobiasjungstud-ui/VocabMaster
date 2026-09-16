@@ -103,3 +103,75 @@ def test_eine_nicht_importierte_datenbank_meldet_sich_als_leer(monkeypatch, tmp_
     assert not leer.vorhanden
     assert leer.units == 0
     assert leer.quelle == {}
+
+
+# ---------------------------------------------------------------- umbenennen
+@pytest.fixture
+def sandkasten(monkeypatch, tmp_path):
+    register = tmp_path / "datenbanken.json"
+    monkeypatch.setattr(dbs, "REGISTER", register)
+    monkeypatch.setattr(dbs, "PACKAGE_ROOT", tmp_path)
+    (tmp_path / "data" / "probe").mkdir(parents=True)
+    dbs.eintragen("Probe", tmp_path / "data" / "probe", "Ein Lehrmittel", "2. OS")
+    return register
+
+
+def test_umbenennen_aendert_nur_den_titel(sandkasten):
+    d = dbs.umbenennen("Probe", titel="Anderer Titel")
+    assert d.name == "Probe" and d.titel == "Anderer Titel"
+    assert d.beschreibung == "2. OS", "die Einordnung ging verloren"
+
+
+def test_umbenennen_leert_die_einordnung_nur_auf_wunsch(sandkasten):
+    """``None`` heisst „nicht angegeben", ``""`` heisst „leer machen"."""
+    assert dbs.umbenennen("Probe", titel="T").beschreibung == "2. OS"
+    assert dbs.umbenennen("Probe", beschreibung="").beschreibung == ""
+
+
+def test_umbenennen_der_kennung_laesst_das_verzeichnis_stehen(sandkasten):
+    vorher = dbs.finde("Probe").verzeichnis
+    d = dbs.umbenennen("Probe", neu="EP3")
+    assert d.name == "EP3"
+    assert d.verzeichnis == vorher, "die Kennung hat das Verzeichnis verschoben"
+    assert dbs.finde("Probe") is None
+    assert dbs.finde("ep3") is not None
+
+
+def test_umbenennen_verweigert_eine_vergebene_kennung(sandkasten, tmp_path):
+    (tmp_path / "data" / "zwei").mkdir()
+    dbs.eintragen("Zwei", tmp_path / "data" / "zwei", "Zwei")
+    with pytest.raises(ValueError, match="gibt es schon"):
+        dbs.umbenennen("Probe", neu="zwei")
+
+
+def test_umbenennen_verweigert_die_kennung_des_grundeintrags(sandkasten):
+    """Er käme beim nächsten Lesen unter seinem alten Namen zurück."""
+    with pytest.raises(ValueError, match="fest im Code"):
+        dbs.umbenennen(dbs.GRUNDEINTRAG["name"], neu="EP4")
+    # Titel und Einordnung schon.
+    d = dbs.umbenennen(dbs.GRUNDEINTRAG["name"], titel="Neuer Titel")
+    assert d.titel == "Neuer Titel"
+    assert dbs.finde(dbs.GRUNDEINTRAG["name"]) is not None
+
+
+def test_umbenennen_verweigert_unform_und_unbekanntes(sandkasten):
+    with pytest.raises(ValueError, match="Kennung"):
+        dbs.umbenennen("Probe", neu="EP 3")
+    with pytest.raises(ValueError, match="nicht registriert"):
+        dbs.umbenennen("Gibtsnicht", titel="x")
+    with pytest.raises(ValueError, match="Nichts angegeben"):
+        dbs.umbenennen("Probe")
+
+
+def test_eintragen_verweigert_eine_kennung_mit_leerzeichen(sandkasten, tmp_path):
+    """Sie würde --datenbank-Argument und Verzeichnisname."""
+    with pytest.raises(ValueError, match="Kennung"):
+        dbs.eintragen("EP 3", tmp_path / "data" / "ep_3", "x")
+
+
+def test_cli_umbenennen(sandkasten, capsys):
+    from vocabmaster import cli
+    assert cli.main(["db", "umbenennen", "Probe", "--name", "EP3",
+                     "--titel", "English Plus 3"]) == 0
+    assert "heisst jetzt 'EP3'" in capsys.readouterr().out
+    assert cli.main(["db", "umbenennen", "EP3"]) == 2   # nichts angegeben

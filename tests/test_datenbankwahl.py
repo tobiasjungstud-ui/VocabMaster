@@ -148,3 +148,27 @@ def test_ein_paket_gehoert_zur_datenbank_seiner_pruefsumme():
     # überall.
     assert not export._gehoert_dazu({"unit": 1, "quelle": {}}, db)
     assert not export._gehoert_dazu({"unit": 1}, db)
+
+
+def test_der_datenbankhinweis_zaehlt_die_units_nicht_die_liste():
+    """„[object Object],[object Object] Units" - die Liste statt der Zahl."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    koerper = seite[seite.index("function zeichneDatenbankwahl()"):]
+    koerper = koerper[:koerper.index("\n}")]
+    assert "(d.anzahl_units || 0)" in koerper
+    assert "(d.units || 0)" not in koerper
+
+
+def test_die_seite_kann_eine_datenbank_umbenennen_lassen():
+    """Als Auftrag - die Seite schreibt die Registratur nicht selbst."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert 'id="umbenennenAuf"' in seite and 'id="umbenennen"' in seite
+    koerper = seite[seite.index("function umbenennenBefehl("):]
+    koerper = koerper[:koerper.index("\n}")]
+    assert "vocabmaster db umbenennen" in koerper
+    # Die Grunddatenbank behält ihre Kennung - dieselbe Regel wie in Python.
+    einwand = seite[seite.index("function umbenennenEinwand("):]
+    einwand = einwand[:einwand.index("\n}")]
+    assert "DATA.aktive_datenbank" in einwand
+    # Und das Auftragsbuch weiss, wie so ein Auftrag heisst.
+    assert 'e.art === "umbenennen"' in seite

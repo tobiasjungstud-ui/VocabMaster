@@ -355,22 +355,22 @@ dialog#wortwahl::backdrop{background:rgba(23,26,34,.45)}
 .fensterleib{padding:14px 18px 18px; overflow:auto; min-height:0}
 
 /* ---------- Prüfungen ansehen ---------- */
-dialog#lehrmittel{
+dialog#lehrmittel, dialog#umbenennen{
   width:min(620px, 94vw); max-height:90vh; padding:0; border:0;
   border-radius:var(--r); background:var(--surface); color:var(--ink);
   box-shadow:0 24px 60px -20px rgba(23,26,34,.55);
   flex-direction:column; overflow:hidden;
 }
-dialog#lehrmittel[open]{display:flex}
-dialog#lehrmittel::backdrop{background:rgba(23,26,34,.45)}
-dialog#lehrmittel input[type=text]{
+dialog#lehrmittel[open], dialog#umbenennen[open]{display:flex}
+dialog#lehrmittel, dialog#umbenennen::backdrop{background:rgba(23,26,34,.45)}
+dialog#lehrmittel, dialog#umbenennen input[type=text]{
   width:100%; padding:8px 9px; background:var(--paper);
   border:1px solid var(--line-2); border-radius:var(--r); font-size:13px;
 }
 dialog#lehrmittel input[type=file]{
   width:100%; padding:7px 0; font-size:12.5px; color:var(--ink-2);
 }
-dialog#lehrmittel #dbName{font-family:var(--mono); font-size:12.5px}
+dialog#lehrmittel #dbName, dialog#umbenennen #umName{font-family:var(--mono); font-size:12.5px}
 .beilaeufig{color:var(--ink-3); font-weight:400}
 /* Ein Einwand, den man erst nach dem Klick sieht, kommt zu spät - er
    blinkt deshalb einmal auf, wenn man trotzdem drückt. */
@@ -568,6 +568,14 @@ td.satz{color:var(--ink-2); font-size:12.5px}
   margin-left:auto; font-family:var(--mono); font-size:10px; letter-spacing:.06em;
   text-transform:uppercase; flex:none;
 }
+.auftragskopf .weg{
+  flex:none; width:20px; height:20px; padding:0; line-height:1; cursor:pointer;
+  border:1px solid var(--line); border-radius:3px; background:var(--paper);
+  font-family:var(--mono); font-size:12px; color:var(--ink-3);
+}
+.auftragskopf .weg:hover{border-color:var(--accent); color:var(--accent)}
+.auftrag.ausgeblendet{opacity:.55}
+.liste-auftraege .buchfuss{border:0; background:none; padding:2px 0}
 .auftrag.fertig .stand{color:var(--ok)}
 .auftrag.laeuft .stand{color:var(--accent)}
 .auftrag.haengt .stand{color:var(--crit)}
@@ -627,6 +635,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
         <section>
           <select id="datenbank"></select>
           <p class="hinweis" id="dbhinweis"></p>
+          <button class="zurueck" id="umbenennenAuf" type="button">umbenennen</button>
           <button class="knopf breit" id="lehrmittelAuf" type="button">＋ Neues Lehrmittel</button>
         </section>
       </div>
@@ -863,6 +872,31 @@ td.satz{color:var(--ink-2); font-size:12.5px}
   </div>
 </dialog>
 
+<dialog id="umbenennen" aria-labelledby="umbenennenTitel">
+  <div class="fensterkopf">
+    <h2 id="umbenennenTitel">Datenbank umbenennen</h2>
+    <button class="knopf" id="umZu" type="button">Schliessen</button>
+  </div>
+  <div class="fensterleib">
+    <p class="pruefhinweis" style="margin-top:0" id="umhinweis"></p>
+    <div class="feld"><label for="umTitel">Titel des Lehrmittels</label>
+      <input type="text" id="umTitel" autocomplete="off"></div>
+    <div class="feld" style="margin-top:10px"><label for="umBeschreibung">Eine Zeile zur Einordnung</label>
+      <input type="text" id="umBeschreibung" placeholder="leer lassen, um sie zu löschen" autocomplete="off"></div>
+    <div class="feld" style="margin-top:12px">
+      <label for="umName">Kennung — so heisst das Verzeichnis
+        <span class="beilaeufig" id="umnamehinweis"></span></label>
+      <input type="text" id="umName" autocomplete="off"></div>
+    <div class="befehl" id="umbefehl" style="margin-top:14px"></div>
+    <p class="warnband" id="umwarnung" hidden></p>
+    <div class="knopfreihe">
+      <button class="knopf haupt" id="umAusloesen" type="button">Auftrag auslösen</button>
+      <button class="knopf" id="umKopieren" type="button">Befehl kopieren</button>
+    </div>
+    <div class="status" id="umstatus"></div>
+  </div>
+</dialog>
+
 <dialog id="pruefungsfenster" aria-labelledby="pruefungsTitel">
   <div class="fensterkopf">
     <h2 id="pruefungsTitel">Prüfungen</h2>
@@ -986,7 +1020,7 @@ function luecken(auswahl, anzahl){
 const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", name:"Niveau B"}};
 
 /* ---------------- Zustand ---------------- */
-const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1,
+const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, buchAlle:false,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
                listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
@@ -1309,6 +1343,116 @@ function lehrmittelEinwand(d){
   if(!/\.xlsx?$/i.test(d.datei))
     return {feld:"dbDatei", text:"Das ist keine Excel-Datei."};
   return null;
+}
+
+/* ---------------- Datenbank umbenennen ----------------
+   Kennung, Titel oder Einordnung - nur die Registratur. Die Wortliste
+   bleibt, wie sie ist, und die Pakete hängen an ihrer Prüfsumme, nicht am
+   Namen. Auch das ist ein Auftrag an den Chat: Die Seite schreibt die
+   Registratur nicht selbst. */
+function umbenennenDaten(){
+  return {
+    art: "umbenennen",
+    alt: state.datenbank,
+    name: $("umName").value.trim(),
+    titel: $("umTitel").value.trim(),
+    beschreibung: $("umBeschreibung").value.trim(),
+    erzeugt: new Date().toISOString(),
+  };
+}
+
+function umbenennenEinwand(d){
+  const bisher = gewaehlteDatenbank() || {};
+  const andere = (DATA.datenbanken || [])
+    .filter(x => x.name.toLowerCase() !== d.alt.toLowerCase())
+    .map(x => x.name.toLowerCase());
+  if(!d.name)
+    return {feld:"umName", text:"Die Kennung darf nicht leer sein."};
+  if(!NAMENSFORM.test(d.name))
+    return {feld:"umName", text:"Die Kennung wird zum Verzeichnisnamen: " +
+            "Buchstabe am Anfang, danach Buchstaben, Ziffern, - oder _, " +
+            "keine Leerzeichen."};
+  if(d.name.toLowerCase() !== d.alt.toLowerCase() && andere.includes(d.name.toLowerCase()))
+    return {feld:"umName", text:"„" + d.name + "“ gibt es schon."};
+  if(d.name !== d.alt && d.alt === DATA.aktive_datenbank)
+    return {feld:"umName", text:"Die Kennung der Grunddatenbank ist fest im " +
+            "Code hinterlegt — Titel und Einordnung lassen sich ändern, " +
+            "die Kennung nicht."};
+  if(!d.titel)
+    return {feld:"umTitel", text:"Der Titel fehlt — er steht in der Auswahl."};
+  if(d.name === d.alt && d.titel === (bisher.titel || "") &&
+     d.beschreibung === (bisher.beschreibung || ""))
+    return {feld:"umTitel", text:"Nichts geändert."};
+  return null;
+}
+
+function umbenennenBefehl(d){
+  const bisher = gewaehlteDatenbank() || {};
+  const anf = t => '"' + String(t).replace(/"/g, "'") + '"';
+  const teile = [];
+  if(d.name !== d.alt) teile.push("--name " + d.name);
+  if(d.titel !== (bisher.titel || "")) teile.push("--titel " + anf(d.titel));
+  if(d.beschreibung !== (bisher.beschreibung || ""))
+    teile.push("--beschreibung " + anf(d.beschreibung));
+  return "Datenbank " + d.alt + " umbenennen — nur die Registratur, die " +
+    "Wortliste bleibt:\n\nvocabmaster db umbenennen " + d.alt + " " +
+    teile.join(" ") + "\n\nDanach werkstatt/export.py und " +
+    "werkstatt/bauen.py laufen lassen und die Seite neu veröffentlichen. " +
+    "Erwartet: die Umbenennung — keine Wortliste wird neu eingelesen, " +
+    "keine Vokabelliste, keine Prüfung.";
+}
+
+function zeichneUmbenennen(){
+  const d = umbenennenDaten();
+  const einwand = umbenennenEinwand(d);
+  $("umwarnung").textContent = einwand ? einwand.text : "";
+  $("umwarnung").hidden = !einwand;
+  $("umnamehinweis").textContent = d.alt === DATA.aktive_datenbank
+    ? "— fest, weil Grunddatenbank" : (d.name === d.alt ? "— unverändert" : "— neu");
+  $("umbefehl").textContent = einwand
+    ? "Sobald oben alles steht, steht hier der Befehl."
+    : umbenennenBefehl(d);
+}
+
+function umMelde(text, art){
+  const z = $("umstatus");
+  z.textContent = text;
+  z.className = "status" + (art ? " " + art : "");
+}
+
+function umStockt(einwand){
+  const band = $("umwarnung");
+  band.classList.remove("merken");
+  void band.offsetWidth;
+  band.classList.add("merken");
+  umMelde(einwand.text, "fehler");
+  const feld = $(einwand.feld);
+  if(feld) feld.focus();
+}
+
+function umbenennenAuf(){
+  const d = gewaehlteDatenbank() || {};
+  $("umTitel").value = d.titel || "";
+  $("umBeschreibung").value = d.beschreibung || "";
+  $("umName").value = d.name || "";
+  $("umName").disabled = d.name === DATA.aktive_datenbank;
+  $("umhinweis").textContent = "Geändert wird nur, wie die Datenbank heisst. " +
+    "Ihre Wortliste, ihre Themen und alle Vokabellisten und Prüfungen bleiben, " +
+    "wie sie sind — die hängen an der Prüfsumme, nicht am Namen.";
+  umMelde("");
+  zeichneUmbenennen();
+  if(!$("umbenennen").open) $("umbenennen").showModal();
+  $("umTitel").focus();
+}
+
+async function umbenennenAusloesen(){
+  const d = umbenennenDaten();
+  const einwand = umbenennenEinwand(d);
+  if(einwand){ umStockt(einwand); return; }
+  const fertig = await ausloesen(
+    Object.assign({befehl: umbenennenBefehl(d)}, d),
+    "um-" + d.alt.toLowerCase(), $("umAusloesen"), umMelde);
+  if(fertig) umMelde("Ausgelöst.", "ok");
 }
 
 /* ---------------- Die Wortliste wirklich hinaufreichen ----------------
@@ -2141,6 +2285,9 @@ function standVon(e){
 function auftragsTitel(e){
   if(e.art === "datenbank")
     return "Neues Lehrmittel " + (e.name || "");
+  if(e.art === "umbenennen")
+    return "Umbenennen " + (e.alt || "") +
+           (e.name && e.name !== e.alt ? " → " + e.name : "");
   return "Unit " + e.unit;
 }
 
@@ -2159,11 +2306,39 @@ function buchSetzen(eintraege){
   zeichneBuch();
 }
 
+/* Ein erledigter Auftrag muss nicht ewig im Buch stehen. „×" schreibt
+   `ausgeblendet: true` in dasselbe Dokument - so bleibt er nach dem
+   Neuladen weg und der Chat sieht es auch. Weg ist er damit nicht: Eine
+   Zeile zählt die ausgeblendeten und holt sie auf Wunsch zurück. */
 function zeichneBuch(){
   const kasten = $("auftragsbuch");
-  if(!buch.length){ kasten.innerHTML = ""; return; }
   kasten.innerHTML = "";
-  for(const e of buch.slice(0, 8)) kasten.appendChild(auftragszeile(e));
+  if(!buch.length) return;
+  const sichtbar = state.buchAlle ? buch : buch.filter(e => !e.ausgeblendet);
+  const versteckt = buch.length - buch.filter(e => !e.ausgeblendet).length;
+  for(const e of sichtbar.slice(0, 8)) kasten.appendChild(auftragszeile(e));
+  if(versteckt){
+    const li = document.createElement("li");
+    li.className = "buchfuss";
+    const k = document.createElement("button");
+    k.type = "button"; k.className = "zurueck";
+    k.textContent = state.buchAlle
+      ? "ausgeblendete wieder verbergen"
+      : versteckt + (versteckt === 1 ? " ausgeblendeter Auftrag" : " ausgeblendete Aufträge") + " anzeigen";
+    k.addEventListener("click", () => { state.buchAlle = !state.buchAlle; zeichneBuch(); });
+    li.appendChild(k);
+    kasten.appendChild(li);
+  }
+}
+
+async function auftragAusblenden(e, weg){
+  if(!db || !e.id) return;
+  try{
+    await db.doc("auftraege/" + e.id).update({ausgeblendet: weg});
+  }catch(fehler){
+    melde("Ausblenden hat nicht geklappt" +
+          (fehler && fehler.message ? " (" + fehler.message + ")" : "") + ".", "fehler");
+  }
 }
 
 function auftragszeile(e){
@@ -2180,10 +2355,13 @@ function auftragszeile(e){
     '<div class="auftragskopf">' +
       "<span class='wann'>" + wann + "</span>" +
       "<span class='was'>" + esc(auftragsTitel(e)) + "</span>" +
-      "<span class='womit'>" + esc(e.art === "datenbank"
-        ? (e.titel || "") : (e.teile || []).map(t => t.text).join(", ")) +
+      "<span class='womit'>" + esc(e.art === "datenbank" ? (e.titel || "") : e.art === "umbenennen" ? (e.titel || "") : (e.teile || []).map(t => t.text).join(", ")) +
       "</span>" +
       "<span class='stand'>" + s.text + "</span>" +
+      (stand === "arbeit" ? "" :
+        "<button type='button' class='weg' title='" +
+        (e.ausgeblendet ? "wieder einblenden" : "ausblenden") + "'>" +
+        (e.ausgeblendet ? "↩" : "×") + "</button>") +
     "</div>" +
     '<div class="balken"><span style="width:' +
       Math.round(Math.max(0.04, anteil) * 100) + '%"></span></div>' +
@@ -2193,6 +2371,9 @@ function auftragszeile(e){
           '<li class="' + esc((x && x.stand) || "offen") + '">' +
           esc((x && x.text) || "") + "</li>").join("") + "</ol>"
       : "");
+  const weg = li.querySelector(".weg");
+  if(weg) weg.addEventListener("click", () => auftragAusblenden(e, !e.ausgeblendet));
+  if(e.ausgeblendet) li.classList.add("ausgeblendet");
   return li;
 }
 
@@ -2480,7 +2661,11 @@ function zeichneDatenbankwahl(){
     ? "Eine Datenbank registriert. Weitere kommen mit „vocabmaster db import … "
       + "--name …\u201c dazu und stehen dann hier zur Wahl."
     : (d.quelle || "") + (d.importiert ? " · importiert " + d.importiert : "") +
-      " · " + (d.units || 0) + " Units";
+      // `units` ist die Unit-Liste selbst, seit jede Datenbank ihre Units
+      // mitbringt; die Zahl steht in `anzahl_units`. Stand hier die Liste,
+      // las man "[object Object],[object Object] Units".
+      " · " + (d.anzahl_units || 0) + " Units" +
+      (d.ohne_thema ? " · " + d.ohne_thema + " ohne Thema" : "");
 }
 
 /* Der Regler gehört zur Checkbox: ohne sie läuft alles wie bisher, und
@@ -2754,6 +2939,21 @@ $("herkunft").addEventListener("click", e => {
 $("wortwahlZu").addEventListener("click", () => $("wortwahl").close());
 $("pruefungenZu").addEventListener("click", () => $("pruefungsfenster").close());
 $("lehrmittelZu").addEventListener("click", () => $("lehrmittel").close());
+$("umbenennenAuf").addEventListener("click", umbenennenAuf);
+$("umZu").addEventListener("click", () => $("umbenennen").close());
+for(const k of ["umTitel", "umBeschreibung", "umName"])
+  $(k).addEventListener("input", zeichneUmbenennen);
+$("umAusloesen").addEventListener("click", umbenennenAusloesen);
+$("umKopieren").addEventListener("click", async () => {
+  const einwand = umbenennenEinwand(umbenennenDaten());
+  if(einwand){ umStockt(einwand); return; }
+  try{
+    await navigator.clipboard.writeText($("umbefehl").textContent);
+    umMelde("Befehl kopiert — im Chat einfügen.", "ok");
+  }catch(e){
+    umMelde("Kopieren hat der Browser abgelehnt. Text von Hand markieren.", "fehler");
+  }
+});
 $("lehrmittelAuf").addEventListener("click", () => {
   zeichneLehrmittel();
   if(!$("lehrmittel").open) $("lehrmittel").showModal();

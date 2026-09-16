@@ -768,11 +768,19 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <div class="feld"><label for="luecken">davon Lücken</label>
               <input type="number" id="luecken" min="2" max="6" value="4"></div>
           </div>
-          <div class="feld" style="margin-top:10px">
+          <!-- Bei einer **neuen** Liste gibt es nichts zu wählen: Ihre
+               Prüfungen sind zwangsläufig ihre ersten. -->
+          <div class="feld" id="fassungFeld" style="margin-top:10px">
             <label for="variante">Fassung</label>
             <select id="variante"></select>
-            <p class="hinweis" id="fassunghinweis"></p>
           </div>
+          <!-- Wie viele auf einmal. Nur dort, wo etwas Neues entsteht: Eine
+               bestehende Fassung gibt es genau einmal. -->
+          <div class="feld" id="fassungAnzahlFeld" style="margin-top:10px">
+            <label for="fassungAnzahl">Wie viele Fassungen auf einmal</label>
+            <input type="number" id="fassungAnzahl" min="1" max="12" value="1">
+          </div>
+          <p class="hinweis" id="fassunghinweis"></p>
         </div>
         </section>
       </div>
@@ -1020,7 +1028,7 @@ function luecken(auswahl, anzahl){
 const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", name:"Niveau B"}};
 
 /* ---------------- Zustand ---------------- */
-const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, buchAlle:false,
+const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, buchAlle:false,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
                listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
@@ -2078,6 +2086,13 @@ function gewaehlteTeile(){
    ist. Ein Regler für den Anspruch der Prüfung, wenn keine Prüfung bestellt
    ist, stellt eine Frage, die niemand gestellt hat; und wer ihn verschiebt,
    glaubt danach, etwas eingestellt zu haben. */
+/* Entsteht eine Fassung neu? Zwei Wege führen dahin: die Wahl "＋ neue
+   Fassung erstellen" und eine neue Liste, deren Prüfungen ihre ersten
+   sind. An einer Stelle beantwortet, damit beide Wege dasselbe heissen. */
+function neueFassungBestellt(){
+  return legtNeueListeAn() || state.variante === 0;
+}
+
 function bestellt(){
   const t = gewaehlteTeile();
   const niv = n => t.some(x => x.art === "pruefung" && x.niveau === n);
@@ -2086,6 +2101,13 @@ function bestellt(){
     pruefungen: t.some(x => x.art === "pruefung"),
     A: niv("A"), B: niv("B"),
     teil: n => t.some(x => x.art === "pruefung" && x.teil === n),
+    neueListe: legtNeueListeAn(),
+    // Zu einer neuen Liste gibt es keine Fassung zu wählen: Ihre Prüfungen
+    // sind zwangsläufig ihre ersten.
+    fassungswahl: t.some(x => x.art === "pruefung") && !legtNeueListeAn(),
+    // Eine neue Liste bringt zwangsläufig neue Fassungen mit - ihre
+    // ersten. Dort ist "wie viele auf einmal" dieselbe Frage.
+    neueFassung: t.some(x => x.art === "pruefung") && neueFassungBestellt(),
   };
 }
 
@@ -2104,6 +2126,13 @@ function zeichneSichtbarkeit(){
   $("textreglerA").hidden = !b.A;
   $("textreglerB").hidden = !b.B;
   $("teile").hidden = !b.pruefungen;
+  // Zu einer neuen Liste gibt es keine Fassung zu wählen: Ihre Prüfungen
+  // sind ihre ersten. Das Feld stünde da und liesse eine Wahl offen,
+  // die es nicht gibt.
+  $("fassungFeld").hidden = !b.fassungswahl;
+  // Eine bestehende Fassung gibt es genau einmal - die Frage "wie
+  // viele" stellt sich nur dort, wo etwas Neues entsteht.
+  $("fassungAnzahlFeld").hidden = !b.neueFassung;
 }
 
 function auftrag(){
@@ -2119,8 +2148,11 @@ function auftrag(){
     textVorgabe:{A:textVorgabe("A"), B:textVorgabe("B")},
     eigenerText:state.textEigen,
     textziele:{A:textZiele("A"), B:textZiele("B")},
-    variante:state.variante === 0 ? naechsteFassung() : state.variante,
-    neueFassung:state.variante === 0,
+    variante:neueFassungBestellt() ? naechsteFassung() : state.variante,
+    neueFassung:neueFassungBestellt(),
+    // Mehrere Fassungen auf einmal - fortlaufend ab der nächsten freien.
+    // Bei einer bestehenden Fassung ist die Frage gegenstandslos.
+    fassungAnzahl:neueFassungBestellt() ? Math.max(1, state.fassungAnzahl) : 1,
     anzahl:state.anzahl, luecken:state.luecken,
     datenbank:state.datenbank,
     mehrereDatenbanken:(DATA.datenbanken || []).length > 1,
@@ -2139,7 +2171,8 @@ function auftrag(){
     dazu:[...state.dazu], weg:[...state.weg], fest:[...state.fest],
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
-    dokumente:stueckzahl(teile),
+    dokumente:stueckzahl(
+      teile, state.variante === 0 ? Math.max(1, state.fassungAnzahl) : 1),
     erzeugt:new Date().toISOString()
   };
 }
@@ -2147,10 +2180,29 @@ function auftrag(){
 function befehlstext(a){
   if(!a.teile.length) return "Nichts ausgewählt — links mindestens einen Punkt ankreuzen.";
   const zeilen = ["Unit " + a.unit + ": " + a.teile.map(t => t.text).join(", ") + "."];
-  if(a.neueFassung)
+  const unterschied = "Jede teilt Lücken und Übersetzungen anders auf; " +
+    "**je Fassung ein eigener Lückentext**, sonst sind es zweimal dieselbe " +
+    "Prüfung. Überschneidungen bei den geprüften Wörtern sind in Ordnung.";
+  if(a.fassungAnzahl > 1 && a.neueListe){
+    // Zu einer neuen Liste entsteht Fassung 1 mit dem Paket selbst; die
+    // weiteren kommen danach aus 'fassung'. Das ist ein Befehl weniger,
+    // als es aussieht - und die Nummer, die er bekommt, steht hier.
+    zeilen.push("Von jeder bestellten Prüfung " + a.fassungAnzahl +
+                " Fassungen: Fassung 1 entsteht mit dem Paket, Fassung 2 " +
+                "bis " + a.fassungAnzahl + " danach mit 'vocabmaster " +
+                "fassung … --anzahl " + (a.fassungAnzahl - 1) + "'. " +
+                unterschied);
+  } else if(a.fassungAnzahl > 1){
+    const bis = a.variante + a.fassungAnzahl - 1;
+    zeilen.push("Davon " + a.fassungAnzahl + " neue Fassungen auf einmal " +
+                "anlegen (Fassung " + a.variante + " bis " + bis + "; die " +
+                "bestehenden bleiben) — 'vocabmaster fassung … --anzahl " +
+                a.fassungAnzahl + "'. " + unterschied);
+  } else if(a.neueFassung && !a.neueListe){
     zeilen.push("Davon eine neue Fassung anlegen (wird als Fassung " +
                 a.variante + " hinterlegt; die bestehenden bleiben). " +
                 "Überschneidungen mit früheren Fassungen sind in Ordnung.");
+  }
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
       a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
@@ -2235,9 +2287,14 @@ function befehlstext(a){
 /* Wieviele Dateien am Ende dastehen. Jede Prüfung bringt ihr Lösungsblatt
    mit, die Vokabelliste nicht - das ist der häufigste Rechenfehler beim
    Überfliegen und gehört deshalb ausgeschrieben in den Auftrag. */
-function stueckzahl(teile){
-  const pruefungen = teile.filter(t => t.art === "pruefung").length;
-  const listen = teile.length - pruefungen;
+function stueckzahl(teile, fassungen){
+  // Zwei Angaben, nicht der ganze Auftrag: Die Zahl wird einmal beim Bauen
+  // des Auftrags gebraucht, wo es ihn noch nicht gibt, und einmal danach.
+  // Mehrere Fassungen vervielfachen jede angekreuzte Prüfung - die
+  // Vokabelliste nicht: Sie hat mit Fassungen nichts zu tun.
+  const pruefungen = teile.filter(t => t.art === "pruefung").length
+                     * Math.max(1, fassungen || 1);
+  const listen = teile.filter(t => t.art !== "pruefung").length;
   const teilchen = [];
   if(listen) teilchen.push(listen === 1 ? "die Vokabelliste" : listen + " Listen");
   if(pruefungen)
@@ -2254,7 +2311,7 @@ function zeichneAuftrag(){
   $("bauen").disabled = a.teile.length === 0;
   $("bauenHinweis").textContent = a.teile.length === 0
     ? "Links auswählen, was entstehen soll."
-    : stueckzahl(a.teile) + ".";
+    : stueckzahl(a.teile, a.neueFassung ? a.fassungAnzahl : 1) + ".";
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
@@ -2637,7 +2694,13 @@ function fassungsliste(li){
     "Teil " + (f.teil === 1 ? "I" : "II") + " Niveau " + f.niveau +
     " als Fassung " + f.nummer);
 }
-function naechsteFassung(){ return Math.max(...fassungen()) + 1; }
+/* Die nächste freie Nummer - und bei einer **neuen** Liste die 1.
+   Eine frisch gewählte Liste hat noch keine Prüfung; ihre erste von der
+   Zählung der alten Liste weiterzuzählen ("Fassung 4" zu einer V3, die es
+   noch gar nicht gibt) wäre eine Nummer aus einer fremden Geschichte. */
+function naechsteFassung(){
+  return legtNeueListeAn() ? 1 : Math.max(...fassungen()) + 1;
+}
 
 function zeichneDatenbankwahl(){
   const wahl = $("datenbank"), liste = DATA.datenbanken || [];
@@ -2710,13 +2773,34 @@ function zeichneFassungswahl(){
   wahl.appendChild(o);
   wahl.value = String(state.variante);
   if(wahl.selectedIndex < 0){ state.variante = 1; wahl.value = "1"; }
-  $("fassunghinweis").textContent = state.variante === 0
-    ? "Wird als Fassung " + naechsteFassung() + " hinterlegt — mit Nummer, " +
-      "Datum und Listenabdruck. Die bestehenden bleiben unangetastet."
-    : "Eine Fassung ist eine weitere Ausgabe derselben Prüfung: dieselben " +
-      "60 Wörter, neuer Lückentext, andere Aufteilung von Lücken und " +
-      "Übersetzungen. Bereits hinterlegt: " +
-      (fassungsliste(anzeigeListe()).join(", ") || "nur die erste");
+  $("fassunghinweis").textContent = fassungshinweis();
+}
+
+/* Was unter der Fassungswahl steht - drei Lagen, drei Sätze. */
+function fassungshinweis(){
+  const wieviele = Math.max(1, state.fassungAnzahl);
+  const gemeinsam = "Jede bekommt eine eigene Nummer, einen eigenen " +
+    "Lückentext und eine andere Aufteilung von Lücken und Übersetzungen; " +
+    "zwei gleiche Prüfungen meldet „vocabmaster listen“ als Fehler.";
+  if(legtNeueListeAn())
+    return wieviele > 1
+      ? "Von jeder bestellten Prüfung entstehen " + wieviele +
+        " Fassungen — Fassung 1 bis " + wieviele + " zur neuen Liste V" +
+        neueVersion() + ". " + gemeinsam
+      : "Die Prüfungen zur neuen Liste V" + neueVersion() + " sind ihre " +
+        "ersten — Fassung 1. Weitere kommen später mit „＋ neue Fassung“ " +
+        "dazu, sobald die Liste steht.";
+  if(state.variante === 0)
+    return wieviele > 1
+      ? "Fassung " + naechsteFassung() + " bis " +
+        (naechsteFassung() + wieviele - 1) + " entstehen in einem Zug. " +
+        gemeinsam
+      : "Wird als Fassung " + naechsteFassung() + " hinterlegt — mit Nummer, " +
+        "Datum und Listenabdruck. Die bestehenden bleiben unangetastet.";
+  return "Eine Fassung ist eine weitere Ausgabe derselben Prüfung: " +
+    "dieselben 60 Wörter, neuer Lückentext, andere Aufteilung von Lücken " +
+    "und Übersetzungen. Bereits hinterlegt: " +
+    (fassungsliste(anzeigeListe()).join(", ") || "nur die erste");
 }
 
 function zeichneListenwahl(){
@@ -2903,9 +2987,17 @@ $("luecken").addEventListener("change", e => {
   e.target.value = state.luecken;
   zeichneTeile(); zeichneAuftrag();
 });
+$("fassungAnzahl").addEventListener("change", e => {
+  state.fassungAnzahl = Math.max(1, Math.min(12, +e.target.value || 1));
+  e.target.value = state.fassungAnzahl;
+  alles();
+});
 $("variante").addEventListener("change", e => {
+  // Ganz neu zeichnen, wie bei den Häkchen: An der Fassungswahl hängt
+  // auch, ob "wie viele auf einmal" überhaupt eine Frage ist. Wer nur die
+  // Wahl und den Auftrag neu zeichnet, lässt das Feld unsichtbar stehen.
   state.variante = +e.target.value;
-  zeichneFassungswahl(); zeichneAuftrag();
+  alles();
 });
 $("datenbank").addEventListener("change", e => {
   state.datenbank = e.target.value;

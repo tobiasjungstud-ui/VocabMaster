@@ -979,6 +979,35 @@ def pruefungswoerter(spec: dict[str, Any]) -> list[str]:
     return woerter
 
 
+def aufteilung(spec: dict[str, Any]) -> tuple[str, ...]:
+    """Welche Wörter einer Prüfung **Lücke** sind, in ihrer Reihenfolge.
+
+    Das ist neben dem Lückentext das Zweite, was zwei Fassungen derselben
+    Prüfung unterscheidet: Dieselben zwölf Wörter, aber andere vier davon
+    werden eingesetzt statt übersetzt. Zwei Fassungen mit derselben
+    Aufteilung **und** demselben Text sind zweimal dieselbe Prüfung.
+    """
+    return tuple(g.get("answer", "") for g in spec.get("task2", {}).get("gaps", []))
+
+
+def lueckentext(spec: dict[str, Any]) -> str:
+    """Der Lückentext einer Prüfung, auf das Vergleichbare gestutzt."""
+    return " ".join(str(spec.get("task2", {}).get("text", "")).split())
+
+
+def text_offen(spec: dict[str, Any]) -> bool:
+    """Ist der Lückentext noch gar nicht geschrieben?
+
+    Zwei Zustände sehen gleich aus und sind es nicht: ein Text, der fehlt,
+    und einer, der geschrieben wurde. Ein frisch angelegtes Paket trägt
+    einen Platzhalter mit ``TODO`` darin - drei Fassungen auf einmal tragen
+    also denselben. Das ist der normale offene Zustand und darf nicht als
+    "dreimal dieselbe Prüfung" gemeldet werden.
+    """
+    text = lueckentext(spec)
+    return not text or "TODO" in text.upper()
+
+
 def neue_fassung(
     pack: Pack,
     teil: int,

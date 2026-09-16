@@ -469,6 +469,40 @@ Ohne `--nummer` entsteht die nächste freie. Die Datei heisst
 `Unit01_V1_Test_PartI_NiveauA_Fassung3.docx`. Bestehende Fassungen werden
 nie überschrieben; `vocabmaster listen` zeigt alle.
 
+### Mehrere auf einmal — drei Reihen, drei Blätter
+
+```bash
+vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A --anzahl 3
+```
+
+Das legt **Fassung 2, 3 und 4** an, fortlaufend ab der nächsten freien.
+Jede bekommt die vorherigen als „frühere Fassungen" mit, deshalb teilt
+jede **anders auf**: andere vier der zwölf Wörter werden Lücke. Der Befehl
+sagt danach, ob das aufging — „Alle 3 Fassungen teilen verschieden auf"
+oder, wenn die Unit nicht mehr hergibt, „Die Rotation ist ausgeschöpft;
+dann muss der Lückentext den Unterschied allein tragen".
+
+`--nummer` und `--anzahl` schliessen sich aus: Mehrere Fassungen bekommen
+fortlaufende Nummern, nicht alle dieselbe.
+
+**Der Lückentext ist die zweite Hälfte der Arbeit und bleibt Sache des
+Chats.** Frisch angelegt tragen alle Fassungen denselben Platzhalter — das
+ist der offene Zustand, kein Fehler. Sobald aber zwei geschriebene Texte
+gleich sind, meldet `vocabmaster listen` **FEHLER**: „… haben denselben
+Lückentext - das ist zweimal dieselbe Prüfung." Gleiche Aufteilung bei
+verschiedenem Text ist eine **WARNUNG** — die Unit hat dann nicht mehr
+hergegeben.
+
+Auf der Seite steht das Zählfeld **„Wie viele Fassungen auf einmal"** unter
+der Fassungswahl. Es erscheint überall dort, wo etwas Neues entsteht: bei
+„＋ neue Fassung erstellen" und bei einer **neuen Vokabelliste**. Zu einer
+neuen Liste ist die Fassungswahl selbst weg — ihre Prüfungen sind
+zwangsläufig ihre ersten, und `naechsteFassung()` gibt dort die **1**
+zurück. Ohne diese Regel bekäme eine frische V3 die Nummer „Fassung 4",
+weitergezählt aus der Geschichte von **V1** — und ihr Lösungsschlüssel
+zeigte auf Wörter einer anderen Liste. Die Stückzahl im Auftrag
+vervielfacht die Prüfungen mit, die Vokabelliste nicht.
+
 ### Überschneidungen sind erlaubt
 
 **Das ist keine Ausnahme, sondern die Regel.** Alle Fassungen prüfen
@@ -947,6 +981,8 @@ gleich brauchen wird.
 | die Regler für Niveau B (beide Abschnitte) | keine Prüfung für Niveau B angekreuzt ist — und umgekehrt für A |
 | Teil I bzw. Teil II im Lineal | dieser Teil nicht angekreuzt ist |
 | die ganze Gruppe „Einstellungen der Vokabelliste" | „Neue Vokabelliste" nicht angekreuzt ist |
+| die Fassungswahl | „Neue Vokabelliste" angekreuzt ist — ihre Prüfungen sind ihre ersten |
+| „Wie viele Fassungen auf einmal" | weder eine neue Fassung noch eine neue Liste bestellt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher
 Liste sie hängen. War „neue Liste" gewählt und wird die Vokabelliste

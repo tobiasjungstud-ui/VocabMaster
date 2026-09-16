@@ -226,6 +226,8 @@ SICHTBARKEIT = {
     "textreglerA": "b.A",
     "textreglerB": "b.B",
     "teile": "b.pruefungen",
+    "fassungFeld": "b.fassungswahl",
+    "fassungAnzahlFeld": "b.neueFassung",
 }
 
 
@@ -251,6 +253,37 @@ def test_ein_kreuz_zeichnet_die_ganze_seite_neu():
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     assert '$(id).addEventListener("change", alles));' in seite
     assert "zeichneSichtbarkeit();" in seite[seite.index("function alles()"):]
+
+
+def test_eine_neue_liste_faengt_bei_fassung_eins_an():
+    """Eine Nummer aus einer fremden Geschichte.
+
+    V1 hat schon Fassung 2 und 3. Wer daneben eine neue Liste V3 bestellt,
+    bekäme ohne diese Regel "Fassung 4" - zu einer Liste, die noch gar
+    keine Prüfung hat. Die Nummer zählte die Fassungen einer **anderen**
+    Liste weiter, und der Lösungsschlüssel von Fassung 4 zeigte auf Wörter
+    aus V1.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("function naechsteFassung()"):]
+    körper = körper[:körper.index("\n}")]
+    assert "legtNeueListeAn() ? 1" in körper
+    # Und zu einer neuen Liste gibt es nichts zu wählen: keine Fassungswahl.
+    assert "fassungswahl: t.some(x => x.art === \"pruefung\") && " \
+           "!legtNeueListeAn()" in seite
+
+
+def test_die_fassungswahl_zeichnet_die_ganze_seite_neu():
+    """An ihr hängt, ob „wie viele auf einmal" überhaupt eine Frage ist.
+
+    Genau das war einmal vergessen: Der Horcher zeichnete nur die Wahl und
+    den Auftrag neu, und das Zählfeld blieb unsichtbar stehen - der Regler
+    war da, man sah ihn bloss nie.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index('$("variante").addEventListener'):]
+    körper = körper[:körper.index("});")]
+    assert "alles();" in körper, "die Fassungswahl zeichnet nicht alles neu"
 
 
 def test_die_uebersicht_fuehrt_nur_was_es_gibt():
@@ -582,3 +615,27 @@ def test_erledigte_auftraege_lassen_sich_ausblenden():
     buch = seite[seite.index("function zeichneBuch()"):]
     buch = buch[:buch.index("\n}")]
     assert "state.buchAlle" in buch and "anzeigen" in buch
+
+
+def test_mehrere_fassungen_auf_einmal():
+    """Drei Prüfungen für drei Reihen, in einem Zug — und alle verschieden.
+
+    Der Auftragssatz muss beides nennen: dass es mehrere sind, und dass
+    jede ihren **eigenen** Lückentext braucht. Zwei Fassungen mit
+    demselben Text sind zweimal dieselbe Prüfung.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert 'id="fassungAnzahl"' in seite
+    körper = seite[seite.index("function befehlstext("):]
+    körper = körper[:körper.index("\n}")]
+    assert "--anzahl" in körper
+    assert "je Fassung ein eigener Lückentext" in körper
+    # Und die Stückzahl zählt sie mit: drei Fassungen sind drei Prüfungen.
+    zahl = seite[seite.index("function stueckzahl("):]
+    zahl = zahl[:zahl.index("\n}")]
+    assert 'Math.max(1, fassungen || 1)' in zahl, \
+        "die Stückzahl vervielfacht die Prüfungen nicht"
+    assert 't.art !== "pruefung"' in zahl, \
+        "die Vokabelliste darf nicht mit vervielfacht werden"
+    # Die Vokabelliste aber nicht - sie hat mit Fassungen nichts zu tun.
+    assert 'teile.filter(t => t.art !== "pruefung").length' in zahl

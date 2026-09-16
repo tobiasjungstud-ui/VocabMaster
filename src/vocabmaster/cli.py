@@ -48,12 +48,15 @@ from .pack import (
     ARTEN_KURZ,
     Pack,
     _schwierigkeit,
+    aufteilung,
     ausgleichen,
+    lueckentext,
     neue_fassung,
     neue_liste,
     pack_filename,
     pruefungswoerter,
     scaffold,
+    text_offen,
     waehle_pruefungswoerter,
 )
 from .pool import plan_unit
@@ -529,6 +532,12 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
                         f"({abdruck} statt {pack.liste_abdruck})."
                     )
 
+        # Fassungen derselben Prüfung müssen sich unterscheiden - sonst
+        # sind es zwei Ausgaben derselben Prüfung, und wer beide austeilt,
+        # teilt zweimal dasselbe aus. Unterschieden wird an zweierlei: an
+        # der Aufteilung (welche Wörter Lücke sind) und am Lückentext.
+        befunde += _fassungen_unterscheiden_sich(unit, pakete)
+
         for abdruck, namen in listen.items():
             if len(namen) > 1:
                 befunde.append(
@@ -543,6 +552,60 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
                 f"{', '.join(f'V{v}' for v in luecken)} fehlt - "
                 "die Nummerierung hat eine Lücke."
             )
+    return befunde
+
+
+def _fassungen_unterscheiden_sich(unit: int, pakete: list[Pack]) -> list[str]:
+    """Zwei Fassungen derselben Prüfung, die dasselbe sind.
+
+    Eine Fassung ist die erneute Ausgabe **einer** Prüfung zu derselben
+    Liste. Was sie von ihren Geschwistern unterscheidet, ist genau
+    zweierlei: die Aufteilung in Lücke und Übersetzung, und der
+    Lückentext. Sind beide gleich, ist es dieselbe Prüfung zweimal - und
+    das merkt man erst, wenn die Klasse die Blätter nebeneinanderlegt.
+
+    Der Text zählt erst, wenn er geschrieben ist: Direkt nach
+    ``fassung --anzahl 3`` tragen alle drei denselben Platzhalter, und das
+    ist der normale offene Zustand, kein Fehler.
+    """
+    befunde: list[str] = []
+    # Je (Liste, Teil, Niveau) alle Fassungen nebeneinander.
+    nach_pruefung: dict[tuple[int, int, str], list[tuple[int, str, dict]]] = {}
+    for pack in pakete:
+        name = pack.pfad.name if pack.pfad else "?"
+        for (teil, niveau), spec in sorted(pack.exams.items()):
+            nach_pruefung.setdefault(
+                (pack.liste_version, teil, niveau), []
+            ).append((pack.fassung, name, spec))
+
+    for (version, teil, niveau), fassungen in sorted(nach_pruefung.items()):
+        if len(fassungen) < 2:
+            continue
+        wo = f"Unit {unit:02d} V{version} Teil {teil} Niveau {niveau}"
+
+        nach_text: dict[str, list[str]] = {}
+        nach_aufteilung: dict[tuple[str, ...], list[int]] = {}
+        for nummer, name, spec in fassungen:
+            nach_aufteilung.setdefault(aufteilung(spec), []).append(nummer)
+            if not text_offen(spec):  # ein offener Text zählt noch nicht
+                nach_text.setdefault(lueckentext(spec), []).append(
+                    f"{name} (Fassung {nummer})"
+                )
+
+        for namen in nach_text.values():
+            if len(namen) > 1:
+                befunde.append(
+                    f"FEHLER {wo}: {' und '.join(sorted(namen))} haben "
+                    "denselben Lückentext - das ist zweimal dieselbe Prüfung."
+                )
+        for nummern in nach_aufteilung.values():
+            if len(nummern) > 1:
+                befunde.append(
+                    f"WARNUNG {wo}: Fassung "
+                    f"{', '.join(str(n) for n in sorted(nummern))} teilen "
+                    "dieselben Wörter in Lücke und Übersetzung auf - dann "
+                    "muss der Lückentext den Unterschied allein tragen."
+                )
     return befunde
 
 
@@ -687,32 +750,89 @@ def cmd_fassung(args) -> int:
                 and anderer.exam(args.teil, prof.name)):
             vorhanden[anderer.fassung] = anderer
 
-    nummer = args.nummer
-    if nummer is None:
-        nummer = max([pack.fassung, *vorhanden]) + 1
-    elif nummer in vorhanden and not args.ueberschreiben:
-        print(f"Fassung {nummer} besteht bereits "
-              f"({vorhanden[nummer].pfad.name}) - mit --überschreiben "
+    anzahl = max(1, int(args.anzahl or 1))
+    if anzahl > 1 and args.nummer is not None:
+        print("--nummer und --anzahl schliessen sich aus: Mehrere Fassungen "
+              "bekommen fortlaufende Nummern, nicht alle dieselbe.")
+        return 1
+
+    erste = args.nummer
+    if erste is None:
+        erste = max([pack.fassung, *vorhanden]) + 1
+    elif erste in vorhanden and not args.ueberschreiben:
+        print(f"Fassung {erste} besteht bereits "
+              f"({vorhanden[erste].pfad.name}) - mit --überschreiben "
               "ersetzen oder --nummer weglassen für die nächste freie.")
         return 1
 
-    ziel = Path(args.verzeichnis) / pack_filename(
-        pack.unit, nummer, pack.liste_version
-    )
-    if ziel.exists() and not args.ueberschreiben:
-        print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
-        return 1
-
+    # Mehrere auf einmal: fortlaufende Nummern ab der ersten freien. Jede
+    # entstandene zählt für die nächste als "frühere Fassung" - sonst fiele
+    # für alle dieselbe Wahl.
+    nummern = list(range(erste, erste + anzahl))
+    gebaut: list[tuple[int, Path, Pack]] = []
     weitere = list(vorhanden.values())
-    neu = neue_fassung(pack, args.teil, prof.name, nummer, settings, weitere)
-    if args.textstufe is not None:
-        neu.data["pruefungen"][f"teil{args.teil}"][prof.name]["textstufe"] = (
-            args.textstufe
+
+    for nummer in nummern:
+        ziel = Path(args.verzeichnis) / pack_filename(
+            pack.unit, nummer, pack.liste_version
         )
-    neu.save(ziel)
+        if ziel.exists() and not args.ueberschreiben:
+            print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
+            return 1
+
+        neu = neue_fassung(pack, args.teil, prof.name, nummer, settings, weitere)
+        if args.textstufe is not None:
+            neu.data["pruefungen"][f"teil{args.teil}"][prof.name]["textstufe"] = (
+                args.textstufe
+            )
+        neu.save(ziel)
+        gebaut.append((nummer, ziel, neu))
+        weitere = [*weitere, neu]
+
+    return _fassungen_berichten(args, pack, prof, gebaut, vorhanden)
+
+
+def _fassungen_berichten(args, pack, prof, gebaut, vorhanden) -> int:
+    """Was entstanden ist - und ob es sich wirklich unterscheidet.
+
+    Eine Fassung unterscheidet sich von der anderen durch die Aufteilung
+    (welche Wörter Lücke werden) und durch den Lückentext. Die Aufteilung
+    steht schon hier fest; ob die Texte verschieden werden, entscheidet
+    sich erst beim Ausfüllen. Gesagt wird beides.
+    """
+    for nummer, ziel, neu in gebaut:
+        _eine_fassung_berichten(args, pack, prof, nummer, ziel, neu, vorhanden)
+
+    alle = [(p.fassung, aufteilung(p.exam(args.teil, prof.name)))
+            for p in [pack, *vorhanden.values(), *(n for _, _, n in gebaut)]]
+    doppelt = {}
+    for nr, auf in alle:
+        doppelt.setdefault(auf, []).append(nr)
+    gleich = [nrs for nrs in doppelt.values() if len(nrs) > 1]
+    if gleich:
+        for nrs in gleich:
+            print(f"\nAchtung: Fassung {', '.join(str(n) for n in sorted(nrs))} "
+                  "teilen dieselben Wörter in Lücke und Übersetzung auf.")
+        print("  Die Rotation ist ausgeschöpft - es gibt nicht genug Wörter "
+              "je Wortart, um jede Fassung anders aufzuteilen.")
+        print("  Dann muss der Lückentext den Unterschied allein tragen. "
+              "'vocabmaster listen' schlägt an, wenn auch er gleich bleibt.")
+    elif len(gebaut) > 1:
+        print(f"\nAlle {len(gebaut)} Fassungen teilen verschieden auf - "
+              "jede prüft andere Wörter als Lücke.")
+
+    if len(gebaut) > 1:
+        print("\nJetzt im Chat ausfüllen: **je Fassung ein eigener** "
+              "Lückentext. Zwei Fassungen mit demselben Text sind zweimal "
+              "dieselbe Prüfung; 'vocabmaster listen' meldet das als Fehler.")
+    return 0
+
+
+def _eine_fassung_berichten(args, pack, prof, nummer, ziel, neu, vorhanden) -> None:
 
     spec = neu.exam(args.teil, prof.name)
     woerter = pruefungswoerter(spec)
+    print()
     noten = [_schwierigkeit(e) for e in neu.entries(f"test{args.teil}")
              if e["englisch"] in woerter]
     schnitt = sum(noten) / len(noten) if noten else 0.0
@@ -724,7 +844,7 @@ def cmd_fassung(args) -> int:
           f"{len(spec['task2']['gaps'])} Lücken")
 
     # Überschnitt ist erlaubt - er wird berichtet, nicht begrenzt.
-    for p_alt in sorted([pack, *weitere], key=lambda x: x.fassung):
+    for p_alt in sorted([pack, *vorhanden.values()], key=lambda x: x.fassung):
         alt_w = set(pruefungswoerter(p_alt.exam(args.teil, prof.name)))
         gemeinsam = sorted(set(woerter) & alt_w)
         print(f"  gegenüber Fassung {p_alt.fassung}: {len(gemeinsam)} von "
@@ -743,12 +863,11 @@ def cmd_fassung(args) -> int:
           f"Lesbarkeit ≥ {ziele['min_flesch_ease']}, "
           f"Grad ≤ {ziele['max_flesch_grade']}, "
           f"Nebensätze ≤ {ziele['max_subordinators_per_sentence']} je Satz")
-    print(f"\nJetzt im Chat ausfüllen: der Lückentext in "
+    print(f"  Lücken: {', '.join(aufteilung(spec))}")
+    print(f"  Auszufüllen: der Lückentext in "
           f"pruefungen.teil{args.teil}.{prof.name}.task2.text "
-          f"({len(spec['task2']['gaps'])} Lücken) - er ist es, der diese "
-          "Fassung von den anderen unterscheidet.")
-    print(f"Danach 'vocabmaster prüfen {ziel} --nur test'.")
-    return 0
+          f"({len(spec['task2']['gaps'])} Lücken).")
+    print(f"  Danach 'vocabmaster prüfen {ziel} --nur test'.")
 
 
 def cmd_pruefen(args) -> int:
@@ -921,6 +1040,10 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--niveau", choices=list(NIVEAUS), required=True)
     p.add_argument("--nummer", type=int, default=None,
                    help="Nummer der Fassung (Vorgabe: die nächste freie)")
+    p.add_argument("--anzahl", type=int, default=1,
+                   help="so viele Fassungen auf einmal, fortlaufend numeriert "
+                        "(jede teilt Lücken und Übersetzungen anders auf; "
+                        "die Lückentexte entstehen im Chat)")
     p.add_argument("--woerter", type=int,
                    help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
     p.add_argument("--luecken", type=int,

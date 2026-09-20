@@ -471,6 +471,14 @@ def test_die_knoepfe_sind_nie_abgeschaltet():
         assert f'$("{knopf}").disabled' not in körper, \
             f"{knopf} wird abgeschaltet — der Klick ginge wieder verloren"
 
+    # Und der grosse Knopf in der Leiste ebenso. Er war einmal abgeschaltet
+    # **und** ohne Horcher: Er sah aus wie der Hauptknopf, und ein Klick
+    # darauf tat nichts.
+    assert '$("bauen").disabled' not in seite, \
+        "der Knopf in der Leiste wird abgeschaltet"
+    assert '$("ausloesen").disabled = ' not in seite, \
+        "der Auslöser wird abgeschaltet"
+
     # Und beide Wege führen über denselben lauten Einwand.
     stockt = seite[seite.index("function lehrmittelStockt("):]
     stockt = stockt[:stockt.index("\n}")]
@@ -597,6 +605,67 @@ def test_die_schritte_stehen_im_auftrag_nicht_in_der_seite():
         assert erfunden not in körper, (
             f"{erfunden!r} steht in der Seite statt im Auftrag"
         )
+
+
+def test_beide_knoepfe_loesen_denselben_auftrag_aus():
+    """„Auftrag erstellen" tat nichts - es war der auffälligere Knopf.
+
+    Der grosse in der Leiste und der in der Tafel bestellen dasselbe.
+    Einer von beiden hatte keinen Horcher, und weil er der grössere war,
+    wurde er geklickt: „wenn ich auf Auftrag erstellen klicke, passiert
+    nichts."
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    for knopf in ("bauen", "ausloesen"):
+        assert f'$("{knopf}").addEventListener("click"' in seite, \
+            f"{knopf} hat keinen Horcher"
+    # Beide gehen über dieselbe Stelle - sonst driften sie auseinander.
+    assert seite.count("auftragAusloesen($(") == 2
+
+    körper = seite[seite.index("async function auftragAusloesen("):]
+    körper = körper[:körper.index("\n}")]
+    # Ohne Verbindung wird kopiert, statt den Klick verfallen zu lassen.
+    assert "clipboard.writeText" in körper
+    assert "Nichts ausgewählt" in körper
+
+
+def test_die_seite_sagt_ob_sie_am_chat_haengt():
+    """Ein Knopf, der nicht kann, sieht aus wie einer, der gleich etwas tut."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert 'id="draht"' in seite
+    körper = seite[seite.index("function zeichneDraht()"):]
+    körper = körper[:körper.index("\n}")]
+    assert "mit claude.ai verbunden" in körper
+    assert "nicht verbunden" in körper
+    # Grün ist die Farbe für „steht" - sie kommt aus derselben Stelle wie
+    # jedes andere Grün der Seite.
+    assert ".draht.dran{color:var(--ok)}" in seite
+    assert "function verbunden(){ return Boolean(db && selbst); }" in seite
+
+
+def test_der_verlauf_zeigt_die_schritte_des_laufenden_auftrags():
+    """„Ausgelöst" und danach nichts mehr beantwortet nichts.
+
+    Die Schritte stehen im Auftrag; die Seite zeigt sie gross, solange
+    einer läuft, und sagt sonst, worauf gewartet wird.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert 'id="verlauf"' in seite and 'id="verlaufsleib"' in seite
+    körper = seite[seite.index("function zeichneVerlauf()"):]
+    körper = körper[:körper.index("\n}")]
+    assert "Array.isArray(e.schritte)" in körper, \
+        "der Verlauf erfindet seine Schritte selbst"
+    # Er hängt am Auftragsbuch, nicht am Arbeitsspeicher: Nach dem Auslösen
+    # lädt die Seite neu, und ein Protokoll in einer Variablen wäre weg.
+    buch = seite[seite.index("function zeichneBuch()"):]
+    buch = buch[:buch.index("\n}")]
+    assert "zeichneVerlauf()" in buch
+
+    # Die beiden Schritte der Übergabe stehen ebenfalls im Auftrag.
+    los = seite[seite.index("async function ausloesen("):]
+    los = los[:los.index("\n}")]
+    assert "schritte:[" in los
+    assert '{text:"Chat-Sitzung wecken", stand:"arbeit"}' in los
 
 
 def test_erledigte_auftraege_lassen_sich_ausblenden():

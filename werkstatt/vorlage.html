@@ -394,6 +394,9 @@ dialog#lehrmittel #dbName, dialog#umbenennen #umName{font-family:var(--mono); fo
   25%{transform:translateX(-3px)} 75%{transform:translateX(3px)}
 }
 .warnband.merken{animation:aufmerken .25s ease-in-out 2}
+/* Derselbe Wink unter dem grossen Knopf: Wer ihn drückt, ohne etwas
+   angekreuzt zu haben, soll sehen, wohin er schauen muss. */
+.bauen-hinweis.merken{animation:aufmerken .25s ease-in-out 2; color:var(--crit)}
 dialog#pruefungsfenster{
   width:min(860px, 94vw); max-height:90vh; padding:0; border:0;
   border-radius:var(--r); background:var(--surface); color:var(--ink);
@@ -565,6 +568,66 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 .knopf:hover{border-color:var(--accent); color:var(--accent)}
 .knopf[hidden]{display:none}
 .status{font-size:12.5px; color:var(--ink-3); margin-top:10px; min-height:18px}
+/* Die Leitung zum Chat. Grün heisst: Der Knopf tut wirklich etwas. */
+.draht{
+  margin-left:auto; font-family:var(--mono); font-size:11px;
+  display:flex; align-items:center; gap:6px; color:var(--ink-3);
+}
+.draht b{font-weight:600}
+.draht.dran{color:var(--ok)}
+.draht.ab{color:var(--warn)}
+.draht .punkt{
+  width:8px; height:8px; border-radius:50%; flex:none;
+  background:currentColor; opacity:.9;
+}
+.draht.dran .punkt{animation:pulsen 2.4s ease-in-out infinite}
+@keyframes pulsen{0%,100%{opacity:.35} 50%{opacity:1}}
+
+/* Der Verlauf: dieselben Schritte wie im Auftragsbuch, aber gross und nur
+   für den, der gerade läuft. */
+.verlauf{
+  margin-top:12px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--paper); overflow:hidden;
+}
+.verlaufskopf{
+  display:flex; align-items:baseline; gap:10px;
+  padding:9px 12px 0;
+}
+.verlaufskopf .legende{margin:0}
+.verlaufskopf .stand{
+  margin-left:auto; font-family:var(--mono); font-size:10px;
+  letter-spacing:.06em; text-transform:uppercase;
+}
+.verlauf.laeuft .verlaufskopf .stand{color:var(--accent)}
+.verlauf.fertig .verlaufskopf .stand{color:var(--ok)}
+.verlauf.haengt .verlaufskopf .stand{color:var(--crit)}
+.verlauf.ruht   .verlaufskopf .stand{color:var(--warn)}
+.verlaufsleib{padding:8px 12px 12px}
+.verlaufsleib .was{font-size:13px; font-weight:500; margin-bottom:2px}
+.verlaufsleib .schrittzeile{
+  margin:0 0 8px; font-size:12.5px; color:var(--ink-2); line-height:1.45;
+}
+.verlaufsleib ol{
+  list-style:none; margin:0; padding:0;
+  display:flex; flex-direction:column; gap:4px;
+}
+.verlaufsleib li{
+  display:flex; gap:8px; align-items:baseline;
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-3);
+  line-height:1.5;
+}
+.verlaufsleib li::before{content:"○"; flex:none; width:1em}
+.verlaufsleib li.arbeit{color:var(--accent); font-weight:600}
+.verlaufsleib li.arbeit::before{content:"◑"; animation:drehen 1.4s linear infinite}
+@keyframes drehen{from{transform:rotate(0)} to{transform:rotate(360deg)}}
+.verlaufsleib li.arbeit::before{display:inline-block}
+.verlaufsleib li.erledigt{color:var(--ok)}
+.verlaufsleib li.erledigt::before{content:"●"}
+.verlaufsleib li.wartet, .verlaufsleib li.fehler{color:var(--crit)}
+.verlaufsleib li.wartet::before, .verlaufsleib li.fehler::before{content:"◒"}
+@media (prefers-reduced-motion:reduce){
+  .draht.dran .punkt, .verlaufsleib li.arbeit::before{animation:none}
+}
 .status.ok{color:var(--ok)}
 .status.fehler{color:var(--crit)}
 
@@ -822,7 +885,10 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     <main class="werk">
       <div class="tafel">
         <div class="tafel-kopf"><h2>Auftrag</h2>
-          <span class="note">geht an den Chat — dort läuft der Bau mit allen elf Kontrollen</span></div>
+          <!-- Ob die Seite am Chat hängt, sieht man ihr sonst nicht an -
+               und ein Knopf, der nichts tut, sieht genauso aus wie einer,
+               der nicht kann. -->
+          <span class="draht" id="draht"></span></div>
         <div class="auftrag">
           <div class="befehl" id="befehl"></div>
           <div class="knopfreihe">
@@ -831,6 +897,15 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
           </div>
           <div class="status" id="status"></div>
+          <!-- Was gerade läuft. Die Schritte stehen im Auftrag, nicht
+               hier: Der Chat schreibt sie dorthin, die Seite zeigt sie. -->
+          <section class="verlauf" id="verlauf" hidden>
+            <div class="verlaufskopf">
+              <span class="legende">Was gerade läuft</span>
+              <span class="stand" id="verlaufStand"></span>
+            </div>
+            <div class="verlaufsleib" id="verlaufsleib"></div>
+          </section>
           <ul class="liste-auftraege" id="auftragsbuch"></ul>
         </div>
       </div>
@@ -2452,10 +2527,25 @@ function stueckzahl(teile, fassungen){
 function zeichneAuftrag(){
   const a = auftrag();
   $("befehl").textContent = befehlstext(a);
-  $("bauen").disabled = a.teile.length === 0;
+  zeichneKnopf(a);
+}
+
+/* Der grosse Knopf sagt, was er tun wird - und er wird von **zwei** Seiten
+   neu gezeichnet: wenn sich die Bestellung ändert und wenn die Verbindung
+   steht. Die zweite kommt später als die erste; stünde die Beschriftung
+   nur in `zeichneAuftrag`, bliebe sie auf „Befehl kopieren" stehen,
+   obwohl der Auftrag längst direkt ginge. */
+function zeichneKnopf(a){
+  a = a || auftrag();
+  // Der Knopf bleibt anklickbar - ein abgeschalteter schluckt den Klick
+  // und sagt nichts.
+  $("bauen").textContent = verbunden()
+    ? "Auftrag auslösen" : "Befehl kopieren";
   $("bauenHinweis").textContent = a.teile.length === 0
     ? "Links auswählen, was entstehen soll."
-    : stueckzahl(a.teile, a.neueFassung ? a.fassungAnzahl : 1) + ".";
+    : stueckzahl(a.teile, a.neueFassung ? a.fassungAnzahl : 1) + " — " +
+      (verbunden() ? "geht direkt an den Chat."
+                   : "wird kopiert; im Chat einfügen.");
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
@@ -2514,6 +2604,7 @@ function buchSetzen(eintraege){
 function zeichneBuch(){
   const kasten = $("auftragsbuch");
   kasten.innerHTML = "";
+  zeichneVerlauf();
   if(!buch.length) return;
   const sichtbar = state.buchAlle ? buch : buch.filter(e => !e.ausgeblendet);
   const versteckt = buch.length - buch.filter(e => !e.ausgeblendet).length;
@@ -2635,12 +2726,88 @@ function bauePlatte(klingel){
     .replace(P("QUELLE"), () => fuerScript(quelle));
 }
 
+/* Hängt die Seite am Chat? Ohne diese Zeile sieht ein Knopf, der nichts
+   tun kann, genauso aus wie einer, der gleich etwas tut - und „ich hab
+   geklickt, es passiert nichts" ist dann die einzige Rückmeldung. */
+function verbunden(){ return Boolean(db && selbst); }
+
+function zeichneDraht(){
+  const zeile = $("draht");
+  const dran = verbunden();
+  zeile.className = "draht " + (dran ? "dran" : "ab");
+  const fehlt = [!db && "Auftragsbuch", !selbst && "Veröffentlichen"]
+    .filter(Boolean);
+  zeile.innerHTML = '<span class="punkt"></span>' + (dran
+    ? "<b>mit claude.ai verbunden</b> — der Auftrag geht direkt an den Chat"
+    : "<b>nicht verbunden</b> — " +
+      (fehlt.length ? fehlt.join(" und ") + (fehlt.length > 1 ? " fehlen; " : " fehlt; ") : "") +
+      "„Befehl kopieren\u201c und im Chat einfügen");
+  zeile.title = dran
+    ? "db und artifact stehen bereit."
+    : "In der Vorschau und in geteilten Ansichten fehlen diese Fähigkeiten.";
+}
+
 function zeichneAusloeser(){
-  const k = $("ausloesen");
-  k.disabled = !db || !selbst;
-  k.title = k.disabled
-    ? "In dieser Ansicht nicht verfügbar — den Befehl kopieren."
-    : "Legt den Auftrag ab und weckt die Chat-Sitzung.";
+  // **Nicht** abschalten: Ein abgeschalteter Knopf schluckt den Klick und
+  // sagt nichts - genau das ist schon einmal als „nix passiert"
+  // angekommen. Er bleibt anklickbar und antwortet.
+  const dran = verbunden();
+  $("ausloesen").title = dran
+    ? "Legt den Auftrag ab und weckt die Chat-Sitzung."
+    : "Ohne Verbindung wird der Befehl stattdessen kopiert.";
+  $("bauen").title = $("ausloesen").title;
+  zeichneKnopf();
+  zeichneDraht();
+}
+
+/* ---------------- Was gerade läuft ----------------
+   Derselbe Stoff wie im Auftragsbuch, aber gross und nur für den Auftrag,
+   an dem gerade gearbeitet wird. Die Schritte kommen **aus dem Auftrag**,
+   nicht aus dieser Datei: Was zu einem Auftrag gehört, weiss der Chat, der
+   ihn ausführt.
+
+   Der Verlauf hängt an der Datenbank, nicht am Arbeitsspeicher: Nach dem
+   Auslösen veröffentlicht sich die Seite neu und lädt dabei neu. Ein
+   Protokoll in einer Variablen wäre danach weg - genau in dem Moment, in
+   dem man es braucht. */
+function laufenderAuftrag(){
+  const offen = buch.filter(e => !e.ausgeblendet && !e.erledigt);
+  if(offen.length) return offen[0];
+  // Der zuletzt fertig gewordene bleibt noch stehen: „erledigt" ist auch
+  // eine Antwort, und sie verschwindet sonst im selben Augenblick.
+  return buch.find(e => !e.ausgeblendet) || null;
+}
+
+function zeichneVerlauf(){
+  const kasten = $("verlauf");
+  const e = laufenderAuftrag();
+  if(!e){ kasten.hidden = true; return; }
+  const stand = standVon(e), s = STAENDE[stand];
+  kasten.hidden = false;
+  kasten.className = "verlauf " + s.klasse;
+  $("verlaufStand").textContent = s.text;
+  const schritte = Array.isArray(e.schritte) ? e.schritte : [];
+  $("verlaufsleib").innerHTML =
+    '<div class="was">' + esc(auftragsTitel(e)) + "</div>" +
+    '<p class="schrittzeile">' + esc(e.schritt || standSatz(stand)) + "</p>" +
+    (schritte.length
+      ? "<ol>" + schritte.map(x =>
+          '<li class="' + esc((x && x.stand) || "offen") + '">' +
+          esc((x && x.text) || "") + "</li>").join("") + "</ol>"
+      : "");
+}
+
+/* Solange der Chat noch nichts geschrieben hat, steht hier, worauf
+   gewartet wird - das ist etwas anderes als eine leere Fläche. */
+function standSatz(stand){
+  if(stand === "abgelegt")
+    return "Der Auftrag liegt im Buch. Die Sitzung ist noch nicht geweckt.";
+  if(stand === "ausgeloest")
+    return "Ausgelöst — der Chat meldet sich, sobald er den Auftrag annimmt.";
+  if(stand === "arbeit") return "Der Chat arbeitet daran.";
+  if(stand === "wartet") return "Der Auftrag wartet auf etwas.";
+  if(stand === "fehler") return "Der Auftrag steckt fest.";
+  return "Fertig.";
 }
 
 /* ---------------- Vorschläge von Claude ----------------
@@ -3339,8 +3506,23 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   try{
     // Erst ablegen, dann klingeln. Andersherum wachte der Chat auf und
     // fände nichts vor.
+    //
+    // Die beiden Schritte der Übergabe stehen **im Auftrag**, nicht im
+    // Arbeitsspeicher: Gleich darauf veröffentlicht sich die Seite neu und
+    // lädt dabei neu, und ein Protokoll in einer Variablen wäre genau dann
+    // weg, wenn man es braucht. Was danach kommt, schreibt der Chat - er
+    // ersetzt diese Liste durch seine eigene.
     await db.doc("auftraege/" + id).set(
-      Object.assign({erledigt:false, ausgeloest:true, id:id}, auftragsdaten));
+      Object.assign({
+        erledigt:false, ausgeloest:true, id:id,
+        stand:"abgelegt",
+        schritt:"Der Auftrag liegt im Buch. Die Sitzung wird geweckt \u2026",
+        schritte:[
+          {text:"Auftrag im Auftragsbuch abgelegt", stand:"erledigt"},
+          {text:"Chat-Sitzung wecken", stand:"arbeit"},
+          {text:"Der Chat nimmt den Auftrag an", stand:"offen"},
+        ],
+      }, auftragsdaten));
   }catch(e){
     knopf.disabled = false;
     sagen("Ablegen ist fehlgeschlagen: " + (e && e.message ? e.message : "unbekannt"),
@@ -3350,6 +3532,20 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   sagen("Abgelegt — wecke die Sitzung …");
   try{
     await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
+    // Bis hierher kommt die Seite selten - aber wenn, dann stimmt der
+    // zweite Schritt nicht mehr.
+    try{
+      await db.doc("auftraege/" + id).update({
+        stand:"ausgeloest",
+        schritt:"Ausgel\u00f6st \u2014 der Chat meldet sich, sobald er den "
+                + "Auftrag annimmt.",
+        schritte:[
+          {text:"Auftrag im Auftragsbuch abgelegt", stand:"erledigt"},
+          {text:"Chat-Sitzung geweckt", stand:"erledigt"},
+          {text:"Der Chat nimmt den Auftrag an", stand:"arbeit"},
+        ],
+      });
+    }catch(nachtrag){ /* die Seite lädt gerade neu - der Stand bleibt */ }
     // Bis hierher kommt die Seite selten: nach `publish` lädt jede offene
     // Ansicht die neue Fassung, diese eingeschlossen.
     sagen("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
@@ -3365,11 +3561,37 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   return true;
 }
 
-$("ausloesen").addEventListener("click", async () => {
+/* Beide Knöpfe tun dasselbe: Der grosse in der Leiste heisst „Auftrag
+   erstellen", der in der Tafel „Auftrag auslösen" - und eine Zeit lang tat
+   nur der zweite etwas. Der erste war der auffälligere, also wurde er
+   geklickt, und es passierte nichts.
+
+   Ohne Verbindung wird der Befehl kopiert, statt den Klick verfallen zu
+   lassen: Das ist der Weg, der dann offensteht. */
+async function auftragAusloesen(knopf){
   const a = auftrag();
-  if(!a.teile.length){ melde("Nichts ausgewählt.", "fehler"); return; }
-  await ausloesen(a, "u" + String(a.unit).padStart(2, "0"), $("ausloesen"), melde);
-});
+  if(!a.teile.length){
+    melde("Nichts ausgewählt — links ankreuzen, was entstehen soll.", "fehler");
+    $("bauenHinweis").classList.add("merken");
+    setTimeout(() => $("bauenHinweis").classList.remove("merken"), 700);
+    return;
+  }
+  if(!verbunden()){
+    try{
+      await navigator.clipboard.writeText($("befehl").textContent);
+      melde("Nicht mit claude.ai verbunden — der Befehl ist kopiert. "
+            + "Im Chat einfügen und abschicken.", "ok");
+    }catch(e){
+      melde("Nicht verbunden, und der Browser hat das Kopieren abgelehnt. "
+            + "Den Auftragssatz oben von Hand markieren.", "fehler");
+    }
+    return;
+  }
+  await ausloesen(a, "u" + String(a.unit).padStart(2, "0"), knopf, melde);
+}
+
+$("ausloesen").addEventListener("click", () => auftragAusloesen($("ausloesen")));
+$("bauen").addEventListener("click", () => auftragAusloesen($("bauen")));
 
 $("herunterladen").addEventListener("click", async () => {
   const a = auftrag();

@@ -1144,8 +1144,51 @@ Tabelle: Wer ein Feld hinzufügt und das Ausblenden vergisst, merkt es dort.
 
 ### Der Auslöser — der Knopf weckt den Chat
 
-Neben „Befehl kopieren" steht **„Auftrag auslösen"**. Er tut zweierlei, und
-die Reihenfolge ist nicht beliebig:
+**Es sind zwei Knöpfe, und sie tun dasselbe**: der grosse unten in der
+Leiste und „Auftrag auslösen" in der Tafel. Der in der Leiste hatte eine
+Zeit lang gar keinen Horcher — und weil er der auffälligere ist, wurde er
+geklickt: „wenn ich auf Auftrag erstellen klicke, passiert nichts." Beide
+gehen jetzt über **eine** Stelle (`auftragAusloesen`), und keiner von
+beiden wird je abgeschaltet.
+
+**Ohne Verbindung wird der Befehl kopiert**, statt den Klick verfallen zu
+lassen. Das ist der Weg, der dann offensteht, und der Knopf sagt es schon
+vorher: Er heisst „Befehl kopieren", wenn die Leitung fehlt, und „Auftrag
+auslösen", wenn sie steht.
+
+#### Die Leitung steht im Kopf der Tafel
+
+Oben rechts über dem Auftrag steht, ob die Seite am Chat hängt — **grün**
+mit pulsendem Punkt („mit claude.ai verbunden — der Auftrag geht direkt an
+den Chat") oder bernsteinfarben mit dem, was fehlt („Auftragsbuch und
+Veröffentlichen fehlen"). In einer Vorschau oder einer geteilten Ansicht
+gibt es die Fähigkeiten `db` und `artifact` nicht; das ist kein Defekt,
+aber man muss es sehen.
+
+Die Beschriftung wird von **zwei** Seiten neu gezeichnet: wenn sich die
+Bestellung ändert und wenn die Verbindung steht. Die zweite kommt später
+als die erste — stünde sie nur in `zeichneAuftrag`, bliebe der Knopf auf
+„Befehl kopieren", obwohl der Auftrag längst direkt ginge.
+
+#### „Was gerade läuft" — der Verlauf
+
+Unter den Knöpfen steht der laufende Auftrag gross: sein Stand, der Satz
+aus `schritt` und die Schrittfolge aus `schritte`, den erledigten Schritt
+mit vollem Punkt, den laufenden mit drehendem Halbmond. Ist keiner offen,
+bleibt der zuletzt fertige stehen — „erledigt" ist auch eine Antwort.
+
+**Der Verlauf hängt an der Datenbank, nicht am Arbeitsspeicher.** Nach dem
+Auslösen veröffentlicht sich die Seite neu und lädt dabei neu; ein
+Protokoll in einer Variablen wäre danach weg, genau in dem Moment, in dem
+man es braucht. Deshalb schreibt schon `ausloesen()` die beiden Schritte
+der **Übergabe** in den Auftrag — abgelegt, Sitzung geweckt —, und der
+Chat ersetzt sie danach durch seine eigenen. Diese zwei sind für jeden
+Auftrag dieselben; was gebaut wird, weiss nur der Chat.
+
+Solange der Chat noch nichts geschrieben hat, steht dort, worauf gewartet
+wird. Das ist etwas anderes als eine leere Fläche.
+
+Der Auslöser tut zweierlei, und die Reihenfolge ist nicht beliebig:
 
 1. Er legt den Auftrag in die Artifact-Datenbank (`auftraege/<kennung>`,
    mit `erledigt: false`).

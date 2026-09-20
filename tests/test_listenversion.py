@@ -24,6 +24,8 @@ from vocabmaster.pack import (
     pack_filename,
 )
 
+from .helpers import aufgabe
+
 
 def test_abdruck_haengt_an_den_woertern_nicht_an_den_saetzen():
     a = [{"englisch": "orphanage", "deutsch": "Waisenhaus", "satz": "Ein Satz."}]
@@ -91,8 +93,8 @@ def test_neue_liste_setzt_die_luckentexte_neu_an(pack, db, settings):
     """
     neu = neue_liste(pack, db, fancy=1, settings=settings)
     for schluessel, spec in neu.exams.items():
-        alt = pack.exams[schluessel]["task2"]["text"]
-        assert spec["task2"]["text"] != alt, (
+        alt = aufgabe(pack.exams[schluessel])["text"]
+        assert aufgabe(spec)["text"] != alt, (
             f"{schluessel}: der Text von V1 darf nicht stehen bleiben"
         )
 
@@ -151,25 +153,27 @@ def test_uebernommener_lueckentext_wird_als_ueberholt_erkannt():
     """
     from vocabmaster.pack import _text_uebernehmen
 
-    alt = {"task2": {"text": "Ein Satz mit {1}.",
-                     "gaps": [{"answer": "checkout"}]}}
-    gleich = {"task2": {"text": "TODO", "gaps": [{"answer": "checkout"}]}}
-    anders = {"task2": {"text": "TODO", "gaps": [{"answer": "downside"}]}}
+    alt = {"aufgaben": [{"art": "luecken", "text": "Ein Satz mit {1}.",
+                        "gaps": [{"answer": "checkout"}]}]}
+    gleich = {"aufgaben": [{"art": "luecken", "text": "TODO",
+                           "gaps": [{"answer": "checkout"}]}]}
+    anders = {"aufgaben": [{"art": "luecken", "text": "TODO",
+                           "gaps": [{"answer": "downside"}]}]}
 
     _text_uebernehmen(alt, gleich)
-    assert gleich["task2"]["text"] == "Ein Satz mit {1}."
-    assert "text_ueberholt" not in gleich["task2"], "gleiche Lücken, alles gut"
+    assert aufgabe(gleich)["text"] == "Ein Satz mit {1}."
+    assert "text_ueberholt" not in aufgabe(gleich), "gleiche Lücken, alles gut"
 
     _text_uebernehmen(alt, anders)
-    assert anders["task2"]["text"] == "Ein Satz mit {1}.", "Handarbeit bleibt"
-    assert anders["task2"]["text_ueberholt"] == ["checkout"]
+    assert aufgabe(anders)["text"] == "Ein Satz mit {1}.", "Handarbeit bleibt"
+    assert aufgabe(anders)["text_ueberholt"] == ["checkout"]
 
 
 def test_ueberholter_lueckentext_ist_ein_fehler(pack, db, settings):
     """Und der Selbstcheck lässt ihn nicht durch."""
     from vocabmaster.checks import pruefe_paket
 
-    spec = pack.data["pruefungen"]["teil1"]["A"]["task2"]
+    spec = aufgabe(pack.data["pruefungen"]["teil1"]["A"])
     spec["text_ueberholt"] = ["irgendein", "anderes", "wort"]
     bericht = pruefe_paket(pack, db, settings)
     passend = [b for b in bericht.fehler if "text_ueberholt" in b.text]

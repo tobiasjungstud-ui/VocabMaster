@@ -8,6 +8,8 @@ from vocabmaster.niveau import LIST_BOUNDS, PROFILES, other, profile
 from vocabmaster.pack import _schwierigkeit, scaffold, waehle_pruefungswoerter
 from vocabmaster.pool import plan_unit
 
+from .helpers import gepruefte
+
 UNITS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 
@@ -121,10 +123,8 @@ def test_die_beiden_pruefungen_unterscheiden_sich_deutlich(db, unit, settings):
         )
     data = scaffold(db, unit, settings)
     for teil in ("teil1", "teil2"):
-        a = {i["english"] for i in data["pruefungen"][teil]["A"]["task1"]["items"]}
-        a |= {g["english"] for g in data["pruefungen"][teil]["A"]["task2"]["gaps"]}
-        b = {i["english"] for i in data["pruefungen"][teil]["B"]["task1"]["items"]}
-        b |= {g["english"] for g in data["pruefungen"][teil]["B"]["task2"]["gaps"]}
+        a = set(gepruefte(data["pruefungen"][teil]["A"]))
+        b = set(gepruefte(data["pruefungen"][teil]["B"]))
         assert len(a & b) <= len(a) // 2, (
             f"Unit {unit} {teil}: {len(a & b)} von {len(a)} Wörtern gleich"
         )
@@ -153,8 +153,7 @@ def test_beide_pruefungen_schoepfen_aus_derselben_liste(db, unit, settings):
         erlaubt = {e["englisch"] for e in data["liste"][block]}
         for niveau in ("A", "B"):
             spec = data["pruefungen"][f"teil{teil}"][niveau]
-            geprueft = [i["english"] for i in spec["task1"]["items"]]
-            geprueft += [g["english"] for g in spec["task2"]["gaps"]]
+            geprueft = gepruefte(spec)
             assert set(geprueft) <= erlaubt
 
 

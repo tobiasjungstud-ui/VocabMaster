@@ -14,6 +14,8 @@ from vocabmaster.checks import pruefe_paket
 from vocabmaster.documents import baue_alles
 from vocabmaster.pack import Pack
 
+from .helpers import aufgabe
+
 KURATIERT = Path(__file__).resolve().parent.parent / "kuratiert"
 ALLE = sorted(KURATIERT.glob("unit_*.json"))
 
@@ -74,9 +76,9 @@ def test_fassung_ersetzt_genau_eine_pruefung(pfad):
     # Fassungen prüfen dieselbe Liste, und die zwölf schwersten Wörter
     # bleiben die zwölf schwersten. Was eine Fassung unterscheidet, ist ihr
     # Lückentext und die Aufteilung in Übersetzung und Lücke.
-    assert spec["task2"]["text"] != alt["task2"]["text"], "der Text ist neu"
-    neu_l = [g["answer"] for g in spec["task2"]["gaps"]]
-    alt_l = [g["answer"] for g in alt["task2"]["gaps"]]
+    assert aufgabe(spec)["text"] != aufgabe(alt)["text"], "der Text ist neu"
+    neu_l = [g["answer"] for g in aufgabe(spec)["gaps"]]
+    alt_l = [g["answer"] for g in aufgabe(alt)["gaps"]]
     assert neu_l != alt_l, "dieselben Lücken wären dasselbe Blatt"
     assert spec["meta"]["fassung"] == pack.fassung, "die Fassung ist hinterlegt"
     assert spec["meta"]["erzeugt"], "mit Datum"

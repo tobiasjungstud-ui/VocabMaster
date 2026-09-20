@@ -13,7 +13,7 @@ import pytest
 from vocabmaster.checks import FEHLER, pruefe_paket
 from vocabmaster.pack import Pack, scaffold
 
-from .helpers import fill
+from .helpers import aufgabe, fill
 
 
 def befunde(bericht, pruefung):
@@ -171,7 +171,7 @@ def test_andere_excel_fassung_wird_abgelehnt(db, settings, pack):
 # --- 6  Lösungsschlüssel ----------------------------------------------------
 def test_prueffrage_ohne_wort_in_der_liste(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["A"]["task1"]["items"][0] = {
+    aufgabe(data["pruefungen"]["teil1"]["A"], "uebersetzen")["items"][0] = {
         "german": "Zahnrad", "english": "cogwheel", "pos": "noun",
     }
     bericht = pruefe_paket(Pack(data=data), db, settings)
@@ -180,22 +180,22 @@ def test_prueffrage_ohne_wort_in_der_liste(db, settings, pack):
 
 def test_abweichende_loesung_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["A"]["task2"]["gaps"][0]["answer"] = "somethingelse"
+    aufgabe(data["pruefungen"]["teil1"]["A"])["gaps"][0]["answer"] = "somethingelse"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert fehler_von(bericht, "loesungsschluessel")
 
 
 def test_uebersetzung_darf_nicht_driften(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]["german"] = "eine andere Bedeutung"
+    aufgabe(data["pruefungen"]["teil1"]["A"], "uebersetzen")["items"][0]["german"] = "eine andere Bedeutung"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert fehler_von(bericht, "loesungsschluessel")
 
 
 def test_wort_darf_nicht_in_beiden_teilen_geprueft_werden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil2"]["A"]["task1"]["items"][0] = copy.deepcopy(
-        data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]
+    aufgabe(data["pruefungen"]["teil2"]["A"], "uebersetzen")["items"][0] = copy.deepcopy(
+        aufgabe(data["pruefungen"]["teil1"]["A"], "uebersetzen")["items"][0]
     )
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert any("Teil 1 und in Teil 2" in b.text
@@ -206,8 +206,8 @@ def test_wort_darf_nicht_in_beiden_teilen_geprueft_werden(db, settings, pack):
 def test_gemeinsame_pruefungswoerter_werden_vermerkt(db, settings, pack):
     """Ein Überschnitt ist erlaubt - aber er wird ausgewiesen, nicht verschwiegen."""
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["B"]["task1"]["items"][0] = copy.deepcopy(
-        data["pruefungen"]["teil1"]["A"]["task1"]["items"][0]
+    aufgabe(data["pruefungen"]["teil1"]["B"], "uebersetzen")["items"][0] = copy.deepcopy(
+        aufgabe(data["pruefungen"]["teil1"]["A"], "uebersetzen")["items"][0]
     )
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert not fehler_von(bericht, "niveau_konsistenz")
@@ -227,7 +227,7 @@ def test_deckungsgleiche_pruefungen_werden_gewarnt(db, settings, pack):
 
 def test_pruefungswort_ausserhalb_der_liste_wird_gemeldet(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["B"]["task1"]["items"][0] = {
+    aufgabe(data["pruefungen"]["teil1"]["B"], "uebersetzen")["items"][0] = {
         "german": "Zahnrad", "english": "cogwheel", "pos": "noun",
     }
     bericht = pruefe_paket(Pack(data=data), db, settings)
@@ -263,14 +263,14 @@ def test_offener_platzhalter_verhindert_den_bau(db, settings, pack):
 
 def test_stehengebliebenes_todo_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["A"]["task2"]["text"] = "TODO: Lückentext {1} {2} {3} {4}"
+    aufgabe(data["pruefungen"]["teil1"]["A"])["text"] = "TODO: Lückentext {1} {2} {3} {4}"
     bericht = pruefe_paket(Pack(data=data), db, settings)
     assert any("Platzhalter" in b.text for b in fehler_von(bericht, "vorlage"))
 
 
 def test_falsche_zahl_an_luecken_wird_gefunden(db, settings, pack):
     data = copy.deepcopy(pack.data)
-    data["pruefungen"]["teil1"]["A"]["task2"]["text"] = (
+    aufgabe(data["pruefungen"]["teil1"]["A"])["text"] = (
         "The class went to the museum and looked at one {1} for a long time."
     )
     bericht = pruefe_paket(Pack(data=data), db, settings)

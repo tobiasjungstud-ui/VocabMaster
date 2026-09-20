@@ -22,6 +22,8 @@ from vocabmaster.niveau import (
 )
 from vocabmaster.pack import Pack
 
+from .helpers import aufgabe
+
 KURATIERT = Path(__file__).resolve().parent.parent / "kuratiert"
 PAKETE = [
     p for p in sorted(KURATIERT.glob("unit_*.json"))
@@ -82,7 +84,7 @@ def test_gelieferte_texte_liegen_auf_ihrer_normallage():
     for pfad in PAKETE:
         pack = Pack.load(pfad)
         for (_teil, niveau), spec in pack.exams.items():
-            text = spec.get("task2", {}).get("text", "")
+            text = aufgabe(spec).get("text", "")
             if text:
                 nach_niveau[niveau].append(_stufe(text))
 

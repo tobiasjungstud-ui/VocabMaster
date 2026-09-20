@@ -20,6 +20,8 @@ import pytest
 from vocabmaster import cli
 from vocabmaster.pack import Pack, aufteilung, pruefungswoerter, text_offen
 
+from .helpers import aufgabe
+
 WURZEL = Path(__file__).resolve().parent.parent
 
 
@@ -96,7 +98,7 @@ def test_zwei_gleiche_lueckentexte_sind_ein_fehler(ordner, capsys):
     for name in ("unit_01_fassung2.json", "unit_01_fassung3.json"):
         pfad = ordner / name
         daten = json.loads(pfad.read_text("utf-8"))
-        daten["pruefungen"]["teil1"]["A"]["task2"]["text"] = (
+        aufgabe(daten["pruefungen"]["teil1"]["A"])["text"] = (
             "Derselbe {1} Text in {2} beiden {3} Fassungen {4}."
         )
         pfad.write_text(json.dumps(daten, ensure_ascii=False, indent=2), "utf-8")

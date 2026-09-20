@@ -27,7 +27,6 @@ from __future__ import annotations
 import hashlib
 import json
 import random
-import re
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from datetime import date
@@ -35,6 +34,19 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
+from .aufgaben import (
+    ARTEN as AUFGABEN_ARTEN,
+)
+from .aufgaben import (
+    DEFINITION,
+    LUECKEN,
+    RICHTIG_FALSCH,
+    SAETZE_ZUR_WAHL,
+    SCHREIBEN,
+    UEBERSETZEN,
+    WORTWAHL,
+    sortiert,
+)
 from .config import Settings
 from .database import Database
 from .exam.difficulty import score_item
@@ -55,7 +67,7 @@ ANLEITUNG = [
     "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
     "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
     "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
-    "In jeder der vier Prüfungen 'task2.text' schreiben: {1} bis {4}",
+    "In jeder der vier Prüfungen den Lückentext schreiben: {1} bis {4}",
     "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text.",
 ]
 
@@ -254,59 +266,198 @@ def waehle_pruefungswoerter(
     return gewaehlt
 
 
-def _wahlaufgaben(
-    entries: list[dict[str, Any]],
-    geprueft: list[dict[str, Any]],
-    prof: NiveauProfile,
-    settings: Settings,
-    seed: int,
-    teil: int,
-    fassung: int,
-) -> dict[str, Any] | None:
-    """Aufgabe 3: Welcher der drei Sätze verwendet das Wort richtig?
+#: Wie die Aufgabenstellung je Art lautet. Die Nummer setzt der Setzer;
+#: hier steht nur, was die Klasse tun soll.
+_ANSAGE = {
+    UEBERSETZEN: "{n}) Translate using the vocabulary from {unit}.",
+    LUECKEN: "{n})  Fill in the gaps using the vocabulary from {unit}. ",
+    WORTWAHL: "{n})  Tick the sentence that uses the word correctly. ",
+    DEFINITION: "{n})  Read the description and write the word it describes. ",
+    RICHTIG_FALSCH: "{n})  One of the two sentences uses the word correctly. "
+                    "Tick it. ",
+    SCHREIBEN: "{n})  Use the words in a short text of your own. ",
+}
 
-    Je Aufgabe ein Wort und drei Sätze, von denen **zwei die Vokabel falsch
-    verwenden** - ein falsches Komplement, die falsche Präposition, ein
-    Register, in dem das Wort nicht steht. Geprüft wird damit etwas, das
-    Übersetzen und Einsetzen beide nicht prüfen: ob jemand weiss, *wie* das
-    Wort gebraucht wird, nicht nur was es heisst.
 
-    Die drei Sätze schreibt der Chat. Hier entsteht nur das Fach dafür -
-    mit dem Wort, den leeren Plätzen und der Nummer des richtigen Satzes.
+def _wortfach(e: dict[str, Any]) -> dict[str, Any]:
+    """Ein geprüftes Wort, wie es in jeder Aufgabe steht."""
+    return {"english": e["englisch"], "german": e["deutsch"],
+            "pos": wortart_von(e)}
 
-    **Die Wörter stehen bewusst nicht in Aufgabe 1 oder 2.** Alle drei Sätze
-    enthalten das Wort ausgeschrieben; wäre es zugleich eine Lücke oder eine
-    Übersetzung, stünde deren Lösung auf demselben Blatt. Sie kommen deshalb
-    aus demselben Test, aber aus dem, was die zwölf übrig gelassen haben.
+
+def _saetze_zur_wahl(
+    woerter: list[dict[str, Any]], kennung: str, start: int, versatz: int
+) -> list[dict[str, Any]]:
+    """Die Fächer einer Satzwahl - zwei oder drei Sätze, einer richtig.
+
+    Wo der richtige Satz steht, wandert: über die Aufgaben einer Prüfung
+    und über die Fassungen. Stünde er immer an derselben Stelle, wäre die
+    Aufgabe nach dem zweiten Blatt keine mehr.
     """
-    wieviele = max(0, int(settings.exam_choice_items))
-    if not wieviele:
-        return None
-    moeglich = max(2, int(settings.exam_choice_options))
-    rest = [e for e in entries if e not in geprueft]
-    gewaehlt = waehle_pruefungswoerter(rest, prof, settings, anzahl=wieviele)
-    if not gewaehlt:
-        return None
+    moeglich = SAETZE_ZUR_WAHL[kennung]
+    return [
+        {**_wortfach(e),
+         "richtig": (start + versatz + i) % moeglich + 1,
+         "saetze": [""] * moeglich}
+        for i, e in enumerate(woerter)
+    ]
 
-    # Wo der richtige Satz steht, wandert: über die Aufgaben einer Prüfung
-    # und über die Fassungen. Stünde er immer an derselben Stelle, wäre die
-    # Aufgabe nach dem zweiten Blatt keine mehr.
-    rng = random.Random(seed + 4157 + teil + (0 if prof.name == "A" else 97))
-    start = rng.randrange(moeglich)
-    versatz = max(0, int(fassung) - 1)
-    return {
-        "instruction": "3)  Tick the sentence that uses the word correctly. ",
-        "items": [
-            {
-                "english": e["englisch"],
-                "german": e["deutsch"],
-                "pos": wortart_von(e),
-                "richtig": (start + versatz + i) % moeglich + 1,
-                "saetze": [""] * moeglich,
-            }
-            for i, e in enumerate(gewaehlt)
-        ],
+
+def _mini_texte(woerter: list[dict[str, Any]], je_block: int
+                ) -> list[list[dict[str, Any]]]:
+    """Die Wörter auf Mini-Texte verteilen - zwei bis drei je Text.
+
+    Sieben Wörter in Dreierblöcken ergäben 3, 3 und **1** - und ein
+    Mini-Text mit einem einzigen Wort ist keiner. Verteilt wird deshalb
+    gleichmässig: so wenige Texte wie möglich, und kein Text unter zwei
+    Wörtern.
+    """
+    je_block = max(2, int(je_block))
+    if len(woerter) < 2:
+        return [list(woerter)] if woerter else []
+    wie_viele = max(1, -(-len(woerter) // je_block))
+    if len(woerter) // wie_viele < 2:
+        wie_viele = max(1, len(woerter) // 2)
+    bloecke: list[list[dict[str, Any]]] = []
+    offen = list(woerter)
+    for nummer in range(wie_viele, 0, -1):
+        nimm = -(-len(offen) // nummer)
+        bloecke.append(offen[:nimm])
+        offen = offen[nimm:]
+    return bloecke
+
+
+def _aufgabe_bauen(
+    kennung: str,
+    nummer: int,
+    woerter: list[dict[str, Any]],
+    unit: str,
+    bank: list[str],
+    start: int,
+    versatz: int,
+) -> dict[str, Any]:
+    """Das leere Fach **einer** Aufgabe - Form und Wörter, kein Inhalt.
+
+    Was hineingeschrieben wird - Lückentext, Sätze, Umschreibungen,
+    Anstoss für den Mini-Text - entsteht im Chat. Hier steht, wo es
+    hingehört.
+    """
+    aufgabe: dict[str, Any] = {
+        "art": kennung,
+        "instruction": _ANSAGE[kennung].format(n=nummer, unit=unit),
     }
+    if kennung == UEBERSETZEN:
+        aufgabe["items"] = [_wortfach(e) for e in woerter]
+    elif kennung == LUECKEN:
+        aufgabe["word_bank_label"] = "Words:"
+        aufgabe["word_bank"] = bank
+        aufgabe["gaps"] = [
+            {**_wortfach(e), "answer": e["englisch"]} for e in woerter
+        ]
+        aufgabe["text"] = (
+            "TODO: Lückentext schreiben - "
+            + " ".join(f"{{{i + 1}}}" for i in range(len(woerter)))
+        )
+    elif kennung in SAETZE_ZUR_WAHL:
+        aufgabe["items"] = _saetze_zur_wahl(woerter, kennung, start, versatz)
+    elif kennung == DEFINITION:
+        # Die Umschreibung ist englisch und mit einfachem Wortschatz
+        # geschrieben - sonst prüft die Aufgabe das Verstehen der
+        # Umschreibung statt das gesuchte Wort.
+        aufgabe["items"] = [{**_wortfach(e), "umschreibung": ""}
+                            for e in woerter]
+    elif kennung == SCHREIBEN:
+        bloecke = _mini_texte(woerter, AUFGABEN_ARTEN[SCHREIBEN].je_block)
+        aufgabe["items"] = [
+            {"woerter": [_wortfach(e) for e in block], "anstoss": "",
+             "mindestsaetze": max(2, len(block))}
+            for block in bloecke
+        ]
+    return aufgabe
+
+
+
+# ---------------------------------------------------------------------------
+# Eine Prüfung ist eine Liste von Aufgaben
+# ---------------------------------------------------------------------------
+#: Unter welchen Schlüsseln die drei zuerst gebauten Arten früher standen.
+_ALTE_SCHLUESSEL = ((("task1"), UEBERSETZEN), (("task2"), LUECKEN),
+                    (("task3"), WORTWAHL))
+
+
+def aufgaben_von(spec: dict[str, Any]) -> list[dict[str, Any]]:
+    """Die Aufgaben einer Prüfung, in der Reihenfolge des Blattes.
+
+    Neue Pakete tragen sie als Liste unter ``aufgaben``. Ältere tragen
+    ``task1``, ``task2`` und ``task3`` - daraus wird **dieselbe** Liste
+    gelesen, in derselben Reihenfolge. Ein Paket von gestern ergibt damit
+    Byte für Byte dasselbe Dokument wie gestern; ein Test wacht darüber.
+    """
+    liste = spec.get("aufgaben")
+    if isinstance(liste, list):
+        return [dict(a) for a in liste if isinstance(a, dict)]
+    heraus = []
+    for schluessel, kennung in _ALTE_SCHLUESSEL:
+        block = spec.get(schluessel)
+        if isinstance(block, dict) and block:
+            heraus.append({"art": kennung, **block})
+    return heraus
+
+
+def aufgabe_art(spec: dict[str, Any], kennung: str) -> dict[str, Any]:
+    """Die erste Aufgabe dieser Art - oder ein leeres Fach."""
+    for a in aufgaben_von(spec):
+        if a.get("art") == kennung:
+            return a
+    return {}
+
+
+def klassische_sicht(spec: dict[str, Any]) -> dict[str, Any]:
+    """Die Prüfung so, wie der geerbte Checker des VocabTestMaker sie liest.
+
+    Der hat seine zwanzig Kontrollen für **eine** Form geschrieben: task1
+    übersetzen, task2 einsetzen. An ihm wird nichts geändert - er bekommt
+    stattdessen diese Sicht. Fehlt eine der beiden Arten, steht dort ein
+    leeres Fach; seine Kontrollen laufen dann darüber hinweg.
+    """
+    sicht = {k: v for k, v in spec.items() if k != "aufgaben"}
+    for aufgabe in aufgaben_von(spec):
+        # Ohne die Art: Sein Schema kennt sie nicht und meldete einen
+        # Tippfehler, wo eine Angabe steht.
+        ohne_art = {k: v for k, v in aufgabe.items() if k != "art"}
+        if aufgabe.get("art") == UEBERSETZEN:
+            sicht["task1"] = ohne_art
+        elif aufgabe.get("art") == LUECKEN:
+            sicht["task2"] = ohne_art
+    sicht.setdefault("task1", {"instruction": "", "items": []})
+    sicht.setdefault("task2", {"instruction": "", "word_bank_label": "Words:",
+                               "word_bank": [], "gaps": [], "text": ""})
+    # Seine Strukturkontrolle rechnet task1 plus task2 gegen total_words.
+    # Das ist richtig, solange es nur diese zwei gibt - sonst zählt er die
+    # Wörter der anderen Aufgaben als fehlend. Er bekommt deshalb die Zahl,
+    # die zu **seiner** Sicht gehört.
+    sicht["total_words"] = (len(sicht["task1"].get("items", []))
+                            + len(sicht["task2"].get("gaps", [])))
+    return sicht
+
+
+def gepruefte_woerter(aufgabe: dict[str, Any]) -> list[dict[str, Any]]:
+    """Die Wörter, die **diese** Aufgabe abfragt - unabhängig von ihrer Art.
+
+    Jede Art hält sie woanders: als Zeilen, als Lücken, als Aufgaben, als
+    Wortgruppe eines Mini-Textes. Wer sie zählen oder gegen die Liste
+    prüfen will, fragt hier - sonst steht in jeder Kontrolle eine
+    Fallunterscheidung über alle sechs Arten.
+    """
+    art = aufgabe.get("art")
+    if art == UEBERSETZEN:
+        return list(aufgabe.get("items", []))
+    if art == LUECKEN:
+        return list(aufgabe.get("gaps", []))
+    if art == SCHREIBEN:
+        return [w for block in aufgabe.get("items", [])
+                for w in block.get("woerter", [])]
+    return list(aufgabe.get("items", []))
 
 
 def _exam_scaffold(
@@ -322,8 +473,12 @@ def _exam_scaffold(
     liste_abdruck: str = "",
 ) -> dict[str, Any]:
     part_label, source = TEIL_NAMEN[teil]
+    # Erst der Plan, dann die Wörter: Wie viele es braucht, hängt daran,
+    # welche Aufgaben angekreuzt sind.
+    plan = settings.aufgabenplan()
     chosen = waehle_pruefungswoerter(
-        entries, prof, settings, schon_geprueft
+        entries, prof, settings, schon_geprueft,
+        anzahl=sum(plan.values()) or None,
     )
     by_score = sorted(chosen, key=lambda e: -_schwierigkeit(e))
 
@@ -341,21 +496,21 @@ def _exam_scaffold(
     # unterscheiden sich zwei Fassungen auch dann, wenn sie dieselben zwölf
     # Wörter prüfen - und das kostet keinen einzigen Punkt Anspruch.
     versatz = max(0, int(fassung) - 1)
+    wie_viele_luecken = plan.get(LUECKEN, 0)
     gaps: list[dict[str, Any]] = []
     for pos in ("verb", "noun", "adj", "adv"):
         gleiche = [e for e in bankfaehig if wortart_von(e) == pos]
-        if not gleiche or len(gaps) >= settings.exam_gaps:
+        if not gleiche or len(gaps) >= wie_viele_luecken:
             continue
         entry = gleiche[versatz % len(gleiche)]
         if entry not in gaps:
             gaps.append(entry)
     for entry in bankfaehig:
-        if len(gaps) >= settings.exam_gaps:
+        if len(gaps) >= wie_viele_luecken:
             break
         if entry not in gaps:
             gaps.append(entry)
 
-    translation = [e for e in chosen if e not in gaps]
     rng = random.Random(seed + teil + (0 if prof.name == "A" else 97))
     reihenfolge = [g["deutsch"] for g in gaps]
     bank = list(reihenfolge)
@@ -366,8 +521,25 @@ def _exam_scaffold(
             break
         rng.shuffle(bank)
 
+    # Was die Lücken übrig lassen, wird der Reihe nach ausgeteilt. Kein
+    # Wort steht in zwei Aufgaben: Die einen fragen es ab, die anderen
+    # drucken es aus - stünde es in beiden, läge die Lösung daneben.
+    rest = [e for e in chosen if e not in gaps]
+    zuteilung: dict[str, list[dict[str, Any]]] = {}
+    genommen = 0
+    for kennung in sortiert(plan):
+        if kennung == LUECKEN:
+            zuteilung[kennung] = gaps
+            continue
+        wie_viele = plan[kennung]
+        zuteilung[kennung] = rest[genommen:genommen + wie_viele]
+        genommen += wie_viele
+
     sentence_unit = f"{unit_label.lower()} {part_label.lower()}"
     number = unit_label.split()[-1] if unit_label.split() else ""
+    wahlstart = random.Random(
+        seed + 4157 + teil + (0 if prof.name == "A" else 97)
+    ).randrange(max(SAETZE_ZUR_WAHL.values()))
     spec: dict[str, Any] = {
         "meta": {
             "titel": f"{unit_label} {part_label} - Vokabelprüfung, Niveau {prof.name}",
@@ -387,7 +559,9 @@ def _exam_scaffold(
             # beide Tests.
             "liste_fingerabdruck": liste_abdruck or liste_fingerabdruck(entries),
         },
-        "total_words": settings.exam_words,
+        # Die Zahl, die wirklich geprüft wird - Mindestzahlen
+        # können sie über den Wunsch heben.
+        "total_words": sum(plan.values()),
         "header": {
             "title": " Vocabulary",
             # Niveau B steht im Kopf neben dem Prüfungsteil. Das Blatt für
@@ -399,35 +573,12 @@ def _exam_scaffold(
             "name_label": "Name:",
             "grade_label": "Grade :",
         },
-        "task1": {
-            "instruction": f"1) Translate using the vocabulary from {sentence_unit}.",
-            "items": [
-                {"german": e["deutsch"], "english": e["englisch"],
-                 "pos": wortart_von(e)}
-                for e in translation
-            ],
-        },
-        "task2": {
-            "instruction": f"2)  Fill in the gaps using the vocabulary from {sentence_unit}. ",
-            "word_bank_label": "Words:",
-            "word_bank": bank,
-            "gaps": [
-                {"german": g["deutsch"], "english": g["englisch"],
-                 "answer": g["englisch"], "pos": wortart_von(g)}
-                for g in gaps
-            ],
-            "text": (
-                "TODO: Lückentext schreiben - "
-                + " ".join(f"{{{i + 1}}}" for i in range(settings.exam_gaps))
-            ),
-        },
+        "aufgaben": [
+            _aufgabe_bauen(kennung, nummer, zuteilung[kennung], sentence_unit,
+                           bank, wahlstart, versatz)
+            for nummer, kennung in enumerate(sortiert(plan), start=1)
+        ],
     }
-    # Aufgabe 3 gibt es nur, wenn sie bestellt ist. Ohne Bestellung steht
-    # der Schlüssel gar nicht erst da - ein Paket von gestern bleibt damit
-    # das Paket von gestern, und sein Dokument Byte für Byte dasselbe.
-    wahl = _wahlaufgaben(entries, chosen, prof, settings, seed, teil, fassung)
-    if wahl:
-        spec["task3"] = wahl
     return spec
 
 
@@ -706,16 +857,9 @@ class Pack:
         if any(not e.get("englisch") or not e.get("deutsch") or not e.get("satz")
                for e in self.all_entries):
             return False
-        if any(
-            re.search(r"TODO", spec.get("task2", {}).get("text", ""))
-            for spec in self.exams.values()
-        ):
-            return False
-        return all(
-            str(satz).strip() and "TODO" not in str(satz)
-            for spec in self.exams.values()
-            for item in (spec.get("task3") or {}).get("items", [])
-            for satz in item.get("saetze", [])
+        return not any(
+            self.offen_je_pruefung(teil, niveau)
+            for (teil, niveau) in self.exams
         )
 
     def offen(self) -> list[str]:
@@ -728,23 +872,55 @@ class Pack:
                     out.append(f"{where}: Wort fehlt ({e.get('hinweis', 'zu ergänzen')})")
                 elif not e.get("satz"):
                     out.append(f"{where}: Beispielsatz für '{e['englisch']}' fehlt")
-        for (teil, name), spec in sorted(self.exams.items()):
-            text = spec.get("task2", {}).get("text", "")
-            if not text or "TODO" in text:
-                out.append(f"Prüfung Teil {teil}, Niveau {name}: Lückentext fehlt")
-            for nr, item in enumerate((spec.get("task3") or {}).get("items", []), 1):
-                fehlend = [
-                    i + 1 for i, satz in enumerate(item.get("saetze", []))
-                    if not str(satz).strip() or "TODO" in str(satz)
-                ]
-                if fehlend:
-                    out.append(
-                        f"Prüfung Teil {teil}, Niveau {name}: Wahlaufgabe {nr} "
-                        f"('{item.get('english', '')}') - Satz "
-                        + ", ".join(str(i) for i in fehlend)
-                        + " fehlt"
-                    )
+        for (teil, name) in sorted(self.exams):
+            out += [f"Prüfung Teil {teil}, Niveau {name}: {was}"
+                    for was in self.offen_je_pruefung(teil, name)]
         return out
+
+    def offen_je_pruefung(self, teil: int, niveau: str) -> list[str]:
+        """Was in **einer** Prüfung noch zu schreiben ist, Aufgabe für Aufgabe.
+
+        Jede Art hat ihre eigene Handarbeit: der Lückentext, die Sätze
+        einer Satzwahl, die Umschreibung, der Anstoss eines Mini-Textes.
+        Sie an einer Stelle aufzuzählen ist der Unterschied zwischen
+        "irgendwas fehlt noch" und "Teil 1 Niveau A, Aufgabe 3, Satz 2".
+        """
+        offen: list[str] = []
+        spec = self.exam(teil, niveau)
+        for nummer, aufgabe in enumerate(aufgaben_von(spec), start=1):
+            art = aufgabe.get("art")
+            wo = f"Aufgabe {nummer} ({AUFGABEN_ARTEN[art].titel})" \
+                if art in AUFGABEN_ARTEN else f"Aufgabe {nummer}"
+            if art == LUECKEN:
+                text = aufgabe.get("text", "")
+                if not text or "TODO" in text:
+                    offen.append(f"{wo} - Lückentext fehlt")
+            elif art in SAETZE_ZUR_WAHL:
+                for nr, item in enumerate(aufgabe.get("items", []), 1):
+                    fehlend = [
+                        i + 1 for i, satz in enumerate(item.get("saetze", []))
+                        if not str(satz).strip() or "TODO" in str(satz)
+                    ]
+                    if fehlend:
+                        offen.append(
+                            f"{wo}, {nr} ('{item.get('english', '')}') - Satz "
+                            + ", ".join(str(i) for i in fehlend) + " fehlt")
+            elif art == DEFINITION:
+                for nr, item in enumerate(aufgabe.get("items", []), 1):
+                    text = str(item.get("umschreibung", "")).strip()
+                    if not text or "TODO" in text:
+                        offen.append(
+                            f"{wo}, {nr} ('{item.get('english', '')}') - "
+                            "Umschreibung fehlt")
+            elif art == SCHREIBEN:
+                for nr, block in enumerate(aufgabe.get("items", []), 1):
+                    text = str(block.get("anstoss", "")).strip()
+                    if not text or "TODO" in text:
+                        woerter = ", ".join(w.get("english", "")
+                                            for w in block.get("woerter", []))
+                        offen.append(
+                            f"{wo}, {nr} ({woerter}) - Anstoss fehlt")
+        return offen
 
 
 def pack_filename(unit: int, fassung: int = 1, liste_version: int = 1) -> str:
@@ -769,16 +945,24 @@ def _text_uebernehmen(alt: dict[str, Any], neu: dict[str, Any]) -> None:
     aber als überholt gekennzeichnet. ``pruefe_pruefungen`` macht daraus
     einen Fehler, der sich nur durch Neuschreiben ausräumen lässt.
     """
-    text = alt.get("task2", {}).get("text", "")
+    fruehere = aufgabe_art(alt, LUECKEN)
+    text = fruehere.get("text", "")
     if not text or "TODO" in text:
         return
-    frueher = [g.get("answer", "") for g in alt.get("task2", {}).get("gaps", [])]
-    jetzt = [g.get("answer", "") for g in neu.get("task2", {}).get("gaps", [])]
-    neu["task2"]["text"] = text
+    ziel = None
+    for aufgabe in neu.get("aufgaben", []):
+        if aufgabe.get("art") == LUECKEN:
+            ziel = aufgabe
+            break
+    if ziel is None:
+        return
+    frueher = [g.get("answer", "") for g in fruehere.get("gaps", [])]
+    jetzt = [g.get("answer", "") for g in ziel.get("gaps", [])]
+    ziel["text"] = text
     if frueher != jetzt:
-        neu["task2"]["text_ueberholt"] = frueher
+        ziel["text_ueberholt"] = frueher
     else:
-        neu["task2"].pop("text_ueberholt", None)
+        ziel.pop("text_ueberholt", None)
 
 
 #: Die drei Arten offener Fächer. Alle drei werden nach denselben Massstäben
@@ -1066,9 +1250,11 @@ def neue_liste(
 
 def pruefungswoerter(spec: dict[str, Any]) -> list[str]:
     """Die englischen Wörter, die eine Prüfung abfragt - Übersetzung und Lücken."""
-    woerter = [i["english"] for i in spec.get("task1", {}).get("items", [])]
-    woerter += [g["answer"] for g in spec.get("task2", {}).get("gaps", [])]
-    return woerter
+    return [
+        e.get("english", "")
+        for aufgabe in aufgaben_von(spec)
+        for e in gepruefte_woerter(aufgabe)
+    ]
 
 
 def aufteilung(spec: dict[str, Any]) -> tuple[str, ...]:
@@ -1079,12 +1265,13 @@ def aufteilung(spec: dict[str, Any]) -> tuple[str, ...]:
     werden eingesetzt statt übersetzt. Zwei Fassungen mit derselben
     Aufteilung **und** demselben Text sind zweimal dieselbe Prüfung.
     """
-    return tuple(g.get("answer", "") for g in spec.get("task2", {}).get("gaps", []))
+    return tuple(g.get("answer", "")
+                 for g in aufgabe_art(spec, LUECKEN).get("gaps", []))
 
 
 def lueckentext(spec: dict[str, Any]) -> str:
     """Der Lückentext einer Prüfung, auf das Vergleichbare gestutzt."""
-    return " ".join(str(spec.get("task2", {}).get("text", "")).split())
+    return " ".join(str(aufgabe_art(spec, LUECKEN).get("text", "")).split())
 
 
 def text_offen(spec: dict[str, Any]) -> bool:

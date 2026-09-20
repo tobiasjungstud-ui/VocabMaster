@@ -8,7 +8,7 @@ from vocabmaster.documents import baue_alles, dateiname
 from vocabmaster.exam.verify import verify_document
 from vocabmaster.pack import Pack, scaffold
 
-from .helpers import fill
+from .helpers import aufgabe, fill
 
 
 def test_dateinamen_folgen_der_konvention():
@@ -98,7 +98,7 @@ def test_loesungsblatt_enthaelt_die_loesungen(tmp_path, pack, settings):
     baue_alles(pack, tmp_path, settings, teile=("test",))
     pruefung = tmp_path / dateiname(pack.unit, "Test", 1, "A")
     loesung = tmp_path / dateiname(pack.unit, "Test", 1, "A", loesung=True)
-    antworten = [g["answer"] for g in pack.exam(1, "A")["task2"]["gaps"]]
+    antworten = [g["answer"] for g in aufgabe(pack.exam(1, "A"))["gaps"]]
 
     def text_of(path):
         with zipfile.ZipFile(path) as z:

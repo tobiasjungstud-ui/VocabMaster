@@ -11,6 +11,8 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
+from .aufgaben import ARTEN, KLASSISCH, LUECKEN, sortiert, verteile
+
 #: Wurzel des Repositorys - für die mitgelieferte Wortliste und die Vorlagen.
 PACKAGE_ROOT = Path(__file__).resolve().parent
 REPO_ROOT = PACKAGE_ROOT.parent.parent
@@ -26,6 +28,13 @@ def _env_bool(name: str, default: bool) -> bool:
     if raw is None:
         return default
     return raw.strip().lower() in {"1", "true", "yes", "ja", "on"}
+
+
+def _env_liste(name: str, default: tuple[str, ...]) -> tuple[str, ...]:
+    """Eine kommagetrennte Liste aus der Umgebung - leer heisst Vorgabe."""
+    roh = os.environ.get(name, "")
+    teile = tuple(t.strip() for t in roh.split(",") if t.strip())
+    return teile or tuple(default)
 
 
 def _env_int(name: str, default: int) -> int:
@@ -58,18 +67,28 @@ class Settings:
     )
 
     # --- Prüfungen --------------------------------------------------------
+    #: Wie viele Vokabeln eine Prüfung **insgesamt** abfragt. Die Zahl
+    #: wird auf die angekreuzten Aufgaben verteilt; siehe ``aufgaben.py``.
     exam_words: int = field(default_factory=lambda: _env_int("VM_EXAM_WORDS", 12))
-    exam_gaps: int = field(default_factory=lambda: _env_int("VM_EXAM_GAPS", 4))
-    #: Wahlaufgaben "Welcher Satz verwendet das Wort richtig?" - je Aufgabe
-    #: drei Sätze, einer davon richtig. **Voreingestellt aus**: Eine Prüfung,
-    #: die es gestern nicht gab, darf nicht plötzlich in jedem schon
-    #: gebauten Paket auftauchen.
-    exam_choice_items: int = field(default_factory=lambda: _env_int("VM_EXAM_CHOICE", 0))
-    #: Wie viele Sätze zur Wahl stehen. Bei zweien wäre Raten die halbe
-    #: Miete, bei vieren wird das Blatt zu lang.
-    exam_choice_options: int = field(
-        default_factory=lambda: _env_int("VM_EXAM_CHOICE_OPTIONS", 3)
+    #: Welche Aufgabentypen die Prüfung hat, in der Reihenfolge des
+    #: Blattes. **Voreingestellt die beiden klassischen**: Wer nichts
+    #: umstellt, bekommt die Prüfung, die es immer gab - acht zum
+    #: Übersetzen, vier Lücken.
+    exam_tasks: tuple[str, ...] = field(
+        default_factory=lambda: _env_liste("VM_EXAM_TASKS", KLASSISCH)
     )
+    #: Wortzahl je Aufgabe, von Hand gesetzt. Was hier steht, gilt; der
+    #: Rest wird verteilt. Leer heisst "alles automatisch".
+    exam_task_words: dict[str, int] = field(default_factory=dict)
+    #: Verteilt die Gesamtzahl automatisch auf die angekreuzten Aufgaben.
+    #: Ausgeschaltet zählt nur noch, was je Aufgabe von Hand dasteht.
+    exam_auto_verteilen: bool = field(
+        default_factory=lambda: _env_bool("VM_EXAM_AUTO", True)
+    )
+    #: Lücken von Hand - dieselbe Angabe wie ``exam_task_words['luecken']``,
+    #: nur unter dem Namen, unter dem es sie schon immer gab. 0 heisst
+    #: "aus der Verteilung nehmen".
+    exam_gaps: int = field(default_factory=lambda: _env_int("VM_EXAM_GAPS", 0))
 
     # --- Layout der Vokabelliste -----------------------------------------
     heading_test1: str = field(default_factory=lambda: os.environ.get("VM_HEADING1", "Test 1"))
@@ -85,6 +104,30 @@ class Settings:
 
     # --- Reproduzierbarkeit ----------------------------------------------
     seed: int = field(default_factory=lambda: _env_int("VM_SEED", 20240607))
+
+    def aufgabenplan(self) -> dict[str, int]:
+        """Wie viele Wörter jede angekreuzte Aufgabe bekommt.
+
+        Von Hand Gesetztes gilt immer; automatisch verteilt wird nur, was
+        offen bleibt. So kann man eine Aufgabe festnageln und die anderen
+        mitwandern lassen.
+        """
+        arten = sortiert(self.exam_tasks)
+        eigen = {k: max(1, int(v)) for k, v in self.exam_task_words.items()
+                 if k in arten}
+        if self.exam_gaps and LUECKEN in arten:
+            eigen.setdefault(LUECKEN, self.exam_gaps)
+        offen = [k for k in arten if k not in eigen]
+        if self.exam_auto_verteilen:
+            # Was von Hand dasteht, kommt **aus** der Gesamtzahl, nicht
+            # obendrauf: Sonst stiege sie bei jedem Festnageln, und der
+            # Regler oben zeigte etwas anderes an als die Summe darunter.
+            rest = max(0, self.exam_words - sum(eigen.values()))
+            plan = verteile(rest, offen)
+        else:
+            plan = {k: ARTEN[k].mindestens for k in offen}
+        plan.update(eigen)
+        return {k: plan[k] for k in arten}
 
     @property
     def target_total(self) -> int:

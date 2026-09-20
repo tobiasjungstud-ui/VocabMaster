@@ -25,6 +25,8 @@ from dataclasses import replace
 from pathlib import Path
 
 from . import datenbanken
+from .aufgaben import ARTEN as AUFGABEN_ARTEN
+from .aufgaben import DEFINITION, LUECKEN, SAETZE_ZUR_WAHL, SCHREIBEN, sortiert
 from .checks import FEHLER, WARNUNG, pruefe_paket
 from .config import PACKAGE_ROOT, Settings
 from .database import Database
@@ -48,8 +50,11 @@ from .pack import (
     ARTEN_KURZ,
     Pack,
     _schwierigkeit,
+    aufgabe_art,
+    aufgaben_von,
     aufteilung,
     ausgleichen,
+    gepruefte_woerter,
     lueckentext,
     neue_fassung,
     neue_liste,
@@ -382,23 +387,63 @@ def cmd_db_pool(args) -> int:
 
 
 # ------------------------------------------------------------------- Gerüst
-def _wahlaufgaben_flagge(p) -> None:
-    """Aufgabe 3 - an einer Stelle beschrieben, überall dieselbe.
+def _aufgaben_flaggen(p) -> None:
+    """Welche Aufgaben die Prüfung hat und wie viele Wörter sie abfragt.
 
-    Voreingestellt **aus**: Eine Aufgabe, die es gestern nicht gab, darf
-    nicht in jedem schon gebauten Paket auftauchen.
+    Ohne Angabe bleibt alles, wie es war: acht zum Übersetzen, vier
+    Lücken. Die Flaggen stehen bei `gerüst`, `liste-neu` und `fassung` -
+    überall, wo eine Prüfung entsteht.
     """
-    p.add_argument("--wahlaufgaben", type=int, default=0, metavar="N",
-                   help="so viele Aufgaben 'Welcher Satz verwendet das Wort "
-                        "richtig?' je Prüfung - drei Sätze, zwei davon mit "
-                        "falscher Verwendung (Voreinstellung: 0, also keine; "
-                        "die Sätze entstehen im Chat)")
+    p.add_argument("--aufgaben", default="", metavar="ART[,ART…]",
+                   help="welche Aufgaben die Prüfung hat, kommagetrennt: "
+                        + ", ".join(AUFGABEN_ARTEN)
+                        + " (Vorgabe: uebersetzen,luecken)")
+    p.add_argument("--woerter", type=int, metavar="N",
+                   help="wie viele Vokabeln die Prüfung **insgesamt** "
+                        "abfragt; sie werden auf die Aufgaben verteilt "
+                        "(Vorgabe: 12)")
+    p.add_argument("--je-aufgabe", dest="je_aufgabe", action="append",
+                   metavar="ART=N", default=[],
+                   help="eine Aufgabe festnageln, z. B. 'luecken=4'; die "
+                        "übrigen teilen sich den Rest (mehrfach möglich)")
+    p.add_argument("--ohne-verteilung", dest="ohne_verteilung",
+                   action="store_true",
+                   help="nicht automatisch verteilen - dann zählt nur, was "
+                        "mit --je-aufgabe dasteht")
 
 
-def _mit_wahlaufgaben(settings: Settings, args) -> Settings:
-    """Die Flagge in die Einstellungen - ohne Angabe bleibt alles wie bisher."""
-    wieviele = int(getattr(args, "wahlaufgaben", 0) or 0)
-    return replace(settings, exam_choice_items=wieviele) if wieviele else settings
+def _mit_aufgaben(settings: Settings, args) -> Settings:
+    """Die Flaggen in die Einstellungen - ohne sie bleibt alles wie bisher."""
+    roh = str(getattr(args, "aufgaben", "") or "").strip()
+    if roh:
+        gewuenscht = [t.strip() for t in roh.split(",") if t.strip()]
+        unbekannt = [t for t in gewuenscht if t not in AUFGABEN_ARTEN]
+        if unbekannt:
+            raise SystemExit(
+                f"--aufgaben: '{unbekannt[0]}' gibt es nicht. Es gibt: "
+                + ", ".join(AUFGABEN_ARTEN)
+            )
+        settings = replace(settings, exam_tasks=tuple(sortiert(gewuenscht)))
+    if getattr(args, "woerter", None):
+        settings = replace(settings, exam_words=int(args.woerter))
+    eigen = dict(settings.exam_task_words)
+    for angabe in getattr(args, "je_aufgabe", []) or []:
+        art, _, zahl = str(angabe).partition("=")
+        art = art.strip()
+        if art not in AUFGABEN_ARTEN or not zahl.strip().isdigit():
+            raise SystemExit(
+                f"--je-aufgabe: '{angabe}' ist keine Angabe der Form "
+                "ART=N, z. B. 'luecken=4'."
+            )
+        eigen[art] = int(zahl)
+    # Die alte Flagge bleibt gültig: --luecken 4 ist --je-aufgabe luecken=4.
+    if getattr(args, "luecken", None):
+        eigen[LUECKEN] = int(args.luecken)
+    if eigen:
+        settings = replace(settings, exam_task_words=eigen)
+    if getattr(args, "ohne_verteilung", False):
+        settings = replace(settings, exam_auto_verteilen=False)
+    return settings
 
 
 def _ranking_flaggen(p) -> None:
@@ -437,9 +482,42 @@ def _ranking_bericht(report) -> None:
           + ", ".join(name for _, name in paedagogik._RANGFOLGE[:3]) + " …")
 
 
+def _handarbeit_je_aufgabe(settings: Settings) -> list[str]:
+    """Was je Aufgabenart im Chat zu schreiben ist, mit Stückzahl.
+
+    Sätze schreiben ist die eigentliche Arbeit; vier Prüfungen mal drei
+    Sätze je Aufgabe summieren sich schneller, als die Zahl im Regler
+    aussieht. Deshalb steht sie hier ausgeschrieben.
+    """
+    plan = settings.aufgabenplan()
+    heraus = []
+    for art, wie_viele in plan.items():
+        vier = 4 * wie_viele
+        if art == LUECKEN:
+            heraus.append("die vier Lückentexte")
+        elif art in SAETZE_ZUR_WAHL:
+            heraus.append(
+                f"die {vier * SAETZE_ZUR_WAHL[art]} Sätze für "
+                f"{AUFGABEN_ARTEN[art].titel} ({wie_viele} je Prüfung, "
+                f"davon je {SAETZE_ZUR_WAHL[art] - 1} mit falscher "
+                "Verwendung)"
+            )
+        elif art == DEFINITION:
+            heraus.append(
+                f"die {vier} englischen Umschreibungen ({wie_viele} je "
+                "Prüfung, einfacher Wortschatz, ohne das gesuchte Wort)"
+            )
+        elif art == SCHREIBEN:
+            heraus.append(
+                f"die Anstösse für Micro-Writing ({wie_viele} Wörter je "
+                "Prüfung)"
+            )
+    return heraus
+
+
 def cmd_geruest(args) -> int:
     db = _db(args)
-    settings = _mit_wahlaufgaben(_settings(args), args)
+    settings = _mit_aufgaben(_settings(args), args)
     unit = db.require_unit(args.unit)
     pfad = Path(args.verzeichnis) / pack_filename(unit)
     if pfad.exists() and not args.ueberschreiben:
@@ -458,17 +536,8 @@ def cmd_geruest(args) -> int:
             print(f"    {wort} ({bereich})")
     if r.ausnahme:
         print(f"\n  {r.ausnahme}")
-    auszufuellen = ["die Felder 'satz'", "fehlende Wörter",
-                    "die vier Lückentexte"]
-    if settings.exam_choice_items:
-        # Vier Prüfungen mal N Aufgaben mal drei Sätze - das ist mehr
-        # Schreibarbeit als die Lückentexte, und es gehört hier gesagt.
-        saetze = 4 * settings.exam_choice_items * settings.exam_choice_options
-        auszufuellen.append(
-            f"und die {saetze} Sätze der Wahlaufgaben "
-            f"({settings.exam_choice_items} je Prüfung, davon je zwei mit "
-            "falscher Verwendung des Wortes)"
-        )
+    auszufuellen = ["die Felder 'satz'", "fehlende Wörter"]
+    auszufuellen += _handarbeit_je_aufgabe(settings)
     print("\nJetzt im Chat ausfüllen: " + ", ".join(auszufuellen)
           + ".\nDanach 'vocabmaster prüfen " + str(pfad) + "'.")
     return 0
@@ -689,7 +758,7 @@ def cmd_listen(args) -> int:
 def cmd_liste_neu(args) -> int:
     """Eine neue Vokabelliste V2, V3 ... mit aufgewerteten Wörtern."""
     pack = Pack.load(args.paket)
-    settings = _mit_wahlaufgaben(_settings(args), args)
+    settings = _mit_aufgaben(_settings(args), args)
     db = _db(args)
 
     # Alle bestehenden Listen dieser Unit - die neue Auswahl soll ihnen
@@ -758,15 +827,11 @@ def cmd_liste_neu(args) -> int:
 def cmd_fassung(args) -> int:
     """Noch eine Fassung einer Prüfung anlegen - fortlaufend, hinterlegt."""
     pack = Pack.load(args.paket)
-    settings = _mit_wahlaufgaben(_settings(args), args)
-    if args.woerter:
-        settings = replace(settings, exam_words=args.woerter)
-    if args.luecken:
-        settings = replace(settings, exam_gaps=args.luecken)
-    if settings.exam_gaps >= settings.exam_words:
-        print(f"--luecken ({settings.exam_gaps}) muss kleiner sein als "
-              f"--woerter ({settings.exam_words}): sonst bleibt für den "
-              "Übersetzungsteil nichts übrig.")
+    settings = _mit_aufgaben(_settings(args), args)
+    plan = settings.aufgabenplan()
+    if LUECKEN in plan and len(plan) > 1 and plan[LUECKEN] >= sum(plan.values()):
+        print(f"--luecken ({plan[LUECKEN]}) lässt für die übrigen Aufgaben "
+              f"nichts übrig - die Prüfung hat {sum(plan.values())} Wörter.")
         return 1
     prof = profile(args.niveau)
 
@@ -870,8 +935,11 @@ def _eine_fassung_berichten(args, pack, prof, nummer, ziel, neu, vorhanden) -> N
     print(f"{ziel} geschrieben - {neu.unit_label} Teil {args.teil} "
           f"Niveau {prof.name}, Fassung {nummer} (Liste V{pack.liste_version}).")
     print(f"  Anspruch: Ø {schnitt:.2f}/10")
-    print(f"  {len(spec['task1']['items'])}× übersetzen, "
-          f"{len(spec['task2']['gaps'])} Lücken")
+    print("  " + ", ".join(
+        f"{len(gepruefte_woerter(a))}× {AUFGABEN_ARTEN[a['art']].titel}"
+        if a.get("art") in AUFGABEN_ARTEN else "?"
+        for a in aufgaben_von(spec)
+    ))
 
     # Überschnitt ist erlaubt - er wird berichtet, nicht begrenzt.
     for p_alt in sorted([pack, *vorhanden.values()], key=lambda x: x.fassung):
@@ -895,8 +963,8 @@ def _eine_fassung_berichten(args, pack, prof, nummer, ziel, neu, vorhanden) -> N
           f"Nebensätze ≤ {ziele['max_subordinators_per_sentence']} je Satz")
     print(f"  Lücken: {', '.join(aufteilung(spec))}")
     print(f"  Auszufüllen: der Lückentext in "
-          f"pruefungen.teil{args.teil}.{prof.name}.task2.text "
-          f"({len(spec['task2']['gaps'])} Lücken).")
+          f"pruefungen.teil{args.teil}.{prof.name} "
+          f"({len(aufgabe_art(spec, LUECKEN).get('gaps', []))} Lücken).")
     print(f"  Danach 'vocabmaster prüfen {ziel} --nur test'.")
 
 
@@ -1009,7 +1077,7 @@ def build_parser() -> argparse.ArgumentParser:
         p.add_argument("unit", type=_unit)
         p.add_argument("-o", "--verzeichnis", default=str(KURATIERT))
         _ranking_flaggen(p)
-        _wahlaufgaben_flagge(p)
+        _aufgaben_flaggen(p)
         p.add_argument("--überschreiben", "--ueberschreiben", action="store_true",
                        dest="ueberschreiben")
         p.set_defaults(func=cmd_geruest)
@@ -1057,7 +1125,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="selbst angegebenes Wort als 'englisch=deutsch' "
                         "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")
     _ranking_flaggen(p)
-    _wahlaufgaben_flagge(p)
+    _aufgaben_flaggen(p)
     p.add_argument("--verzeichnis", default="kuratiert")
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
                    action="store_true")
@@ -1076,11 +1144,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="so viele Fassungen auf einmal, fortlaufend numeriert "
                         "(jede teilt Lücken und Übersetzungen anders auf; "
                         "die Lückentexte entstehen im Chat)")
-    p.add_argument("--woerter", type=int,
-                   help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
+    _aufgaben_flaggen(p)
     p.add_argument("--luecken", type=int,
-                   help="davon Lücken (Vorgabe aus den Einstellungen)")
-    _wahlaufgaben_flagge(p)
+                   help="davon Lücken - dieselbe Angabe wie "
+                        "'--je-aufgabe luecken=N'")
     p.add_argument("--textstufe", type=float,
                    help="Schwierigkeit des Lückentexts 0-10 (Normallage: "
                         "Niveau A 3.0, Niveau B 1.7)")

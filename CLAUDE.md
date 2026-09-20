@@ -25,10 +25,11 @@ Ablauf je Unit:
 
 1. `vocabmaster gerüst 3` — schreibt `kuratiert/unit_03.json` mit der
    geprüften Wortauswahl.
-2. Im Chat ausfüllen: alle 60 Felder `satz`, fehlende Wörter und die **vier**
-   Lückentexte in `pruefungen.teil1/teil2 → A/B → task2.text`. Wurde die
-   Wahlaufgabe bestellt (`--wahlaufgaben N`), dazu ihre Sätze in
-   `task3 → items → saetze`.
+2. Im Chat ausfüllen: alle 60 Felder `satz`, fehlende Wörter und die
+   Handarbeit jeder Aufgabe unter `pruefungen.teil1/teil2 → A/B →
+   aufgaben` — Lückentexte, Sätze zur Wahl, Umschreibungen, Anstösse.
+   `vocabmaster offen <paket>` nennt jedes fehlende Feld mit Aufgabe und
+   Nummer.
 3. Die eigenen Sätze selbst noch einmal auf Grammatik, Natürlichkeit,
    Niveau und verratene Lösung durchsehen.
 4. `vocabmaster prüfen kuratiert/unit_03.json` — bis null Fehler.
@@ -310,9 +311,9 @@ beziehungsweise `Part II`; das für Niveau A trägt keinen Zusatz. Es ist die
 Normalform, dieselbe Klasse bekommt nie beide zu sehen, und wer austeilt,
 muss die B-Blätter auf einen Blick erkennen.
 
-Die Prüfungsform ist für beide dieselbe (8× Übersetzen + 4 Lücken,
-12 Punkte), wie in der Vorlage; die Wahlaufgabe kommt, wenn bestellt, mit
-einem Punkt je Aufgabe dazu. Unterschiedlich sind Wortauswahl,
+Die Prüfungsform ist für beide dieselbe — voreingestellt 8× Übersetzen und
+4 Lücken, 12 Punkte, wie in der Vorlage; welche Aufgaben sie hat, steht
+unter „Der Aufbau der Prüfung". Unterschiedlich sind Wortauswahl,
 Satzlänge, Textlänge und Nebensatzdichte des Lückentextes.
 
 Die Beispielsätze der Liste lernen beide Gruppen, deshalb gilt für sie das
@@ -527,54 +528,87 @@ Was eine Fassung unterscheidet, ist zweierlei:
   übersetzt wird, sagt über seine Schwierigkeit nichts — diese Variation
   kostet keinen Punkt Anspruch.
 
-## Aufgabe 3 — welcher Satz stimmt? (abwählbar)
+## Der Aufbau der Prüfung — sechs Aufgabenarten, eine Wortzahl
 
-Übersetzen prüft, **was** ein Wort heisst. Einsetzen prüft, **wo** es
-hingehört. Keines von beiden prüft, **wie** man es gebraucht — und genau
-daran scheitert die Klasse: `discuss about`, `explain me`, `he begged the
-window open`.
+Eine Prüfung war einmal zwei feste Aufgaben. Das ist eine Form, keine
+Notwendigkeit: Übersetzen prüft, **was** ein Wort heisst, Einsetzen,
+**wo** es hingehört. Was eine Klasse darüber hinaus können muss, prüft
+keines von beiden.
 
-Dafür gibt es die dritte Aufgabe: je Wort **drei Sätze, zwei davon mit
-falscher Verwendung**, und angekreuzt wird der richtige.
+Die Prüfung ist deshalb eine **Liste von Aufgaben**. Angekreuzt wird, was
+sie enthält; die Wortzahl verteilt sich darauf.
+
+| Kennung | Aufgabe | Gewicht | mind. |
+|---|---|---|---|
+| `uebersetzen` | Tabellen-Übersetzung — deutsches Stichwort, englisches Wort hinschreiben | 4 | 1 |
+| `luecken` | Lückentext mit Wortbank | 2 | 2 |
+| `wortwahl` | Wortbedeutung — **drei** Sätze je Wort, zwei mit falscher Verwendung | 2 | 1 |
+| `definition` | Definition — eine englische Umschreibung, das Wort ist hinzuschreiben | 2 | 1 |
+| `richtig_falsch` | Correct / Incorrect Use — **zwei** Sätze, nur einer stimmt | 2 | 1 |
+| `schreiben` | Micro-Writing — zwei bis drei Wörter in einem kurzen Text | 1 | 2 |
 
 ```bash
-vocabmaster gerüst 3 --wahlaufgaben 2
-vocabmaster liste-neu kuratiert/unit_01.json --wahlaufgaben 2
-vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A --wahlaufgaben 2
+vocabmaster gerüst 3 --aufgaben uebersetzen,luecken,definition --woerter 15
+vocabmaster gerüst 3 --aufgaben uebersetzen,luecken --je-aufgabe luecken=6
+vocabmaster fassung kuratiert/unit_01.json --teil 1 --niveau A \
+    --aufgaben uebersetzen,wortwahl,schreiben
 ```
 
-**Voreingestellt aus.** Ohne `--wahlaufgaben` steht `task3` gar nicht erst
-im Paket, und das Dokument ist Byte für Byte dasselbe wie vorher. Eine
-Prüfung, die es gestern nicht gab, taucht nicht von selbst in jedem schon
-gebauten Paket auf. Zwei Tests wachen darüber.
+### Wer nichts umstellt, bekommt die Prüfung von gestern
 
-### Die Wörter stehen in keiner anderen Aufgabe
+Voreingestellt sind die beiden klassischen Arten, und **die Gewichte 4 und
+2 sind genau dafür gewählt**: Zwölf Wörter ergeben weiterhin acht zum
+Übersetzen und vier Lücken. Die mitgelieferten Pakete tragen noch
+`task1`/`task2`; sie werden über denselben Adapter gelesen wie die neue
+Liste und ergeben **Byte für Byte dasselbe Dokument**. Zwei Tests wachen
+darüber — einer über die Gewichte, einer über alle 76 Dokumente unter
+`kuratiert/`.
 
-Alle drei Sätze schreiben das Wort **aus**. Wäre es zugleich eine Lücke
-oder eine Übersetzung, stünde deren Lösung damit auf demselben Blatt — und
-Aufgabe 1 prüfte nichts mehr. Die Wörter kommen deshalb aus demselben Test,
-aber aus dem, was die zwölf geprüften übrig gelassen haben.
+### Die Verteilung
 
-Gewählt werden sie in einem **zweiten** Durchlauf über diesen Rest. Den
-ersten Durchlauf einfach grösser zu machen wäre der naheliegende Weg und
-der falsche: Die Obergrenze je Wortart hängt an der Anzahl, und schon zwei
-Wörter mehr verschöben, welche zwölf die Prüfung abfragt. Ein Test
-vergleicht beide Wege Aufgabe für Aufgabe.
+Proportional zum Gewicht, der Rest nach dem grössten Bruchteil, und was
+darunter unter seine Mindestzahl fiele, wird darauf angehoben. Zweimal
+dieselbe Eingabe gibt zweimal dasselbe.
+
+**Von Hand Gesetztes kommt aus der Gesamtzahl, nicht obendrauf.** Wer
+`luecken=6` festnagelt, verschiebt die sechs aus dem Budget der übrigen;
+die Summe bleibt, wo der Regler steht. Andernfalls stiege sie bei jedem
+Festnageln, und die Zahl oben zeigte etwas anderes an als die Summe
+darunter.
+
+`--ohne-verteilung` schaltet das Verteilen ab: Dann zählt nur, was je
+Aufgabe dasteht, und der Rest bekommt seine Mindestzahl.
+
+### Kein Wort steht in zwei Aufgaben
+
+Die eine Aufgabe fragt ein Wort ab (übersetzen, einsetzen, umschreiben),
+die andere druckt es aus (Satzwahl, Micro-Writing). Stünde dasselbe Wort
+in beiden, läge die Lösung der einen in der anderen offen — und das fällt
+erst beim Korrigieren auf. Die Wörter werden deshalb **einmal** gewählt
+und dann auf die Aufgaben verteilt.
+
+Die Wortwahl der Lücken bleibt, wie sie war: je Lücke eine andere Wortart,
+je Fassung durchgeschoben. Was sie übrig lässt, wird der Reihe nach
+ausgeteilt.
 
 ### Was die Anwendung prüft und was nicht
 
-Die Kontrolle `wahlaufgaben` prüft die **Form**:
+Die Kontrolle `aufgabenformen` prüft die **Form**:
 
 | Befund | Stufe |
 |---|---|
-| weniger als drei Sätze — bei zweien ist Raten die halbe Miete | FEHLER |
+| zu wenige Sätze zur Wahl (drei bzw. zwei) | FEHLER |
 | die Lösung zeigt auf keinen der Sätze | FEHLER |
-| das Wort steht auch in Aufgabe 1 oder 2 desselben Blattes | FEHLER |
-| dasselbe Wort in zwei Wahlaufgaben eines Blattes | FEHLER |
-| zwei der drei Sätze sind derselbe | FEHLER |
+| ein Wort wird auf demselben Blatt zweimal geprüft | FEHLER |
+| ein ausgedrucktes Wort ist anderswo die Lösung | FEHLER |
+| zwei der Sätze sind derselbe | FEHLER |
 | in **keinem** Satz steht das Wort | FEHLER |
+| die Umschreibung enthält das gesuchte Wort | FEHLER |
+| zweimal dieselbe Umschreibung | FEHLER |
+| ein Mini-Text mit einem einzigen Wort | FEHLER |
 | in einem Satz ist das Wort nicht zu erkennen | WARNUNG |
-| ein Satz ist länger als das Niveauband erlaubt | WARNUNG |
+| ein Satz oder eine Umschreibung ist länger als das Niveauband | WARNUNG |
+| mehr als drei Wörter in einem Mini-Text | WARNUNG |
 | der richtige Satz fällt schon durch seine Länge auf | HINWEIS |
 
 Die gebeugte Form bleibt bewusst eine **Warnung**: Die Anwendung
@@ -582,34 +616,61 @@ konjugiert nicht. Sie findet `begged` zu `beg`, aber nicht `came` zu
 `come`, und ein Fehlalarm auf einem richtigen Satz wäre schlimmer als ein
 übersehener.
 
-**Was sie nicht prüfen kann, ist die Sache selbst**: ob die beiden anderen
-Sätze das Wort wirklich falsch verwenden. Das ist eine Sprachentscheidung
-und bleibt beim Gegenlesen im Chat. Der Prüfbericht sagt das ausdrücklich,
-damit „wahlaufgaben: ok" nicht mehr verspricht, als es hält.
+**Was sie nicht prüfen kann, ist die Sache selbst**: ob die anderen Sätze
+das Wort wirklich falsch verwenden, ob die Umschreibung genau dieses Wort
+meint. Das sind Sprachentscheidungen und bleiben beim Gegenlesen im Chat.
+Der Prüfbericht sagt das ausdrücklich, damit ein Häkchen nicht mehr
+verspricht, als es hält.
+
+Der geerbte Checker des VocabTestMaker bleibt **unangetastet**. Er hat
+seine zwanzig Kontrollen für task1 und task2 geschrieben und bekommt
+deshalb `klassische_sicht(spec)` — die Aufgabenliste, auf seine beiden
+Schlüssel gestutzt, samt der Wortzahl, die zu **seiner** Sicht gehört.
 
 ### Auf dem Blatt
 
-Die Aufgabe steht **ohne Tabelle** unter dem Lückentext — das
-Referenzlayout hat genau zwei, den Kopf und die Übersetzungstabelle, und
-eine Kontrolle zählt sie. Je Aufgabe ein Punkt. Auf dem Lösungsblatt steht
-der richtige Satz fett und darunter noch einmal `Solution: b)`: Fettdruck
-ist beim Korrigieren zu übersehen, eine Zeile im Klartext nicht.
+Die Aufgaben stehen in der Reihenfolge des Katalogs und werden beim Setzen
+**neu nummeriert**: Fällt das Übersetzen weg, ist der Lückentext Aufgabe 1.
+Geändert wird dabei nur die Ziffer, der Rest der Aufgabenstellung bleibt
+Zeichen für Zeichen stehen — samt der Zahl der Leerzeichen dahinter, denn
+ein Dokument, das sich in einem Leerzeichen unterscheidet, ist nicht mehr
+dasselbe Dokument.
 
-**Zwei Aufgaben passen auf die A4-Seite, drei nicht.** Die Seitenschätzung
-rechnet die Aufgabe mit und sagt es; ein Test hält die Grenze fest. Das
-Zählfeld auf der Seite sagt es schon vorher.
+Keine der neuen Arten braucht eine **Tabelle**: Das Referenzlayout hat
+genau zwei, den Kopf und die Übersetzungstabelle, und eine Kontrolle zählt
+sie. Ein Punkt je geprüftem Wort.
+
+Auf dem Lösungsblatt steht der richtige Satz fett und darunter
+`Solution: b)`; bei Micro-Writing steht dort, **woran** korrigiert wird —
+einen Lösungsschlüssel kann es da nicht geben.
+
+Eine Lücke ist ein Strich aus genau 26 Unterstrichen. Die Schreiblinie
+eines Mini-Textes ist länger, und `count` fand in ihr gleich drei Lücken —
+das Blatt meldete zwölf, wo sechs standen. Gezählt wird deshalb der Strich
+in seiner genauen Länge.
+
+**Die Seitenschätzung rechnet jede Art mit.** Sechs Arten passen nicht auf
+eine A4-Seite; die Nachkontrolle sagt es und nennt den Grund.
 
 ### Auf der Seite
 
-Unter den Feinheiten steht das Häkchen **„Welcher Satz stimmt?"** samt
-Zählfeld (1–4, voreingestellt 2). Der Hinweis darunter rechnet die
-Schreibarbeit aus — vier Prüfungen mal zwei Aufgaben mal drei Sätze sind
-24 Sätze, und das ist mehr als die vier Lückentexte zusammen. Ohne
-angekreuzte Prüfung ist die ganze Gruppe weg.
+Unter „Aufbau der Prüfung" steht der Regler für die Gesamtzahl, darunter
+die sechs Häkchen mit ihrer Wortzahl. Eine getippte Zahl **nagelt fest**
+(sie steht dann farbig da), die übrigen wandern weiter mit; „zurücksetzen"
+löst alle wieder. Das Häkchen „Auf die Aufgaben verteilen" schaltet die
+Umverteilung ab.
 
-Die Prüfungskarte unter „Prüfungen ansehen" zeigt die Aufgabe so, wie sie
+**Die Seite rechnet die Verteilung nicht selbst.** Sie steht fertig in
+`daten.json` — 1701 Einträge für jede Kombination mal jede Wortzahl,
+ausgerechnet von derselben Stelle, die sie beim Bauen anwendet. Eine
+zweite Fassung davon in JavaScript liefe irgendwann auseinander, und die
+Seite zeigte eine Prüfung, die so nie gebaut wird. Aus demselben Grund
+kennt die Seite **keine Aufgabenart**: Sie liest den Katalog
+(`DATA.aufgabenarten`). Ein Test wacht über beides.
+
+Die Prüfungskarte unter „Prüfungen ansehen" zeigt jede Aufgabe so, wie sie
 auf dem Blatt steht — mit markierter Lösung und mit „— noch nicht
-geschrieben —" dort, wo ein Satz fehlt.
+geschrieben —" dort, wo etwas fehlt.
 
 ## Schwierigkeit des Lückentexts
 
@@ -1070,7 +1131,7 @@ gleich brauchen wird.
 | die ganze Gruppe „Einstellungen der Vokabelliste" | „Neue Vokabelliste" nicht angekreuzt ist |
 | die Fassungswahl | „Neue Vokabelliste" angekreuzt ist — ihre Prüfungen sind ihre ersten |
 | „Wie viele Fassungen auf einmal" | weder eine neue Fassung noch eine neue Liste bestellt ist |
-| „Welcher Satz stimmt?" samt Zählfeld | keine Prüfung angekreuzt ist; das Zählfeld auch ohne Häkchen |
+| der Aufbau der Prüfung (Regler und die sechs Häkchen) | keine Prüfung angekreuzt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher
 Liste sie hängen. War „neue Liste" gewählt und wird die Vokabelliste

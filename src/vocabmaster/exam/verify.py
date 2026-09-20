@@ -11,7 +11,7 @@ import re
 import zipfile
 from xml.etree import ElementTree as ET
 
-from .builder import GAP, LINE, choice_letter
+from .builder import GAP, LINE, aufgaben_des_specs, choice_letter
 from .check import ERROR, INFO, WARN, Finding, stem  # noqa: F401  (stem: Teil der API)
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
@@ -101,125 +101,186 @@ def verify_document(path: str, spec: dict, template_path: str,
 
     text = document_text(path)
     flat = re.sub(r"\s+", " ", text)
+    aufgaben = aufgaben_des_specs(spec)
+    nach_art = {}
+    for a in aufgaben:
+        nach_art.setdefault(str(a.get("art", "")), []).append(a)
 
-    gaps = spec.get("task2", {}).get("gaps", [])
+    # --- die Lösungen, die nicht auf dem Blatt stehen dürfen -------------
+    # Eine Aufgabe fragt ein Wort ab (übersetzen, einsetzen, umschreiben)
+    # oder sie druckt es aus (Satzwahl, Micro-Writing). Nur die erste Sorte
+    # darf nirgends auftauchen - bei der zweiten ist das Wort die Angabe.
+    geheim = []
+    for a in nach_art.get("uebersetzen", []):
+        geheim += [i.get("english", "") for i in a.get("items", [])]
+    for a in nach_art.get("luecken", []):
+        geheim += [g.get("answer", "") for g in a.get("gaps", [])]
+    for a in nach_art.get("definition", []):
+        geheim += [i.get("english", "") for i in a.get("items", [])]
+
+    alle_gaps = [g for a in nach_art.get("luecken", []) for g in a.get("gaps", [])]
     if not is_answer_key:
-        found = text.count(GAP)
-        if found != len(gaps):
+        gefunden = _luecken_zaehlen(text)
+        erwartet = len(alle_gaps) + sum(
+            len(a.get("items", [])) for a in nach_art.get("definition", []))
+        if gefunden != erwartet:
             add(ERROR, "content",
-                f"the document has {found} gaps, the spec declares {len(gaps)}")
-        for gap in gaps:
-            answer = gap.get("answer", "")
-            if answer and re.search(rf"\b{re.escape(answer)}\b", text, re.I):
+                f"the document has {gefunden} blanks, the spec declares "
+                f"{erwartet}")
+        for wort in geheim:
+            if wort and re.search(rf"\b{re.escape(wort)}\b", text, re.I):
                 add(ERROR, "leak",
-                    f"the solution '{answer}' is printed on the exam sheet")
-        for item in spec.get("task1", {}).get("items", []):
-            english = item.get("english", "")
-            if english and re.search(rf"\b{re.escape(english)}\b", text, re.I):
-                add(ERROR, "leak",
-                    f"the solution '{english}' is printed on the exam sheet")
+                    f"the solution '{wort}' is printed on the exam sheet")
     else:
-        for gap in gaps:
+        for gap in alle_gaps:
             if gap.get("answer", "").upper() not in text.upper():
                 add(ERROR, "content",
                     f"the answer key does not show '{gap.get('answer')}'")
+        for a in nach_art.get("definition", []):
+            for item in a.get("items", []):
+                wort = item.get("english", "")
+                if wort and wort.upper() not in text.upper():
+                    add(ERROR, "content",
+                        f"the answer key does not show '{wort}'")
 
     if re.search(r"\{\d*\}", text):
         add(ERROR, "content", "an unreplaced {n} placeholder is in the document")
     if "TODO" in text.upper():
         add(ERROR, "content", "the document still contains TODO text")
 
+    # --- die Übersetzungstabelle ----------------------------------------
     all_tables = tables(path)
-    if len(all_tables) != 2:
+    erwartete_tabellen = 1 + len(nach_art.get("uebersetzen", []))
+    if len(all_tables) != erwartete_tabellen:
         add(ERROR, "content",
-            f"the document has {len(all_tables)} tables, expected 2 "
-            f"(header and translation)")
-    translation_rows = all_tables[1] if len(all_tables) > 1 else []
-    expected = len(spec.get("task1", {}).get("items", []))
-    if len(translation_rows) != expected:
-        add(ERROR, "content",
-            f"the translation table has {len(translation_rows)} rows, "
-            f"expected {expected}")
-    # the prompts must match the spec exactly, in order - a substring match
-    # would not notice a truncated or swapped prompt
-    for index, item in enumerate(spec.get("task1", {}).get("items", [])):
-        wanted = re.sub(r"\s+", " ", item.get("german", "")).strip()
-        got = re.sub(r"\s+", " ", translation_rows[index][0]).strip() \
-            if index < len(translation_rows) else ""
-        if got != wanted:
+            f"the document has {len(all_tables)} tables, expected "
+            f"{erwartete_tabellen} (header and one per translation task)")
+    for nr, aufgabe in enumerate(nach_art.get("uebersetzen", []), start=1):
+        rows = all_tables[nr] if nr < len(all_tables) else []
+        items = aufgabe.get("items", [])
+        if len(rows) != len(items):
             add(ERROR, "content",
-                f"row {index + 1} of the translation table reads '{got}', "
-                f"expected '{wanted}'")
-    for row in translation_rows:
-        if not is_answer_key and len(row) > 1 and row[1].strip():
-            add(ERROR, "content",
-                f"the answer column is not empty next to '{row[0]}'")
-        if len(row) != 2:
-            add(ERROR, "content",
-                f"a translation row has {len(row)} cells, expected 2")
-
-    # the word bank must be printed as its own comma-separated list
-    bank = spec.get("task2", {}).get("word_bank", [])
-    bank_line = next((line for line in text.splitlines()
-                      if line.strip().startswith(
-                          spec.get("task2", {}).get("word_bank_label", "Words:"))),
-                     "")
-    printed = [w.strip() for w in
-               bank_line.split(":", 1)[-1].split(",") if w.strip()]
-    if [re.sub(r"\s+", " ", w) for w in printed] != \
-            [re.sub(r"\s+", " ", w).strip() for w in bank]:
-        add(ERROR, "content",
-            f"the word bank on the sheet is {printed}, expected {bank}")
-
-    # every choice sentence must be on the sheet, and the solution letter
-    # must be on the answer key and nowhere else
-    choice_items = (spec.get("task3") or {}).get("items", [])
-    for nummer, item in enumerate(choice_items, start=1):
-        for i, satz in enumerate(item.get("saetze", [])):
-            satz = re.sub(r"\s+", " ", str(satz)).strip()
-            if satz and satz not in flat:
+                f"the translation table has {len(rows)} rows, "
+                f"expected {len(items)}")
+        # the prompts must match the spec exactly, in order - a substring
+        # match would not notice a truncated or swapped prompt
+        for index, item in enumerate(items):
+            wanted = re.sub(r"\s+", " ", item.get("german", "")).strip()
+            got = re.sub(r"\s+", " ", rows[index][0]).strip() \
+                if index < len(rows) else ""
+            if got != wanted:
                 add(ERROR, "content",
-                    f"sentence {choice_letter(i)}) of choice task {nummer} "
-                    f"is not on the sheet")
-        marker = f"Solution: {choice_letter(int(item.get('richtig', 1)) - 1)})"
-        if is_answer_key and marker not in flat:
+                    f"row {index + 1} of the translation table reads '{got}', "
+                    f"expected '{wanted}'")
+        for row in rows:
+            if not is_answer_key and len(row) > 1 and row[1].strip():
+                add(ERROR, "content",
+                    f"the answer column is not empty next to '{row[0]}'")
+            if len(row) != 2:
+                add(ERROR, "content",
+                    f"a translation row has {len(row)} cells, expected 2")
+
+    # --- die Wortbank ---------------------------------------------------
+    for aufgabe in nach_art.get("luecken", []):
+        bank = aufgabe.get("word_bank", [])
+        label = aufgabe.get("word_bank_label", "Words:")
+        bank_line = next((line for line in text.splitlines()
+                          if line.strip().startswith(label)), "")
+        printed = [w.strip() for w in
+                   bank_line.split(":", 1)[-1].split(",") if w.strip()]
+        if [re.sub(r"\s+", " ", w) for w in printed] != \
+                [re.sub(r"\s+", " ", w).strip() for w in bank]:
             add(ERROR, "content",
-                f"the answer key does not name the solution of choice task "
-                f"{nummer} ('{marker}')")
-    if choice_items and not is_answer_key and "Solution:" in text:
-        add(ERROR, "leak", "the exam sheet names the solution of a choice task")
+                f"the word bank on the sheet is {printed}, expected {bank}")
+
+    # --- Satzwahl, Umschreibung, Micro-Writing --------------------------
+    for art in ("wortwahl", "richtig_falsch"):
+        for aufgabe in nach_art.get(art, []):
+            for nummer, item in enumerate(aufgabe.get("items", []), start=1):
+                for i, satz in enumerate(item.get("saetze", [])):
+                    satz = re.sub(r"\s+", " ", str(satz)).strip()
+                    if satz and satz not in flat:
+                        add(ERROR, "content",
+                            f"sentence {choice_letter(i)}) of {art} item "
+                            f"{nummer} is not on the sheet")
+                marke = f"Solution: {choice_letter(int(item.get('richtig', 1)) - 1)})"
+                if is_answer_key and marke not in flat:
+                    add(ERROR, "content",
+                        f"the answer key does not name the solution of "
+                        f"{art} item {nummer} ('{marke}')")
+    if not is_answer_key and "Solution:" in text:
+        add(ERROR, "leak", "the exam sheet names a solution")
+
+    for aufgabe in nach_art.get("definition", []):
+        for nummer, item in enumerate(aufgabe.get("items", []), start=1):
+            umschreibung = re.sub(r"\s+", " ", str(item.get("umschreibung", ""))).strip()
+            if umschreibung and umschreibung not in flat:
+                add(ERROR, "content",
+                    f"the description of definition item {nummer} is not "
+                    "on the sheet")
+
+    for aufgabe in nach_art.get("schreiben", []):
+        for nummer, block in enumerate(aufgabe.get("items", []), start=1):
+            for wort in block.get("woerter", []):
+                en = wort.get("english", "")
+                if en and en not in flat:
+                    add(ERROR, "content",
+                        f"'{en}' of writing task {nummer} is not on the sheet")
 
     # a vocabulary exam that runs onto a second page has been laid out wrongly
     estimate = _page_estimate(spec)
     if estimate > 1:
-        grund = (" - the choice task takes about a third of a page"
-                 if choice_items else "")
+        zusatz = [a for a in aufgaben
+                  if str(a.get("art")) not in ("uebersetzen", "luecken")]
+        grund = (f" - {len(zusatz)} extra task(s) take space"
+                 if zusatz else "")
         add(WARN, "layout",
             f"the sheet is estimated at {estimate} pages{grund} - "
             "check it in Word")
     add(INFO, "verify",
-        f"{len(translation_rows)} prompts, {text.count(GAP)} gaps, "
-        f"{len(flat.split())} words on the sheet")
+        f"{sum(len(a.get('items', [])) for a in nach_art.get('uebersetzen', []))}"
+        f" prompts, {_luecken_zaehlen(text)} blanks, "
+        f"{len(flat.split())} words "
+        f"on the sheet")
     return findings
+
+
+def _luecken_zaehlen(text: str) -> int:
+    """Wie viele Lücken auf dem Blatt stehen - genau die, keine anderen.
+
+    Eine Lücke ist ein Strich aus genau 26 Unterstrichen. Die Schreiblinie
+    eines Mini-Textes ist länger, und `count` fand in ihr gleich drei
+    Lücken - das Blatt meldete zwölf, wo sechs standen.
+    """
+    return len(re.findall(rf"(?<!_){re.escape(GAP)}(?!_)", text))
 
 
 def _page_estimate(spec: dict) -> int:
     """Rough height estimate in A4 pages for the reference layout."""
-    header = 1400                    # header table, in twips
+    total = 1400                     # header table, in twips
     per_row = 680 + 60
-    rows = len(spec.get("task1", {}).get("items", []))
-    instructions = 2 * 500
-    text_words = len(re.sub(r"\{\d*\}", "x", spec.get("task2", {}).get("text", "")).split())
-    cloze = 360 * max(1, round(text_words / 11))
-    # Aufgabe 3: eine Zeile je Wort, eine je Satz - ein langer Satz bricht um.
-    choice_items = (spec.get("task3") or {}).get("items", [])
-    choice = 0
-    if choice_items:
-        instructions += 500
-        for item in choice_items:
-            choice += LINE
-            for satz in item.get("saetze", []):
-                choice += LINE * max(1, round(len(str(satz).split()) / 13))
-    total = header + instructions + rows * per_row + cloze + choice + 800
+    for aufgabe in aufgaben_des_specs(spec):
+        art = str(aufgabe.get("art", ""))
+        total += 500                 # die Aufgabenstellung
+        if art == "uebersetzen":
+            total += len(aufgabe.get("items", [])) * per_row
+        elif art == "luecken":
+            woerter = len(re.sub(r"\{\d*\}", "x",
+                                 aufgabe.get("text", "")).split())
+            total += 360 * max(1, round(woerter / 11))
+        elif art in ("wortwahl", "richtig_falsch"):
+            for item in aufgabe.get("items", []):
+                total += LINE
+                for satz in item.get("saetze", []):
+                    total += LINE * max(1, round(len(str(satz).split()) / 13))
+        elif art == "definition":
+            for item in aufgabe.get("items", []):
+                woerter = len(str(item.get("umschreibung", "")).split())
+                total += LINE * max(1, round(woerter / 13)) + LINE
+        elif art == "schreiben":
+            for block in aufgabe.get("items", []):
+                total += LINE * 2
+                total += LINE * max(2, int(block.get("mindestsaetze", 2) or 2))
+    total += 800
     usable = 16838 - 1417 - 635      # page height minus margins
     return max(1, -(-total // usable))

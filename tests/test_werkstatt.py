@@ -228,8 +228,7 @@ SICHTBARKEIT = {
     "teile": "b.pruefungen",
     "fassungFeld": "b.fassungswahl",
     "fassungAnzahlFeld": "b.neueFassung",
-    "wahlFeld": "b.pruefungen",
-    "wahlAnzahlFeld": "b.wahlaufgaben",
+    "aufgabenwahl": "b.aufbau",
 }
 
 

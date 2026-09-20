@@ -142,6 +142,21 @@ input[type=range]{width:100%; margin:6px 0 0; accent-color:var(--accent)}
 .zurueck[hidden]{display:none}
 
 .paar{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+/* Häkchen und Wortzahl in einer Zeile: Die Zahl gehört zur Aufgabe, und
+   untereinander läse man sie als eigene Einstellung. */
+.aufgabenzeile{display:flex; align-items:flex-start; gap:8px}
+.aufgabenzeile .tick{flex:1 1 auto; min-width:0}
+.aufgabenzeile input[type=number]{
+  flex:none; width:3.4em; padding:4px 5px; margin-top:4px;
+  background:var(--paper); border:1px solid var(--line-2);
+  border-radius:var(--r); font-family:var(--mono); font-size:12px;
+  font-variant-numeric:tabular-nums; text-align:right;
+}
+.aufgabenzeile input[type=number].fest{
+  border-color:var(--accent); color:var(--accent); font-weight:600;
+}
+.aufgabenzeile:not(.dabei) .tick span{color:var(--ink-3)}
+#aufgabenhinweis a{color:var(--accent)}
 .dreier{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px}
 @media (max-width:520px){ .dreier{grid-template-columns:1fr} }
 .feld label{display:block; font-size:11.5px; color:var(--ink-2); margin-bottom:4px}
@@ -760,16 +775,23 @@ td.satz{color:var(--ink-2); font-size:12.5px}
       </section>
 
         <section>
-          <span class="legende">Feinheiten</span>
+          <span class="legende">Aufbau der Prüfung</span>
         <div id="pruefmasse">
-          <div class="paar">
-            <div class="feld"><label for="anzahl">Wörter je Prüfung</label>
-              <input type="number" id="anzahl" min="6" max="20" step="2" value="12"></div>
-            <div class="feld"><label for="luecken">davon Lücken</label>
-              <input type="number" id="luecken" min="2" max="6" value="4"></div>
+          <div class="feld">
+            <label for="gesamtwoerter">Wörter je Prüfung —
+              <b id="gesamtwert">12</b></label>
+            <input type="range" id="gesamtwoerter" min="4" max="30" step="1"
+                   value="12">
           </div>
+          <label class="tick" for="autoVerteilen" style="margin-top:6px">
+            <input type="checkbox" id="autoVerteilen" checked>
+            <span>Auf die Aufgaben verteilen<span class="sub">sonst zählt nur,
+              was je Aufgabe dasteht</span></span></label>
+          <div id="aufgabenwahl"></div>
+          <p class="hinweis" id="aufgabenhinweis"></p>
           <!-- Bei einer **neuen** Liste gibt es nichts zu wählen: Ihre
                Prüfungen sind zwangsläufig ihre ersten. -->
+          <span class="legende" style="margin-top:14px">Fassung</span>
           <div class="feld" id="fassungFeld" style="margin-top:10px">
             <label for="variante">Fassung</label>
             <select id="variante"></select>
@@ -779,18 +801,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <div class="feld" id="fassungAnzahlFeld" style="margin-top:10px">
             <label for="fassungAnzahl">Wie viele Fassungen auf einmal</label>
             <input type="number" id="fassungAnzahl" min="1" max="12" value="1">
-          </div>
-          <!-- Aufgabe 3. Abwählbar, und voreingestellt aus: Eine Prüfung,
-               die es gestern nicht gab, kommt nicht von selbst dazu. -->
-          <div id="wahlFeld" style="margin-top:12px">
-            <label class="tick" for="wahl"><input type="checkbox" id="wahl">
-              <span>Welcher Satz stimmt?<span class="sub">drei Sätze je Wort,
-                zwei mit falscher Verwendung</span></span></label>
-            <div class="feld" id="wahlAnzahlFeld" style="margin-top:6px">
-              <label for="wahlAnzahl">Wie viele solche Aufgaben je Prüfung</label>
-              <input type="number" id="wahlAnzahl" min="1" max="4" value="2">
-            </div>
-            <p class="hinweis" id="wahlhinweis"></p>
           </div>
           <p class="hinweis" id="fassunghinweis"></p>
         </div>
@@ -1009,13 +1019,57 @@ function echteAuswahl(teil, niveau, sortiert){
           luecken:e.luecken};
 }
 
+/* Welche Aufgaben die Prüfung hat - in der Reihenfolge des Blattes. */
+function arten(){
+  const katalog = (DATA.aufgabenarten || []).map(a => a.kennung);
+  const gewaehlt = state.arten || DATA.aufgaben_vorgabe || [];
+  return katalog.filter(k => gewaehlt.includes(k));
+}
+
+/* Wie viele Wörter jede Aufgabe bekommt.
+
+   **Gerechnet wird hier nichts.** Die Verteilung steht fertig in
+   `daten.json`, ausgerechnet von derselben Stelle, die sie beim Bauen
+   anwendet. Eine zweite Fassung davon in JavaScript liefe irgendwann
+   auseinander, und die Seite zeigte eine Prüfung, die so nie entsteht. */
+function plan(){
+  const liste = arten();
+  const heraus = {};
+  if(!liste.length) return heraus;
+  // Was von Hand dasteht, kommt **aus** der Gesamtzahl, nicht obendrauf:
+  // Sonst stiege sie bei jedem Festnageln, und der Regler oben zeigte
+  // etwas anderes an als die Summe darunter.
+  let festSumme = 0;
+  for(const k of liste)
+    if(state.eigeneZahlen[k]){ heraus[k] = state.eigeneZahlen[k]; festSumme += heraus[k]; }
+  const offen = liste.filter(k => !(k in heraus));
+  if(!state.autoVerteilen){
+    offen.forEach(k => heraus[k] = mindestens(k));
+  } else if(offen.length){
+    const rest = Math.max(0, state.gesamtwoerter - festSumme);
+    const zahlen = (DATA.verteilung || {})[rest + "|" + offen.join(",")];
+    offen.forEach((k, i) => heraus[k] = (zahlen && zahlen[i]) || mindestens(k));
+  }
+  const sortiert = {};
+  liste.forEach(k => sortiert[k] = heraus[k]);
+  return sortiert;
+}
+
+function artInfo(kennung){
+  return (DATA.aufgabenarten || []).find(a => a.kennung === kennung) || {};
+}
+function mindestens(kennung){ return artInfo(kennung).mindestens || 1; }
+function planSumme(){
+  return Object.values(plan()).reduce((a, b) => a + b, 0);
+}
+
 /* Welche Auswahl gilt gerade? */
 function auswahlFuer(teil, niveau, sortiert){
-  if(!state.eigen && state.anzahl === 12){
+  if(!state.eigen && planSumme() === 12){
     const echt = echteAuswahl(teil, niveau, sortiert);
     if(echt) return echt;
   }
-  return fenster(sortiert, state.anzahl, state.ziel[niveau]);
+  return fenster(sortiert, planSumme(), state.ziel[niveau]);
 }
 
 /* Lücken: bei der echten Auswahl stehen sie in den Daten, sonst genähert. */
@@ -1040,7 +1094,11 @@ function luecken(auswahl, anzahl){
 const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", name:"Niveau B"}};
 
 /* ---------------- Zustand ---------------- */
-const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, wahl:false, wahlAnzahl:2, buchAlle:false,
+const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, buchAlle:false,
+  // Welche Aufgaben die Prüfung hat und wie viele Wörter jede bekommt.
+  // `eigen` trägt nur, was von Hand gesetzt wurde - der Rest verteilt
+  // sich. Ohne Eintrag darin wandert eine Aufgabe mit.
+  gesamtwoerter:12, autoVerteilen:true, arten:null, eigeneZahlen:{},
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
                listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
@@ -1712,13 +1770,7 @@ function pruefkarte(pr, li){
       '<span class="nr">' + (i + 1) + '</span>' +
       '<span class="en">' + esc(w.en) + '</span>' +
       '<span class="de">' + esc(w.de) + '</span></div>').join("") + "</div>" +
-    (pr.text
-      ? '<div class="lueckentext">' + lueckentext(pr.text) + "</div>" +
-        '<p class="loesungszeile">Lösung: ' +
-        luecken.map((w, i) => (i + 1) + " " + esc(w.en)).join(" · ") + "</p>"
-      : '<p class="pruefhinweis">Der Lückentext ist noch nicht ' +
-        "geschrieben.</p>") +
-    wahlblock(pr.wahl) +
+    (pr.aufgaben || []).map(a => aufgabenblock(a, luecken)).join("") +
     '<p class="pruefhinweis">' + (gebaut
       ? esc(pr.blatt)
       : "Noch kein Word-Dokument gebaut — im Chat mit „vocabmaster bauen" +
@@ -1727,27 +1779,47 @@ function pruefkarte(pr, li){
   return k;
 }
 
-/* Aufgabe 3, so wie sie auf dem Blatt steht - mit der Lösung markiert.
-   Ein noch nicht geschriebener Satz steht als solcher da; eine leere Zeile
-   sähe aus wie ein Satz, den jemand vergessen hat zu lesen. */
-function wahlblock(wahl){
-  if(!wahl || !wahl.length) return "";
+/* Eine Aufgabe so, wie sie auf dem Blatt steht.
+
+   Was noch nicht geschrieben ist, steht als solches da: Eine leere Zeile
+   sähe aus wie ein Satz, den jemand zu lesen vergessen hat. */
+function aufgabenblock(a, luecken){
+  const kopf = '<p class="loesungszeile">' + esc(a.instruction || "") + "</p>";
   const buchstabe = i => "abcdefgh"[i] || String(i + 1);
-  return '<p class="loesungszeile">Welcher Satz stimmt?</p>' +
-    wahl.map((w, n) =>
-      '<div class="pruefwoerter" style="grid-template-columns:1fr">' +
-      '<div class="pruefwort"><span class="nr">' + (n + 1) + '</span>' +
+  const offen = '<span style="color:var(--ink-3)">— noch nicht geschrieben —</span>';
+  if(a.art === "uebersetzen")
+    return kopf + '<div class="pruefwoerter">' + a.woerter.map((w, i) =>
+      '<div class="pruefwort"><span class="nr">' + (i + 1) + '</span>' +
       '<span class="en">' + esc(w.en) + '</span>' +
-      '<span class="de">' + esc(w.de) + '</span></div></div>' +
-      '<div class="lueckentext">' + (w.saetze || []).map((satz, i) =>
-        '<div>' + (i + 1 === w.richtig ? "<b>" : "") +
-        buchstabe(i) + ")&nbsp; " +
-        (String(satz).trim() ? esc(satz) : "— noch nicht geschrieben —") +
-        (i + 1 === w.richtig ? "</b>" : "") + '</div>').join("") +
-      "</div>").join("") +
-    '<p class="loesungszeile">Lösung: ' +
-    wahl.map((w, n) => (n + 1) + " " + buchstabe(w.richtig - 1) + ")")
-        .join(" · ") + "</p>";
+      '<span class="de">' + esc(w.de) + "</span></div>").join("") + "</div>";
+  if(a.art === "luecken")
+    return kopf + (a.text && a.text.indexOf("TODO") < 0
+      ? '<div class="lueckentext">' + lueckentext(a.text) + "</div>" +
+        '<p class="loesungszeile">Lösung: ' +
+        luecken.map((w, i) => (i + 1) + " " + esc(w.en)).join(" · ") + "</p>"
+      : '<p class="pruefhinweis">Der Lückentext ist noch nicht geschrieben.</p>');
+  if(a.art === "definition")
+    return kopf + '<div class="lueckentext">' + (a.items || []).map((it, i) =>
+      "<div>" + (i + 1) + ".&nbsp; " +
+      (String(it.umschreibung || "").trim() ? esc(it.umschreibung) : offen) +
+      ' → <b>' + esc(it.en) + "</b></div>").join("") + "</div>";
+  if(a.art === "schreiben")
+    return kopf + '<div class="lueckentext">' + (a.items || []).map((it, i) =>
+      "<div>" + (i + 1) + ".&nbsp; <b>" + esc(it.en) + "</b> — " +
+      (String(it.anstoss || "").trim() ? esc(it.anstoss) : offen) +
+      "</div>").join("") + "</div>";
+  // Satzwahl: zwei oder drei Sätze, der richtige fett.
+  return kopf + (a.items || []).map((w, n) =>
+    '<div class="pruefwoerter" style="grid-template-columns:1fr">' +
+    '<div class="pruefwort"><span class="nr">' + (n + 1) + '</span>' +
+    '<span class="en">' + esc(w.en) + "</span></div></div>" +
+    '<div class="lueckentext">' + (w.saetze || []).map((satz, i) =>
+      "<div>" + (i + 1 === w.richtig ? "<b>" : "") + buchstabe(i) + ")&nbsp; " +
+      (String(satz).trim() ? esc(satz) : offen) +
+      (i + 1 === w.richtig ? "</b>" : "") + "</div>").join("") +
+    "</div>").join("") +
+    '<p class="loesungszeile">Lösung: ' + (a.items || []).map((w, n) =>
+      (n + 1) + " " + buchstabe(w.richtig - 1) + ")").join(" · ") + "</p>";
 }
 
 /* Die Lücken stehen im Paket als {1}, {2} ... - im Blatt sind es Striche
@@ -2058,7 +2130,7 @@ function lineal(sortiert, aA, aB, teil){
 }
 
 function kasten(niveau, auswahl){
-  const lueckenWoerter = luecken(auswahl, state.luecken);
+  const lueckenWoerter = luecken(auswahl, plan().luecken || 0);
   const zeilen = auswahl.woerter.map(w =>
     "<li" + (lueckenWoerter.includes(w) ? ' class="luecke"' : "") + '><span class="sc">' +
     w.score.toFixed(1) + '</span><span class="en">' + esc(w.en) +
@@ -2144,9 +2216,9 @@ function bestellt(){
     // Eine neue Liste bringt zwangsläufig neue Fassungen mit - ihre
     // ersten. Dort ist "wie viele auf einmal" dieselbe Frage.
     neueFassung: t.some(x => x.art === "pruefung") && neueFassungBestellt(),
-    // Das Zählfeld gehört zum Häkchen, nicht zur Prüfung: Ohne Häkchen
-    // stünde eine Zahl da, die nichts bestellt.
-    wahlaufgaben: t.some(x => x.art === "pruefung") && state.wahl,
+    // Der Aufbau gehört zur Prüfung: Ohne angekreuzte Prüfung stünde
+    // eine Aufgabenliste da, die niemand bestellt hat.
+    aufbau: t.some(x => x.art === "pruefung"),
   };
 }
 
@@ -2172,8 +2244,7 @@ function zeichneSichtbarkeit(){
   // Eine bestehende Fassung gibt es genau einmal - die Frage "wie
   // viele" stellt sich nur dort, wo etwas Neues entsteht.
   $("fassungAnzahlFeld").hidden = !b.neueFassung;
-  $("wahlFeld").hidden = !b.pruefungen;
-  $("wahlAnzahlFeld").hidden = !b.wahlaufgaben;
+  $("aufgabenwahl").hidden = !b.aufbau;
 }
 
 function auftrag(){
@@ -2194,11 +2265,13 @@ function auftrag(){
     // Mehrere Fassungen auf einmal - fortlaufend ab der nächsten freien.
     // Bei einer bestehenden Fassung ist die Frage gegenstandslos.
     fassungAnzahl:neueFassungBestellt() ? Math.max(1, state.fassungAnzahl) : 1,
-    anzahl:state.anzahl, luecken:state.luecken,
-    // Aufgabe 3 hängt an der Prüfung: Ohne bestellte Prüfung gäbe es
-    // nichts, woran sie hinge.
-    wahl:pruefungen.length > 0 && state.wahl,
-    wahlAnzahl:Math.max(1, state.wahlAnzahl),
+    // Der Aufbau der Prüfung: welche Aufgaben, wie viele Wörter je
+    // Aufgabe, und ob die Zahlen verteilt oder von Hand gesetzt sind.
+    aufbau:plan(),
+    gesamtwoerter:planSumme(),
+    autoVerteilen:state.autoVerteilen,
+    eigeneZahlen:{...state.eigeneZahlen},
+    anzahl:planSumme(), luecken:plan().luecken || 0,
     datenbank:state.datenbank,
     mehrereDatenbanken:(DATA.datenbanken || []).length > 1,
     paed:state.paed, stufe:state.stufe,
@@ -2220,6 +2293,31 @@ function auftrag(){
       teile, state.variante === 0 ? Math.max(1, state.fassungAnzahl) : 1),
     erzeugt:new Date().toISOString()
   };
+}
+
+/* Der Aufbau der Prüfung, ausgeschrieben - und als Befehl daneben.
+
+   „12 Wörter" allein sagt niemandem, was zu schreiben ist. Der Satz nennt
+   deshalb jede Aufgabe mit ihrer Wortzahl und hängt den Befehl an, mit dem
+   genau das entsteht. */
+function aufbauSatz(a){
+  const namen = {};
+  for(const art of (DATA.aufgabenarten || [])) namen[art.kennung] = art.titel;
+  const teile = Object.keys(a.aufbau).map(k =>
+    namen[k] + ": " + a.aufbau[k] + (a.aufbau[k] === 1 ? " Wort" : " Wörter"));
+  const klassisch = Object.keys(a.aufbau).join(",") === "uebersetzen,luecken";
+  const befehl = "'vocabmaster … --aufgaben " + Object.keys(a.aufbau).join(",") +
+    " --woerter " + a.gesamtwoerter +
+    Object.keys(a.eigeneZahlen).filter(k => k in a.aufbau)
+      .map(k => " --je-aufgabe " + k + "=" + a.eigeneZahlen[k]).join("") +
+    (a.autoVerteilen ? "" : " --ohne-verteilung") + "'";
+  return "Aufbau der Prüfung: " + teile.join(", ") + " — zusammen " +
+    a.gesamtwoerter + " Wörter" +
+    (klassisch && a.gesamtwoerter === 12
+      ? " (die übliche Form)."
+      : ". " + befehl + ".") +
+    " Kein Wort steht in zwei Aufgaben; die Sätze, Umschreibungen und " +
+    "Anstösse entstehen im Chat.";
 }
 
 function befehlstext(a){
@@ -2248,15 +2346,7 @@ function befehlstext(a){
                 a.variante + " hinterlegt; die bestehenden bleiben). " +
                 "Überschneidungen mit früheren Fassungen sind in Ordnung.");
   }
-  if(a.wahl){
-    const je = a.wahlAnzahl;
-    zeilen.push("Dazu je Prüfung " + je + " Aufgabe" + (je === 1 ? "" : "n") +
-                " „Welcher Satz verwendet das Wort richtig?" + "\u201c — " +
-                "'vocabmaster … --wahlaufgaben " + je + "'. Je Aufgabe ein " +
-                "Wort und **drei Sätze, von denen zwei das Wort falsch " +
-                "verwenden**; das Wort steht dafür in keiner anderen " +
-                "Aufgabe desselben Blattes. Die Sätze entstehen im Chat.");
-  }
+  if(a.hatPruefungen) zeilen.push(aufbauSatz(a));
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
       a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
@@ -2655,7 +2745,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneWahl(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAufgabenwahl(); zeichneAuftrag(); }
 
 /* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
    es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es
@@ -2812,27 +2902,83 @@ function zeichneRanking(){
     esc((DATA.ranking_kriterien || []).slice(0, 3).join(" → ")) + " …";
 }
 
-/* Was die Wahlaufgabe kostet, steht unter ihrem Häkchen: Sätze schreiben
-   ist die eigentliche Arbeit, und vier Prüfungen mal drei Sätze je Aufgabe
-   summieren sich schneller, als das Zählfeld aussieht. */
-function zeichneWahl(){
-  $("wahl").checked = state.wahl;
-  $("wahlAnzahl").value = state.wahlAnzahl;
-  if(!state.wahl){
-    $("wahlhinweis").textContent =
-      "Aus. Die Prüfung bleibt bei Übersetzen und Lückentext.";
-    return;
+/* Die sechs Aufgabenarten zum Ankreuzen, je mit eigener Wortzahl.
+
+   Die Zahl daneben ist **verteilt**, solange man sie nicht anfasst; wer
+   sie eintippt, nagelt sie fest, und der Rest wandert weiter mit. Das
+   Feld sagt in beiden Fällen, woran es ist. */
+function zeichneAufgabenwahl(){
+  const kasten = $("aufgabenwahl");
+  const gewaehlt = arten();
+  const verteilt = plan();
+  $("gesamtwert").textContent = planSumme();
+  $("gesamtwoerter").value = state.gesamtwoerter;
+  $("autoVerteilen").checked = state.autoVerteilen;
+  kasten.innerHTML = "";
+  for(const art of (DATA.aufgabenarten || [])){
+    const dabei = gewaehlt.includes(art.kennung);
+    const zeile = document.createElement("div");
+    zeile.className = "aufgabenzeile" + (dabei ? " dabei" : "");
+    const haken = document.createElement("label");
+    haken.className = "tick";
+    haken.innerHTML =
+      '<input type="checkbox"' + (dabei ? " checked" : "") + '>' +
+      "<span>" + esc(art.titel) +
+      '<span class="sub">' + esc(art.beschreibung) + "</span></span>";
+    haken.querySelector("input").addEventListener("change", ev => {
+      const liste = new Set(arten());
+      if(ev.target.checked) liste.add(art.kennung); else liste.delete(art.kennung);
+      if(!liste.size){ ev.target.checked = true; return; }
+      state.arten = [...liste];
+      delete state.eigeneZahlen[art.kennung];
+      alles();
+    });
+    zeile.appendChild(haken);
+    if(dabei){
+      const feld = document.createElement("input");
+      feld.type = "number";
+      feld.min = String(art.mindestens);
+      feld.max = String((DATA.woerter_spanne || [4, 30])[1]);
+      feld.value = String(verteilt[art.kennung] || art.mindestens);
+      feld.title = state.eigeneZahlen[art.kennung]
+        ? "von Hand gesetzt" : "verteilt";
+      feld.className = state.eigeneZahlen[art.kennung] ? "fest" : "";
+      feld.addEventListener("change", ev => {
+        const zahl = Math.max(art.mindestens, +ev.target.value || art.mindestens);
+        state.eigeneZahlen[art.kennung] = zahl;
+        alles();
+      });
+      zeile.appendChild(feld);
+    }
+    kasten.appendChild(zeile);
   }
+  $("aufgabenhinweis").innerHTML = aufgabenHinweis();
+}
+
+/* Was der gewählte Aufbau an Handarbeit kostet - und was er bedeutet. */
+function aufgabenHinweis(){
+  const verteilt = plan();
   const pruefungen = gewaehlteTeile().filter(t => t.art === "pruefung").length;
-  const saetze = pruefungen * state.wahlAnzahl * 3;
-  $("wahlhinweis").textContent =
-    saetze + " Sätze im Chat zu schreiben (" + pruefungen + " Prüfungen × " +
-    state.wahlAnzahl + " Aufgaben × 3 Sätze), zwei von je dreien mit " +
-    "falscher Verwendung. Die Wörter kommen aus demselben Test, stehen " +
-    "aber in keiner anderen Aufgabe — sonst stünde deren Lösung hier." +
-    (state.wahlAnzahl > 2
-      ? " Ab drei Aufgabe" + "n läuft das Blatt auf eine zweite Seite."
-      : "");
+  const stuecke = [];
+  for(const art of (DATA.aufgabenarten || [])){
+    const wie_viele = verteilt[art.kennung];
+    if(!wie_viele) continue;
+    const kurz = art.titel.split(" — ")[0];
+    if(art.saetze)
+      stuecke.push((pruefungen * wie_viele * art.saetze) + " Sätze (" + kurz + ")");
+    else if(art.kennung === "definition")
+      stuecke.push((pruefungen * wie_viele) + " Umschreibungen");
+    else if(art.kennung === "luecken")
+      stuecke.push(pruefungen + " Lückentexte");
+    else if(art.kennung === "schreiben")
+      stuecke.push((pruefungen * wie_viele) + " Wörter für Micro-Writing");
+  }
+  const fest = Object.keys(state.eigeneZahlen).filter(k => arten().includes(k));
+  return (planSumme() + " Wörter je Prüfung" +
+    (state.autoVerteilen ? ", auf die Aufgaben verteilt" : ", von Hand gesetzt") +
+    (fest.length ? " (" + fest.length + " festgenagelt, " +
+      '<a href="#" id="zahlenZurueck">zurücksetzen</a>)' : "") + ". " +
+    (stuecke.length ? "Im Chat zu schreiben: " + stuecke.join(", ") + "." : ""));
 }
 
 function zeichneFassungswahl(){
@@ -3051,26 +3197,27 @@ $("fancywoerter").addEventListener("input", e => {
   zeichneListenhinweis(); zeichneAuftrag();
 });
 
-$("anzahl").addEventListener("change", e => {
-  state.anzahl = Math.max(6, Math.min(20, +e.target.value || 12));
-  e.target.value = state.anzahl;
+// Der Griff steht im Hinweis und wird bei jedem Zeichnen neu gebaut -
+// deshalb hört die Leiste zu, nicht der Griff selbst.
+$("aufgabenhinweis").addEventListener("click", e => {
+  if(e.target.id !== "zahlenZurueck") return;
+  e.preventDefault();
+  state.eigeneZahlen = {};
+  alles();
+});
+$("gesamtwoerter").addEventListener("input", e => {
+  const spanne = DATA.woerter_spanne || [4, 30];
+  state.gesamtwoerter = Math.max(spanne[0],
+                                 Math.min(spanne[1], +e.target.value || 12));
+  // Die von Hand gesetzten Zahlen bleiben - sie sind eine Vorgabe, keine
+  // Folge des Reglers. Wer sie loswerden will, nimmt "zurücksetzen".
   if(!state.eigen) vorgabenSetzen();
   $("wertA").textContent = state.ziel.A.toFixed(1);
   $("wertB").textContent = state.ziel.B.toFixed(1);
-  zeichneTeile(); zeichneAuftrag();
-});
-$("luecken").addEventListener("change", e => {
-  state.luecken = Math.max(2, Math.min(6, +e.target.value || 4));
-  e.target.value = state.luecken;
-  zeichneTeile(); zeichneAuftrag();
-});
-$("wahl").addEventListener("change", e => {
-  state.wahl = e.target.checked;
   alles();
 });
-$("wahlAnzahl").addEventListener("change", e => {
-  state.wahlAnzahl = Math.max(1, Math.min(4, +e.target.value || 2));
-  e.target.value = state.wahlAnzahl;
+$("autoVerteilen").addEventListener("change", e => {
+  state.autoVerteilen = e.target.checked;
   alles();
 });
 $("fassungAnzahl").addEventListener("change", e => {

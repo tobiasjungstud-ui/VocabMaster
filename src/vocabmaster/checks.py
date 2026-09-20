@@ -30,6 +30,16 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+from .aufgaben import (
+    ARTEN as AUFGABEN_ARTEN,
+)
+from .aufgaben import (
+    DEFINITION,
+    LUECKEN,
+    SAETZE_ZUR_WAHL,
+    SCHREIBEN,
+    UEBERSETZEN,
+)
 from .config import Settings
 from .database import Database
 from .exam import english as exam_english
@@ -48,7 +58,13 @@ from .niveau import (
     textstufe,
     ziele_fuer_textstufe,
 )
-from .pack import Pack
+from .pack import (
+    Pack,
+    aufgabe_art,
+    aufgaben_von,
+    gepruefte_woerter,
+    klassische_sicht,
+)
 
 FEHLER, WARNUNG, HINWEIS = "FEHLER", "WARNUNG", "HINWEIS"
 _RANK = {FEHLER: 0, WARNUNG: 1, HINWEIS: 2}
@@ -450,13 +466,9 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
     for (teil, niveau), spec in sorted(pack.exams.items()):
         wo = f"Teil {teil}, Niveau {niveau}"
         liste = pack.vocab_test(teil)
-        eintraege = (
-            list(spec.get("task1", {}).get("items", []))
-            + list(spec.get("task2", {}).get("gaps", []))
-            # Auch das Wort einer Wahlaufgabe muss so in der Liste stehen,
-            # wie es auf dem Blatt steht.
-            + list((spec.get("task3") or {}).get("items", []))
-        )
+        # Jedes geprüfte Wort jeder Aufgabe - egal welcher Art.
+        eintraege = [e for aufgabe in aufgaben_von(spec)
+                     for e in gepruefte_woerter(aufgabe)]
         for entry in eintraege:
             geprueft += 1
             english = entry.get("english", "")
@@ -504,9 +516,8 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
         for (teil, n), spec in sorted(pack.exams.items()):
             if n != niveau:
                 continue
-            for entry in list(spec.get("task1", {}).get("items", [])) + list(
-                spec.get("task2", {}).get("gaps", [])
-            ):
+            for entry in (e for aufgabe in aufgaben_von(spec)
+                          for e in gepruefte_woerter(aufgabe)):
                 key = normalise(entry.get("english", ""))
                 if key and key in seen:
                     bericht.add(
@@ -535,9 +546,12 @@ def pruefe_niveau_konsistenz(pack: Pack, bericht: Pruefbericht) -> None:
 
     def woerter(teil: int, niveau: str) -> list[dict]:
         spec = pack.exam(teil, niveau)
-        return list(spec.get("task1", {}).get("items", [])) + list(
-            spec.get("task2", {}).get("gaps", [])
-        )
+        # Gemessen wird an Übersetzen und Einsetzen: Die anderen Arten
+        # schöpfen aus dem, was diese übrig lassen, und wären damit
+        # zwangsläufig leichter - sie würden den Vergleich verzerren.
+        return [e for aufgabe in aufgaben_von(spec)
+                if aufgabe.get("art") in (UEBERSETZEN, LUECKEN)
+                for e in gepruefte_woerter(aufgabe)]
 
     kennzahlen = []
     for teil in (1, 2):
@@ -646,135 +660,244 @@ def _steht_im_satz(wort: str, satz: str) -> bool:
     return True
 
 
-def pruefe_wahlaufgaben(pack: Pack, bericht: Pruefbericht) -> None:
-    """Aufgabe 3 - drei Sätze, genau einer verwendet das Wort richtig.
+def _handschrift(aufgabe: dict) -> list[tuple[int, str, str]]:
+    """Jedes Feld einer Aufgabe, das im Chat geschrieben wird.
 
-    Was hier geprüft wird, ist die **Form**: drei Sätze, eine Lösung im
-    Bereich, das Wort in jedem Satz, kein Satz wie der andere, und das
-    geprüfte Wort steht in keiner anderen Aufgabe desselben Blattes.
-
-    Was hier **nicht** geprüft werden kann, ist die Sache selbst: ob die
-    beiden anderen Sätze das Wort wirklich falsch verwenden. Das ist eine
-    Sprachentscheidung und bleibt beim Gegenlesen im Chat. Der Bericht sagt
-    das ausdrücklich, damit „wahlaufgaben: ok" nicht mehr verspricht, als
-    es hält.
+    Gibt ``(Nummer, Stelle, Inhalt)`` je Feld. Eine Stelle für alle Arten,
+    damit die Platzhalterprüfung nicht sechs Fallunterscheidungen braucht.
     """
-    bericht.gelaufen.append("wahlaufgaben")
-    aufgaben = 0
-    saetze_gesamt = 0
+    art = aufgabe.get("art")
+    heraus: list[tuple[int, str, str]] = []
+    # Der Lückentext steht hier **nicht**: Seine Marker {1} bis {4} sind
+    # kein Rest, sondern seine Form. Ihn prüft die Zeile darüber, die
+    # Marker gegen Lücken zählt.
+    if art in SAETZE_ZUR_WAHL:
+        for nr, item in enumerate(aufgabe.get("items", []), 1):
+            for i, satz in enumerate(item.get("saetze", []), 1):
+                heraus.append((nr, f", Satz {i}", str(satz)))
+    elif art == DEFINITION:
+        for nr, item in enumerate(aufgabe.get("items", []), 1):
+            heraus.append((nr, " (Umschreibung)", str(item.get("umschreibung", ""))))
+    elif art == SCHREIBEN:
+        for nr, block in enumerate(aufgabe.get("items", []), 1):
+            heraus.append((nr, " (Anstoss)", str(block.get("anstoss", ""))))
+    return heraus
+
+
+# ---------------------------------------------------------------------------
+# 7b  Die Aufgaben jenseits von Übersetzen und Einsetzen
+# ---------------------------------------------------------------------------
+def pruefe_aufgabenformen(pack: Pack, bericht: Pruefbericht) -> None:
+    """Satzwahl, Umschreibung und Micro-Writing - die Form, nicht die Sache.
+
+    Geprüft wird, was sich prüfen lässt: genug Sätze, eine Lösung im
+    Bereich, das Wort im Satz, kein Satz wie der andere, keine
+    Umschreibung, die das gesuchte Wort selbst enthält, und kein Wort, das
+    auf demselben Blatt zugleich abgefragt und ausgedruckt wird.
+
+    **Was sich nicht prüfen lässt**, ist die Sache selbst: ob die anderen
+    Sätze das Wort wirklich falsch verwenden, ob die Umschreibung genau
+    dieses Wort meint und kein anderes. Das sind Sprachentscheidungen und
+    bleiben beim Gegenlesen im Chat. Der Bericht sagt das ausdrücklich,
+    damit ein Häkchen nicht mehr verspricht, als es hält.
+    """
+    bericht.gelaufen.append("aufgabenformen")
+    geprueft = 0
+    gezaehlt: dict[str, int] = {}
     for (teil, niveau), spec in sorted(pack.exams.items()):
-        items = (spec.get("task3") or {}).get("items", [])
-        if not items:
-            continue
         prof = PROFILES[niveau]
         hoechstlaenge = int(prof.level_targets.get("max_avg_sentence", 20))
-        wo = f"Teil {teil}, Niveau {niveau}"
-        # Die Wörter der anderen beiden Aufgaben. Alle drei Sätze schreiben
-        # das Wort aus - wäre es zugleich Lücke oder Übersetzung, stünde
-        # deren Lösung auf demselben Blatt.
-        andere = {
+        aufgaben = aufgaben_von(spec)
+        # Was auf diesem Blatt abgefragt wird, darf auf ihm nicht
+        # ausgedruckt stehen - und umgekehrt.
+        versteckt = {
             normalise(e.get("english", ""))
-            for e in spec.get("task1", {}).get("items", [])
-        } | {
-            normalise(g.get("answer", ""))
-            for g in spec.get("task2", {}).get("gaps", [])
+            for a in aufgaben if a.get("art") in (UEBERSETZEN, LUECKEN, DEFINITION)
+            for e in gepruefte_woerter(a)
         }
-        gesehen: dict[str, int] = {}
-        for nr, item in enumerate(items, 1):
-            aufgaben += 1
-            wort = item.get("english", "")
-            hier = f"{wo}, Wahlaufgabe {nr} ('{wort}')"
-            saetze = [str(x).strip() for x in item.get("saetze", [])]
-            saetze_gesamt += sum(1 for x in saetze if x)
+        gesehen: dict[str, str] = {}
+        for nummer, aufgabe in enumerate(aufgaben, start=1):
+            art = aufgabe.get("art")
+            if art not in AUFGABEN_ARTEN:
+                bericht.add(FEHLER, "aufgabenformen",
+                            f"Teil {teil}, Niveau {niveau}: Aufgabe {nummer} "
+                            f"hat die unbekannte Art '{art}'.")
+                continue
+            gezaehlt[art] = gezaehlt.get(art, 0) + 1
+            wo = (f"Teil {teil}, Niveau {niveau}, Aufgabe {nummer} "
+                  f"({AUFGABEN_ARTEN[art].titel})")
 
-            if len(saetze) < 3:
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: {len(saetze)} Sätze zur Wahl. Bei zweien ist "
-                    "Raten die halbe Miete - es braucht drei.",
-                )
-            richtig = item.get("richtig")
-            if not isinstance(richtig, int) or not 1 <= richtig <= len(saetze):
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: Die Lösung ist '{richtig}', es gibt aber "
-                    f"{len(saetze)} Sätze. Ohne gültige Lösung ist der "
-                    "Lösungsschlüssel dieser Aufgabe leer.",
-                )
-            if normalise(wort) in andere:
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: '{wort}' wird auf demselben Blatt auch "
-                    "übersetzt oder eingesetzt. Die drei Sätze schreiben es "
-                    "aus - damit steht die Lösung jener Aufgabe hier.",
-                )
-            schluessel = normalise(wort)
-            if schluessel and schluessel in gesehen:
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: '{wort}' steht schon in Wahlaufgabe "
-                    f"{gesehen[schluessel]} desselben Blattes.",
-                )
-            elif schluessel:
-                gesehen[schluessel] = nr
-
-            geschrieben = [x for x in saetze if x and "TODO" not in x]
-            if len(geschrieben) < len(saetze):
-                continue          # noch offen - das meldet die Vorlagenprüfung
-
-            if len({x.lower() for x in geschrieben}) != len(geschrieben):
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: Zwei der Sätze sind derselbe.",
-                )
-            fehlt = [
-                i + 1 for i, x in enumerate(geschrieben)
-                if not _steht_im_satz(wort, x)
-            ]
-            if len(fehlt) == len(geschrieben):
-                bericht.add(
-                    FEHLER, "wahlaufgaben",
-                    f"{hier}: In keinem der Sätze steht '{wort}'. Geprüft "
-                    "wird die Verwendung des Wortes - ohne das Wort prüft "
-                    "der Satz nichts.",
-                )
-            elif fehlt:
-                bericht.add(
-                    WARNUNG, "wahlaufgaben",
-                    f"{hier}: In Satz {', '.join(str(i) for i in fehlt)} ist "
-                    f"'{wort}' nicht zu erkennen. Eine unregelmässige Form "
-                    "ist in Ordnung - bitte nachsehen.",
-                )
-            zu_lang = [
-                i + 1 for i, x in enumerate(geschrieben)
-                if len(x.split()) > hoechstlaenge
-            ]
-            if zu_lang:
-                bericht.add(
-                    WARNUNG, "wahlaufgaben",
-                    f"{hier}: Satz {', '.join(str(i) for i in zu_lang)} ist "
-                    f"länger als {hoechstlaenge} Wörter. Wer den Satz nicht "
-                    "überblickt, sieht die Verwendung nicht.",
-                )
-            # Ein Satz, der deutlich länger ist als beide anderen, verrät
-            # sich - man kreuzt den langen an, ohne ihn zu lesen.
-            if isinstance(richtig, int) and 1 <= richtig <= len(geschrieben):
-                laengen = [len(x.split()) for x in geschrieben]
-                loesung = laengen[richtig - 1]
-                rest = [n for i, n in enumerate(laengen) if i != richtig - 1]
-                if rest and (loesung > max(rest) * 1.4 or loesung * 1.4 < min(rest)):
+            for e in gepruefte_woerter(aufgabe):
+                geprueft += 1
+                schluessel = normalise(e.get("english", ""))
+                if not schluessel:
+                    continue
+                if schluessel in gesehen and gesehen[schluessel] != str(nummer):
                     bericht.add(
-                        HINWEIS, "wahlaufgaben",
-                        f"{hier}: Der richtige Satz fällt schon durch seine "
-                        f"Länge auf ({loesung} Wörter gegen "
-                        f"{', '.join(str(n) for n in rest)}).",
+                        FEHLER, "aufgabenformen",
+                        f"{wo}: '{e.get('english')}' wird auf demselben "
+                        f"Blatt schon in Aufgabe {gesehen[schluessel]} "
+                        "geprüft.",
                     )
-    bericht.kennzahlen["wahlaufgaben"] = (
-        f"{aufgaben} Wahlaufgaben, {saetze_gesamt} Sätze - Form geprüft; "
-        "ob die anderen Sätze das Wort wirklich falsch verwenden, "
-        "entscheidet das Gegenlesen"
-        if aufgaben else "keine Wahlaufgaben bestellt"
+                gesehen[schluessel] = str(nummer)
+                if art in SAETZE_ZUR_WAHL or art == SCHREIBEN:
+                    if schluessel in versteckt:
+                        bericht.add(
+                            FEHLER, "aufgabenformen",
+                            f"{wo}: '{e.get('english')}' steht hier "
+                            "ausgedruckt und ist auf demselben Blatt die "
+                            "Lösung einer anderen Aufgabe.",
+                        )
+
+            if art in SAETZE_ZUR_WAHL:
+                _pruefe_satzwahl(aufgabe, wo, hoechstlaenge, bericht)
+            elif art == DEFINITION:
+                _pruefe_umschreibung(aufgabe, wo, hoechstlaenge, bericht)
+            elif art == SCHREIBEN:
+                _pruefe_microwriting(aufgabe, wo, bericht)
+
+    zusammen = ", ".join(
+        f"{AUFGABEN_ARTEN[k].titel}: {v}" for k, v in sorted(gezaehlt.items())
+        if k in AUFGABEN_ARTEN
     )
+    bericht.kennzahlen["aufgabenformen"] = (
+        f"{geprueft} geprüfte Wörter in {zusammen} - Form geprüft; ob die "
+        "Sätze und Umschreibungen sprachlich treffen, entscheidet das "
+        "Gegenlesen"
+        if zusammen else "keine Aufgaben im Paket"
+    )
+
+
+def _pruefe_satzwahl(aufgabe, wo, hoechstlaenge, bericht) -> None:
+    """Zwei oder drei Sätze, genau einer verwendet das Wort richtig."""
+    mindestens = SAETZE_ZUR_WAHL[aufgabe["art"]]
+    for nr, item in enumerate(aufgabe.get("items", []), 1):
+        wort = item.get("english", "")
+        hier = f"{wo}, {nr} ('{wort}')"
+        saetze = [str(x).strip() for x in item.get("saetze", [])]
+        if len(saetze) < mindestens:
+            bericht.add(
+                FEHLER, "aufgabenformen",
+                f"{hier}: {len(saetze)} Sätze zur Wahl, diese Aufgabe "
+                f"braucht {mindestens}.",
+            )
+        richtig = item.get("richtig")
+        if not isinstance(richtig, int) or not 1 <= richtig <= len(saetze):
+            bericht.add(
+                FEHLER, "aufgabenformen",
+                f"{hier}: Die Lösung ist '{richtig}', es gibt aber "
+                f"{len(saetze)} Sätze. Ohne gültige Lösung ist der "
+                "Lösungsschlüssel dieser Aufgabe leer.",
+            )
+        geschrieben = [x for x in saetze if x and "TODO" not in x]
+        if len(geschrieben) < len(saetze):
+            continue          # noch offen - das meldet die Vorlagenprüfung
+        if len({x.lower() for x in geschrieben}) != len(geschrieben):
+            bericht.add(FEHLER, "aufgabenformen",
+                        f"{hier}: Zwei der Sätze sind derselbe.")
+        fehlt = [i + 1 for i, x in enumerate(geschrieben)
+                 if not _steht_im_satz(wort, x)]
+        if len(fehlt) == len(geschrieben):
+            bericht.add(
+                FEHLER, "aufgabenformen",
+                f"{hier}: In keinem der Sätze steht '{wort}'. Geprüft wird "
+                "die Verwendung des Wortes - ohne das Wort prüft der Satz "
+                "nichts.",
+            )
+        elif fehlt:
+            bericht.add(
+                WARNUNG, "aufgabenformen",
+                f"{hier}: In Satz {', '.join(str(i) for i in fehlt)} ist "
+                f"'{wort}' nicht zu erkennen. Eine unregelmässige Form ist "
+                "in Ordnung - bitte nachsehen.",
+            )
+        _pruefe_satzlaengen(geschrieben, richtig, hier, hoechstlaenge, bericht)
+
+
+def _pruefe_satzlaengen(saetze, richtig, hier, hoechstlaenge, bericht) -> None:
+    zu_lang = [i + 1 for i, x in enumerate(saetze)
+               if len(x.split()) > hoechstlaenge]
+    if zu_lang:
+        bericht.add(
+            WARNUNG, "aufgabenformen",
+            f"{hier}: Satz {', '.join(str(i) for i in zu_lang)} ist länger "
+            f"als {hoechstlaenge} Wörter. Wer den Satz nicht überblickt, "
+            "sieht die Verwendung nicht.",
+        )
+    # Ein Satz, der deutlich länger ist als die anderen, verrät sich - man
+    # kreuzt den langen an, ohne ihn zu lesen.
+    if isinstance(richtig, int) and 1 <= richtig <= len(saetze):
+        laengen = [len(x.split()) for x in saetze]
+        loesung = laengen[richtig - 1]
+        rest = [n for i, n in enumerate(laengen) if i != richtig - 1]
+        if rest and (loesung > max(rest) * 1.4 or loesung * 1.4 < min(rest)):
+            bericht.add(
+                HINWEIS, "aufgabenformen",
+                f"{hier}: Der richtige Satz fällt schon durch seine Länge "
+                f"auf ({loesung} Wörter gegen "
+                f"{', '.join(str(n) for n in rest)}).",
+            )
+
+
+def _pruefe_umschreibung(aufgabe, wo, hoechstlaenge, bericht) -> None:
+    """Eine englische Umschreibung, aus der das Wort hervorgehen muss.
+
+    Der teuerste Fehler dieser Art ist der stille: Die Umschreibung
+    enthält das gesuchte Wort selbst oder seinen Stamm. Dann schreibt die
+    Klasse ab, und die Aufgabe prüft nichts.
+    """
+    gesehen: set[str] = set()
+    for nr, item in enumerate(aufgabe.get("items", []), 1):
+        wort = item.get("english", "")
+        hier = f"{wo}, {nr} ('{wort}')"
+        text = str(item.get("umschreibung", "")).strip()
+        if not text or "TODO" in text:
+            continue          # noch offen - das meldet die Vorlagenprüfung
+        if _steht_im_satz(wort, text):
+            bericht.add(
+                FEHLER, "aufgabenformen",
+                f"{hier}: Die Umschreibung enthält das gesuchte Wort. Dann "
+                "schreibt die Klasse ab, statt es zu erschliessen.",
+            )
+        schluessel = normalise(text)
+        if schluessel in gesehen:
+            bericht.add(FEHLER, "aufgabenformen",
+                        f"{hier}: Diese Umschreibung steht schon bei einem "
+                        "anderen Wort.")
+        gesehen.add(schluessel)
+        if len(text.split()) > hoechstlaenge:
+            bericht.add(
+                WARNUNG, "aufgabenformen",
+                f"{hier}: Die Umschreibung ist mit {len(text.split())} "
+                f"Wörtern länger als {hoechstlaenge}. Sie soll das Wort "
+                "erschliessbar machen, nicht selbst eine Leseaufgabe sein.",
+            )
+
+
+def _pruefe_microwriting(aufgabe, wo, bericht) -> None:
+    """Zwei bis drei Wörter, ein Anstoss, und genug Platz zum Schreiben."""
+    for nr, block in enumerate(aufgabe.get("items", []), 1):
+        woerter = block.get("woerter", [])
+        hier = (f"{wo}, {nr} ("
+                + ", ".join(w.get("english", "") for w in woerter) + ")")
+        if len(woerter) < 2:
+            bericht.add(
+                FEHLER, "aufgabenformen",
+                f"{hier}: Ein Mini-Text mit {len(woerter)} Wort ist keiner - "
+                "es braucht zwei bis drei, die zusammenpassen.",
+            )
+        if len(woerter) > AUFGABEN_ARTEN[SCHREIBEN].je_block:
+            bericht.add(
+                WARNUNG, "aufgabenformen",
+                f"{hier}: {len(woerter)} Wörter in einem Text. Über drei "
+                "hinaus schreibt die Klasse eine Aufzählung, keinen Text.",
+            )
+        anstoss = str(block.get("anstoss", "")).strip()
+        if anstoss and "TODO" not in anstoss and len(anstoss.split()) > 25:
+            bericht.add(
+                WARNUNG, "aufgabenformen",
+                f"{hier}: Der Anstoss ist länger als der erwartete Text.",
+            )
 
 
 # ---------------------------------------------------------------------------
@@ -792,21 +915,24 @@ def pruefe_platzhalter(
     reste = []
     for (teil, niveau), spec in (sorted(pack.exams.items()) if mit_pruefungen else []):
         wo = f"Teil {teil}, Niveau {niveau}"
-        text = spec.get("task2", {}).get("text", "")
+        luecken = aufgabe_art(spec, LUECKEN)
+        text = luecken.get("text", "")
         if "TODO" in text:
             reste.append(f"{wo}: Lückentext ist noch der Platzhalter")
         marker = re.findall(r"\{(\d*)\}", text)
-        erwartet = len(spec.get("task2", {}).get("gaps", []))
+        erwartet = len(luecken.get("gaps", []))
         if text and "TODO" not in text and len(marker) != erwartet:
             reste.append(
                 f"{wo}: {len(marker)} Lückenmarker im Text, "
                 f"aber {erwartet} Lücken"
             )
-        for nr, item in enumerate((spec.get("task3") or {}).get("items", []), 1):
-            for i, satz in enumerate(item.get("saetze", []), 1):
-                if "TODO" in str(satz) or re.search(r"\{\d*\}", str(satz)):
+        # Jeder von Hand geschriebene Text jeder Art - ein Platzhalter
+        # darin käme sonst gedruckt in der Klasse an.
+        for nummer, aufgabe in enumerate(aufgaben_von(spec), 1):
+            for nr, stelle, inhalt in _handschrift(aufgabe):
+                if "TODO" in inhalt or re.search(r"\{\d*\}", inhalt):
                     reste.append(
-                        f"{wo}: Wahlaufgabe {nr}, Satz {i} ist noch "
+                        f"{wo}: Aufgabe {nummer}, {nr}{stelle} ist noch "
                         "der Platzhalter"
                     )
     for entry in pack.all_entries:
@@ -943,8 +1069,10 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
         # gegen deren Bänder gemessen - sonst gegen die des Niveaus.
         gewuenscht = pack.textstufe(teil, niveau)
         ziele = ziele_fuer_textstufe(prof, gewuenscht)
+        # Der geerbte Checker liest task1 und task2 - er bekommt die
+        # klassische Sicht auf die Aufgabenliste, statt ihn umzubauen.
         report = ExamChecker(
-            spec,
+            klassische_sicht(spec),
             vocab=pack.vocab_test(teil),
             all_tests=pack.all_vocab_tests,
             level_targets=ziele,
@@ -956,9 +1084,10 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
                 stufe, "pruefung",
                 f"Teil {teil} Niveau {niveau} - {finding.check}: {finding.message}",
             )
-        ueberholt = spec.get("task2", {}).get("text_ueberholt")
+        ueberholt = aufgabe_art(spec, LUECKEN).get("text_ueberholt")
         if ueberholt:
-            jetzt = [g.get("answer", "") for g in spec.get("task2", {}).get("gaps", [])]
+            jetzt = [g.get("answer", "")
+                     for g in aufgabe_art(spec, LUECKEN).get("gaps", [])]
             bericht.add(
                 FEHLER, "pruefung",
                 f"Teil {teil} Niveau {niveau} - text_ueberholt: Der Lückentext "
@@ -1017,7 +1146,7 @@ def pruefe_paket(
         pruefe_listenbezug(pack, bericht)
         pruefe_loesungsschluessel(pack, bericht)
         pruefe_niveau_konsistenz(pack, bericht)
-        pruefe_wahlaufgaben(pack, bericht)
+        pruefe_aufgabenformen(pack, bericht)
     pruefe_platzhalter(pack, bericht, mit_pruefungen)
     pruefe_herkunft(pack, bericht)
     pruefe_liste(pack, settings, bericht)

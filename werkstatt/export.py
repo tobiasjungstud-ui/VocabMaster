@@ -19,8 +19,17 @@ from pathlib import Path
 WURZEL = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(WURZEL / "src"))
 
+from vocabmaster import aufgaben as _aufgaben  # noqa: E402
 from vocabmaster import datenbanken as _dbs  # noqa: E402
 from vocabmaster import paedagogik as _paed  # noqa: E402
+from vocabmaster.aufgaben import (  # noqa: E402
+    DEFINITION,
+    KLASSISCH,
+    LUECKEN,
+    SAETZE_ZUR_WAHL,
+    SCHREIBEN,
+    verteile,
+)
 from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
 from vocabmaster.documents import dateiname  # noqa: E402
@@ -35,7 +44,12 @@ from vocabmaster.niveau import (  # noqa: E402
     PROFILES,
     textstufe,
 )
-from vocabmaster.pack import wortart_von  # noqa: E402
+from vocabmaster.pack import (  # noqa: E402
+    aufgabe_art,
+    aufgaben_von,
+    gepruefte_woerter,
+    wortart_von,
+)
 from vocabmaster.pool import _bewerten, plan_unit  # noqa: E402
 
 #: Die Begründungen der Auswahl in Gruppen. Die Anwendung schreibt sie als
@@ -177,15 +191,18 @@ def _echte_auswahl(pack: dict, woerter: list[dict]) -> dict[str, dict]:
             # zugänglichsten - so, wie die Oberfläche beide Spalten zeigt.
             zuerst = PROFILES[niveau].zuerst
             pruef = pack["pruefungen"][teil][niveau]
-            uebersetzen = [i["english"] for i in pruef["task1"]["items"]]
+            aufgaben = aufgaben_von(pruef)
             # `word_bank` steht auf Deutsch im Blatt; die englische Lösung
             # jeder Lücke liefert `gaps`.
-            luecken = [g["answer"] for g in pruef["task2"].get("gaps") or []]
-            alle = uebersetzen + [w for w in luecken if w not in uebersetzen]
+            luecken = [g.get("answer", "") for a in aufgaben
+                       if a.get("art") == LUECKEN for g in a.get("gaps", [])]
+            alle = [e.get("english", "") for a in aufgaben
+                    for e in gepruefte_woerter(a)]
             rang = {w: _rang(nach_en, w) for w in alle}
             alle.sort(key=lambda w: (-rang[w] if zuerst else rang[w], w))
             werte = [rang[w] for w in alle if w.lower() in nach_en]
-            text = re.sub(r"\{\d+\}", "word", pruef["task2"].get("text", ""))
+            text = re.sub(r"\{\d+\}", "word",
+                          aufgabe_art(pruef, LUECKEN).get("text", ""))
             mass = readability(text) if text else {}
             heraus[f"t{tnr}{niveau}"] = {
                 "woerter": alle,
@@ -204,6 +221,40 @@ def _echte_auswahl(pack: dict, woerter: list[dict]) -> dict[str, dict]:
                 } if mass else {},
             }
     return heraus
+
+
+def _karte(aufgabe: dict) -> dict:
+    """Eine Aufgabe, auf das gestutzt, was die Karte zeigt."""
+    art = str(aufgabe.get("art", ""))
+    satz = {
+        "art": art,
+        "instruction": aufgabe.get("instruction", ""),
+        "woerter": [{"en": e.get("english", ""), "de": e.get("german", "")}
+                    for e in gepruefte_woerter(aufgabe)],
+    }
+    if art == LUECKEN:
+        satz["text"] = aufgabe.get("text", "")
+        satz["bank"] = list(aufgabe.get("word_bank", []))
+    elif art in SAETZE_ZUR_WAHL:
+        satz["items"] = [
+            {"en": i.get("english", ""),
+             "richtig": int(i.get("richtig", 0) or 0),
+             "saetze": [str(x) for x in i.get("saetze", [])]}
+            for i in aufgabe.get("items", [])
+        ]
+    elif art == DEFINITION:
+        satz["items"] = [
+            {"en": i.get("english", ""),
+             "umschreibung": str(i.get("umschreibung", ""))}
+            for i in aufgabe.get("items", [])
+        ]
+    elif art == SCHREIBEN:
+        satz["items"] = [
+            {"en": ", ".join(w.get("english", "") for w in b.get("woerter", [])),
+             "anstoss": str(b.get("anstoss", ""))}
+            for b in aufgabe.get("items", [])
+        ]
+    return satz
 
 
 def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
@@ -225,9 +276,13 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
             pruef = pack.get("pruefungen", {}).get(teil, {}).get(niveau)
             if not pruef:
                 continue
-            uebersetzen = [i["english"] for i in pruef["task1"]["items"]]
-            luecken = [g["answer"] for g in pruef["task2"].get("gaps") or []]
-            alle = uebersetzen + [w for w in luecken if w not in uebersetzen]
+            aufgaben = aufgaben_von(pruef)
+            # `word_bank` steht auf Deutsch im Blatt; die englische Lösung
+            # jeder Lücke liefert `gaps`.
+            luecken = [g.get("answer", "") for a in aufgaben
+                       if a.get("art") == LUECKEN for g in a.get("gaps", [])]
+            alle = [e.get("english", "") for a in aufgaben
+                    for e in gepruefte_woerter(a)]
             gemeint = lambda w: nach_en.get(w.lower(), {})  # noqa: E731
             heraus.append({
                 "teil": tnr,
@@ -239,19 +294,11 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
                     "luecke": w in luecken,
                     "score": gemeint(w).get("score", 0.0),
                 } for w in alle],
-                "text": pruef["task2"].get("text", ""),
-                # Aufgabe 3, falls bestellt: Wort, Sätze und die Lösung.
-                # Ohne sie stünde in der Karte eine Prüfung, die auf dem
-                # Blatt anders aussieht als hier.
-                "wahl": [
-                    {
-                        "en": i.get("english", ""),
-                        "de": i.get("german", ""),
-                        "richtig": int(i.get("richtig", 0) or 0),
-                        "saetze": [str(x) for x in i.get("saetze", [])],
-                    }
-                    for i in (pruef.get("task3") or {}).get("items", [])
-                ],
+                "text": aufgabe_art(pruef, LUECKEN).get("text", ""),
+                # Jede Aufgabe so, wie sie auf dem Blatt steht. Ohne sie
+                # zeigte die Karte eine Prüfung, die anders aussieht als
+                # das Dokument, das daraus wird.
+                "aufgaben": [_karte(a) for a in aufgaben],
                 "blatt": dateiname(unit, "Test", teil=tnr, niveau=niveau,
                                    fassung=fassung, liste_version=version),
                 "loesung": dateiname(unit, "Test", teil=tnr, niveau=niveau,
@@ -416,6 +463,37 @@ def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, di
     return units, quelle or {}
 
 
+#: In dieser Spanne lässt sich die Wortzahl einer Prüfung stellen. Nach
+#: unten braucht jede Aufgabe ihre Mindestzahl, nach oben gibt ein Test
+#: nicht mehr als seine 30 Wörter her.
+#: Die Tabelle beginnt bei 0: Ist eine Aufgabe festgenagelt,
+#: verteilt sich nur noch der Rest, und der kann klein sein.
+WOERTER_MIN, WOERTER_MAX = 0, 30
+#: Soweit lässt sich der Regler stellen.
+REGLER_MIN = 4
+
+
+def _verteilungen() -> dict[str, list[int]]:
+    """Jede Kombination von Arten mal jede Wortzahl, fertig ausgerechnet.
+
+    Sechs Arten ergeben 63 Kombinationen, die Spanne 27 Zahlen - keine
+    zweitausend Einträge. Das ist kleiner als eine einzige Unit in dieser
+    Datei und erspart der Seite eine zweite Fassung der Verteilung.
+    """
+    heraus: dict[str, list[int]] = {}
+    arten = list(_aufgaben.ARTEN)
+    for maske in range(1, 1 << len(arten)):
+        gewaehlt = [k for i, k in enumerate(arten) if maske >> i & 1]
+        schluessel = ",".join(gewaehlt)
+        for gesamt in range(WOERTER_MIN, WOERTER_MAX + 1):
+            plan = verteile(gesamt, gewaehlt)
+            # Als Zahlenreihe in der Reihenfolge des Schlüssels: Die Namen
+            # stehen schon dort, und noch einmal ausgeschrieben machten
+            # sie diese Datei um ein Drittel grösser.
+            heraus[f"{gesamt}|{schluessel}"] = [plan[k] for k in gewaehlt]
+    return heraus
+
+
 def baue(pakete: Path, db: Database, settings: Settings) -> dict:
     """Alles, was die Oberfläche zeigt — **je Datenbank** ihre eigenen Units.
 
@@ -468,6 +546,23 @@ def baue(pakete: Path, db: Database, settings: Settings) -> dict:
         ],
         "ranking_vorgabe": _paed.STUFE_VORGABE,
         "ranking_kriterien": [name for _, name in _paed._RANGFOLGE],
+        # Welche Aufgabenarten es gibt - samt Gewicht und Mindestzahl.
+        # Die Seite erfindet keine; sie zeigt, was der Katalog hergibt.
+        "aufgabenarten": [
+            {"kennung": a.kennung, "titel": a.titel,
+             "beschreibung": a.beschreibung, "gewicht": a.gewicht,
+             "mindestens": a.mindestens, "je_block": a.je_block,
+             "saetze": SAETZE_ZUR_WAHL.get(a.kennung, 0)}
+            for a in _aufgaben.ARTEN.values()
+        ],
+        "aufgaben_vorgabe": list(KLASSISCH),
+        # Und wie sich eine Wortzahl auf sie verteilt - **ausgerechnet**,
+        # nicht als Formel. Die Seite rechnet nichts selbst; stünde die
+        # Verteilung zweimal da, einmal in Python und einmal in
+        # JavaScript, liefen die beiden irgendwann auseinander, und die
+        # Seite zeigte eine Prüfung, die so nie gebaut wird.
+        "verteilung": _verteilungen(),
+        "woerter_spanne": [REGLER_MIN, WOERTER_MAX],
         "textstufe_normal": dict(NORMAL_TEXTSTUFE),
         # Damit die Oberfläche die Zielbänder mit denselben Zahlen ausrechnet
         # wie die Anwendung und nicht mit einer Kopie davon.

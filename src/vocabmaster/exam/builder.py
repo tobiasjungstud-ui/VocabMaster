@@ -26,6 +26,9 @@ GAP = "_" * 26
 #: Höhe einer gesetzten Zeile in Twips - für die Seitenschätzung.
 LINE = 280
 
+#: Die Schreiblinie eines Mini-Textes.
+WRITING_LINE = "_" * 78
+
 APTOS = '<w:rFonts w:ascii="Aptos" w:hAnsi="Aptos"/>'
 APTOS_EA = '<w:rFonts w:ascii="Aptos" w:eastAsiaTheme="majorEastAsia" w:hAnsi="Aptos"/>'
 BIG = f"{APTOS}<w:sz w:val=\"30\"/><w:szCs w:val=\"30\"/>"
@@ -180,40 +183,86 @@ def choice_letter(index: int) -> str:
     return CHOICE_LETTERS[index] if index < len(CHOICE_LETTERS) else str(index + 1)
 
 
-def _choice_block(task3: dict, show_answers: bool = False) -> str:
-    """Aufgabe 3 - welcher der Sätze verwendet das Wort richtig?
+def _choice_block(aufgabe: dict, show_answers: bool = False) -> str:
+    """Eine Satzwahl - welcher der Sätze verwendet das Wort richtig?
 
-    Bewusst **ohne Tabelle**: Das Dokument der Referenzprüfung hat genau
-    zwei, den Kopf und die Übersetzungstabelle, und eine Kontrolle zählt
-    sie. Drei Sätze untereinander brauchen keine.
+    Zwei Sätze oder drei, das ändert nur die Zahl der Zeilen. Bewusst
+    **ohne Tabelle**: Das Dokument der Referenzprüfung hat genau zwei, den
+    Kopf und die Übersetzungstabelle, und eine Kontrolle zählt sie.
 
     Auf dem Lösungsblatt steht der richtige Satz fett, und darunter noch
     einmal sein Buchstabe im Klartext: Fettdruck ist beim Korrigieren im
     Vorbeigehen zu übersehen, eine Zeile "Solution: b)" nicht.
     """
     out = []
-    for nummer, item in enumerate(task3.get("items", []), start=1):
-        wort = item.get("english", "")
-        out.append(para(
-            run(f"{nummer}.  ", BOLD) + run(wort, BOLD),
-            ppr='<w:spacing w:before="160" w:after="0"/>',
-            rpr=BOLD,
-        ))
+    for nummer, item in enumerate(aufgabe.get("items", []), start=1):
+        out.append(_wortzeile(nummer, item.get("english", "")))
         richtig = int(item.get("richtig", 0))
         for i, satz in enumerate(item.get("saetze", [])):
             treffer = show_answers and (i + 1) == richtig
             stil = BOLD if treffer else APTOS
-            out.append(para(
-                run(f"{choice_letter(i)})  ", stil) + run(satz, stil),
-                ppr='<w:spacing w:after="0"/><w:ind w:left="284"/>',
-                rpr=stil,
-            ))
+            out.append(_eingerueckt(
+                run(f"{choice_letter(i)})  ", stil) + run(satz, stil), stil))
         if show_answers:
-            out.append(para(
-                run(f"Solution: {choice_letter(richtig - 1)})", BOLD),
-                ppr='<w:spacing w:after="0"/><w:ind w:left="284"/>',
-                rpr=BOLD,
-            ))
+            out.append(_eingerueckt(
+                run(f"Solution: {choice_letter(richtig - 1)})", BOLD), BOLD))
+    return "".join(out)
+
+
+def _wortzeile(nummer: int, text: str) -> str:
+    """Die Kopfzeile einer Teilaufgabe: ihre Nummer und das Wort."""
+    return para(
+        run(f"{nummer}.  ", BOLD) + run(text, BOLD),
+        ppr='<w:spacing w:before="160" w:after="0"/>',
+        rpr=BOLD,
+    )
+
+
+def _eingerueckt(runs: str, rpr: str = APTOS) -> str:
+    return para(runs, ppr='<w:spacing w:after="0"/><w:ind w:left="284"/>',
+                rpr=rpr)
+
+
+def _definition_block(aufgabe: dict, show_answers: bool = False) -> str:
+    """Eine Umschreibung, darunter die Linie für das gesuchte Wort."""
+    out = []
+    for nummer, item in enumerate(aufgabe.get("items", []), start=1):
+        out.append(para(
+            run(f"{nummer}.  ", BOLD) + run(item.get("umschreibung", ""), APTOS),
+            ppr='<w:spacing w:before="160" w:after="0"/>',
+            rpr=APTOS,
+        ))
+        antwort = item.get("english", "") if show_answers else ""
+        out.append(_eingerueckt(
+            run(GAP if not show_answers else antwort.upper(),
+                APTOS if not show_answers else BOLD),
+            APTOS if not show_answers else BOLD))
+    return "".join(out)
+
+
+def _writing_block(aufgabe: dict, show_answers: bool = False) -> str:
+    """Micro-Writing: die vorgegebenen Wörter, darunter Platz zum Schreiben.
+
+    Ein Lösungsschlüssel im üblichen Sinn kann es hier nicht geben - was
+    die Klasse schreibt, steht vorher nicht fest. Auf dem Lösungsblatt
+    steht deshalb, **woran** korrigiert wird: alle Wörter richtig
+    verwendet, so viele Sätze, zusammenhängender Text.
+    """
+    out = []
+    for nummer, block in enumerate(aufgabe.get("items", []), start=1):
+        woerter = ", ".join(w.get("english", "") for w in block.get("woerter", []))
+        out.append(_wortzeile(nummer, woerter))
+        anstoss = str(block.get("anstoss", "")).strip()
+        if anstoss:
+            out.append(_eingerueckt(run(anstoss, APTOS)))
+        saetze = int(block.get("mindestsaetze", 0) or 0)
+        if show_answers:
+            out.append(_eingerueckt(
+                run(f"Marking: every word used correctly, at least {saetze} "
+                    "sentences, one connected text.", BOLD), BOLD))
+        else:
+            for _ in range(max(2, saetze)):
+                out.append(_eingerueckt(run(WRITING_LINE, APTOS)))
     return "".join(out)
 
 
@@ -224,11 +273,81 @@ def render_cloze_text(template: str, gap: str = GAP) -> str:
     return text
 
 
+#: Wie eine Aufgabe gesetzt wird - je Art ein Setzer und die Zahl der
+#: Tabulatoren vor der Punktzahl. Mehr weiss dieses Modul über die Arten
+#: nicht; **was** eine Art verlangt, steht in ``vocabmaster.aufgaben``.
+def _renderer(art: str):
+    return {
+        "uebersetzen": _translation_part,
+        "luecken": _cloze_part,
+        "wortwahl": _choice_block,
+        "richtig_falsch": _choice_block,
+        "definition": _definition_block,
+        "schreiben": _writing_block,
+    }.get(art)
+
+
+TABS = {"uebersetzen": 5, "luecken": 4, "wortwahl": 5,
+        "richtig_falsch": 5, "definition": 5, "schreiben": 5}
+
+
+def _translation_part(aufgabe: dict, show_answers: bool = False) -> str:
+    return _translation_table(aufgabe.get("items", []), show_answers)
+
+
+def _cloze_part(aufgabe: dict, show_answers: bool = False) -> str:
+    return (
+        _word_bank(aufgabe.get("word_bank_label", "Words:"),
+                   aufgabe.get("word_bank", []))
+        + _cloze(_cloze_text(aufgabe, show_answers))
+    )
+
+
+def punktzahl(aufgabe: dict) -> int:
+    """Die Punkte einer Aufgabe - ein Punkt je geprüftem Wort."""
+    art = aufgabe.get("art")
+    if art == "uebersetzen":
+        return len(aufgabe.get("items", []))
+    if art == "luecken":
+        return len(aufgabe.get("gaps", []))
+    if art == "schreiben":
+        return sum(len(b.get("woerter", [])) for b in aufgabe.get("items", []))
+    return len(aufgabe.get("items", []))
+
+
+def nummeriere(instruction: str, nummer: int) -> str:
+    """Die führende Nummer einer Aufgabenstellung auf ``nummer`` setzen.
+
+    Der Rest bleibt **unangetastet**, samt der Zahl der Leerzeichen
+    dahinter: Die Vorlage hat dort einmal eines und einmal zwei, und ein
+    Dokument, das sich in einem Leerzeichen unterscheidet, ist nicht mehr
+    dasselbe Dokument.
+    """
+    ersetzt, wie_oft = re.subn(r"^\s*\d+\)", f"{nummer})", instruction, count=1)
+    return ersetzt if wie_oft else f"{nummer})  {instruction}"
+
+
+def aufgaben_des_specs(spec: dict) -> list[dict]:
+    """Die Aufgaben einer Prüfung - auch aus einem Paket von gestern.
+
+    Der Setzer darf ``vocabmaster.pack`` nicht kennen (der kennt ihn), also
+    steht die Umsetzung hier noch einmal. Sie ist dieselbe, und ein Test
+    vergleicht beide.
+    """
+    liste = spec.get("aufgaben")
+    if isinstance(liste, list):
+        return [a for a in liste if isinstance(a, dict)]
+    heraus = []
+    for schluessel, art in (("task1", "uebersetzen"), ("task2", "luecken"),
+                            ("task3", "wortwahl")):
+        block = spec.get(schluessel)
+        if isinstance(block, dict) and block:
+            heraus.append({"art": art, **block})
+    return heraus
+
+
 def build_document_xml(spec: dict, show_answers: bool = False) -> str:
     header = spec["header"]
-    task1 = spec["task1"]
-    task2 = spec["task2"]
-
     parts = [
         DOC_OPEN,
         _header_table(
@@ -237,23 +356,24 @@ def build_document_xml(spec: dict, show_answers: bool = False) -> str:
             header.get("name_label", "Name:"),
             header.get("grade_label", "Grade :"),
         ),
-        _task_heading(task1["instruction"], f"{len(task1['items'])}P", tabs=5),
-        _translation_table(task1["items"], show_answers),
-        para(rpr=BOLD),
-        _task_heading(task2["instruction"], f"{len(task2['gaps'])}P ", tabs=4),
-        _word_bank(task2.get("word_bank_label", "Words:"), task2["word_bank"]),
-        _cloze(_cloze_text(task2, show_answers)),
     ]
-    # Aufgabe 3 gibt es nur, wo sie bestellt wurde. Ein Paket ohne sie
-    # ergibt dasselbe Dokument wie vorher, Byte für Byte.
-    task3 = spec.get("task3") or {}
-    if task3.get("items"):
+    aufgaben = aufgaben_des_specs(spec)
+    for nummer, aufgabe in enumerate(aufgaben, start=1):
+        setzer = _renderer(str(aufgabe.get("art", "")))
+        if setzer is None:
+            continue
+        art = str(aufgabe.get("art"))
+        punkte = punktzahl(aufgabe)
+        # Der Lückentext trägt hinter seiner Punktzahl ein Leerzeichen -
+        # so steht es in der Referenzprüfung, und so bleibt es.
+        endung = " " if art == "luecken" else ""
+        if nummer > 1:
+            parts.append(para(rpr=BOLD))
         parts.append(_task_heading(
-            task3.get("instruction", "3)  Tick the sentence that uses the word "
-                                     "correctly. "),
-            f"{len(task3['items'])}P", tabs=5,
+            nummeriere(str(aufgabe.get("instruction", "")), nummer),
+            f"{punkte}P{endung}", tabs=TABS.get(art, 5),
         ))
-        parts.append(_choice_block(task3, show_answers))
+        parts.append(setzer(aufgabe, show_answers))
     parts += [
         para(rpr=BOLD),
         para(rpr=BOLD),
@@ -315,14 +435,8 @@ def _write_package(template_path: str, output_path: str, document_xml: str,
 
 def build_answer_key(spec: dict, template_path: str, output_path: str) -> str:
     """Same layout, but with the solutions filled in - for correcting."""
-    key = {
-        "meta": spec.get("meta", {}),
-        "header": dict(spec["header"]),
-        "task1": spec["task1"],
-        "task2": spec["task2"],
-    }
-    if spec.get("task3"):
-        key["task3"] = spec["task3"]
+    key = {k: v for k, v in spec.items() if k != "header"}
+    key["header"] = dict(spec["header"])
     key["header"]["title"] = key["header"].get("title", " Vocabulary").strip() + " - Solutions"
     xml = build_document_xml(key, show_answers=True)
     title = spec.get("meta", {}).get("title", "")

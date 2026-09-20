@@ -172,12 +172,21 @@ def waehle_pruefungswoerter(
     prof: NiveauProfile,
     settings: Settings | None = None,
     schon_geprueft: Iterable[str] = (),
+    anzahl: int | None = None,
 ) -> list[dict[str, Any]]:
     """Welche Wörter eines Tests dieses Niveau prüft.
 
     Die 30 Wörter des Tests werden nach Schwierigkeit sortiert. Niveau A
     prüft von oben - die zwölf schwersten -, Niveau B von unten - die zwölf
     zugänglichsten. Beide schöpfen aus derselben Liste.
+
+    ``anzahl`` übersteuert die zwölf. Gebraucht wird das für die
+    Wahlaufgabe, und zwar in einem **zweiten** Durchlauf über die Wörter,
+    die der erste übrig gelassen hat. Den ersten Durchlauf grösser zu
+    machen wäre der naheliegende Weg und der falsche: Die Obergrenze je
+    Wortart hängt an der Anzahl, und schon zwei Wörter mehr verschöben,
+    welche zwölf die Prüfung abfragt. So bleibt der bisherige Weg Wort für
+    Wort derselbe - ein Test wacht darüber.
 
     ``schon_geprueft`` nennt die Wörter, die frühere Fassungen dieser
     Prüfung bereits abgefragt haben. **Ein Überschnitt ist ausdrücklich
@@ -193,7 +202,7 @@ def waehle_pruefungswoerter(
     Wörter einer Wortfamilie, Beinah-Synonyme, bekannte Verwechslungspaare.
     """
     settings = settings or Settings()
-    take = settings.exam_words
+    take = settings.exam_words if anzahl is None else int(anzahl)
     gebraucht = {w.lower() for w in schon_geprueft}
     brauchbar = [e for e in entries if e.get("englisch") and e.get("deutsch")]
     # "Anekdote" -> "anecdote" schreibt man ab; das prüft nichts. Solche
@@ -216,7 +225,9 @@ def waehle_pruefungswoerter(
     # zwölf Nomen hintereinander prüfen immer dieselbe Struktur.
     max_mehrwort = prof.selection_targets["max_multiword_items"]
     max_anteil = prof.selection_targets["max_share_one_word_class"]
-    grenze_wortart = int(take * max_anteil)
+    # Mindestens eine je Wortart: Bei zwei Wörtern ergäbe der Anteil 0, und
+    # die Auswahl liesse nichts mehr durch.
+    grenze_wortart = max(1, int(take * max_anteil))
 
     def passt(entry: dict[str, Any], gewaehlt: list[dict[str, Any]]) -> bool:
         if any(_unvertraeglich(entry, c) for c in gewaehlt):
@@ -241,6 +252,61 @@ def waehle_pruefungswoerter(
             : take - len(gewaehlt)
         ]
     return gewaehlt
+
+
+def _wahlaufgaben(
+    entries: list[dict[str, Any]],
+    geprueft: list[dict[str, Any]],
+    prof: NiveauProfile,
+    settings: Settings,
+    seed: int,
+    teil: int,
+    fassung: int,
+) -> dict[str, Any] | None:
+    """Aufgabe 3: Welcher der drei Sätze verwendet das Wort richtig?
+
+    Je Aufgabe ein Wort und drei Sätze, von denen **zwei die Vokabel falsch
+    verwenden** - ein falsches Komplement, die falsche Präposition, ein
+    Register, in dem das Wort nicht steht. Geprüft wird damit etwas, das
+    Übersetzen und Einsetzen beide nicht prüfen: ob jemand weiss, *wie* das
+    Wort gebraucht wird, nicht nur was es heisst.
+
+    Die drei Sätze schreibt der Chat. Hier entsteht nur das Fach dafür -
+    mit dem Wort, den leeren Plätzen und der Nummer des richtigen Satzes.
+
+    **Die Wörter stehen bewusst nicht in Aufgabe 1 oder 2.** Alle drei Sätze
+    enthalten das Wort ausgeschrieben; wäre es zugleich eine Lücke oder eine
+    Übersetzung, stünde deren Lösung auf demselben Blatt. Sie kommen deshalb
+    aus demselben Test, aber aus dem, was die zwölf übrig gelassen haben.
+    """
+    wieviele = max(0, int(settings.exam_choice_items))
+    if not wieviele:
+        return None
+    moeglich = max(2, int(settings.exam_choice_options))
+    rest = [e for e in entries if e not in geprueft]
+    gewaehlt = waehle_pruefungswoerter(rest, prof, settings, anzahl=wieviele)
+    if not gewaehlt:
+        return None
+
+    # Wo der richtige Satz steht, wandert: über die Aufgaben einer Prüfung
+    # und über die Fassungen. Stünde er immer an derselben Stelle, wäre die
+    # Aufgabe nach dem zweiten Blatt keine mehr.
+    rng = random.Random(seed + 4157 + teil + (0 if prof.name == "A" else 97))
+    start = rng.randrange(moeglich)
+    versatz = max(0, int(fassung) - 1)
+    return {
+        "instruction": "3)  Tick the sentence that uses the word correctly. ",
+        "items": [
+            {
+                "english": e["englisch"],
+                "german": e["deutsch"],
+                "pos": wortart_von(e),
+                "richtig": (start + versatz + i) % moeglich + 1,
+                "saetze": [""] * moeglich,
+            }
+            for i, e in enumerate(gewaehlt)
+        ],
+    }
 
 
 def _exam_scaffold(
@@ -302,7 +368,7 @@ def _exam_scaffold(
 
     sentence_unit = f"{unit_label.lower()} {part_label.lower()}"
     number = unit_label.split()[-1] if unit_label.split() else ""
-    return {
+    spec: dict[str, Any] = {
         "meta": {
             "titel": f"{unit_label} {part_label} - Vokabelprüfung, Niveau {prof.name}",
             "niveau": prof.name,
@@ -356,6 +422,13 @@ def _exam_scaffold(
             ),
         },
     }
+    # Aufgabe 3 gibt es nur, wenn sie bestellt ist. Ohne Bestellung steht
+    # der Schlüssel gar nicht erst da - ein Paket von gestern bleibt damit
+    # das Paket von gestern, und sein Dokument Byte für Byte dasselbe.
+    wahl = _wahlaufgaben(entries, chosen, prof, settings, seed, teil, fassung)
+    if wahl:
+        spec["task3"] = wahl
+    return spec
 
 
 def scaffold(
@@ -633,9 +706,16 @@ class Pack:
         if any(not e.get("englisch") or not e.get("deutsch") or not e.get("satz")
                for e in self.all_entries):
             return False
-        return all(
-            not re.search(r"TODO", spec.get("task2", {}).get("text", ""))
+        if any(
+            re.search(r"TODO", spec.get("task2", {}).get("text", ""))
             for spec in self.exams.values()
+        ):
+            return False
+        return all(
+            str(satz).strip() and "TODO" not in str(satz)
+            for spec in self.exams.values()
+            for item in (spec.get("task3") or {}).get("items", [])
+            for satz in item.get("saetze", [])
         )
 
     def offen(self) -> list[str]:
@@ -652,6 +732,18 @@ class Pack:
             text = spec.get("task2", {}).get("text", "")
             if not text or "TODO" in text:
                 out.append(f"Prüfung Teil {teil}, Niveau {name}: Lückentext fehlt")
+            for nr, item in enumerate((spec.get("task3") or {}).get("items", []), 1):
+                fehlend = [
+                    i + 1 for i, satz in enumerate(item.get("saetze", []))
+                    if not str(satz).strip() or "TODO" in str(satz)
+                ]
+                if fehlend:
+                    out.append(
+                        f"Prüfung Teil {teil}, Niveau {name}: Wahlaufgabe {nr} "
+                        f"('{item.get('english', '')}') - Satz "
+                        + ", ".join(str(i) for i in fehlend)
+                        + " fehlt"
+                    )
         return out
 
 

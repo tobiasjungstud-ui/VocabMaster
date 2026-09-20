@@ -33,7 +33,7 @@ from dataclasses import dataclass, field
 from .config import Settings
 from .database import Database
 from .exam import english as exam_english
-from .exam.check import ExamChecker
+from .exam.check import ExamChecker, stem
 from .exam.vocab import guess_pos, normalise
 from .list.leveling import score_candidate
 from .list.models import Candidate, Severity
@@ -450,8 +450,12 @@ def pruefe_loesungsschluessel(pack: Pack, bericht: Pruefbericht) -> None:
     for (teil, niveau), spec in sorted(pack.exams.items()):
         wo = f"Teil {teil}, Niveau {niveau}"
         liste = pack.vocab_test(teil)
-        eintraege = list(spec.get("task1", {}).get("items", [])) + list(
-            spec.get("task2", {}).get("gaps", [])
+        eintraege = (
+            list(spec.get("task1", {}).get("items", []))
+            + list(spec.get("task2", {}).get("gaps", []))
+            # Auch das Wort einer Wahlaufgabe muss so in der Liste stehen,
+            # wie es auf dem Blatt steht.
+            + list((spec.get("task3") or {}).get("items", []))
         )
         for entry in eintraege:
             geprueft += 1
@@ -614,6 +618,165 @@ def _mittlere_schwierigkeit(eintraege: list[dict]) -> float:
     return sum(werte) / len(werte) if werte else 0.0
 
 
+
+# ---------------------------------------------------------------------------
+# 7b  Wahlaufgaben - welcher Satz verwendet das Wort richtig?
+# ---------------------------------------------------------------------------
+def _wortformen(wort: str) -> list[str]:
+    """Die Einzelwörter einer Vokabel, klein und ohne Beiwerk."""
+    return [t for t in re.findall(r"[a-z']+", str(wort).lower()) if len(t) > 1]
+
+
+def _steht_im_satz(wort: str, satz: str) -> bool:
+    """Kommt die Vokabel im Satz vor - auch gebeugt?
+
+    Englische Beugung ist hier nur grob nachgebildet: Ein Wort gilt als
+    getroffen, wenn im Satz eines steht, das mit seinem Stamm anfängt.
+    Das findet `begged` zu `beg` und `campsites` zu `campsite`, aber nicht
+    `came` zu `come`. Unregelmässige Formen bleiben deshalb eine **Warnung**
+    und nie ein Fehler - die Anwendung konjugiert nicht, und ein falscher
+    Fehlalarm auf einem richtigen Satz wäre schlimmer als ein übersehener.
+    """
+    im_satz = re.findall(r"[a-z']+", str(satz).lower())
+    for teil in _wortformen(wort):
+        stamm = stem(teil) or teil
+        kurz = stamm[:4] if len(stamm) >= 4 else stamm
+        if not any(w == teil or w.startswith(kurz) for w in im_satz):
+            return False
+    return True
+
+
+def pruefe_wahlaufgaben(pack: Pack, bericht: Pruefbericht) -> None:
+    """Aufgabe 3 - drei Sätze, genau einer verwendet das Wort richtig.
+
+    Was hier geprüft wird, ist die **Form**: drei Sätze, eine Lösung im
+    Bereich, das Wort in jedem Satz, kein Satz wie der andere, und das
+    geprüfte Wort steht in keiner anderen Aufgabe desselben Blattes.
+
+    Was hier **nicht** geprüft werden kann, ist die Sache selbst: ob die
+    beiden anderen Sätze das Wort wirklich falsch verwenden. Das ist eine
+    Sprachentscheidung und bleibt beim Gegenlesen im Chat. Der Bericht sagt
+    das ausdrücklich, damit „wahlaufgaben: ok" nicht mehr verspricht, als
+    es hält.
+    """
+    bericht.gelaufen.append("wahlaufgaben")
+    aufgaben = 0
+    saetze_gesamt = 0
+    for (teil, niveau), spec in sorted(pack.exams.items()):
+        items = (spec.get("task3") or {}).get("items", [])
+        if not items:
+            continue
+        prof = PROFILES[niveau]
+        hoechstlaenge = int(prof.level_targets.get("max_avg_sentence", 20))
+        wo = f"Teil {teil}, Niveau {niveau}"
+        # Die Wörter der anderen beiden Aufgaben. Alle drei Sätze schreiben
+        # das Wort aus - wäre es zugleich Lücke oder Übersetzung, stünde
+        # deren Lösung auf demselben Blatt.
+        andere = {
+            normalise(e.get("english", ""))
+            for e in spec.get("task1", {}).get("items", [])
+        } | {
+            normalise(g.get("answer", ""))
+            for g in spec.get("task2", {}).get("gaps", [])
+        }
+        gesehen: dict[str, int] = {}
+        for nr, item in enumerate(items, 1):
+            aufgaben += 1
+            wort = item.get("english", "")
+            hier = f"{wo}, Wahlaufgabe {nr} ('{wort}')"
+            saetze = [str(x).strip() for x in item.get("saetze", [])]
+            saetze_gesamt += sum(1 for x in saetze if x)
+
+            if len(saetze) < 3:
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: {len(saetze)} Sätze zur Wahl. Bei zweien ist "
+                    "Raten die halbe Miete - es braucht drei.",
+                )
+            richtig = item.get("richtig")
+            if not isinstance(richtig, int) or not 1 <= richtig <= len(saetze):
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: Die Lösung ist '{richtig}', es gibt aber "
+                    f"{len(saetze)} Sätze. Ohne gültige Lösung ist der "
+                    "Lösungsschlüssel dieser Aufgabe leer.",
+                )
+            if normalise(wort) in andere:
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: '{wort}' wird auf demselben Blatt auch "
+                    "übersetzt oder eingesetzt. Die drei Sätze schreiben es "
+                    "aus - damit steht die Lösung jener Aufgabe hier.",
+                )
+            schluessel = normalise(wort)
+            if schluessel and schluessel in gesehen:
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: '{wort}' steht schon in Wahlaufgabe "
+                    f"{gesehen[schluessel]} desselben Blattes.",
+                )
+            elif schluessel:
+                gesehen[schluessel] = nr
+
+            geschrieben = [x for x in saetze if x and "TODO" not in x]
+            if len(geschrieben) < len(saetze):
+                continue          # noch offen - das meldet die Vorlagenprüfung
+
+            if len({x.lower() for x in geschrieben}) != len(geschrieben):
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: Zwei der Sätze sind derselbe.",
+                )
+            fehlt = [
+                i + 1 for i, x in enumerate(geschrieben)
+                if not _steht_im_satz(wort, x)
+            ]
+            if len(fehlt) == len(geschrieben):
+                bericht.add(
+                    FEHLER, "wahlaufgaben",
+                    f"{hier}: In keinem der Sätze steht '{wort}'. Geprüft "
+                    "wird die Verwendung des Wortes - ohne das Wort prüft "
+                    "der Satz nichts.",
+                )
+            elif fehlt:
+                bericht.add(
+                    WARNUNG, "wahlaufgaben",
+                    f"{hier}: In Satz {', '.join(str(i) for i in fehlt)} ist "
+                    f"'{wort}' nicht zu erkennen. Eine unregelmässige Form "
+                    "ist in Ordnung - bitte nachsehen.",
+                )
+            zu_lang = [
+                i + 1 for i, x in enumerate(geschrieben)
+                if len(x.split()) > hoechstlaenge
+            ]
+            if zu_lang:
+                bericht.add(
+                    WARNUNG, "wahlaufgaben",
+                    f"{hier}: Satz {', '.join(str(i) for i in zu_lang)} ist "
+                    f"länger als {hoechstlaenge} Wörter. Wer den Satz nicht "
+                    "überblickt, sieht die Verwendung nicht.",
+                )
+            # Ein Satz, der deutlich länger ist als beide anderen, verrät
+            # sich - man kreuzt den langen an, ohne ihn zu lesen.
+            if isinstance(richtig, int) and 1 <= richtig <= len(geschrieben):
+                laengen = [len(x.split()) for x in geschrieben]
+                loesung = laengen[richtig - 1]
+                rest = [n for i, n in enumerate(laengen) if i != richtig - 1]
+                if rest and (loesung > max(rest) * 1.4 or loesung * 1.4 < min(rest)):
+                    bericht.add(
+                        HINWEIS, "wahlaufgaben",
+                        f"{hier}: Der richtige Satz fällt schon durch seine "
+                        f"Länge auf ({loesung} Wörter gegen "
+                        f"{', '.join(str(n) for n in rest)}).",
+                    )
+    bericht.kennzahlen["wahlaufgaben"] = (
+        f"{aufgaben} Wahlaufgaben, {saetze_gesamt} Sätze - Form geprüft; "
+        "ob die anderen Sätze das Wort wirklich falsch verwenden, "
+        "entscheidet das Gegenlesen"
+        if aufgaben else "keine Wahlaufgaben bestellt"
+    )
+
+
 # ---------------------------------------------------------------------------
 # 8  Vorlagenintegrität (vor dem Schreiben)
 # ---------------------------------------------------------------------------
@@ -639,6 +802,13 @@ def pruefe_platzhalter(
                 f"{wo}: {len(marker)} Lückenmarker im Text, "
                 f"aber {erwartet} Lücken"
             )
+        for nr, item in enumerate((spec.get("task3") or {}).get("items", []), 1):
+            for i, satz in enumerate(item.get("saetze", []), 1):
+                if "TODO" in str(satz) or re.search(r"\{\d*\}", str(satz)):
+                    reste.append(
+                        f"{wo}: Wahlaufgabe {nr}, Satz {i} ist noch "
+                        "der Platzhalter"
+                    )
     for entry in pack.all_entries:
         if re.search(r"\bTODO\b|\{\d*\}", f"{entry.get('satz','')} {entry.get('englisch','')}"):
             reste.append(f"Nr. {entry.get('nr')}: Platzhalter im Eintrag stehengeblieben")
@@ -847,6 +1017,7 @@ def pruefe_paket(
         pruefe_listenbezug(pack, bericht)
         pruefe_loesungsschluessel(pack, bericht)
         pruefe_niveau_konsistenz(pack, bericht)
+        pruefe_wahlaufgaben(pack, bericht)
     pruefe_platzhalter(pack, bericht, mit_pruefungen)
     pruefe_herkunft(pack, bericht)
     pruefe_liste(pack, settings, bericht)

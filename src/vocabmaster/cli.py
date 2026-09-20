@@ -382,6 +382,25 @@ def cmd_db_pool(args) -> int:
 
 
 # ------------------------------------------------------------------- Gerüst
+def _wahlaufgaben_flagge(p) -> None:
+    """Aufgabe 3 - an einer Stelle beschrieben, überall dieselbe.
+
+    Voreingestellt **aus**: Eine Aufgabe, die es gestern nicht gab, darf
+    nicht in jedem schon gebauten Paket auftauchen.
+    """
+    p.add_argument("--wahlaufgaben", type=int, default=0, metavar="N",
+                   help="so viele Aufgaben 'Welcher Satz verwendet das Wort "
+                        "richtig?' je Prüfung - drei Sätze, zwei davon mit "
+                        "falscher Verwendung (Voreinstellung: 0, also keine; "
+                        "die Sätze entstehen im Chat)")
+
+
+def _mit_wahlaufgaben(settings: Settings, args) -> Settings:
+    """Die Flagge in die Einstellungen - ohne Angabe bleibt alles wie bisher."""
+    wieviele = int(getattr(args, "wahlaufgaben", 0) or 0)
+    return replace(settings, exam_choice_items=wieviele) if wieviele else settings
+
+
 def _ranking_flaggen(p) -> None:
     """Die beiden Schalter des pädagogischen Rankings - an einer Stelle.
 
@@ -420,7 +439,7 @@ def _ranking_bericht(report) -> None:
 
 def cmd_geruest(args) -> int:
     db = _db(args)
-    settings = _settings(args)
+    settings = _mit_wahlaufgaben(_settings(args), args)
     unit = db.require_unit(args.unit)
     pfad = Path(args.verzeichnis) / pack_filename(unit)
     if pfad.exists() and not args.ueberschreiben:
@@ -439,8 +458,19 @@ def cmd_geruest(args) -> int:
             print(f"    {wort} ({bereich})")
     if r.ausnahme:
         print(f"\n  {r.ausnahme}")
-    print("\nJetzt im Chat ausfüllen: die Felder 'satz', fehlende Wörter und "
-          "die vier Lückentexte.\nDanach 'vocabmaster prüfen " + str(pfad) + "'.")
+    auszufuellen = ["die Felder 'satz'", "fehlende Wörter",
+                    "die vier Lückentexte"]
+    if settings.exam_choice_items:
+        # Vier Prüfungen mal N Aufgaben mal drei Sätze - das ist mehr
+        # Schreibarbeit als die Lückentexte, und es gehört hier gesagt.
+        saetze = 4 * settings.exam_choice_items * settings.exam_choice_options
+        auszufuellen.append(
+            f"und die {saetze} Sätze der Wahlaufgaben "
+            f"({settings.exam_choice_items} je Prüfung, davon je zwei mit "
+            "falscher Verwendung des Wortes)"
+        )
+    print("\nJetzt im Chat ausfüllen: " + ", ".join(auszufuellen)
+          + ".\nDanach 'vocabmaster prüfen " + str(pfad) + "'.")
     return 0
 
 
@@ -659,7 +689,7 @@ def cmd_listen(args) -> int:
 def cmd_liste_neu(args) -> int:
     """Eine neue Vokabelliste V2, V3 ... mit aufgewerteten Wörtern."""
     pack = Pack.load(args.paket)
-    settings = _settings(args)
+    settings = _mit_wahlaufgaben(_settings(args), args)
     db = _db(args)
 
     # Alle bestehenden Listen dieser Unit - die neue Auswahl soll ihnen
@@ -728,7 +758,7 @@ def cmd_liste_neu(args) -> int:
 def cmd_fassung(args) -> int:
     """Noch eine Fassung einer Prüfung anlegen - fortlaufend, hinterlegt."""
     pack = Pack.load(args.paket)
-    settings = _settings(args)
+    settings = _mit_wahlaufgaben(_settings(args), args)
     if args.woerter:
         settings = replace(settings, exam_words=args.woerter)
     if args.luecken:
@@ -979,6 +1009,7 @@ def build_parser() -> argparse.ArgumentParser:
         p.add_argument("unit", type=_unit)
         p.add_argument("-o", "--verzeichnis", default=str(KURATIERT))
         _ranking_flaggen(p)
+        _wahlaufgaben_flagge(p)
         p.add_argument("--überschreiben", "--ueberschreiben", action="store_true",
                        dest="ueberschreiben")
         p.set_defaults(func=cmd_geruest)
@@ -1026,6 +1057,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="selbst angegebenes Wort als 'englisch=deutsch' "
                         "(mehrfach möglich; bei Zweifel 'en:' voranstellen)")
     _ranking_flaggen(p)
+    _wahlaufgaben_flagge(p)
     p.add_argument("--verzeichnis", default="kuratiert")
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
                    action="store_true")
@@ -1048,6 +1080,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Wörter je Prüfung (Vorgabe aus den Einstellungen)")
     p.add_argument("--luecken", type=int,
                    help="davon Lücken (Vorgabe aus den Einstellungen)")
+    _wahlaufgaben_flagge(p)
     p.add_argument("--textstufe", type=float,
                    help="Schwierigkeit des Lückentexts 0-10 (Normallage: "
                         "Niveau A 3.0, Niveau B 1.7)")

@@ -60,6 +60,16 @@ class Settings:
     # --- Prüfungen --------------------------------------------------------
     exam_words: int = field(default_factory=lambda: _env_int("VM_EXAM_WORDS", 12))
     exam_gaps: int = field(default_factory=lambda: _env_int("VM_EXAM_GAPS", 4))
+    #: Wahlaufgaben "Welcher Satz verwendet das Wort richtig?" - je Aufgabe
+    #: drei Sätze, einer davon richtig. **Voreingestellt aus**: Eine Prüfung,
+    #: die es gestern nicht gab, darf nicht plötzlich in jedem schon
+    #: gebauten Paket auftauchen.
+    exam_choice_items: int = field(default_factory=lambda: _env_int("VM_EXAM_CHOICE", 0))
+    #: Wie viele Sätze zur Wahl stehen. Bei zweien wäre Raten die halbe
+    #: Miete, bei vieren wird das Blatt zu lang.
+    exam_choice_options: int = field(
+        default_factory=lambda: _env_int("VM_EXAM_CHOICE_OPTIONS", 3)
+    )
 
     # --- Layout der Vokabelliste -----------------------------------------
     heading_test1: str = field(default_factory=lambda: os.environ.get("VM_HEADING1", "Test 1"))

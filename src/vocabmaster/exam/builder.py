@@ -23,6 +23,9 @@ from pathlib import Path
 
 GAP = "_" * 26
 
+#: Höhe einer gesetzten Zeile in Twips - für die Seitenschätzung.
+LINE = 280
+
 APTOS = '<w:rFonts w:ascii="Aptos" w:hAnsi="Aptos"/>'
 APTOS_EA = '<w:rFonts w:ascii="Aptos" w:eastAsiaTheme="majorEastAsia" w:hAnsi="Aptos"/>'
 BIG = f"{APTOS}<w:sz w:val=\"30\"/><w:szCs w:val=\"30\"/>"
@@ -168,6 +171,52 @@ def _cloze(text: str) -> str:
     )
 
 
+#: Die Buchstaben, unter denen die Sätze einer Wahlaufgabe stehen.
+CHOICE_LETTERS = "abcdefgh"
+
+
+def choice_letter(index: int) -> str:
+    """``0`` -> ``a``. Über das Alphabet hinaus wird durchnummeriert."""
+    return CHOICE_LETTERS[index] if index < len(CHOICE_LETTERS) else str(index + 1)
+
+
+def _choice_block(task3: dict, show_answers: bool = False) -> str:
+    """Aufgabe 3 - welcher der Sätze verwendet das Wort richtig?
+
+    Bewusst **ohne Tabelle**: Das Dokument der Referenzprüfung hat genau
+    zwei, den Kopf und die Übersetzungstabelle, und eine Kontrolle zählt
+    sie. Drei Sätze untereinander brauchen keine.
+
+    Auf dem Lösungsblatt steht der richtige Satz fett, und darunter noch
+    einmal sein Buchstabe im Klartext: Fettdruck ist beim Korrigieren im
+    Vorbeigehen zu übersehen, eine Zeile "Solution: b)" nicht.
+    """
+    out = []
+    for nummer, item in enumerate(task3.get("items", []), start=1):
+        wort = item.get("english", "")
+        out.append(para(
+            run(f"{nummer}.  ", BOLD) + run(wort, BOLD),
+            ppr='<w:spacing w:before="160" w:after="0"/>',
+            rpr=BOLD,
+        ))
+        richtig = int(item.get("richtig", 0))
+        for i, satz in enumerate(item.get("saetze", [])):
+            treffer = show_answers and (i + 1) == richtig
+            stil = BOLD if treffer else APTOS
+            out.append(para(
+                run(f"{choice_letter(i)})  ", stil) + run(satz, stil),
+                ppr='<w:spacing w:after="0"/><w:ind w:left="284"/>',
+                rpr=stil,
+            ))
+        if show_answers:
+            out.append(para(
+                run(f"Solution: {choice_letter(richtig - 1)})", BOLD),
+                ppr='<w:spacing w:after="0"/><w:ind w:left="284"/>',
+                rpr=BOLD,
+            ))
+    return "".join(out)
+
+
 def render_cloze_text(template: str, gap: str = GAP) -> str:
     """Replace every {} / {1} / ___ placeholder in the cloze template by a gap."""
     text = re.sub(r"\{\d*\}", gap, template)
@@ -194,6 +243,18 @@ def build_document_xml(spec: dict, show_answers: bool = False) -> str:
         _task_heading(task2["instruction"], f"{len(task2['gaps'])}P ", tabs=4),
         _word_bank(task2.get("word_bank_label", "Words:"), task2["word_bank"]),
         _cloze(_cloze_text(task2, show_answers)),
+    ]
+    # Aufgabe 3 gibt es nur, wo sie bestellt wurde. Ein Paket ohne sie
+    # ergibt dasselbe Dokument wie vorher, Byte für Byte.
+    task3 = spec.get("task3") or {}
+    if task3.get("items"):
+        parts.append(_task_heading(
+            task3.get("instruction", "3)  Tick the sentence that uses the word "
+                                     "correctly. "),
+            f"{len(task3['items'])}P", tabs=5,
+        ))
+        parts.append(_choice_block(task3, show_answers))
+    parts += [
         para(rpr=BOLD),
         para(rpr=BOLD),
         SECT_PR,
@@ -260,6 +321,8 @@ def build_answer_key(spec: dict, template_path: str, output_path: str) -> str:
         "task1": spec["task1"],
         "task2": spec["task2"],
     }
+    if spec.get("task3"):
+        key["task3"] = spec["task3"]
     key["header"]["title"] = key["header"].get("title", " Vocabulary").strip() + " - Solutions"
     xml = build_document_xml(key, show_answers=True)
     title = spec.get("meta", {}).get("title", "")

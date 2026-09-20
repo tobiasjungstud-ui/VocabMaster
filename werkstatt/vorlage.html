@@ -780,6 +780,18 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <label for="fassungAnzahl">Wie viele Fassungen auf einmal</label>
             <input type="number" id="fassungAnzahl" min="1" max="12" value="1">
           </div>
+          <!-- Aufgabe 3. Abwählbar, und voreingestellt aus: Eine Prüfung,
+               die es gestern nicht gab, kommt nicht von selbst dazu. -->
+          <div id="wahlFeld" style="margin-top:12px">
+            <label class="tick" for="wahl"><input type="checkbox" id="wahl">
+              <span>Welcher Satz stimmt?<span class="sub">drei Sätze je Wort,
+                zwei mit falscher Verwendung</span></span></label>
+            <div class="feld" id="wahlAnzahlFeld" style="margin-top:6px">
+              <label for="wahlAnzahl">Wie viele solche Aufgaben je Prüfung</label>
+              <input type="number" id="wahlAnzahl" min="1" max="4" value="2">
+            </div>
+            <p class="hinweis" id="wahlhinweis"></p>
+          </div>
           <p class="hinweis" id="fassunghinweis"></p>
         </div>
         </section>
@@ -1028,7 +1040,7 @@ function luecken(auswahl, anzahl){
 const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", name:"Niveau B"}};
 
 /* ---------------- Zustand ---------------- */
-const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, buchAlle:false,
+const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, wahl:false, wahlAnzahl:2, buchAlle:false,
                text:{A:3.0, B:1.7}, textEigen:false,
                anzahl:12, luecken:4, notiz:"", suche:"",
                listeVersion:1, fancy:0, ausdruecke:0, chunks:0,
@@ -1706,12 +1718,36 @@ function pruefkarte(pr, li){
         luecken.map((w, i) => (i + 1) + " " + esc(w.en)).join(" · ") + "</p>"
       : '<p class="pruefhinweis">Der Lückentext ist noch nicht ' +
         "geschrieben.</p>") +
+    wahlblock(pr.wahl) +
     '<p class="pruefhinweis">' + (gebaut
       ? esc(pr.blatt)
       : "Noch kein Word-Dokument gebaut — im Chat mit „vocabmaster bauen" +
         " " + esc("kuratiert/…") + "\" entsteht es.") + "</p>";
   k.appendChild(leib);
   return k;
+}
+
+/* Aufgabe 3, so wie sie auf dem Blatt steht - mit der Lösung markiert.
+   Ein noch nicht geschriebener Satz steht als solcher da; eine leere Zeile
+   sähe aus wie ein Satz, den jemand vergessen hat zu lesen. */
+function wahlblock(wahl){
+  if(!wahl || !wahl.length) return "";
+  const buchstabe = i => "abcdefgh"[i] || String(i + 1);
+  return '<p class="loesungszeile">Welcher Satz stimmt?</p>' +
+    wahl.map((w, n) =>
+      '<div class="pruefwoerter" style="grid-template-columns:1fr">' +
+      '<div class="pruefwort"><span class="nr">' + (n + 1) + '</span>' +
+      '<span class="en">' + esc(w.en) + '</span>' +
+      '<span class="de">' + esc(w.de) + '</span></div></div>' +
+      '<div class="lueckentext">' + (w.saetze || []).map((satz, i) =>
+        '<div>' + (i + 1 === w.richtig ? "<b>" : "") +
+        buchstabe(i) + ")&nbsp; " +
+        (String(satz).trim() ? esc(satz) : "— noch nicht geschrieben —") +
+        (i + 1 === w.richtig ? "</b>" : "") + '</div>').join("") +
+      "</div>").join("") +
+    '<p class="loesungszeile">Lösung: ' +
+    wahl.map((w, n) => (n + 1) + " " + buchstabe(w.richtig - 1) + ")")
+        .join(" · ") + "</p>";
 }
 
 /* Die Lücken stehen im Paket als {1}, {2} ... - im Blatt sind es Striche
@@ -2108,6 +2144,9 @@ function bestellt(){
     // Eine neue Liste bringt zwangsläufig neue Fassungen mit - ihre
     // ersten. Dort ist "wie viele auf einmal" dieselbe Frage.
     neueFassung: t.some(x => x.art === "pruefung") && neueFassungBestellt(),
+    // Das Zählfeld gehört zum Häkchen, nicht zur Prüfung: Ohne Häkchen
+    // stünde eine Zahl da, die nichts bestellt.
+    wahlaufgaben: t.some(x => x.art === "pruefung") && state.wahl,
   };
 }
 
@@ -2133,6 +2172,8 @@ function zeichneSichtbarkeit(){
   // Eine bestehende Fassung gibt es genau einmal - die Frage "wie
   // viele" stellt sich nur dort, wo etwas Neues entsteht.
   $("fassungAnzahlFeld").hidden = !b.neueFassung;
+  $("wahlFeld").hidden = !b.pruefungen;
+  $("wahlAnzahlFeld").hidden = !b.wahlaufgaben;
 }
 
 function auftrag(){
@@ -2154,6 +2195,10 @@ function auftrag(){
     // Bei einer bestehenden Fassung ist die Frage gegenstandslos.
     fassungAnzahl:neueFassungBestellt() ? Math.max(1, state.fassungAnzahl) : 1,
     anzahl:state.anzahl, luecken:state.luecken,
+    // Aufgabe 3 hängt an der Prüfung: Ohne bestellte Prüfung gäbe es
+    // nichts, woran sie hinge.
+    wahl:pruefungen.length > 0 && state.wahl,
+    wahlAnzahl:Math.max(1, state.wahlAnzahl),
     datenbank:state.datenbank,
     mehrereDatenbanken:(DATA.datenbanken || []).length > 1,
     paed:state.paed, stufe:state.stufe,
@@ -2202,6 +2247,15 @@ function befehlstext(a){
     zeilen.push("Davon eine neue Fassung anlegen (wird als Fassung " +
                 a.variante + " hinterlegt; die bestehenden bleiben). " +
                 "Überschneidungen mit früheren Fassungen sind in Ordnung.");
+  }
+  if(a.wahl){
+    const je = a.wahlAnzahl;
+    zeilen.push("Dazu je Prüfung " + je + " Aufgabe" + (je === 1 ? "" : "n") +
+                " „Welcher Satz verwendet das Wort richtig?" + "\u201c — " +
+                "'vocabmaster … --wahlaufgaben " + je + "'. Je Aufgabe ein " +
+                "Wort und **drei Sätze, von denen zwei das Wort falsch " +
+                "verwenden**; das Wort steht dafür in keiner anderen " +
+                "Aufgabe desselben Blattes. Die Sätze entstehen im Chat.");
   }
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
@@ -2601,7 +2655,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneWahl(); zeichneAuftrag(); }
 
 /* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
    es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es
@@ -2756,6 +2810,29 @@ function zeichneRanking(){
     ", Schwierigkeit ab " + st.mindest_schwierigkeit +
     "<br>Gereiht der Reihe nach: " +
     esc((DATA.ranking_kriterien || []).slice(0, 3).join(" → ")) + " …";
+}
+
+/* Was die Wahlaufgabe kostet, steht unter ihrem Häkchen: Sätze schreiben
+   ist die eigentliche Arbeit, und vier Prüfungen mal drei Sätze je Aufgabe
+   summieren sich schneller, als das Zählfeld aussieht. */
+function zeichneWahl(){
+  $("wahl").checked = state.wahl;
+  $("wahlAnzahl").value = state.wahlAnzahl;
+  if(!state.wahl){
+    $("wahlhinweis").textContent =
+      "Aus. Die Prüfung bleibt bei Übersetzen und Lückentext.";
+    return;
+  }
+  const pruefungen = gewaehlteTeile().filter(t => t.art === "pruefung").length;
+  const saetze = pruefungen * state.wahlAnzahl * 3;
+  $("wahlhinweis").textContent =
+    saetze + " Sätze im Chat zu schreiben (" + pruefungen + " Prüfungen × " +
+    state.wahlAnzahl + " Aufgaben × 3 Sätze), zwei von je dreien mit " +
+    "falscher Verwendung. Die Wörter kommen aus demselben Test, stehen " +
+    "aber in keiner anderen Aufgabe — sonst stünde deren Lösung hier." +
+    (state.wahlAnzahl > 2
+      ? " Ab drei Aufgabe" + "n läuft das Blatt auf eine zweite Seite."
+      : "");
 }
 
 function zeichneFassungswahl(){
@@ -2986,6 +3063,15 @@ $("luecken").addEventListener("change", e => {
   state.luecken = Math.max(2, Math.min(6, +e.target.value || 4));
   e.target.value = state.luecken;
   zeichneTeile(); zeichneAuftrag();
+});
+$("wahl").addEventListener("change", e => {
+  state.wahl = e.target.checked;
+  alles();
+});
+$("wahlAnzahl").addEventListener("change", e => {
+  state.wahlAnzahl = Math.max(1, Math.min(4, +e.target.value || 2));
+  e.target.value = state.wahlAnzahl;
+  alles();
 });
 $("fassungAnzahl").addEventListener("change", e => {
   state.fassungAnzahl = Math.max(1, Math.min(12, +e.target.value || 1));

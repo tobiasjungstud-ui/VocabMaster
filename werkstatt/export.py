@@ -240,6 +240,18 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
                     "score": gemeint(w).get("score", 0.0),
                 } for w in alle],
                 "text": pruef["task2"].get("text", ""),
+                # Aufgabe 3, falls bestellt: Wort, Sätze und die Lösung.
+                # Ohne sie stünde in der Karte eine Prüfung, die auf dem
+                # Blatt anders aussieht als hier.
+                "wahl": [
+                    {
+                        "en": i.get("english", ""),
+                        "de": i.get("german", ""),
+                        "richtig": int(i.get("richtig", 0) or 0),
+                        "saetze": [str(x) for x in i.get("saetze", [])],
+                    }
+                    for i in (pruef.get("task3") or {}).get("items", [])
+                ],
                 "blatt": dateiname(unit, "Test", teil=tnr, niveau=niveau,
                                    fassung=fassung, liste_version=version),
                 "loesung": dateiname(unit, "Test", teil=tnr, niveau=niveau,

@@ -11,7 +11,7 @@ import re
 import zipfile
 from xml.etree import ElementTree as ET
 
-from .builder import GAP
+from .builder import GAP, LINE, choice_letter
 from .check import ERROR, INFO, WARN, Finding, stem  # noqa: F401  (stem: Teil der API)
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
@@ -171,11 +171,32 @@ def verify_document(path: str, spec: dict, template_path: str,
         add(ERROR, "content",
             f"the word bank on the sheet is {printed}, expected {bank}")
 
+    # every choice sentence must be on the sheet, and the solution letter
+    # must be on the answer key and nowhere else
+    choice_items = (spec.get("task3") or {}).get("items", [])
+    for nummer, item in enumerate(choice_items, start=1):
+        for i, satz in enumerate(item.get("saetze", [])):
+            satz = re.sub(r"\s+", " ", str(satz)).strip()
+            if satz and satz not in flat:
+                add(ERROR, "content",
+                    f"sentence {choice_letter(i)}) of choice task {nummer} "
+                    f"is not on the sheet")
+        marker = f"Solution: {choice_letter(int(item.get('richtig', 1)) - 1)})"
+        if is_answer_key and marker not in flat:
+            add(ERROR, "content",
+                f"the answer key does not name the solution of choice task "
+                f"{nummer} ('{marker}')")
+    if choice_items and not is_answer_key and "Solution:" in text:
+        add(ERROR, "leak", "the exam sheet names the solution of a choice task")
+
     # a vocabulary exam that runs onto a second page has been laid out wrongly
     estimate = _page_estimate(spec)
     if estimate > 1:
+        grund = (" - the choice task takes about a third of a page"
+                 if choice_items else "")
         add(WARN, "layout",
-            f"the sheet is estimated at {estimate} pages - check it in Word")
+            f"the sheet is estimated at {estimate} pages{grund} - "
+            "check it in Word")
     add(INFO, "verify",
         f"{len(translation_rows)} prompts, {text.count(GAP)} gaps, "
         f"{len(flat.split())} words on the sheet")
@@ -190,6 +211,15 @@ def _page_estimate(spec: dict) -> int:
     instructions = 2 * 500
     text_words = len(re.sub(r"\{\d*\}", "x", spec.get("task2", {}).get("text", "")).split())
     cloze = 360 * max(1, round(text_words / 11))
-    total = header + instructions + rows * per_row + cloze + 800
+    # Aufgabe 3: eine Zeile je Wort, eine je Satz - ein langer Satz bricht um.
+    choice_items = (spec.get("task3") or {}).get("items", [])
+    choice = 0
+    if choice_items:
+        instructions += 500
+        for item in choice_items:
+            choice += LINE
+            for satz in item.get("saetze", []):
+                choice += LINE * max(1, round(len(str(satz).split()) / 13))
+    total = header + instructions + rows * per_row + cloze + choice + 800
     usable = 16838 - 1417 - 635      # page height minus margins
     return max(1, -(-total // usable))

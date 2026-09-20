@@ -119,6 +119,29 @@ def finde(name: str) -> Datenbank | None:
     return None
 
 
+def zu_verzeichnis(verzeichnis: str | Path | None) -> Datenbank | None:
+    """Welche registrierte Datenbank liegt in diesem Verzeichnis?
+
+    Die Gegenrichtung zu :func:`aufloesen`. Gebraucht wird sie dort, wo ein
+    geladenes :class:`~vocabmaster.database.Database` seinen Namen nennen
+    soll - im Dateinamen eines Pakets etwa, das sonst mit dem gleichnamigen
+    Paket eines anderen Lehrmittels zusammenfiele.
+    """
+    if verzeichnis in (None, ""):
+        return None
+    try:
+        gesucht = Path(verzeichnis).resolve()
+    except OSError:
+        return None
+    for d in alle():
+        try:
+            if d.verzeichnis.resolve() == gesucht:
+                return d
+        except OSError:
+            continue
+    return None
+
+
 def aufloesen(angabe: str | Path | None) -> Path:
     """Aus einer Angabe wird ein Verzeichnis.
 

@@ -147,11 +147,14 @@ elif seite == "Gerüst erzeugen":
         plan = plan_unit(db, unit, settings)
         data = scaffold(db, unit, settings, plan)
         fehlt = data["fehlbestand"]
+        # Der Name trägt das Lehrmittel mit: Unit 1 gibt es in jedem, und
+        # ohne die Kennung legte sich die eine Datei über die andere.
+        name = pack_filename(unit, lehrmittel=data.get("lehrmittel", ""))
         st.download_button(
-            f"⬇ {pack_filename(unit)}  "
+            f"⬇ {name}  "
             f"({60 - fehlt} Wörter aus der Wortliste, {fehlt} zu ergänzen)",
             data=json.dumps(data, ensure_ascii=False, indent=2),
-            file_name=pack_filename(unit),
+            file_name=name,
             mime="application/json",
         )
 

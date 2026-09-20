@@ -35,14 +35,15 @@ from .exam.builder import build_answer_key, build_docx
 from .exam.verify import verify_document
 from .list.docx_writer import build_document
 from .niveau import NIVEAUS, PROFILES
-from .pack import Pack
+from .pack import Pack, kennzeichen
 
 TEIL_NAMEN = {1: "PartI", 2: "PartII"}
 
 
 def dateiname(unit: int, art: str, teil: int | None = None,
               niveau: str | None = None, loesung: bool = False,
-              fassung: int = 1, liste_version: int = 1) -> str:
+              fassung: int = 1, liste_version: int = 1,
+              lehrmittel: str = "") -> str:
     """Einheitliche Benennung: ``Unit03_V1_Test_PartI_NiveauB_Loesung.docx``.
 
     Der Code **V1, V2, V3** benennt die Vokabelliste. Er steht auf der Liste
@@ -55,8 +56,18 @@ def dateiname(unit: int, art: str, teil: int | None = None,
     Eine zweite oder dritte **Fassung** derselben Prüfung - für eine
     Nachprüfung, oder weil die erste bekannt geworden ist - trägt ihre
     Nummer dahinter. Die erste nicht.
+
+    Ein **zweites Lehrmittel** stellt seine Kennung voran:
+    ``EnglishPlus3_Unit01_V1_VocabularyList.docx``. Ohne sie schriebe Unit 1
+    von English Plus 3 die Blätter von Unit 1 von English Plus 4 still
+    nieder - dieselbe Unit-Nummer, derselbe Dateiname, anderer Wortschatz.
     """
     parts = [f"Unit{unit:02d}", f"V{max(1, int(liste_version))}", art]
+    marke = kennzeichen(lehrmittel)
+    if marke:
+        # Das Lehrmittel steht **vorn**: Unit 3 gibt es in jedem, und wer
+        # einen Ordner voller Blätter sortiert, sortiert nach Lehrmittel.
+        parts.insert(0, marke)
     if teil:
         parts.append(TEIL_NAMEN[teil])
     if niveau:
@@ -133,7 +144,8 @@ def schreibe_pruefung(
     if mit_loesung:
         loesung = ziel.with_name(
             dateiname(pack.unit, "Test", teil, niveau, loesung=True,
-                      fassung=pack.fassung, liste_version=pack.liste_version)
+                      fassung=pack.fassung, liste_version=pack.liste_version,
+                      lehrmittel=pack.lehrmittel)
         )
         geschrieben.append(
             Path(build_answer_key(spec, str(settings.exam_template), str(loesung)))
@@ -148,12 +160,18 @@ def baue_alles(
     teile: tuple[str, ...] = ("liste", "test"),
     mit_loesung: bool = True,
     niveaus: tuple[str, ...] = NIVEAUS,
+    pruefungsteile: tuple[int, ...] = (1, 2),
 ) -> Ergebnis:
     """Schreibt die gewünschten Dokumente und kontrolliert sie danach.
 
-    ``teile`` und ``niveaus`` erlauben Teilanfragen: ``teile=("test",)`` mit
-    ``niveaus=("B",)`` erzeugt nur die beiden Prüfungen für Niveau B und
-    lässt Vokabelliste und Niveau A unberührt.
+    ``teile``, ``niveaus`` und ``pruefungsteile`` erlauben Teilanfragen:
+    ``teile=("test",)`` mit ``niveaus=("B",)`` erzeugt nur die beiden
+    Prüfungen für Niveau B und lässt Vokabelliste und Niveau A unberührt.
+
+    ``pruefungsteile=(1,)`` grenzt weiter ein - auf Teil I. Ein Paket
+    enthält immer die Gerüste aller vier Prüfungen; das ist seine Form.
+    Bestellt wird aber oft **eine**, und was nicht bestellt ist, wird nicht
+    gebaut.
     """
     settings = settings or Settings()
     ziel = Path(verzeichnis)
@@ -162,16 +180,18 @@ def baue_alles(
 
     if "liste" in teile:
         pfad = ziel / dateiname(pack.unit, "VocabularyList",
-                                liste_version=pack.liste_version)
+                                liste_version=pack.liste_version,
+                                lehrmittel=pack.lehrmittel)
         ergebnis.dateien.append(schreibe_liste(pack, pfad, settings))
 
     if "test" in teile:
         for teil, niveau in sorted(pack.exams):
-            if niveau not in niveaus:
+            if niveau not in niveaus or teil not in pruefungsteile:
                 continue
             pfad = ziel / dateiname(pack.unit, "Test", teil, niveau,
                                     fassung=pack.fassung,
-                                    liste_version=pack.liste_version)
+                                    liste_version=pack.liste_version,
+                                    lehrmittel=pack.lehrmittel)
             geschrieben = schreibe_pruefung(
                 pack, teil, niveau, pfad, settings, mit_loesung
             )

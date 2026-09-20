@@ -202,6 +202,37 @@ Lehrmittel dürfen dieselbe Unit 3 haben. Beim Wechsel fällt das Unit-Feld
 auf die erste Unit zurück, die es dort gibt, und die Handarbeit geht weg —
 sie bezöge sich sonst auf Wörter eines anderen Lehrmittels.
 
+#### Dieselbe Unit-Nummer, aber nicht dieselbe Datei
+
+Zwei Lehrmittel dürfen dieselbe Unit 1 haben — die Zuordnung hängt an der
+Prüfsumme. Die **Dateinamen** hingen allein an der Unit-Nummer: Unit 1 von
+English Plus 3 hätte `kuratiert/unit_01.json` und
+`Unit01_V1_VocabularyList.docx` von English Plus 4 überschrieben. Paket,
+Vokabelliste und vier Prüfungen, stillschweigend — gemerkt hätte man es,
+wenn eine Klasse die Wörter eines anderen Lehrmittels abgefragt bekommt.
+
+Ein zweites Lehrmittel trägt deshalb seine Kennung im Namen:
+
+```
+kuratiert/unit_01_englishplus3_v2.json
+EnglishPlus3_Unit01_V1_VocabularyList.docx
+```
+
+Im Paket **hinter** der Unit, damit `unit_*.json` weiterhin greift — danach
+sucht jede Stelle, die den Bestand durchgeht. Im Dokument **davor**, weil
+man einen Ordner voller Blätter nach Lehrmittel sortiert.
+
+**Die Grunddatenbank behält ihre Namen.** Sonst hiesse jede bestehende
+Datei von heute auf morgen anders, und jedes schon ausgeteilte Blatt zeigte
+auf einen Namen, den es nicht mehr gibt.
+
+Das Feld `lehrmittel` im Paket ist **nur der Dateiname**; wozu ein Paket
+gehört, sagt weiterhin die Prüfsumme. Es wird beim Gerüst einmal notiert
+und danach nicht nachgeführt: `db umbenennen` ändert die Registratur, nicht
+die Dateien — sonst hiessen die gebauten Blätter nach einer Umbenennung
+anders als die, die das Programm sucht. Sieben Tests wachen darüber
+(`tests/test_zwei_lehrmittel.py`).
+
 **Eine Unit ohne Vokabelliste ist ein echter Zustand, kein Fehler.** Ein
 frisch eingelesenes Lehrmittel hat für keine seiner Units eine, und genau
 dort fängt man an. Die Seite zeigt sie trotzdem — mit Hauptteil,
@@ -444,6 +475,17 @@ Ein Paket enthält immer die Gerüste aller vier Prüfungen — das ist seine
 Form. Ob daraus Dokumente werden, entscheidet `bauen --nur liste`
 beziehungsweise `--nur test`, nicht die Form der Datei.
 
+`--niveau` und `--teil` grenzen weiter ein. Wer **eine** Prüfung bestellt
+hat, baut sie einzeln:
+
+```bash
+vocabmaster bauen kuratiert/unit_01.json --nur liste
+vocabmaster bauen kuratiert/unit_01.json --nur test --niveau A --teil 1
+```
+
+Das sind drei Dateien — die Vokabelliste, das Blatt und sein Lösungsblatt.
+Ohne `--teil` wären es fünf gewesen.
+
 ## Der Bestand als Ganzes
 
 `vocabmaster prüfen` sieht immer nur **ein** Paket. Was sich erst im
@@ -563,6 +605,35 @@ Voreingestellt sind die beiden klassischen Arten, und **die Gewichte 4 und
 Liste und ergeben **Byte für Byte dasselbe Dokument**. Zwei Tests wachen
 darüber — einer über die Gewichte, einer über alle 76 Dokumente unter
 `kuratiert/`.
+
+### Der Aufbau steht im Paket, nicht in den Einstellungen
+
+Jede Prüfung trägt ihren bestellten Aufbau in `aufgabenplan` — welche
+Aufgaben, mit wie vielen Wörtern. Alles, was die Prüfungen später **neu
+aufsetzt**, liest ihn von dort:
+
+`vocabmaster ausgleichen` ist nach dem Ergänzen von Wörtern nötig und setzt
+dabei alle vier Prüfungen neu. Es las den Aufbau aus den Einstellungen — und
+die stehen ohne Flaggen auf der Vorgabe. Eine mit sechs Aufgaben bestellte
+Prüfung fiel danach stillschweigend auf Übersetzen und Lückentext zurück;
+gemerkt hätte man es erst am gebauten Blatt.
+
+Gelesen wird der **bestellte** Plan, nicht das, was in den Aufgaben steht:
+Ein Gerüst, dessen Wörter noch im Chat zu ergänzen sind, hat noch nicht
+genug zu verteilen. Würde der Aufbau von dort abgelesen, schrumpfte die
+Prüfung auf das, was sie im halbfertigen Zustand hatte. Ein Paket ohne das
+Feld — eines von vor dieser Angabe — sagt es weiterhin über seine Aufgaben.
+Zwei Tests wachen darüber.
+
+### Zwei Lücken sind der Normalfall
+
+Die Wortbank darf weder in Lückenreihenfolge noch in deren Umkehrung
+stehen — beides liesse die Aufgabe lösen, ohne den Text zu lesen. Bei
+**zwei** Lücken gibt es aber nur diese beiden Reihenfolgen: Die Schleife
+lief fünfzigmal ins Leere und liess die Bank in Lückenreihenfolge stehen,
+was der geerbte Checker als Fehler meldete. Unter drei Lücken wird deshalb
+nur die Lückenreihenfolge gemieden; mehr gibt die Aufgabe nicht her. Ein
+Test wacht darüber.
 
 ### Die Verteilung
 

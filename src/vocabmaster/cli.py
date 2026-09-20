@@ -55,6 +55,8 @@ from .pack import (
     aufteilung,
     ausgleichen,
     gepruefte_woerter,
+    kennzeichen,
+    lehrmittel_von,
     lueckentext,
     neue_fassung,
     neue_liste,
@@ -519,7 +521,8 @@ def cmd_geruest(args) -> int:
     db = _db(args)
     settings = _mit_aufgaben(_settings(args), args)
     unit = db.require_unit(args.unit)
-    pfad = Path(args.verzeichnis) / pack_filename(unit)
+    pfad = Path(args.verzeichnis) / pack_filename(
+        unit, lehrmittel=lehrmittel_von(db))
     if pfad.exists() and not args.ueberschreiben:
         print(f"{pfad} besteht bereits - mit --überschreiben neu erzeugen.")
         return 1
@@ -589,7 +592,7 @@ def cmd_ausgleichen(args) -> int:
     return 0
 
 
-def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
+def _bestand_pruefen(nach_unit: dict[tuple[str, int], list[Pack]]) -> list[str]:
     """Kontrolliert den **Bestand**, nicht die einzelne Datei.
 
     `vocabmaster prüfen` sieht immer nur ein Paket. Was sich erst im
@@ -598,7 +601,12 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
     Unit mit identischem Inhalt. Genau das prüft diese Übersicht.
     """
     befunde: list[str] = []
-    for unit, pakete in sorted(nach_unit.items()):
+    for (lehrmittel, unit), pakete in sorted(nach_unit.items()):
+        # Je Lehrmittel eine eigene Gruppe: Zwei Lehrmittel dürfen dieselbe
+        # Unit 1 und dieselbe V1 haben, ihre Dateien heissen verschieden,
+        # und sie überschreiben sich nicht.
+        wo_unit = f"{lehrmittel} Unit {unit:02d}" if lehrmittel \
+            else f"Unit {unit:02d}"
         gesehen: dict[tuple[int, int], str] = {}
         listen: dict[str, list[str]] = {}
         versionen = {p.liste_version for p in pakete if p.fassung == 1}
@@ -608,7 +616,7 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
             schluessel = (pack.liste_version, pack.fassung)
             if schluessel in gesehen:
                 befunde.append(
-                    f"FEHLER Unit {unit:02d}: {name} und {gesehen[schluessel]} "
+                    f"FEHLER {wo_unit}: {name} und {gesehen[schluessel]} "
                     f"sind beide V{pack.liste_version} Fassung {pack.fassung} - "
                     "sie schreiben dieselben Word-Dateien."
                 )
@@ -618,7 +626,7 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
                 listen.setdefault(pack.liste_abdruck, []).append(name)
             elif pack.liste_version not in versionen:
                 befunde.append(
-                    f"FEHLER Unit {unit:02d}: {name} ist eine Fassung zu "
+                    f"FEHLER {wo_unit}: {name} ist eine Fassung zu "
                     f"V{pack.liste_version}, aber diese Liste gibt es nicht."
                 )
 
@@ -626,7 +634,7 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
                 abdruck = spec.get("meta", {}).get("liste_fingerabdruck")
                 if abdruck and abdruck != pack.liste_abdruck:
                     befunde.append(
-                        f"FEHLER Unit {unit:02d}: {name} Teil {teil} "
+                        f"FEHLER {wo_unit}: {name} Teil {teil} "
                         f"Niveau {niveau} hängt an einer anderen Liste "
                         f"({abdruck} statt {pack.liste_abdruck})."
                     )
@@ -640,14 +648,14 @@ def _bestand_pruefen(nach_unit: dict[int, list[Pack]]) -> list[str]:
         for abdruck, namen in listen.items():
             if len(namen) > 1:
                 befunde.append(
-                    f"WARNUNG Unit {unit:02d}: {' und '.join(namen)} enthalten "
+                    f"WARNUNG {wo_unit}: {' und '.join(namen)} enthalten "
                     f"dieselben 60 Wörter ({abdruck}) - zwei Listen, die sich "
                     "nicht unterscheiden."
                 )
         luecken = sorted(set(range(1, max(versionen) + 1)) - versionen) if versionen else []
         if luecken:
             befunde.append(
-                f"WARNUNG Unit {unit:02d}: Listenversion "
+                f"WARNUNG {wo_unit}: Listenversion "
                 f"{', '.join(f'V{v}' for v in luecken)} fehlt - "
                 "die Nummerierung hat eine Lücke."
             )
@@ -714,14 +722,22 @@ def cmd_listen(args) -> int:
     if not pfade:
         print(f"In {args.verzeichnis}/ liegt kein Paket.")
         return 1
-    nach_unit: dict[int, list[Pack]] = {}
+    # Gruppiert wird nach **Lehrmittel und Unit**, nicht nach Unit allein.
+    # Sonst stünde das Paket von English Plus 3 unter der Überschrift
+    # "Unit 01 - Erinnerungen und Gegenstände" - dem Thema von English
+    # Plus 4 -, und die Versionsnummern beider Lehrmittel lägen in einem
+    # Topf.
+    nach_unit: dict[tuple[str, int], list[Pack]] = {}
     for pfad in pfade:
         pack = Pack.load(pfad)
-        nach_unit.setdefault(pack.unit, []).append(pack)
+        nach_unit.setdefault((kennzeichen(pack.lehrmittel), pack.unit),
+                             []).append(pack)
 
-    for unit in sorted(nach_unit):
-        pakete = sorted(nach_unit[unit], key=lambda p: (p.liste_version, p.fassung))
-        print(f"\nUnit {unit:02d} - {pakete[0].thema}")
+    for lehrmittel, unit in sorted(nach_unit):
+        pakete = sorted(nach_unit[(lehrmittel, unit)],
+                        key=lambda p: (p.liste_version, p.fassung))
+        vorspann = f"{lehrmittel} " if lehrmittel else ""
+        print(f"\n{vorspann}Unit {unit:02d} - {pakete[0].thema}")
         for pack in pakete:
             marke = f"V{pack.liste_version} · Fassung {pack.fassung}"
             fancy = sum(1 for e in pack.all_entries
@@ -780,7 +796,7 @@ def cmd_liste_neu(args) -> int:
         return 1
 
     ziel = Path(args.verzeichnis) / pack_filename(
-        neu.unit, liste_version=neu.liste_version
+        neu.unit, liste_version=neu.liste_version, lehrmittel=neu.lehrmittel
     )
     if ziel.exists() and not args.ueberschreiben:
         print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
@@ -869,7 +885,7 @@ def cmd_fassung(args) -> int:
 
     for nummer in nummern:
         ziel = Path(args.verzeichnis) / pack_filename(
-            pack.unit, nummer, pack.liste_version
+            pack.unit, nummer, pack.liste_version, lehrmittel=pack.lehrmittel
         )
         if ziel.exists() and not args.ueberschreiben:
             print(f"{ziel} besteht bereits - mit --überschreiben neu erzeugen.")
@@ -997,8 +1013,10 @@ def cmd_bauen(args) -> int:
         return 1
 
     niveaus = (args.niveau,) if args.niveau else NIVEAUS
+    pruefungsteile = (args.teil,) if args.teil else (1, 2)
     ergebnis = baue_alles(
-        pack, args.ausgabe, settings, teile, not args.ohne_loesung, niveaus
+        pack, args.ausgabe, settings, teile, not args.ohne_loesung, niveaus,
+        pruefungsteile,
     )
     print(f"\nGeschrieben nach {args.ausgabe}/:")
     for pfad in ergebnis.dateien:
@@ -1163,6 +1181,9 @@ def build_parser() -> argparse.ArgumentParser:
                    help="nur einen Teil neu erzeugen")
     p.add_argument("--niveau", choices=list(NIVEAUS),
                    help="nur die Prüfungen dieses Niveaus schreiben")
+    p.add_argument("--teil", type=int, choices=(1, 2),
+                   help="nur die Prüfungen dieses Teils schreiben - ein "
+                        "Paket trägt immer alle vier, bestellt ist oft eine")
     p.add_argument("--ohne-loesung", action="store_true", dest="ohne_loesung")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")
     p.add_argument("--streng", action="store_true")

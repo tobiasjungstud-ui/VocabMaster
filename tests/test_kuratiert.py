@@ -10,14 +10,45 @@ from pathlib import Path
 
 import pytest
 
+from vocabmaster import datenbanken as dbs
 from vocabmaster.checks import pruefe_paket
+from vocabmaster.database import Database
 from vocabmaster.documents import baue_alles
-from vocabmaster.pack import Pack
+from vocabmaster.pack import Pack, pack_filename
 
 from .helpers import aufgabe
 
 KURATIERT = Path(__file__).resolve().parent.parent / "kuratiert"
 ALLE = sorted(KURATIERT.glob("unit_*.json"))
+
+
+def datenbank_von(pack: Pack) -> Database:
+    """Die Datenbank, zu der **dieses** Paket gehört.
+
+    Unter ``kuratiert/`` liegen die Pakete mehrerer Lehrmittel nebeneinander,
+    und zwei Lehrmittel dürfen dieselbe Unit 1 haben. Ein Paket gegen die
+    Grunddatenbank zu prüfen, weil sie die erste ist, ergäbe lauter
+    Scheinfehler: 'instruction' steht im Hauptteil von English Plus 3,
+    nicht in dem von English Plus 4. Gefunden wird sie an der **Prüfsumme**
+    der Wortliste - nicht am Namen des Pakets.
+    """
+    eigen = str(pack.quelle.get("pruefsumme_sha256", ""))
+    for eintrag in dbs.alle():
+        if eintrag.vorhanden and str(
+                eintrag.quelle.get("pruefsumme_sha256", "")) == eigen:
+            return Database.load(eintrag.verzeichnis)
+    raise AssertionError(
+        f"Zu {pack.pfad.name if pack.pfad else '?'} gibt es keine Datenbank "
+        f"mit der Prüfsumme {eigen[:12]} - das Paket ist Altbestand."
+    )
+
+
+def grundpaket(pfad: Path) -> Pack:
+    """Das Paket der Liste, zu der diese Fassung gehört."""
+    pack = Pack.load(pfad)
+    return Pack.load(pfad.parent / pack_filename(
+        pack.unit, liste_version=pack.liste_version,
+        lehrmittel=pack.lehrmittel))
 
 
 def _ist_fassung(pfad: Path) -> bool:
@@ -33,9 +64,9 @@ FASSUNGEN = [p for p in ALLE if _ist_fassung(p)]
 
 @pytest.mark.skipif(not ALLE, reason="keine kuratierten Pakete vorhanden")
 @pytest.mark.parametrize("pfad", ALLE, ids=lambda p: p.stem)
-def test_paket_ist_fehlerfrei(pfad, db, settings):
+def test_paket_ist_fehlerfrei(pfad, settings):
     pack = Pack.load(pfad)
-    bericht = pruefe_paket(pack, db, settings)
+    bericht = pruefe_paket(pack, datenbank_von(pack), settings)
     assert not bericht.fehler, "\n".join(str(b) for b in bericht.fehler)
     # Warnungen dürfen nur stehen bleiben, wenn das Paket sie ausdrücklich
     # begründet - siehe Pack.akzeptierte_warnungen.
@@ -61,7 +92,7 @@ def test_fassung_ersetzt_genau_eine_pruefung(pfad):
     Bauen die bestehenden Dateien überschreibt.
     """
     pack = Pack.load(pfad)
-    grund = Pack.load(pfad.parent / f"unit_{pack.unit:02d}.json")
+    grund = grundpaket(pfad)
     assert pack.fassung > 1
     assert len(pack.exams) == 1, "eine Fassung setzt genau eine Prüfung neu"
     assert len(pack.all_entries) == 60
@@ -98,7 +129,7 @@ def test_fassung_ueberschreibt_die_erste_nicht(pfad, tmp_path, settings):
     """Die Dateinamen einer Fassung dürfen sich nicht mit denen der ersten
     decken - sonst überschreibt ein Bau die bestehende Prüfung."""
     pack = Pack.load(pfad)
-    grund = Pack.load(pfad.parent / f"unit_{pack.unit:02d}.json")
+    grund = grundpaket(pfad)
     erste = {p.name for p in baue_alles(grund, tmp_path / "a", settings).dateien}
     ergebnis = baue_alles(pack, tmp_path / "b", settings, teile=("test",))
     assert ergebnis.ok, "\n".join(str(b) for b in ergebnis.bericht.fehler)
@@ -109,11 +140,12 @@ def test_fassung_ueberschreibt_die_erste_nicht(pfad, tmp_path, settings):
 
 @pytest.mark.skipif(not PAKETE, reason="keine kuratierten Pakete vorhanden")
 @pytest.mark.parametrize("pfad", PAKETE, ids=lambda p: p.stem)
-def test_nur_woerter_aus_dem_hauptteil(pfad, db):
+def test_nur_woerter_aus_dem_hauptteil(pfad):
     """Culture, Project und Curriculum extra dürfen nicht stillschweigend
     hineinrutschen - und wenn doch, dann ausgewiesen."""
     pack = Pack.load(pfad)
-    haupt = {r.headword.lower() for r in db.unit_pool(pack.unit, core_only=True)}
+    haupt = {r.headword.lower()
+             for r in datenbank_von(pack).unit_pool(pack.unit, core_only=True)}
     for entry in pack.all_entries:
         if entry.get("herkunft") != "wortliste":
             continue

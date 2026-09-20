@@ -6,6 +6,9 @@
   "importiert": "2026-09-10"
  },
  "dokumente": {
+  "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA.docx": 14454,
+  "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_Loesung.docx": 14626,
+  "EnglishPlus3_Unit01_V1_VocabularyList.docx": 42218,
   "Unit01_V1_Test_PartII_NiveauA.docx": 13820,
   "Unit01_V1_Test_PartII_NiveauA_Loesung.docx": 13954,
   "Unit01_V1_Test_PartII_NiveauB.docx": 13769,
@@ -26349,7 +26352,1856 @@
       "ergaenzt": 24,
       "zusatzteile": 5
      },
-     "listen": [],
+     "listen": [
+      {
+       "version": 1,
+       "datei": "unit_01_englishplus3.json",
+       "abdruck": "79ee4e0f0501",
+       "erzeugt": "2026-09-20",
+       "aufgewertet": [],
+       "offen": 0,
+       "fassungen": [],
+       "woerter": [
+        {
+         "nr": 1,
+         "test": 1,
+         "en": "flared",
+         "de": "ausgestellt, Schlag-",
+         "pos": "adj",
+         "satz": "Flared trousers came back into fashion again.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 2,
+         "test": 1,
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "pos": "adj",
+         "satz": "My little brother thinks my music is old-fashioned.",
+         "score": 4.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 3,
+         "test": 1,
+         "en": "sought-after",
+         "de": "begehrt, gesucht",
+         "pos": "adj",
+         "satz": "That console is the most sought-after toy of 1985.",
+         "score": 5.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 4,
+         "test": 1,
+         "en": "striped",
+         "de": "gestreift",
+         "pos": "adj",
+         "satz": "He wore a striped tie to the wedding.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 5,
+         "test": 1,
+         "en": "bargain",
+         "de": "Schnäppchen",
+         "pos": "noun",
+         "satz": "Ten pounds for that coat was a real bargain.",
+         "score": 2.2,
+         "zipf": 3.95,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 6,
+         "test": 1,
+         "en": "board game",
+         "de": "Brettspiel",
+         "pos": "noun",
+         "satz": "On rainy days we played the same board game.",
+         "score": 1.9,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 7,
+         "test": 1,
+         "en": "record player",
+         "de": "Plattenspieler",
+         "pos": "noun",
+         "satz": "Her record player still stands in the corner.",
+         "score": 2.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 8,
+         "test": 1,
+         "en": "wig",
+         "de": "Perücke",
+         "pos": "noun",
+         "satz": "The actor wore a curly wig on stage.",
+         "score": 2.4,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 9,
+         "test": 1,
+         "en": "brag",
+         "de": "prahlen, angeben",
+         "pos": "verb",
+         "satz": "He never stops bragging about his old records.",
+         "score": 3.3,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 10,
+         "test": 1,
+         "en": "fade away",
+         "de": "verblassen, nachlassen",
+         "pos": "verb",
+         "satz": "Most crazes fade away after a single summer.",
+         "score": 3.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 11,
+         "test": 1,
+         "en": "swap",
+         "de": "tauschen",
+         "pos": "verb",
+         "satz": "We used to swap stickers in the playground.",
+         "score": 2.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 12,
+         "test": 1,
+         "en": "sell out",
+         "de": "ausverkauft sein",
+         "pos": "verb",
+         "satz": "Tickets for the concert sell out within minutes.",
+         "score": 3.3,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 13,
+         "test": 1,
+         "en": "hairstyle",
+         "de": "Frisur",
+         "pos": "noun",
+         "satz": "That hairstyle was everywhere in the 1970s.",
+         "score": 2.9,
+         "zipf": 3.33,
+         "quelle": "zusatzteil",
+         "abschnitt": "Culture 1, S. 104"
+        },
+        {
+         "nr": 14,
+         "test": 1,
+         "en": "fitting room",
+         "de": "Umkleidekabine",
+         "pos": "noun",
+         "satz": "The fitting room was busy, so we waited outside.",
+         "score": 3.2,
+         "zipf": 3.5,
+         "quelle": "zusatzteil",
+         "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+        },
+        {
+         "nr": 15,
+         "test": 1,
+         "en": "shop assistant",
+         "de": "Verkäufer(in)",
+         "pos": "noun",
+         "satz": "The shop assistant helped me find my size.",
+         "score": 4.5,
+         "zipf": 4.12,
+         "quelle": "zusatzteil",
+         "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+        },
+        {
+         "nr": 16,
+         "test": 1,
+         "en": "incredibly",
+         "de": "unglaublich",
+         "pos": "adj",
+         "satz": "The queue outside the shop was incredibly long.",
+         "score": 3.5,
+         "zipf": 4.38,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 17,
+         "test": 1,
+         "en": "craze",
+         "de": "Mode, Begeisterung, Wahn",
+         "pos": "noun",
+         "satz": "The craze for these bracelets lasted one summer.",
+         "score": 3.0,
+         "zipf": 3.35,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 18,
+         "test": 1,
+         "en": "pole",
+         "de": "Stange, Pfahl",
+         "pos": "noun",
+         "satz": "The flag hung from a tall wooden pole.",
+         "score": 2.6,
+         "zipf": 4.23,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 19,
+         "test": 1,
+         "en": "competitor",
+         "de": "Konkurrent(in)",
+         "pos": "noun",
+         "satz": "Her main competitor won the prize last year.",
+         "score": 3.3,
+         "zipf": 3.81,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 20,
+         "test": 1,
+         "en": "blouse",
+         "de": "Bluse",
+         "pos": "noun",
+         "satz": "She wore a silk blouse to the interview.",
+         "score": 0.0,
+         "zipf": 3.38,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 21,
+         "test": 1,
+         "en": "chopsticks",
+         "de": "Stäbchen",
+         "pos": "noun",
+         "satz": "I finally learnt to eat rice with chopsticks.",
+         "score": 3.0,
+         "zipf": 2.93,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 22,
+         "test": 1,
+         "en": "hoodie",
+         "de": "Kapuzenshirt",
+         "pos": "noun",
+         "satz": "He wears the same grey hoodie every single day.",
+         "score": 3.0,
+         "zipf": 3.4,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 23,
+         "test": 1,
+         "en": "check out",
+         "de": "anschauen",
+         "pos": "verb",
+         "satz": "Let's check out the new shop on the corner.",
+         "score": 2.4,
+         "zipf": 4.71,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 24,
+         "test": 1,
+         "en": "hula hoop",
+         "de": "Reifen zum Kreisen um die Hüfte",
+         "pos": "noun",
+         "satz": "She can keep a hula hoop spinning for minutes.",
+         "score": 3.9,
+         "zipf": 2.41,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 25,
+         "test": 1,
+         "en": "rock ‘n’ roll",
+         "de": "Tanzmusik der 1950er-Jahre",
+         "pos": "noun",
+         "satz": "My grandmother still dances to rock ‘n’ roll.",
+         "score": 3.8,
+         "zipf": 4.15,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 26,
+         "test": 1,
+         "en": "social media",
+         "de": "soziale Medien",
+         "pos": "noun",
+         "satz": "Nobody used social media when my parents were young.",
+         "score": 4.1,
+         "zipf": 4.7,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 16"
+        },
+        {
+         "nr": 27,
+         "test": 1,
+         "en": "explore",
+         "de": "erkunden",
+         "pos": "verb",
+         "satz": "We went to explore the attic of my grandparents' house.",
+         "score": 1.1,
+         "zipf": 4.31,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 28,
+         "test": 1,
+         "en": "action figure",
+         "de": "Actionfigur",
+         "pos": "noun",
+         "satz": "He kept every action figure in its original box.",
+         "score": 1.5,
+         "zipf": 4.47,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 29,
+         "test": 1,
+         "en": "comic",
+         "de": "Bildergeschichte, Heft",
+         "pos": "noun",
+         "satz": "He reads a comic on the bus every morning.",
+         "score": 3.0,
+         "zipf": 4.42,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 30,
+         "test": 1,
+         "en": "arcade game",
+         "de": "Videospiel",
+         "pos": "noun",
+         "satz": "In the 1980s every café had a noisy arcade game.",
+         "score": 3.0,
+         "zipf": 3.13,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 9"
+        },
+        {
+         "nr": 1,
+         "test": 2,
+         "en": "affordable",
+         "de": "erschwinglich",
+         "pos": "adj",
+         "satz": "Few families found a television affordable back then.",
+         "score": 4.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 2,
+         "test": 2,
+         "en": "outdated",
+         "de": "überholt, veraltet",
+         "pos": "adj",
+         "satz": "The games console looked outdated after three years.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 3,
+         "test": 2,
+         "en": "collar",
+         "de": "Kragen",
+         "pos": "noun",
+         "satz": "The collar of his shirt was far too tight.",
+         "score": 2.7,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 4,
+         "test": 2,
+         "en": "marbles",
+         "de": "Murmeln",
+         "pos": "noun",
+         "satz": "My father still keeps his glass marbles in a tin.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 5,
+         "test": 2,
+         "en": "novelty",
+         "de": "Neuheit, modische Spielerei",
+         "pos": "noun",
+         "satz": "The clockwork mouse was a novelty in 1954.",
+         "score": 3.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 6,
+         "test": 2,
+         "en": "skipping rope",
+         "de": "Springseil",
+         "pos": "noun",
+         "satz": "A skipping rope costs little and lasts for years.",
+         "score": 2.5,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 7,
+         "test": 2,
+         "en": "zip",
+         "de": "Reissverschluss",
+         "pos": "noun",
+         "satz": "The zip on my school bag broke this morning.",
+         "score": 2.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 8,
+         "test": 2,
+         "en": "catch on",
+         "de": "sich durchsetzen, Anklang finden",
+         "pos": "verb",
+         "satz": "The toy took years to catch on in Europe.",
+         "score": 3.4,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 9,
+         "test": 2,
+         "en": "hoard",
+         "de": "horten, hamstern",
+         "pos": "verb",
+         "satz": "My uncle hoards every comic he has ever bought.",
+         "score": 3.5,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 10,
+         "test": 2,
+         "en": "worn out",
+         "de": "abgetragen, abgenutzt",
+         "pos": "adj",
+         "satz": "His jeans were completely worn out at the knees.",
+         "score": 2.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 11,
+         "test": 2,
+         "en": "launch",
+         "de": "auf den Markt bringen",
+         "pos": "verb",
+         "satz": "They will launch the new games console in spring.",
+         "score": 3.3,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 12,
+         "test": 2,
+         "en": "widespread",
+         "de": "weit verbreitet",
+         "pos": "adj",
+         "satz": "Home computers became widespread during the 1990s.",
+         "score": 3.7,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 13,
+         "test": 2,
+         "en": "moustache",
+         "de": "Schnurrbart, Schnauz",
+         "pos": "noun",
+         "satz": "In old photos my grandfather has a thick moustache.",
+         "score": 3.0,
+         "zipf": 3.24,
+         "quelle": "zusatzteil",
+         "abschnitt": "Culture 1, S. 104"
+        },
+        {
+         "nr": 14,
+         "test": 2,
+         "en": "shopping trip",
+         "de": "Einkaufsbummel",
+         "pos": "noun",
+         "satz": "Our shopping trip ended with completely empty pockets.",
+         "score": 3.2,
+         "zipf": 4.08,
+         "quelle": "zusatzteil",
+         "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+        },
+        {
+         "nr": 15,
+         "test": 2,
+         "en": "amazingly",
+         "de": "erstaunlicherweise, verblüffenderweise",
+         "pos": "adj",
+         "satz": "Amazingly, the old robot still works after forty years.",
+         "score": 2.6,
+         "zipf": 3.64,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 16,
+         "test": 2,
+         "en": "instruction",
+         "de": "Anleitung, Anweisung",
+         "pos": "noun",
+         "satz": "Read the instruction carefully before you start.",
+         "score": 4.3,
+         "zipf": 4.14,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 17,
+         "test": 2,
+         "en": "playground",
+         "de": "Spielplatz",
+         "pos": "noun",
+         "satz": "The playground was full of children after school.",
+         "score": 2.8,
+         "zipf": 3.79,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 18,
+         "test": 2,
+         "en": "compete",
+         "de": "konkurrieren",
+         "pos": "verb",
+         "satz": "Children used to compete to see who was fastest.",
+         "score": 2.6,
+         "zipf": 4.39,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 19,
+         "test": 2,
+         "en": "short-sleeved",
+         "de": "kurzärmelig",
+         "pos": "adj",
+         "satz": "A short-sleeved shirt is enough in this weather.",
+         "score": 3.5,
+         "zipf": 2.93,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 20,
+         "test": 2,
+         "en": "stomach ache",
+         "de": "Bauchschmerzen",
+         "pos": "noun",
+         "satz": "Too much cake gave me a stomach ache.",
+         "score": 3.9,
+         "zipf": 2.83,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 21,
+         "test": 2,
+         "en": "strategy",
+         "de": "Strategie",
+         "pos": "noun",
+         "satz": "Our strategy was simple: wait and see what happened.",
+         "score": 0.1,
+         "zipf": 4.74,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 22,
+         "test": 2,
+         "en": "trainers",
+         "de": "Turnschuhe",
+         "pos": "noun",
+         "satz": "She bought white trainers for the school sports day.",
+         "score": 1.1,
+         "zipf": 3.72,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 23,
+         "test": 2,
+         "en": "baggy",
+         "de": "ausgebeult, schlotterig",
+         "pos": "adj",
+         "satz": "Baggy trousers were everywhere when my father was young.",
+         "score": 3.6,
+         "zipf": 3.16,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 24,
+         "test": 2,
+         "en": "decade",
+         "de": "Jahrzehnt, Dekade",
+         "pos": "noun",
+         "satz": "Fashion changes completely in a single decade.",
+         "score": 0.3,
+         "zipf": 4.52,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 25,
+         "test": 2,
+         "en": "gadget",
+         "de": "Gerät, technische Spielerei",
+         "pos": "noun",
+         "satz": "My uncle buys every new gadget he sees online.",
+         "score": 3.4,
+         "zipf": 3.45,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 26,
+         "test": 2,
+         "en": "barrel",
+         "de": "Fass",
+         "pos": "noun",
+         "satz": "The old cider barrel stood behind the barn.",
+         "score": 2.7,
+         "zipf": 4.17,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 27,
+         "test": 2,
+         "en": "valuable",
+         "de": "wertvoll",
+         "pos": "adj",
+         "satz": "Her first edition of the book is now very valuable.",
+         "score": 1.6,
+         "zipf": 4.51,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 28,
+         "test": 2,
+         "en": "approximately",
+         "de": "ungefähr",
+         "pos": "adj",
+         "satz": "The trip takes approximately two hours by train.",
+         "score": 4.0,
+         "zipf": 4.64,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 29,
+         "test": 2,
+         "en": "fad",
+         "de": "Modeerscheinung",
+         "pos": "noun",
+         "satz": "Everyone said it was just a fad, but it lasted.",
+         "score": 2.6,
+         "zipf": 3.26,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 30,
+         "test": 2,
+         "en": "games console",
+         "de": "Spielkonsole",
+         "pos": "noun",
+         "satz": "He saved for months to buy a games console.",
+         "score": 2.8,
+         "zipf": 3.48,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 9"
+        }
+       ],
+       "echt": {
+        "t1A": {
+         "woerter": [
+          "sought-after",
+          "shop assistant",
+          "old-fashioned",
+          "social media",
+          "hula hoop",
+          "incredibly",
+          "brag",
+          "competitor",
+          "chopsticks",
+          "comic",
+          "craze",
+          "flared",
+          "hoodie",
+          "hairstyle"
+         ],
+         "luecken": [
+          "shop assistant",
+          "old-fashioned"
+         ],
+         "schnitt": 3.54,
+         "textstufe": 3.63,
+         "textmass": {
+          "woerter": 77,
+          "satzlaenge": 12.8,
+          "lesbarkeit": 75.1,
+          "grad": 6.0,
+          "nebensaetze": 0.5
+         }
+        },
+        "t1B": {
+         "woerter": [
+          "explore",
+          "board game",
+          "bargain",
+          "striped",
+          "check out",
+          "wig",
+          "pole",
+          "swap",
+          "hairstyle",
+          "chopsticks",
+          "comic",
+          "craze",
+          "flared",
+          "hoodie"
+         ],
+         "luecken": [
+          "swap",
+          "chopsticks"
+         ],
+         "schnitt": 2.54,
+         "textstufe": 1.72,
+         "textmass": {
+          "woerter": 60,
+          "satzlaenge": 10.0,
+          "lesbarkeit": 85.3,
+          "grad": 3.8,
+          "nebensaetze": 0.0
+         }
+        },
+        "t2A": {
+         "woerter": [
+          "affordable",
+          "instruction",
+          "approximately",
+          "stomach ache",
+          "widespread",
+          "baggy",
+          "hoard",
+          "short-sleeved",
+          "catch on",
+          "gadget",
+          "launch",
+          "shopping trip",
+          "novelty",
+          "moustache"
+         ],
+         "luecken": [
+          "launch",
+          "stomach ache"
+         ],
+         "schnitt": 3.61,
+         "textstufe": 3.73,
+         "textmass": {
+          "woerter": 87,
+          "satzlaenge": 14.5,
+          "lesbarkeit": 88.1,
+          "grad": 4.6,
+          "nebensaetze": 0.67
+         }
+        },
+        "t2B": {
+         "woerter": [
+          "strategy",
+          "trainers",
+          "valuable",
+          "marbles",
+          "skipping rope",
+          "amazingly",
+          "compete",
+          "fad",
+          "zip",
+          "barrel",
+          "collar",
+          "games console",
+          "outdated",
+          "launch"
+         ],
+         "luecken": [
+          "launch",
+          "games console"
+         ],
+         "schnitt": 2.31,
+         "textstufe": 1.55,
+         "textmass": {
+          "woerter": 51,
+          "satzlaenge": 10.2,
+          "lesbarkeit": 90.3,
+          "grad": 3.2,
+          "nebensaetze": 0.2
+         }
+        }
+       },
+       "pruefungen": [
+        {
+         "teil": 1,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "sought-after",
+           "de": "begehrt, gesucht",
+           "luecke": false,
+           "score": 5.0
+          },
+          {
+           "en": "social media",
+           "de": "soziale Medien",
+           "luecke": false,
+           "score": 4.1
+          },
+          {
+           "en": "hula hoop",
+           "de": "Reifen zum Kreisen um die Hüfte",
+           "luecke": false,
+           "score": 3.9
+          },
+          {
+           "en": "incredibly",
+           "de": "unglaublich",
+           "luecke": false,
+           "score": 3.5
+          },
+          {
+           "en": "shop assistant",
+           "de": "Verkäufer(in)",
+           "luecke": true,
+           "score": 4.5
+          },
+          {
+           "en": "old-fashioned",
+           "de": "altmodisch",
+           "luecke": true,
+           "score": 4.1
+          },
+          {
+           "en": "brag",
+           "de": "prahlen, angeben",
+           "luecke": false,
+           "score": 3.3
+          },
+          {
+           "en": "competitor",
+           "de": "Konkurrent(in)",
+           "luecke": false,
+           "score": 3.3
+          },
+          {
+           "en": "chopsticks",
+           "de": "Stäbchen",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "comic",
+           "de": "Bildergeschichte, Heft",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "craze",
+           "de": "Mode, Begeisterung, Wahn",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "flared",
+           "de": "ausgestellt, Schlag-",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "hoodie",
+           "de": "Kapuzenshirt",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "hairstyle",
+           "de": "Frisur",
+           "luecke": false,
+           "score": 2.9
+          }
+         ],
+         "text": "In 1983 my grandfather queued outside a shop in town for two hours. He wanted the wooden train that every boy in his class was talking about. When the doors finally opened, the {1} behind the counter only shook her head. The last box had gone before lunchtime. Today he tells the story at every family dinner, and my sister thinks the whole thing sounds rather {2} and slow. She has never queued for anything in her life.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+           "woerter": [
+            {
+             "en": "sought-after",
+             "de": "begehrt, gesucht"
+            },
+            {
+             "en": "social media",
+             "de": "soziale Medien"
+            },
+            {
+             "en": "hula hoop",
+             "de": "Reifen zum Kreisen um die Hüfte"
+            },
+            {
+             "en": "incredibly",
+             "de": "unglaublich"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+           "woerter": [
+            {
+             "en": "shop assistant",
+             "de": "Verkäufer(in)"
+            },
+            {
+             "en": "old-fashioned",
+             "de": "altmodisch"
+            }
+           ],
+           "text": "In 1983 my grandfather queued outside a shop in town for two hours. He wanted the wooden train that every boy in his class was talking about. When the doors finally opened, the {1} behind the counter only shook her head. The last box had gone before lunchtime. Today he tells the story at every family dinner, and my sister thinks the whole thing sounds rather {2} and slow. She has never queued for anything in her life.",
+           "bank": [
+            "altmodisch",
+            "Verkäufer(in)"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "brag",
+             "de": "prahlen, angeben"
+            },
+            {
+             "en": "competitor",
+             "de": "Konkurrent(in)"
+            }
+           ],
+           "items": [
+            {
+             "en": "brag",
+             "richtig": 3,
+             "saetze": [
+              "She bragged the box under her bed last night.",
+              "They brag the door when they leave the house.",
+              "He brags about his record collection every single day."
+             ]
+            },
+            {
+             "en": "competitor",
+             "richtig": 1,
+             "saetze": [
+              "Their biggest competitor sells the same toy for less.",
+              "She competitor the race in under ten minutes.",
+              "He wrote a competitor to his old school friend."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "chopsticks",
+             "de": "Stäbchen"
+            },
+            {
+             "en": "comic",
+             "de": "Bildergeschichte, Heft"
+            }
+           ],
+           "items": [
+            {
+             "en": "chopsticks",
+             "umschreibung": "two thin sticks used for eating rice and noodles"
+            },
+            {
+             "en": "comic",
+             "umschreibung": "a thin book that tells a story in pictures"
+            }
+           ]
+          },
+          {
+           "art": "richtig_falsch",
+           "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+           "woerter": [
+            {
+             "en": "craze",
+             "de": "Mode, Begeisterung, Wahn"
+            },
+            {
+             "en": "flared",
+             "de": "ausgestellt, Schlag-"
+            }
+           ],
+           "items": [
+            {
+             "en": "craze",
+             "richtig": 1,
+             "saetze": [
+              "The craze for these bracelets lasted one summer.",
+              "He crazed the window and looked out at the rain."
+             ]
+            },
+            {
+             "en": "flared",
+             "richtig": 2,
+             "saetze": [
+              "She flared the cake into six equal pieces.",
+              "His flared trousers were very wide at the bottom."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "schreiben",
+           "instruction": "6)  Use the words in a short text of your own. ",
+           "woerter": [
+            {
+             "en": "hoodie",
+             "de": "Kapuzenshirt"
+            },
+            {
+             "en": "hairstyle",
+             "de": "Frisur"
+            }
+           ],
+           "items": [
+            {
+             "en": "hoodie, hairstyle",
+             "anstoss": "Describe an old photo of your parents at school."
+            }
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA.docx",
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_Loesung.docx"
+        },
+        {
+         "teil": 1,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "explore",
+           "de": "erkunden",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "board game",
+           "de": "Brettspiel",
+           "luecke": false,
+           "score": 1.9
+          },
+          {
+           "en": "bargain",
+           "de": "Schnäppchen",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "striped",
+           "de": "gestreift",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "swap",
+           "de": "tauschen",
+           "luecke": true,
+           "score": 2.8
+          },
+          {
+           "en": "chopsticks",
+           "de": "Stäbchen",
+           "luecke": true,
+           "score": 3.0
+          },
+          {
+           "en": "check out",
+           "de": "anschauen",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "wig",
+           "de": "Perücke",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "pole",
+           "de": "Stange, Pfahl",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "hairstyle",
+           "de": "Frisur",
+           "luecke": false,
+           "score": 2.9
+          },
+          {
+           "en": "comic",
+           "de": "Bildergeschichte, Heft",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "craze",
+           "de": "Mode, Begeisterung, Wahn",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "flared",
+           "de": "ausgestellt, Schlag-",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "hoodie",
+           "de": "Kapuzenshirt",
+           "luecke": false,
+           "score": 3.0
+          }
+         ],
+         "text": "My brother collects stickers of football players. Every Friday he meets his friends in the park. They sit on a bench and {1} the ones they already have. Last week he came home very happy. A boy from the other school gave him twelve new stickers. He also brought a pair of wooden {2} back from his holiday in Japan.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+           "woerter": [
+            {
+             "en": "explore",
+             "de": "erkunden"
+            },
+            {
+             "en": "board game",
+             "de": "Brettspiel"
+            },
+            {
+             "en": "bargain",
+             "de": "Schnäppchen"
+            },
+            {
+             "en": "striped",
+             "de": "gestreift"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+           "woerter": [
+            {
+             "en": "swap",
+             "de": "tauschen"
+            },
+            {
+             "en": "chopsticks",
+             "de": "Stäbchen"
+            }
+           ],
+           "text": "My brother collects stickers of football players. Every Friday he meets his friends in the park. They sit on a bench and {1} the ones they already have. Last week he came home very happy. A boy from the other school gave him twelve new stickers. He also brought a pair of wooden {2} back from his holiday in Japan.",
+           "bank": [
+            "Stäbchen",
+            "tauschen"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "check out",
+             "de": "anschauen"
+            },
+            {
+             "en": "wig",
+             "de": "Perücke"
+            }
+           ],
+           "items": [
+            {
+             "en": "check out",
+             "richtig": 2,
+             "saetze": [
+              "The rain checked out for the whole afternoon.",
+              "Let's check out the new shop on the corner.",
+              "She checked out of her coat and sat down."
+             ]
+            },
+            {
+             "en": "wig",
+             "richtig": 3,
+             "saetze": [
+              "He wigs his bike to school every morning.",
+              "We had wig and potatoes for lunch.",
+              "The actor wore a long white wig on stage."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "pole",
+             "de": "Stange, Pfahl"
+            },
+            {
+             "en": "hairstyle",
+             "de": "Frisur"
+            }
+           ],
+           "items": [
+            {
+             "en": "pole",
+             "umschreibung": "a long thin piece of wood or metal standing upright"
+            },
+            {
+             "en": "hairstyle",
+             "umschreibung": "the shape somebody gives to what grows on their head"
+            }
+           ]
+          },
+          {
+           "art": "richtig_falsch",
+           "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+           "woerter": [
+            {
+             "en": "comic",
+             "de": "Bildergeschichte, Heft"
+            },
+            {
+             "en": "craze",
+             "de": "Mode, Begeisterung, Wahn"
+            }
+           ],
+           "items": [
+            {
+             "en": "comic",
+             "richtig": 2,
+             "saetze": [
+              "She comics the window every Saturday afternoon.",
+              "He reads a comic on the bus every morning."
+             ]
+            },
+            {
+             "en": "craze",
+             "richtig": 1,
+             "saetze": [
+              "The craze for these bracelets lasted one summer.",
+              "He crazed the window and looked out at the rain."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "schreiben",
+           "instruction": "6)  Use the words in a short text of your own. ",
+           "woerter": [
+            {
+             "en": "flared",
+             "de": "ausgestellt, Schlag-"
+            },
+            {
+             "en": "hoodie",
+             "de": "Kapuzenshirt"
+            }
+           ],
+           "items": [
+            {
+             "en": "flared, hoodie",
+             "anstoss": "Describe what you wear at the weekend and what your father wore."
+            }
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB.docx",
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB_Loesung.docx"
+        },
+        {
+         "teil": 2,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "affordable",
+           "de": "erschwinglich",
+           "luecke": false,
+           "score": 4.6
+          },
+          {
+           "en": "instruction",
+           "de": "Anleitung, Anweisung",
+           "luecke": false,
+           "score": 4.3
+          },
+          {
+           "en": "approximately",
+           "de": "ungefähr",
+           "luecke": false,
+           "score": 4.0
+          },
+          {
+           "en": "widespread",
+           "de": "weit verbreitet",
+           "luecke": false,
+           "score": 3.7
+          },
+          {
+           "en": "launch",
+           "de": "auf den Markt bringen",
+           "luecke": true,
+           "score": 3.3
+          },
+          {
+           "en": "stomach ache",
+           "de": "Bauchschmerzen",
+           "luecke": true,
+           "score": 3.9
+          },
+          {
+           "en": "baggy",
+           "de": "ausgebeult, schlotterig",
+           "luecke": false,
+           "score": 3.6
+          },
+          {
+           "en": "hoard",
+           "de": "horten, hamstern",
+           "luecke": false,
+           "score": 3.5
+          },
+          {
+           "en": "short-sleeved",
+           "de": "kurzärmelig",
+           "luecke": false,
+           "score": 3.5
+          },
+          {
+           "en": "catch on",
+           "de": "sich durchsetzen, Anklang finden",
+           "luecke": false,
+           "score": 3.4
+          },
+          {
+           "en": "gadget",
+           "de": "Gerät, technische Spielerei",
+           "luecke": false,
+           "score": 3.4
+          },
+          {
+           "en": "shopping trip",
+           "de": "Einkaufsbummel",
+           "luecke": false,
+           "score": 3.2
+          },
+          {
+           "en": "novelty",
+           "de": "Neuheit, modische Spielerei",
+           "luecke": false,
+           "score": 3.1
+          },
+          {
+           "en": "moustache",
+           "de": "Schnurrbart, Schnauz",
+           "luecke": false,
+           "score": 3.0
+          }
+         ],
+         "text": "Toy companies plan for months before they {1} a new product in the shops. They pick the right week, print bright posters and hope that children will ask their parents every single day. In 1983 one small firm sold a soft doll with its own name and birthday. The idea worked so well that the factory could not keep up. My aunt still remembers queuing in the rain for hours. She was so nervous and excited that she went home with a {2} and no doll at all.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+           "woerter": [
+            {
+             "en": "affordable",
+             "de": "erschwinglich"
+            },
+            {
+             "en": "instruction",
+             "de": "Anleitung, Anweisung"
+            },
+            {
+             "en": "approximately",
+             "de": "ungefähr"
+            },
+            {
+             "en": "widespread",
+             "de": "weit verbreitet"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+           "woerter": [
+            {
+             "en": "launch",
+             "de": "auf den Markt bringen"
+            },
+            {
+             "en": "stomach ache",
+             "de": "Bauchschmerzen"
+            }
+           ],
+           "text": "Toy companies plan for months before they {1} a new product in the shops. They pick the right week, print bright posters and hope that children will ask their parents every single day. In 1983 one small firm sold a soft doll with its own name and birthday. The idea worked so well that the factory could not keep up. My aunt still remembers queuing in the rain for hours. She was so nervous and excited that she went home with a {2} and no doll at all.",
+           "bank": [
+            "Bauchschmerzen",
+            "auf den Markt bringen"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "baggy",
+             "de": "ausgebeult, schlotterig"
+            },
+            {
+             "en": "hoard",
+             "de": "horten, hamstern"
+            }
+           ],
+           "items": [
+            {
+             "en": "baggy",
+             "richtig": 2,
+             "saetze": [
+              "She baggy her books into the small case.",
+              "His baggy jeans hung far below his waist.",
+              "We bought a baggy of apples at the market."
+             ]
+            },
+            {
+             "en": "hoard",
+             "richtig": 3,
+             "saetze": [
+              "The train hoards at the station for ten minutes.",
+              "They hoard across the street when the light is green.",
+              "He hoards every comic he has ever bought."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "short-sleeved",
+             "de": "kurzärmelig"
+            },
+            {
+             "en": "catch on",
+             "de": "sich durchsetzen, Anklang finden"
+            }
+           ],
+           "items": [
+            {
+             "en": "short-sleeved",
+             "umschreibung": "describing a shirt whose arms end above the elbow"
+            },
+            {
+             "en": "catch on",
+             "umschreibung": "to become popular after a slow start"
+            }
+           ]
+          },
+          {
+           "art": "richtig_falsch",
+           "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+           "woerter": [
+            {
+             "en": "gadget",
+             "de": "Gerät, technische Spielerei"
+            },
+            {
+             "en": "shopping trip",
+             "de": "Einkaufsbummel"
+            }
+           ],
+           "items": [
+            {
+             "en": "gadget",
+             "richtig": 2,
+             "saetze": [
+              "She gadgets her little brother every afternoon.",
+              "This kitchen gadget peels potatoes in seconds."
+             ]
+            },
+            {
+             "en": "shopping trip",
+             "richtig": 1,
+             "saetze": [
+              "Our shopping trip ended with completely empty pockets.",
+              "She shopping trip the shelves before closing time."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "schreiben",
+           "instruction": "6)  Use the words in a short text of your own. ",
+           "woerter": [
+            {
+             "en": "novelty",
+             "de": "Neuheit, modische Spielerei"
+            },
+            {
+             "en": "moustache",
+             "de": "Schnurrbart, Schnauz"
+            }
+           ],
+           "items": [
+            {
+             "en": "novelty, moustache",
+             "anstoss": "Write about the oldest thing in your grandparents' house."
+            }
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA.docx",
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA_Loesung.docx"
+        },
+        {
+         "teil": 2,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "strategy",
+           "de": "Strategie",
+           "luecke": false,
+           "score": 0.1
+          },
+          {
+           "en": "trainers",
+           "de": "Turnschuhe",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "valuable",
+           "de": "wertvoll",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "marbles",
+           "de": "Murmeln",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "launch",
+           "de": "auf den Markt bringen",
+           "luecke": true,
+           "score": 3.3
+          },
+          {
+           "en": "games console",
+           "de": "Spielkonsole",
+           "luecke": true,
+           "score": 2.8
+          },
+          {
+           "en": "skipping rope",
+           "de": "Springseil",
+           "luecke": false,
+           "score": 2.5
+          },
+          {
+           "en": "amazingly",
+           "de": "erstaunlicherweise, verblüffenderweise",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "compete",
+           "de": "konkurrieren",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "fad",
+           "de": "Modeerscheinung",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "zip",
+           "de": "Reissverschluss",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "barrel",
+           "de": "Fass",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "collar",
+           "de": "Kragen",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "outdated",
+           "de": "überholt, veraltet",
+           "luecke": false,
+           "score": 3.0
+          }
+         ],
+         "text": "Every year the big shops {1} a new toy before Christmas. Parents queue outside in the cold and the rain. Newspapers write about it for a whole week. In 1994 my father waited all night for a small grey {2}. He still keeps it in its box on top of the cupboard.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+           "woerter": [
+            {
+             "en": "strategy",
+             "de": "Strategie"
+            },
+            {
+             "en": "trainers",
+             "de": "Turnschuhe"
+            },
+            {
+             "en": "valuable",
+             "de": "wertvoll"
+            },
+            {
+             "en": "marbles",
+             "de": "Murmeln"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+           "woerter": [
+            {
+             "en": "launch",
+             "de": "auf den Markt bringen"
+            },
+            {
+             "en": "games console",
+             "de": "Spielkonsole"
+            }
+           ],
+           "text": "Every year the big shops {1} a new toy before Christmas. Parents queue outside in the cold and the rain. Newspapers write about it for a whole week. In 1994 my father waited all night for a small grey {2}. He still keeps it in its box on top of the cupboard.",
+           "bank": [
+            "Spielkonsole",
+            "auf den Markt bringen"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "skipping rope",
+             "de": "Springseil"
+            },
+            {
+             "en": "amazingly",
+             "de": "erstaunlicherweise, verblüffenderweise"
+            }
+           ],
+           "items": [
+            {
+             "en": "skipping rope",
+             "richtig": 3,
+             "saetze": [
+              "He skipping rope the letter into the postbox.",
+              "We had skipping rope with potatoes for lunch.",
+              "She bought a new skipping rope for the playground."
+             ]
+            },
+            {
+             "en": "amazingly",
+             "richtig": 1,
+             "saetze": [
+              "Amazingly, the old radio still works today.",
+              "I amazingly the door and went inside.",
+              "She gave me an amazingly before the test."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "compete",
+             "de": "konkurrieren"
+            },
+            {
+             "en": "fad",
+             "de": "Modeerscheinung"
+            }
+           ],
+           "items": [
+            {
+             "en": "compete",
+             "umschreibung": "to try to win against other people"
+            },
+            {
+             "en": "fad",
+             "umschreibung": "something that is popular for a very short time"
+            }
+           ]
+          },
+          {
+           "art": "richtig_falsch",
+           "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+           "woerter": [
+            {
+             "en": "zip",
+             "de": "Reissverschluss"
+            },
+            {
+             "en": "barrel",
+             "de": "Fass"
+            }
+           ],
+           "items": [
+            {
+             "en": "zip",
+             "richtig": 1,
+             "saetze": [
+              "The zip on my jacket is broken again.",
+              "The teacher gave us a zip about the Seventies."
+             ]
+            },
+            {
+             "en": "barrel",
+             "richtig": 2,
+             "saetze": [
+              "He barrels the letter and sends it away.",
+              "The old cider barrel stood behind the barn."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "schreiben",
+           "instruction": "6)  Use the words in a short text of your own. ",
+           "woerter": [
+            {
+             "en": "collar",
+             "de": "Kragen"
+            },
+            {
+             "en": "outdated",
+             "de": "überholt, veraltet"
+            }
+           ],
+           "items": [
+            {
+             "en": "collar, outdated",
+             "anstoss": "Write about a piece of clothing you never wear any more."
+            }
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB.docx",
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB_Loesung.docx"
+        }
+       ],
+       "liste_blatt": "EnglishPlus3_Unit01_V1_VocabularyList.docx"
+      }
+     ],
      "hauptteil": [
       {
        "en": "instruction",

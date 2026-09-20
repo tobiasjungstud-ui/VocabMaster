@@ -49,6 +49,8 @@ from .aufgaben import (
 )
 from .config import Settings
 from .database import Database
+from .datenbanken import GRUNDEINTRAG as _GRUNDEINTRAG
+from .datenbanken import zu_verzeichnis as _db_zu_verzeichnis
 from .exam.difficulty import score_item
 from .exam.select import _clashes as _exam_clashes
 from .exam.vocab import VocabItem, VocabTest, guess_pos
@@ -460,6 +462,28 @@ def gepruefte_woerter(aufgabe: dict[str, Any]) -> list[dict[str, Any]]:
     return list(aufgabe.get("items", []))
 
 
+def plan_von(spec: dict[str, Any]) -> dict[str, int]:
+    """Welche Aufgaben diese Prüfung hat und mit wie vielen Wörtern.
+
+    Der Aufbau einer Prüfung steht **im Paket**, nicht in den Einstellungen:
+    Wer sie mit sechs Aufgaben und 14 Wörtern bestellt hat, hat das einmal
+    gesagt. Alles, was die Prüfungen später neu aufsetzt, liest ihn deshalb
+    hier ab - sonst fiele eine bestellte Prüfung beim nächsten
+    ``ausgleichen`` stillschweigend auf die Vorgabe zurück, und das Paket
+    sähe danach aus wie eines, das nie etwas anderes verlangt hat.
+    """
+    bestellt = spec.get("aufgabenplan")
+    if isinstance(bestellt, dict) and bestellt:
+        return {k: int(v) for k, v in bestellt.items() if k in AUFGABEN_ARTEN}
+    # Ein Paket von vor dieser Angabe: dann sagen die Aufgaben selbst, was
+    # die Prüfung war.
+    return {
+        aufgabe.get("art", ""): len(gepruefte_woerter(aufgabe))
+        for aufgabe in aufgaben_von(spec)
+        if aufgabe.get("art") in AUFGABEN_ARTEN
+    }
+
+
 def _exam_scaffold(
     entries: list[dict[str, Any]],
     unit_label: str,
@@ -471,11 +495,13 @@ def _exam_scaffold(
     fassung: int = 1,
     liste_version: int = 1,
     liste_abdruck: str = "",
+    plan: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     part_label, source = TEIL_NAMEN[teil]
     # Erst der Plan, dann die Wörter: Wie viele es braucht, hängt daran,
-    # welche Aufgaben angekreuzt sind.
-    plan = settings.aufgabenplan()
+    # welche Aufgaben angekreuzt sind. ``plan`` gibt den einer bestehenden
+    # Prüfung vor - sie soll beim Neuaufsetzen bleiben, was sie war.
+    plan = dict(plan) if plan else settings.aufgabenplan()
     chosen = waehle_pruefungswoerter(
         entries, prof, settings, schon_geprueft,
         anzahl=sum(plan.values()) or None,
@@ -516,8 +542,19 @@ def _exam_scaffold(
     bank = list(reihenfolge)
     # Weder die Lückenreihenfolge noch ihre Umkehrung: beides liesse die
     # Aufgabe lösen, ohne den Text zu lesen.
+    #
+    # Bei **zwei** Lücken gibt es aber nur diese beiden Reihenfolgen. Die
+    # Schleife lief dann fünfzigmal ins Leere und liess die Bank in
+    # Lückenreihenfolge stehen - genau das, was sie verhindern soll, und der
+    # geerbte Checker meldete es als Fehler. Seit die Wortzahl je Aufgabe
+    # frei einstellbar ist, sind zwei Lücken der Normalfall und nicht mehr
+    # die Ausnahme. Unter drei Lücken wird deshalb nur die
+    # Lückenreihenfolge gemieden; mehr gibt die Aufgabe nicht her.
+    verboten = [reihenfolge]
+    if len(reihenfolge) >= 3:
+        verboten.append(list(reversed(reihenfolge)))
     for _ in range(50):
-        if bank != reihenfolge and bank != list(reversed(reihenfolge)):
+        if bank not in verboten:
             break
         rng.shuffle(bank)
 
@@ -559,6 +596,14 @@ def _exam_scaffold(
             # beide Tests.
             "liste_fingerabdruck": liste_abdruck or liste_fingerabdruck(entries),
         },
+        # Der **bestellte** Aufbau: welche Aufgaben, mit wie vielen Wörtern.
+        # Er steht hier und nicht in den Einstellungen, weil er zur Prüfung
+        # gehört und nicht zum Aufruf. Was in den Aufgaben wirklich steht,
+        # kann kleiner sein - ein Gerüst, dessen Wörter noch im Chat zu
+        # ergänzen sind, hat noch nicht genug zu verteilen. Würde der Aufbau
+        # später von dort abgelesen, schrumpfte die Prüfung beim nächsten
+        # 'ausgleichen' auf das, was sie im halbfertigen Zustand hatte.
+        "aufgabenplan": dict(plan),
         # Die Zahl, die wirklich geprüft wird - Mindestzahlen
         # können sie über den Wunsch heben.
         "total_words": sum(plan.values()),
@@ -644,6 +689,9 @@ def scaffold(
         "thema": theme.get("thema", ""),
         "leitwoerter": theme.get("leitwoerter", []),
         "quelle": dict(db.quelle),
+        # Der Name des Lehrmittels - allein für den Dateinamen. Wozu das
+        # Paket gehört, sagt die Prüfsumme in `quelle`.
+        "lehrmittel": lehrmittel_von(db),
         "liste_version": 1,
         "erzeugt": date.today().isoformat(),
         "fehlbestand": plan.report.fehlend,
@@ -730,6 +778,19 @@ class Pack:
     def liste_version(self) -> int:
         """Die wievielte Vokabelliste dieser Unit - V1, V2, V3 ..."""
         return max(1, int(self.data.get("liste_version", 1)))
+
+    @property
+    def lehrmittel(self) -> str:
+        """Unter welchem Namen die Datenbank stand, als das Paket entstand.
+
+        Nur für den **Dateinamen**: Wozu ein Paket gehört, sagt die Prüfsumme
+        in ``quelle``, und dabei bleibt es - ``db umbenennen`` fasst weder
+        das Verzeichnis noch ein Paket an. Deshalb wird der Name einmal
+        notiert und danach nicht mehr nachgeführt: Sonst hiessen nach einer
+        Umbenennung die schon gebauten Blätter anders als die, die das
+        Programm suchen würde, und die ausgeteilten Kopien wären verwaist.
+        """
+        return str(self.data.get("lehrmittel", ""))
 
     @property
     def liste_abdruck(self) -> str:
@@ -923,9 +984,56 @@ class Pack:
         return offen
 
 
-def pack_filename(unit: int, fassung: int = 1, liste_version: int = 1) -> str:
-    """``unit_01.json``, ``unit_01_v2.json``, ``unit_01_v2_fassung3.json``."""
+#: Die Datenbank, mit der alles angefangen hat. Ihre Dateien heissen
+#: weiterhin ``unit_01.json`` und ``Unit01_V1_...docx`` - ohne Kennung.
+GRUNDDATENBANK = _GRUNDEINTRAG["name"]
+
+
+def lehrmittel_von(db: Database) -> str:
+    """Unter welchem Namen diese geladene Datenbank in der Registratur steht.
+
+    Leer für die Grunddatenbank und für ein Verzeichnis, das gar nicht
+    registriert ist - dann bleibt es bei den Namen von bisher.
+    """
+    eintrag = _db_zu_verzeichnis(getattr(db, "pfad", None))
+    if eintrag is None or eintrag.name == GRUNDDATENBANK:
+        return ""
+    return eintrag.name
+
+
+def kennzeichen(lehrmittel: str = "") -> str:
+    """Wie ein zweites Lehrmittel im Dateinamen auseinandergehalten wird.
+
+    Zwei Lehrmittel dürfen dieselbe Unit 3 haben - das steht so in
+    ``CLAUDE.md``, und die Zuordnung hängt an der Prüfsumme, nicht am Namen.
+    Die **Dateinamen** hingen bisher allein an der Unit-Nummer: Unit 1 von
+    English Plus 3 hätte ``kuratiert/unit_01.json`` und
+    ``Unit01_V1_VocabularyList.docx`` von English Plus 4 überschrieben -
+    Paket, Vokabelliste und vier Prüfungen, stillschweigend.
+
+    Die Grunddatenbank behält ihre Namen. Sonst hiesse jede bestehende Datei
+    von heute auf morgen anders, und jede schon ausgeteilte Vokabelliste
+    zeigte auf einen Dateinamen, den es nicht mehr gibt.
+    """
+    name = str(lehrmittel or "").strip()
+    if not name or name == GRUNDDATENBANK:
+        return ""
+    return name
+
+
+def pack_filename(unit: int, fassung: int = 1, liste_version: int = 1,
+                  lehrmittel: str = "") -> str:
+    """``unit_01.json``, ``unit_01_v2.json``, ``unit_01_v2_fassung3.json``.
+
+    Ein zweites Lehrmittel schiebt seine Kennung dazwischen:
+    ``unit_01_englishplus3_v2.json``. Sie steht **hinter** der Unit, damit
+    das Suchmuster ``unit_*.json`` weiterhin greift - danach sucht jede
+    Stelle, die den Bestand durchgeht.
+    """
     name = f"unit_{unit:02d}"
+    marke = kennzeichen(lehrmittel)
+    if marke:
+        name += "_" + marke.lower()
     if liste_version > 1:
         name += f"_v{liste_version}"
     if fassung > 1:
@@ -1405,6 +1513,10 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
                 PROFILES[niveau], settings, settings.seed,
                 fassung=pack.fassung, liste_version=pack.liste_version,
                 liste_abdruck=pack.liste_abdruck,
+                # Der Aufbau bleibt der bestellte. Ausgeglichen wird, welche
+                # 60 Wörter in welchem Test stehen - nicht, aus welchen
+                # Aufgaben die Prüfung besteht.
+                plan=plan_von(alte_specs.get((teil, niveau), {})) or None,
             )
             for niveau in NIVEAUS
         }

@@ -19,7 +19,13 @@ from pathlib import Path
 import pytest
 
 from vocabmaster import cli
-from vocabmaster.aufgaben import ARTEN, KLASSISCH, SAETZE_ZUR_WAHL, verteile
+from vocabmaster.aufgaben import (
+    ARTEN,
+    KLASSISCH,
+    SAETZE_ZUR_WAHL,
+    sortiert,
+    verteile,
+)
 from vocabmaster.checks import Pruefbericht, pruefe_aufgabenformen
 from vocabmaster.config import Settings
 from vocabmaster.database import Database
@@ -78,6 +84,13 @@ def test_ein_paket_von_gestern_ergibt_dasselbe_dokument(paket):
         for niveau in ("A", "B"):
             spec = daten.get("pruefungen", {}).get(teil, {}).get(niveau)
             if not spec:
+                continue
+            if "aufgaben" in spec:
+                # Ein Paket in der neuen Form - es wird hier nicht geprüft.
+                # Diese Prüfung gilt der **alten**: dass ein Paket mit
+                # task1/task2 Zeichen für Zeichen dasselbe Dokument ergibt
+                # wie vor dem Umbau. Ein Paket, das nie eine andere Form
+                # hatte, kann dabei nichts belegen.
                 continue
             arten = [a["art"] for a in aufgaben_des_specs(spec)]
             assert arten == ["uebersetzen", "luecken"], f"{teil} {niveau}"
@@ -418,3 +431,62 @@ def test_die_seite_bietet_jede_art_an():
     ):
         schluessel = f"{gesamt}|" + ",".join(kennungen)
         assert daten["verteilung"][schluessel] == list(erwartet), schluessel
+
+
+# ---------------------------------------------------------------------------
+# Der Aufbau gehört zur Prüfung, nicht zum Aufruf
+# ---------------------------------------------------------------------------
+def test_ausgleichen_behaelt_den_bestellten_aufbau(db, settings):
+    """``ausgleichen`` setzt die vier Prüfungen neu auf - nicht neu zusammen.
+
+    Nötig ist es, sobald im Chat Wörter ergänzt wurden. Es las den Aufbau
+    dabei aus den **Einstellungen**, und die stehen ohne Flaggen auf der
+    Vorgabe: Eine mit sechs Aufgaben bestellte Prüfung fiel danach
+    stillschweigend auf Übersetzen und Lückentext zurück. Gemerkt hätte man
+    es erst am gebauten Blatt.
+    """
+    from vocabmaster.pack import ausgleichen, plan_von
+
+    bestellt = ("uebersetzen", "luecken", "wortwahl", "definition",
+                "richtig_falsch", "schreiben")
+    eigen = Settings(exam_tasks=bestellt, exam_words=14)
+    pack = Pack(data=fill(scaffold(db, 1, eigen)))
+    vorher = {schluessel: plan_von(spec)
+              for schluessel, spec in pack.exams.items()}
+    assert set(vorher[(1, "A")]) == set(bestellt)
+
+    # Ausgeglichen wird **ohne** die Flaggen - so ruft die Kommandozeile es.
+    ausgleichen(pack, settings)
+
+    nachher = {schluessel: plan_von(spec)
+               for schluessel, spec in pack.exams.items()}
+    assert nachher == vorher, "der bestellte Aufbau ist verlorengegangen"
+    for spec in pack.exams.values():
+        arten = [a["art"] for a in aufgaben_des_specs(spec)]
+        assert arten == list(sortiert(bestellt))
+
+
+def test_zwei_luecken_stehen_nicht_in_luekenreihenfolge(db):
+    """Die Wortbank darf die Reihenfolge der Lücken nicht verraten.
+
+    Bei **zwei** Lücken gibt es nur zwei Reihenfolgen, und die Schleife, die
+    beide mied, lief fünfzigmal ins Leere und liess die Bank in
+    Lückenreihenfolge stehen. Seit die Wortzahl je Aufgabe einstellbar ist,
+    sind zwei Lücken der Normalfall.
+    """
+    from vocabmaster.pack import aufgabe_art
+
+    eigen = Settings(exam_tasks=("uebersetzen", "luecken"), exam_words=6,
+                     exam_task_words={"luecken": 2})
+    for unit in (1, 2, 3):
+        pack = Pack(data=scaffold(db, unit, eigen))
+        for (teil, niveau), spec in pack.exams.items():
+            luecken = aufgabe_art(spec, "luecken")
+            bank = luecken["word_bank"]
+            reihenfolge = [g["german"] for g in luecken["gaps"]]
+            assert len(bank) == 2
+            assert bank != reihenfolge, (
+                f"Unit {unit} Teil {teil} Niveau {niveau}: die Wortbank "
+                "steht in Lückenreihenfolge - die Aufgabe lässt sich "
+                "lösen, ohne den Text zu lesen"
+            )

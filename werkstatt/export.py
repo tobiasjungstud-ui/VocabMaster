@@ -48,6 +48,7 @@ from vocabmaster.pack import (  # noqa: E402
     aufgabe_art,
     aufgaben_von,
     gepruefte_woerter,
+    pack_filename,
     wortart_von,
 )
 from vocabmaster.pool import _bewerten, plan_unit  # noqa: E402
@@ -126,12 +127,9 @@ def _hauptteil(db: Database, unit: int) -> list[dict]:
     return heraus
 
 
-def datei_name(unit: int, version: int) -> str:
+def datei_name(unit: int, version: int, lehrmittel: str = "") -> str:
     """Wie das Paket dieser Liste heisst - für die Anzeige."""
-    name = f"unit_{unit:02d}"
-    if version > 1:
-        name += f"_v{version}"
-    return name + ".json"
+    return pack_filename(unit, liste_version=version, lehrmittel=lehrmittel)
 
 
 def _zipf_tabelle(db: Database, unit: int) -> dict[str, float]:
@@ -270,6 +268,7 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
     nach_en = {w["en"].lower(): w for w in woerter}
     unit = int(pack["unit"])
     version = int(pack.get("liste_version", 1))
+    lehrmittel = str(pack.get("lehrmittel", ""))
     heraus = []
     for teil, tnr in (("teil1", 1), ("teil2", 2)):
         for niveau in ("A", "B"):
@@ -300,10 +299,12 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
                 # das Dokument, das daraus wird.
                 "aufgaben": [_karte(a) for a in aufgaben],
                 "blatt": dateiname(unit, "Test", teil=tnr, niveau=niveau,
-                                   fassung=fassung, liste_version=version),
+                                   fassung=fassung, liste_version=version,
+                                   lehrmittel=lehrmittel),
                 "loesung": dateiname(unit, "Test", teil=tnr, niveau=niveau,
                                      loesung=True, fassung=fassung,
-                                     liste_version=version),
+                                     liste_version=version,
+                                     lehrmittel=lehrmittel),
             })
     return heraus
 
@@ -419,7 +420,8 @@ def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, di
                         if not e.get("englisch") or not e.get("satz"))
             listen.append({
                 "version": version,
-                "datei": datei_name(unit, version),
+                "datei": datei_name(unit, version,
+                                    str(pack.get("lehrmittel", ""))),
                 "abdruck": pack.get("pruefungen", {}).get("teil1", {})
                                .get("A", {}).get("meta", {})
                                .get("liste_fingerabdruck", ""),
@@ -442,7 +444,9 @@ def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, di
                            weiteres, int(weiteres.get("fassung", 1)), woerter)]
                 ),
                 "liste_blatt": dateiname(unit, "VocabularyList",
-                                         liste_version=version),
+                                         liste_version=version,
+                                         lehrmittel=str(
+                                             pack.get("lehrmittel", ""))),
             })
         erstes = (roh.get(unit) or [{}])[0]
         units.append({

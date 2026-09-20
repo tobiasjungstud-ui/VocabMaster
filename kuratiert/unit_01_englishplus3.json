@@ -1,0 +1,1443 @@
+{
+  "schema": 2,
+  "unit": 1,
+  "unit_label": "Unit 1",
+  "titel": "Unit 1",
+  "thema": "Moden, Spielzeug und Trends vergangener Jahrzehnte",
+  "leitwoerter": [
+    "fad",
+    "craze",
+    "toy",
+    "decade",
+    "viral",
+    "hoodie",
+    "jeans",
+    "gadget",
+    "games console",
+    "fashion"
+  ],
+  "quelle": {
+    "datei": "ep2e_level3_german_wordlist.xlsx",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
+    "importiert": "2026-09-15"
+  },
+  "lehrmittel": "EnglishPlus3",
+  "liste_version": 1,
+  "erzeugt": "2026-09-20",
+  "fehlbestand": 24,
+  "herkunft_uebersicht": {
+    "hauptteil": 31,
+    "zusatzteile": [
+      {
+        "englisch": "fitting room",
+        "bereich": "Extra Listening and Speaking"
+      },
+      {
+        "englisch": "shopping trip",
+        "bereich": "Extra Listening and Speaking"
+      },
+      {
+        "englisch": "shop assistant",
+        "bereich": "Extra Listening and Speaking"
+      },
+      {
+        "englisch": "moustache",
+        "bereich": "Culture"
+      },
+      {
+        "englisch": "hairstyle",
+        "bereich": "Culture"
+      }
+    ],
+    "zu_ergaenzen": 24,
+    "ausnahme": "Ausnahme: Der Hauptteil von Unit 1 gibt nur 31 geeignete Wörter her. Das liegt über der Grenze von 40 Prozent eigener Ergänzungen, deshalb wurden 5 Wörter aus den Zusatzteilen derselben Unit nachgezogen (Culture, Curriculum extra, Project). Sie stehen einzeln im Bericht."
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen den Lückentext schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "ausgestellt, Schlag-",
+        "englisch": "flared",
+        "satz": "Flared trousers came back into fashion again.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Erkennungszeichen der Siebzigerjahre - ohne dieses Wort lässt sich eine Mode nicht beschreiben, nur zeigen."
+      },
+      {
+        "nr": 2,
+        "deutsch": "altmodisch",
+        "englisch": "old-fashioned",
+        "satz": "My little brother thinks my music is old-fashioned.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Gegenstück zu jeder Mode: Was gestern ein Trend war, heisst morgen so. Für ein Wortfeld über Jahrzehnte unentbehrlich."
+      },
+      {
+        "nr": 3,
+        "deutsch": "begehrt, gesucht",
+        "englisch": "sought-after",
+        "satz": "That console is the most sought-after toy of 1985.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Was aus einem gewöhnlichen Spielzeug wird, wenn es selten wird - und ein Ausdruck, den die Klasse zum Argumentieren braucht."
+      },
+      {
+        "nr": 4,
+        "deutsch": "gestreift",
+        "englisch": "striped",
+        "satz": "He wore a striped tie to the wedding.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Muster beschreiben gehört zum Wortfeld Mode; die Liste hat sonst nur Schnitt und Länge."
+      },
+      {
+        "nr": 5,
+        "deutsch": "Schnäppchen",
+        "englisch": "bargain",
+        "satz": "Ten pounds for that coat was a real bargain.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Der Begriff, der beim Einkaufsbummel fehlt; 'cheap' sagt etwas anderes."
+      },
+      {
+        "nr": 6,
+        "deutsch": "Brettspiel",
+        "englisch": "board game",
+        "satz": "On rainy days we played the same board game.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Gegenstück zum Arcade-Spiel: dieselbe Unit, andere Jahrzehnte."
+      },
+      {
+        "nr": 7,
+        "deutsch": "Plattenspieler",
+        "englisch": "record player",
+        "satz": "Her record player still stands in the corner.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Gerät zu 'rock 'n' roll'; die Liste nennt die Musik, nicht, worauf man sie hörte."
+      },
+      {
+        "nr": 8,
+        "deutsch": "Perücke",
+        "englisch": "wig",
+        "satz": "The actor wore a curly wig on stage.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Gehört zu Frisur und Verkleidung - dem Wortfeld der Unit."
+      },
+      {
+        "nr": 9,
+        "deutsch": "prahlen, angeben",
+        "englisch": "brag",
+        "satz": "He never stops bragging about his old records.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Wozu man ein neues Gerät oder Turnschuhe überhaupt kauft. 'show off' wäre zu häufig, um noch etwas zu lehren."
+      },
+      {
+        "nr": 10,
+        "deutsch": "verblassen, nachlassen",
+        "englisch": "fade away",
+        "satz": "Most crazes fade away after a single summer.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Ende eines Trends - die Gegenbewegung zu 'catch on'. ('die out' wäre das nächstliegende Wort, scheitert aber an der Deutschprüfung des Beispielsatzes: 'die' ist auch ein deutscher Artikel.)"
+      },
+      {
+        "nr": 11,
+        "deutsch": "tauschen",
+        "englisch": "swap",
+        "satz": "We used to swap stickers in the playground.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Wie Kinder mit Sammelbildern und Spielzeug umgehen - kurz, häufig, und kein bisschen durchsichtig."
+      },
+      {
+        "nr": 12,
+        "deutsch": "ausverkauft sein",
+        "englisch": "sell out",
+        "satz": "Tickets for the concert sell out within minutes.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Was passiert, wenn eine Begeisterung wirklich gross wird."
+      },
+      {
+        "nr": 13,
+        "deutsch": "Frisur",
+        "englisch": "hairstyle",
+        "satz": "That hairstyle was everywhere in the 1970s.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Culture 1, S. 104"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Umkleidekabine",
+        "englisch": "fitting room",
+        "satz": "The fitting room was busy, so we waited outside.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Verkäufer(in)",
+        "englisch": "shop assistant",
+        "satz": "The shop assistant helped me find my size.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+      },
+      {
+        "nr": 16,
+        "deutsch": "unglaublich",
+        "englisch": "incredibly",
+        "satz": "The queue outside the shop was incredibly long.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Mode, Begeisterung, Wahn",
+        "englisch": "craze",
+        "satz": "The craze for these bracelets lasted one summer.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Stange, Pfahl",
+        "englisch": "pole",
+        "satz": "The flag hung from a tall wooden pole.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 19,
+        "deutsch": "Konkurrent(in)",
+        "englisch": "competitor",
+        "satz": "Her main competitor won the prize last year.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Bluse",
+        "englisch": "blouse",
+        "satz": "She wore a silk blouse to the interview.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Stäbchen",
+        "englisch": "chopsticks",
+        "satz": "I finally learnt to eat rice with chopsticks.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Kapuzenshirt",
+        "englisch": "hoodie",
+        "satz": "He wears the same grey hoodie every single day.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 23,
+        "deutsch": "anschauen",
+        "englisch": "check out",
+        "satz": "Let's check out the new shop on the corner.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Reifen zum Kreisen um die Hüfte",
+        "englisch": "hula hoop",
+        "satz": "She can keep a hula hoop spinning for minutes.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Tanzmusik der 1950er-Jahre",
+        "englisch": "rock ‘n’ roll",
+        "satz": "My grandmother still dances to rock ‘n’ roll.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 26,
+        "deutsch": "soziale Medien",
+        "englisch": "social media",
+        "satz": "Nobody used social media when my parents were young.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 16"
+      },
+      {
+        "nr": 27,
+        "deutsch": "erkunden",
+        "englisch": "explore",
+        "satz": "We went to explore the attic of my grandparents' house.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 28,
+        "deutsch": "Actionfigur",
+        "englisch": "action figure",
+        "satz": "He kept every action figure in its original box.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Bildergeschichte, Heft",
+        "englisch": "comic",
+        "satz": "He reads a comic on the bus every morning.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Videospiel",
+        "englisch": "arcade game",
+        "satz": "In the 1980s every café had a noisy arcade game.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "erschwinglich",
+        "englisch": "affordable",
+        "satz": "Few families found a television affordable back then.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Warum ein Trend die breite Masse erreicht oder eben nicht."
+      },
+      {
+        "nr": 2,
+        "deutsch": "überholt, veraltet",
+        "englisch": "outdated",
+        "satz": "The games console looked outdated after three years.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Sachlicher als 'old-fashioned' und auf Technik gemünzt - genau das, was mit Spielkonsolen und Geräten geschieht."
+      },
+      {
+        "nr": 3,
+        "deutsch": "Kragen",
+        "englisch": "collar",
+        "satz": "The collar of his shirt was far too tight.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Ein Teil des Kleidungsstücks, das die Liste sonst nur als Ganzes kennt."
+      },
+      {
+        "nr": 4,
+        "deutsch": "Murmeln",
+        "englisch": "marbles",
+        "satz": "My father still keeps his glass marbles in a tin.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Spielzeug vergangener Jahrzehnte, das die Wortliste nicht hat."
+      },
+      {
+        "nr": 5,
+        "deutsch": "Neuheit, modische Spielerei",
+        "englisch": "novelty",
+        "satz": "The clockwork mouse was a novelty in 1954.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Der Bogen von 'fad' zu 'valuable': erst eine Neuheit, dann ein Sammlerstück."
+      },
+      {
+        "nr": 6,
+        "deutsch": "Springseil",
+        "englisch": "skipping rope",
+        "satz": "A skipping rope costs little and lasts for years.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Wie 'hula hoop' ein Spielzeug, das eine ganze Generation kannte."
+      },
+      {
+        "nr": 7,
+        "deutsch": "Reissverschluss",
+        "englisch": "zip",
+        "satz": "The zip on my school bag broke this morning.",
+        "form": "",
+        "wortart": "noun",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Alltagswort, das im Unterricht regelmässig fehlt und aus dem Deutschen nicht zu erschliessen ist."
+      },
+      {
+        "nr": 8,
+        "deutsch": "sich durchsetzen, Anklang finden",
+        "englisch": "catch on",
+        "satz": "The toy took years to catch on in Europe.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Wie eine Modeerscheinung anfängt. Ein Phrasal Verb, das die Klasse zum Erzählen braucht und aus dem Deutschen nicht zu raten ist."
+      },
+      {
+        "nr": 9,
+        "deutsch": "horten, hamstern",
+        "englisch": "hoard",
+        "satz": "My uncle hoards every comic he has ever bought.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Was aus dem Sammeln wird, wenn niemand mehr etwas hergibt - das Verb, das der Unit zum Sammeln fehlt."
+      },
+      {
+        "nr": 10,
+        "deutsch": "abgetragen, abgenutzt",
+        "englisch": "worn out",
+        "satz": "His jeans were completely worn out at the knees.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Was Kleidungsstücke und Spielzeug nach Jahren sind."
+      },
+      {
+        "nr": 11,
+        "deutsch": "auf den Markt bringen",
+        "englisch": "launch",
+        "satz": "They will launch the new games console in spring.",
+        "form": "",
+        "wortart": "verb",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Womit jede Konsole, jedes Spielzeug anfängt; im Deutschen braucht es dafür vier Wörter."
+      },
+      {
+        "nr": 12,
+        "deutsch": "weit verbreitet",
+        "englisch": "widespread",
+        "satz": "Home computers became widespread during the 1990s.",
+        "form": "",
+        "wortart": "adj",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "hinweis": "Zu ergänzen: ein thematisch passendes, im Englischen gebräuchliches Wort, das noch nicht in dieser Liste steht.",
+        "begruendung": "Das Mass für die Reichweite einer Mode; hebt den Ausdruck über 'many people have it'."
+      },
+      {
+        "nr": 13,
+        "deutsch": "Schnurrbart, Schnauz",
+        "englisch": "moustache",
+        "satz": "In old photos my grandfather has a thick moustache.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Culture 1, S. 104"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Einkaufsbummel",
+        "englisch": "shopping trip",
+        "satz": "Our shopping trip ended with completely empty pockets.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Extra Listening and Speaking Unit 1, S. 88"
+      },
+      {
+        "nr": 15,
+        "deutsch": "erstaunlicherweise, verblüffenderweise",
+        "englisch": "amazingly",
+        "satz": "Amazingly, the old robot still works after forty years.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Anleitung, Anweisung",
+        "englisch": "instruction",
+        "satz": "Read the instruction carefully before you start.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Spielplatz",
+        "englisch": "playground",
+        "satz": "The playground was full of children after school.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 10"
+      },
+      {
+        "nr": 18,
+        "deutsch": "konkurrieren",
+        "englisch": "compete",
+        "satz": "Children used to compete to see who was fastest.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 11"
+      },
+      {
+        "nr": 19,
+        "deutsch": "kurzärmelig",
+        "englisch": "short-sleeved",
+        "satz": "A short-sleeved shirt is enough in this weather.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 20,
+        "deutsch": "Bauchschmerzen",
+        "englisch": "stomach ache",
+        "satz": "Too much cake gave me a stomach ache.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Strategie",
+        "englisch": "strategy",
+        "satz": "Our strategy was simple: wait and see what happened.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 22,
+        "deutsch": "Turnschuhe",
+        "englisch": "trainers",
+        "satz": "She bought white trainers for the school sports day.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 12"
+      },
+      {
+        "nr": 23,
+        "deutsch": "ausgebeult, schlotterig",
+        "englisch": "baggy",
+        "satz": "Baggy trousers were everywhere when my father was young.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 14"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Jahrzehnt, Dekade",
+        "englisch": "decade",
+        "satz": "Fashion changes completely in a single decade.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 25,
+        "deutsch": "Gerät, technische Spielerei",
+        "englisch": "gadget",
+        "satz": "My uncle buys every new gadget he sees online.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 15"
+      },
+      {
+        "nr": 26,
+        "deutsch": "Fass",
+        "englisch": "barrel",
+        "satz": "The old cider barrel stood behind the barn.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 17"
+      },
+      {
+        "nr": 27,
+        "deutsch": "wertvoll",
+        "englisch": "valuable",
+        "satz": "Her first edition of the book is now very valuable.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 28,
+        "deutsch": "ungefähr",
+        "englisch": "approximately",
+        "satz": "The trip takes approximately two hours by train.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 29,
+        "deutsch": "Modeerscheinung",
+        "englisch": "fad",
+        "satz": "Everyone said it was just a fad, but it lasted.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 8"
+      },
+      {
+        "nr": 30,
+        "deutsch": "Spielkonsole",
+        "englisch": "games console",
+        "satz": "He saved for months to buy a games console.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 1, S. 9"
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 1 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-20",
+          "liste_version": 1,
+          "liste_fingerabdruck": "79ee4e0f0501"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 4,
+          "luecken": 2,
+          "wortwahl": 2,
+          "definition": 2,
+          "richtig_falsch": 2,
+          "schreiben": 2
+        },
+        "total_words": 14,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+            "items": [
+              {
+                "english": "sought-after",
+                "german": "begehrt, gesucht",
+                "pos": "adj"
+              },
+              {
+                "english": "social media",
+                "german": "soziale Medien",
+                "pos": "noun"
+              },
+              {
+                "english": "hula hoop",
+                "german": "Reifen zum Kreisen um die Hüfte",
+                "pos": "noun"
+              },
+              {
+                "english": "incredibly",
+                "german": "unglaublich",
+                "pos": "adj"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "altmodisch",
+              "Verkäufer(in)"
+            ],
+            "gaps": [
+              {
+                "english": "shop assistant",
+                "german": "Verkäufer(in)",
+                "pos": "noun",
+                "answer": "shop assistant"
+              },
+              {
+                "english": "old-fashioned",
+                "german": "altmodisch",
+                "pos": "adj",
+                "answer": "old-fashioned"
+              }
+            ],
+            "text": "In 1983 my grandfather queued outside a shop in town for two hours. He wanted the wooden train that every boy in his class was talking about. When the doors finally opened, the {1} behind the counter only shook her head. The last box had gone before lunchtime. Today he tells the story at every family dinner, and my sister thinks the whole thing sounds rather {2} and slow. She has never queued for anything in her life."
+          },
+          {
+            "art": "wortwahl",
+            "instruction": "3)  Tick the sentence that uses the word correctly. ",
+            "items": [
+              {
+                "english": "brag",
+                "german": "prahlen, angeben",
+                "pos": "verb",
+                "richtig": 3,
+                "saetze": [
+                  "She bragged the box under her bed last night.",
+                  "They brag the door when they leave the house.",
+                  "He brags about his record collection every single day."
+                ]
+              },
+              {
+                "english": "competitor",
+                "german": "Konkurrent(in)",
+                "pos": "noun",
+                "richtig": 1,
+                "saetze": [
+                  "Their biggest competitor sells the same toy for less.",
+                  "She competitor the race in under ten minutes.",
+                  "He wrote a competitor to his old school friend."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "definition",
+            "instruction": "4)  Read the description and write the word it describes. ",
+            "items": [
+              {
+                "english": "chopsticks",
+                "german": "Stäbchen",
+                "pos": "noun",
+                "umschreibung": "two thin sticks used for eating rice and noodles"
+              },
+              {
+                "english": "comic",
+                "german": "Bildergeschichte, Heft",
+                "pos": "noun",
+                "umschreibung": "a thin book that tells a story in pictures"
+              }
+            ]
+          },
+          {
+            "art": "richtig_falsch",
+            "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+            "items": [
+              {
+                "english": "craze",
+                "german": "Mode, Begeisterung, Wahn",
+                "pos": "noun",
+                "richtig": 1,
+                "saetze": [
+                  "The craze for these bracelets lasted one summer.",
+                  "He crazed the window and looked out at the rain."
+                ]
+              },
+              {
+                "english": "flared",
+                "german": "ausgestellt, Schlag-",
+                "pos": "adj",
+                "richtig": 2,
+                "saetze": [
+                  "She flared the cake into six equal pieces.",
+                  "His flared trousers were very wide at the bottom."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "schreiben",
+            "instruction": "6)  Use the words in a short text of your own. ",
+            "items": [
+              {
+                "woerter": [
+                  {
+                    "english": "hoodie",
+                    "german": "Kapuzenshirt",
+                    "pos": "noun"
+                  },
+                  {
+                    "english": "hairstyle",
+                    "german": "Frisur",
+                    "pos": "noun"
+                  }
+                ],
+                "anstoss": "Describe an old photo of your parents at school.",
+                "mindestsaetze": 2
+              }
+            ]
+          }
+        ],
+        "textstufe": 3.6
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 1 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-20",
+          "liste_version": 1,
+          "liste_fingerabdruck": "79ee4e0f0501"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 4,
+          "luecken": 2,
+          "wortwahl": 2,
+          "definition": 2,
+          "richtig_falsch": 2,
+          "schreiben": 2
+        },
+        "total_words": 14,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part I Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+            "items": [
+              {
+                "english": "explore",
+                "german": "erkunden",
+                "pos": "verb"
+              },
+              {
+                "english": "board game",
+                "german": "Brettspiel",
+                "pos": "noun"
+              },
+              {
+                "english": "bargain",
+                "german": "Schnäppchen",
+                "pos": "noun"
+              },
+              {
+                "english": "striped",
+                "german": "gestreift",
+                "pos": "adj"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "Stäbchen",
+              "tauschen"
+            ],
+            "gaps": [
+              {
+                "english": "swap",
+                "german": "tauschen",
+                "pos": "verb",
+                "answer": "swap"
+              },
+              {
+                "english": "chopsticks",
+                "german": "Stäbchen",
+                "pos": "noun",
+                "answer": "chopsticks"
+              }
+            ],
+            "text": "My brother collects stickers of football players. Every Friday he meets his friends in the park. They sit on a bench and {1} the ones they already have. Last week he came home very happy. A boy from the other school gave him twelve new stickers. He also brought a pair of wooden {2} back from his holiday in Japan."
+          },
+          {
+            "art": "wortwahl",
+            "instruction": "3)  Tick the sentence that uses the word correctly. ",
+            "items": [
+              {
+                "english": "check out",
+                "german": "anschauen",
+                "pos": "verb",
+                "richtig": 2,
+                "saetze": [
+                  "The rain checked out for the whole afternoon.",
+                  "Let's check out the new shop on the corner.",
+                  "She checked out of her coat and sat down."
+                ]
+              },
+              {
+                "english": "wig",
+                "german": "Perücke",
+                "pos": "noun",
+                "richtig": 3,
+                "saetze": [
+                  "He wigs his bike to school every morning.",
+                  "We had wig and potatoes for lunch.",
+                  "The actor wore a long white wig on stage."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "definition",
+            "instruction": "4)  Read the description and write the word it describes. ",
+            "items": [
+              {
+                "english": "pole",
+                "german": "Stange, Pfahl",
+                "pos": "noun",
+                "umschreibung": "a long thin piece of wood or metal standing upright"
+              },
+              {
+                "english": "hairstyle",
+                "german": "Frisur",
+                "pos": "noun",
+                "umschreibung": "the shape somebody gives to what grows on their head"
+              }
+            ]
+          },
+          {
+            "art": "richtig_falsch",
+            "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+            "items": [
+              {
+                "english": "comic",
+                "german": "Bildergeschichte, Heft",
+                "pos": "noun",
+                "richtig": 2,
+                "saetze": [
+                  "She comics the window every Saturday afternoon.",
+                  "He reads a comic on the bus every morning."
+                ]
+              },
+              {
+                "english": "craze",
+                "german": "Mode, Begeisterung, Wahn",
+                "pos": "noun",
+                "richtig": 1,
+                "saetze": [
+                  "The craze for these bracelets lasted one summer.",
+                  "He crazed the window and looked out at the rain."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "schreiben",
+            "instruction": "6)  Use the words in a short text of your own. ",
+            "items": [
+              {
+                "woerter": [
+                  {
+                    "english": "flared",
+                    "german": "ausgestellt, Schlag-",
+                    "pos": "adj"
+                  },
+                  {
+                    "english": "hoodie",
+                    "german": "Kapuzenshirt",
+                    "pos": "noun"
+                  }
+                ],
+                "anstoss": "Describe what you wear at the weekend and what your father wore.",
+                "mindestsaetze": 2
+              }
+            ]
+          }
+        ],
+        "textstufe": 1.4
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 1 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-20",
+          "liste_version": 1,
+          "liste_fingerabdruck": "79ee4e0f0501"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 4,
+          "luecken": 2,
+          "wortwahl": 2,
+          "definition": 2,
+          "richtig_falsch": 2,
+          "schreiben": 2
+        },
+        "total_words": 14,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+            "items": [
+              {
+                "english": "affordable",
+                "german": "erschwinglich",
+                "pos": "adj"
+              },
+              {
+                "english": "instruction",
+                "german": "Anleitung, Anweisung",
+                "pos": "noun"
+              },
+              {
+                "english": "approximately",
+                "german": "ungefähr",
+                "pos": "adj"
+              },
+              {
+                "english": "widespread",
+                "german": "weit verbreitet",
+                "pos": "adj"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "Bauchschmerzen",
+              "auf den Markt bringen"
+            ],
+            "gaps": [
+              {
+                "english": "launch",
+                "german": "auf den Markt bringen",
+                "pos": "verb",
+                "answer": "launch"
+              },
+              {
+                "english": "stomach ache",
+                "german": "Bauchschmerzen",
+                "pos": "noun",
+                "answer": "stomach ache"
+              }
+            ],
+            "text": "Toy companies plan for months before they {1} a new product in the shops. They pick the right week, print bright posters and hope that children will ask their parents every single day. In 1983 one small firm sold a soft doll with its own name and birthday. The idea worked so well that the factory could not keep up. My aunt still remembers queuing in the rain for hours. She was so nervous and excited that she went home with a {2} and no doll at all."
+          },
+          {
+            "art": "wortwahl",
+            "instruction": "3)  Tick the sentence that uses the word correctly. ",
+            "items": [
+              {
+                "english": "baggy",
+                "german": "ausgebeult, schlotterig",
+                "pos": "adj",
+                "richtig": 2,
+                "saetze": [
+                  "She baggy her books into the small case.",
+                  "His baggy jeans hung far below his waist.",
+                  "We bought a baggy of apples at the market."
+                ]
+              },
+              {
+                "english": "hoard",
+                "german": "horten, hamstern",
+                "pos": "verb",
+                "richtig": 3,
+                "saetze": [
+                  "The train hoards at the station for ten minutes.",
+                  "They hoard across the street when the light is green.",
+                  "He hoards every comic he has ever bought."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "definition",
+            "instruction": "4)  Read the description and write the word it describes. ",
+            "items": [
+              {
+                "english": "short-sleeved",
+                "german": "kurzärmelig",
+                "pos": "adj",
+                "umschreibung": "describing a shirt whose arms end above the elbow"
+              },
+              {
+                "english": "catch on",
+                "german": "sich durchsetzen, Anklang finden",
+                "pos": "verb",
+                "umschreibung": "to become popular after a slow start"
+              }
+            ]
+          },
+          {
+            "art": "richtig_falsch",
+            "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+            "items": [
+              {
+                "english": "gadget",
+                "german": "Gerät, technische Spielerei",
+                "pos": "noun",
+                "richtig": 2,
+                "saetze": [
+                  "She gadgets her little brother every afternoon.",
+                  "This kitchen gadget peels potatoes in seconds."
+                ]
+              },
+              {
+                "english": "shopping trip",
+                "german": "Einkaufsbummel",
+                "pos": "noun",
+                "richtig": 1,
+                "saetze": [
+                  "Our shopping trip ended with completely empty pockets.",
+                  "She shopping trip the shelves before closing time."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "schreiben",
+            "instruction": "6)  Use the words in a short text of your own. ",
+            "items": [
+              {
+                "woerter": [
+                  {
+                    "english": "novelty",
+                    "german": "Neuheit, modische Spielerei",
+                    "pos": "noun"
+                  },
+                  {
+                    "english": "moustache",
+                    "german": "Schnurrbart, Schnauz",
+                    "pos": "noun"
+                  }
+                ],
+                "anstoss": "Write about the oldest thing in your grandparents' house.",
+                "mindestsaetze": 2
+              }
+            ]
+          }
+        ],
+        "textstufe": 3.6
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 1 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-20",
+          "liste_version": 1,
+          "liste_fingerabdruck": "79ee4e0f0501"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 4,
+          "luecken": 2,
+          "wortwahl": 2,
+          "definition": 2,
+          "richtig_falsch": 2,
+          "schreiben": 2
+        },
+        "total_words": 14,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 1 |Part II Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+            "items": [
+              {
+                "english": "strategy",
+                "german": "Strategie",
+                "pos": "noun"
+              },
+              {
+                "english": "trainers",
+                "german": "Turnschuhe",
+                "pos": "noun"
+              },
+              {
+                "english": "valuable",
+                "german": "wertvoll",
+                "pos": "adj"
+              },
+              {
+                "english": "marbles",
+                "german": "Murmeln",
+                "pos": "noun"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "Spielkonsole",
+              "auf den Markt bringen"
+            ],
+            "gaps": [
+              {
+                "english": "launch",
+                "german": "auf den Markt bringen",
+                "pos": "verb",
+                "answer": "launch"
+              },
+              {
+                "english": "games console",
+                "german": "Spielkonsole",
+                "pos": "noun",
+                "answer": "games console"
+              }
+            ],
+            "text": "Every year the big shops {1} a new toy before Christmas. Parents queue outside in the cold and the rain. Newspapers write about it for a whole week. In 1994 my father waited all night for a small grey {2}. He still keeps it in its box on top of the cupboard."
+          },
+          {
+            "art": "wortwahl",
+            "instruction": "3)  Tick the sentence that uses the word correctly. ",
+            "items": [
+              {
+                "english": "skipping rope",
+                "german": "Springseil",
+                "pos": "noun",
+                "richtig": 3,
+                "saetze": [
+                  "He skipping rope the letter into the postbox.",
+                  "We had skipping rope with potatoes for lunch.",
+                  "She bought a new skipping rope for the playground."
+                ]
+              },
+              {
+                "english": "amazingly",
+                "german": "erstaunlicherweise, verblüffenderweise",
+                "pos": "adj",
+                "richtig": 1,
+                "saetze": [
+                  "Amazingly, the old radio still works today.",
+                  "I amazingly the door and went inside.",
+                  "She gave me an amazingly before the test."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "definition",
+            "instruction": "4)  Read the description and write the word it describes. ",
+            "items": [
+              {
+                "english": "compete",
+                "german": "konkurrieren",
+                "pos": "verb",
+                "umschreibung": "to try to win against other people"
+              },
+              {
+                "english": "fad",
+                "german": "Modeerscheinung",
+                "pos": "noun",
+                "umschreibung": "something that is popular for a very short time"
+              }
+            ]
+          },
+          {
+            "art": "richtig_falsch",
+            "instruction": "5)  One of the two sentences uses the word correctly. Tick it. ",
+            "items": [
+              {
+                "english": "zip",
+                "german": "Reissverschluss",
+                "pos": "noun",
+                "richtig": 1,
+                "saetze": [
+                  "The zip on my jacket is broken again.",
+                  "The teacher gave us a zip about the Seventies."
+                ]
+              },
+              {
+                "english": "barrel",
+                "german": "Fass",
+                "pos": "noun",
+                "richtig": 2,
+                "saetze": [
+                  "He barrels the letter and sends it away.",
+                  "The old cider barrel stood behind the barn."
+                ]
+              }
+            ]
+          },
+          {
+            "art": "schreiben",
+            "instruction": "6)  Use the words in a short text of your own. ",
+            "items": [
+              {
+                "woerter": [
+                  {
+                    "english": "collar",
+                    "german": "Kragen",
+                    "pos": "noun"
+                  },
+                  {
+                    "english": "outdated",
+                    "german": "überholt, veraltet",
+                    "pos": "adj"
+                  }
+                ],
+                "anstoss": "Write about a piece of clothing you never wear any more.",
+                "mindestsaetze": 2
+              }
+            ]
+          }
+        ],
+        "textstufe": 1.4
+      }
+    }
+  },
+  "akzeptierte_warnungen": [
+    {
+      "enthaelt": "'hula hoop' ist für B1.1-B2.1 zu selten",
+      "grund": "Das Wort steht so im Hauptteil von Unit 1 (S. 15) und trägt das Thema der Unit wie kaum ein zweites. Selten ist es, weil die Sache selten geworden ist - nicht, weil es schwer wäre. Wer es herausnähme, nähme der Unit ihr Beispiel."
+    },
+    {
+      "enthaelt": "40% ergänzt - nahe an der Grenze",
+      "grund": "Der Hauptteil von Unit 1 dieses Lehrmittels gibt nur 31 geeignete Wörter her; der Rest ist Grundwortschatz (cool, hat, top, dress, jeans, fashion, toy ...) oder deckungsgleich mit dem Deutschen (viral, frisbee, puzzle). Die 24 ergänzten Wörter stehen mit Begründung im Paket und sind im Chat berichtet."
+    },
+    {
+      "enthaelt": "5 Wörter stammen nicht aus dem Hauptteil",
+      "grund": "Hauptteil und erlaubte Ergänzung ergeben zusammen keine 60 Wörter. Die fünf sind einzeln benannt (Culture 1 und Extra Listening and Speaking Unit 1) und gehören thematisch zur Unit."
+    },
+    {
+      "enthaelt": "Der Hauptteil von Unit 1 gibt nur 31 geeignete Wörter her",
+      "grund": "Dieselbe Sache wie oben, aus der Sicht des Auswahlberichts."
+    }
+  ]
+}

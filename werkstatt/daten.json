@@ -9,6 +9,9 @@
   "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA.docx": 14454,
   "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_Loesung.docx": 14626,
   "EnglishPlus3_Unit01_V1_VocabularyList.docx": 42218,
+  "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA.docx": 13868,
+  "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA_Loesung.docx": 13997,
+  "EnglishPlus3_Unit08_V1_VocabularyList.docx": 41695,
   "Unit01_V1_Test_PartII_NiveauA.docx": 13820,
   "Unit01_V1_Test_PartII_NiveauA_Loesung.docx": 13954,
   "Unit01_V1_Test_PartII_NiveauB.docx": 13769,
@@ -34497,7 +34500,1460 @@
       "ergaenzt": 24,
       "zusatzteile": 10
      },
-     "listen": [],
+     "listen": [
+      {
+       "version": 1,
+       "datei": "unit_08_englishplus3.json",
+       "abdruck": "04e2936da1d2",
+       "erzeugt": "2026-09-21",
+       "aufgewertet": [],
+       "offen": 0,
+       "fassungen": [],
+       "woerter": [
+        {
+         "nr": 1,
+         "test": 1,
+         "en": "adventure",
+         "de": "Abenteuer",
+         "pos": "noun",
+         "satz": "The story is about a dangerous adventure.",
+         "score": 2.1,
+         "zipf": 4.46,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 84"
+        },
+        {
+         "nr": 2,
+         "test": 1,
+         "en": "plot",
+         "de": "Handlung",
+         "pos": "noun",
+         "satz": "The plot becomes more exciting towards the end.",
+         "score": 2.2,
+         "zipf": 4.58,
+         "quelle": "zusatzteil",
+         "abschnitt": "Curriculum extra 8, S. 103"
+        },
+        {
+         "nr": 3,
+         "test": 1,
+         "en": "storyline",
+         "de": "Handlungsverlauf",
+         "pos": "noun",
+         "satz": "The storyline is simple but interesting.",
+         "score": 2.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 4,
+         "test": 1,
+         "en": "setting",
+         "de": "Schauplatz / Handlungsort",
+         "pos": "noun",
+         "satz": "They chose a small town in Wales as the setting.",
+         "score": 1.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 5,
+         "test": 1,
+         "en": "take place",
+         "de": "spielen / stattfinden",
+         "pos": "verb",
+         "satz": "The story takes place in New York.",
+         "score": 2.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 6,
+         "test": 1,
+         "en": "based on",
+         "de": "basierend auf",
+         "pos": "adj",
+         "satz": "The film is based on a true story.",
+         "score": 1.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 7,
+         "test": 1,
+         "en": "scene",
+         "de": "Szene",
+         "pos": "noun",
+         "satz": "My favourite scene is at the end of the film.",
+         "score": 0.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 8,
+         "test": 1,
+         "en": "ending",
+         "de": "Ende / Schluss",
+         "pos": "noun",
+         "satz": "I didn't understand the ending of the film.",
+         "score": 0.3,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 9,
+         "test": 1,
+         "en": "main character",
+         "de": "Hauptfigur",
+         "pos": "noun",
+         "satz": "The main character changes a lot during the story.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 10,
+         "test": 1,
+         "en": "villain",
+         "de": "Bösewicht / Gegenspieler",
+         "pos": "noun",
+         "satz": "The villain is more interesting than the hero.",
+         "score": 2.7,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 11,
+         "test": 1,
+         "en": "role",
+         "de": "Rolle",
+         "pos": "noun",
+         "satz": "She plays the role of a young detective.",
+         "score": 0.0,
+         "zipf": 5.16,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 80"
+        },
+        {
+         "nr": 12,
+         "test": 1,
+         "en": "missing",
+         "de": "vermisst",
+         "pos": "adj",
+         "satz": "The story is about a missing girl.",
+         "score": 1.6,
+         "zipf": 5.05,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 13,
+         "test": 1,
+         "en": "mystery",
+         "de": "Geheimnis / Rätsel",
+         "pos": "noun",
+         "satz": "Nobody knows the answer to the mystery.",
+         "score": 2.4,
+         "zipf": 4.45,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 14,
+         "test": 1,
+         "en": "journey",
+         "de": "Reise",
+         "pos": "noun",
+         "satz": "They begin a long journey across the country.",
+         "score": 1.1,
+         "zipf": 4.65,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 15,
+         "test": 1,
+         "en": "mixture",
+         "de": "Mischung",
+         "pos": "noun",
+         "satz": "The film is a mixture of comedy and action.",
+         "score": 3.6,
+         "zipf": 4.18,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 85"
+        },
+        {
+         "nr": 16,
+         "test": 1,
+         "en": "imagination",
+         "de": "Vorstellungskraft",
+         "pos": "noun",
+         "satz": "You need a lot of imagination to write stories.",
+         "score": 5.6,
+         "zipf": 4.22,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 17,
+         "test": 1,
+         "en": "humour",
+         "de": "Humor",
+         "pos": "noun",
+         "satz": "The book has a great sense of humour.",
+         "score": 0.1,
+         "zipf": 3.83,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 18,
+         "test": 1,
+         "en": "entertaining",
+         "de": "unterhaltsam",
+         "pos": "adj",
+         "satz": "The film was funny and really entertaining.",
+         "score": 3.0,
+         "zipf": 4.11,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 19,
+         "test": 1,
+         "en": "gripping",
+         "de": "fesselnd / spannend",
+         "pos": "adj",
+         "satz": "The story was so gripping that I couldn't stop reading.",
+         "score": 2.7,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 20,
+         "test": 1,
+         "en": "predictable",
+         "de": "vorhersehbar",
+         "pos": "adj",
+         "satz": "The ending was a bit predictable.",
+         "score": 3.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 21,
+         "test": 1,
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "pos": "adj",
+         "satz": "I found the second half rather disappointing.",
+         "score": 3.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 22,
+         "test": 1,
+         "en": "amazed",
+         "de": "erstaunt",
+         "pos": "adj",
+         "satz": "I was amazed by the ending of the film.",
+         "score": 2.2,
+         "zipf": 3.91,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 80"
+        },
+        {
+         "nr": 23,
+         "test": 1,
+         "en": "issue",
+         "de": "Thema / Problem",
+         "pos": "noun",
+         "satz": "The book deals with important issues such as bullying.",
+         "score": 1.6,
+         "zipf": 5.23,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 85"
+        },
+        {
+         "nr": 24,
+         "test": 1,
+         "en": "anxiety",
+         "de": "Angst / Angstzustand",
+         "pos": "noun",
+         "satz": "The character suffers from anxiety at school.",
+         "score": 2.6,
+         "zipf": 4.45,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 85"
+        },
+        {
+         "nr": 25,
+         "test": 1,
+         "en": "suffer",
+         "de": "an etwas leiden",
+         "pos": "verb",
+         "satz": "Some teenagers suffer from anxiety.",
+         "score": 2.3,
+         "zipf": 4.45,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 85"
+        },
+        {
+         "nr": 26,
+         "test": 1,
+         "en": "recover",
+         "de": "sich erholen",
+         "pos": "verb",
+         "satz": "It took her several weeks to recover.",
+         "score": 3.0,
+         "zipf": 4.29,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 85"
+        },
+        {
+         "nr": 27,
+         "test": 1,
+         "en": "review",
+         "de": "Rezension / Kritik",
+         "pos": "noun",
+         "satz": "I read a positive review of the film online.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 28,
+         "test": 1,
+         "en": "recommendation",
+         "de": "Empfehlung",
+         "pos": "noun",
+         "satz": "My friend's recommendation made me watch the series.",
+         "score": 5.7,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 29,
+         "test": 1,
+         "en": "cast",
+         "de": "Besetzung / Schauspieler eines Films",
+         "pos": "noun",
+         "satz": "The film has a great cast.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 1,
+         "test": 2,
+         "en": "act",
+         "de": "schauspielern",
+         "pos": "verb",
+         "satz": "Have you ever acted in a school play?",
+         "score": 1.5,
+         "zipf": 5.3,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 2,
+         "test": 2,
+         "en": "direct",
+         "de": "Regie führen",
+         "pos": "verb",
+         "satz": "Who directed this film?",
+         "score": 1.5,
+         "zipf": 4.91,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 83"
+        },
+        {
+         "nr": 3,
+         "test": 2,
+         "en": "star",
+         "de": "in einer Hauptrolle spielen",
+         "pos": "verb",
+         "satz": "The new film stars several famous actors.",
+         "score": 1.9,
+         "zipf": 5.19,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 4,
+         "test": 2,
+         "en": "performance",
+         "de": "schauspielerische Leistung / Auftritt",
+         "pos": "noun",
+         "satz": "Her performance in the film was excellent.",
+         "score": 4.3,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 5,
+         "test": 2,
+         "en": "award",
+         "de": "Auszeichnung",
+         "pos": "noun",
+         "satz": "The film won an award for best music.",
+         "score": 2.4,
+         "zipf": 4.88,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 6,
+         "test": 2,
+         "en": "nominate",
+         "de": "nominieren",
+         "pos": "verb",
+         "satz": "They nominated her for best actress.",
+         "score": 1.2,
+         "zipf": 3.57,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 83"
+        },
+        {
+         "nr": 7,
+         "test": 2,
+         "en": "nomination",
+         "de": "Nominierung",
+         "pos": "noun",
+         "satz": "The actor received an Oscar nomination.",
+         "score": 4.2,
+         "zipf": 4.07,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 8,
+         "test": 2,
+         "en": "premiere",
+         "de": "Uraufführung / Erste Aufführung",
+         "pos": "noun",
+         "satz": "Many famous actors attended the film premiere.",
+         "score": 2.8,
+         "zipf": 4.16,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 81"
+        },
+        {
+         "nr": 9,
+         "test": 2,
+         "en": "release",
+         "de": "veröffentlichen / herausbringen",
+         "pos": "verb",
+         "satz": "The studio will release the film next year.",
+         "score": 1.5,
+         "zipf": 5.09,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 10,
+         "test": 2,
+         "en": "adapt",
+         "de": "anpassen",
+         "pos": "verb",
+         "satz": "The story was adapted for television.",
+         "score": 2.6,
+         "zipf": 3.98,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 11,
+         "test": 2,
+         "en": "adaptation",
+         "de": "Anpassung / Bearbeitung",
+         "pos": "noun",
+         "satz": "The film adaptation is different from the book.",
+         "score": 5.3,
+         "zipf": 4.01,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 12,
+         "test": 2,
+         "en": "sequel",
+         "de": "Fortsetzung",
+         "pos": "noun",
+         "satz": "The sequel wasn't as good as the first film.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 13,
+         "test": 2,
+         "en": "episode",
+         "de": "Folge",
+         "pos": "noun",
+         "satz": "I watched three episodes last night.",
+         "score": 2.2,
+         "zipf": 4.97,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 81"
+        },
+        {
+         "nr": 14,
+         "test": 2,
+         "en": "audience",
+         "de": "Publikum",
+         "pos": "noun",
+         "satz": "The audience laughed during the whole film.",
+         "score": 3.6,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 15,
+         "test": 2,
+         "en": "viewer",
+         "de": "Zuschauer/in",
+         "pos": "noun",
+         "satz": "The series attracted millions of viewers.",
+         "score": 1.9,
+         "zipf": 3.77,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 81"
+        },
+        {
+         "nr": 16,
+         "test": 2,
+         "en": "effect",
+         "de": "Wirkung",
+         "pos": "noun",
+         "satz": "The music has a strong effect on the audience.",
+         "score": 1.6,
+         "zipf": 5.02,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 80"
+        },
+        {
+         "nr": 17,
+         "test": 2,
+         "en": "special effect",
+         "de": "Spezialeffekt",
+         "pos": "noun",
+         "satz": "The explosion was only a special effect.",
+         "score": 0.8,
+         "zipf": 4.42,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 80"
+        },
+        {
+         "nr": 18,
+         "test": 2,
+         "en": "soundtrack",
+         "de": "Filmmusik",
+         "pos": "noun",
+         "satz": "The film has an amazing soundtrack.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 19,
+         "test": 2,
+         "en": "animation",
+         "de": "Animation / Trickfilm",
+         "pos": "noun",
+         "satz": "The animation looks incredibly realistic.",
+         "score": 1.0,
+         "zipf": 4.18,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 20,
+         "test": 2,
+         "en": "display",
+         "de": "anzeigen / ausstellen",
+         "pos": "verb",
+         "satz": "The winning pictures are displayed in the museum.",
+         "score": 2.6,
+         "zipf": 4.63,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 83"
+        },
+        {
+         "nr": 21,
+         "test": 2,
+         "en": "script",
+         "de": "Drehbuch",
+         "pos": "noun",
+         "satz": "The script contains a lot of funny dialogue.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 22,
+         "test": 2,
+         "en": "crime",
+         "de": "Verbrechen",
+         "pos": "noun",
+         "satz": "The police are trying to solve a crime.",
+         "score": 1.1,
+         "zipf": 4.89,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 23,
+         "test": 2,
+         "en": "subtitles",
+         "de": "Untertitel",
+         "pos": "noun",
+         "satz": "I watched the film in English with German subtitles.",
+         "score": 2.2,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 24,
+         "test": 2,
+         "en": "dubbed",
+         "de": "Synchronisiert / übersetzt",
+         "pos": "noun",
+         "satz": "The film was dubbed into German.",
+         "score": 3.0,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 25,
+         "test": 2,
+         "en": "avoid",
+         "de": "vermeiden",
+         "pos": "verb",
+         "satz": "I try to avoid spoilers.",
+         "score": 1.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 26,
+         "test": 2,
+         "en": "available",
+         "de": "verfügbar",
+         "pos": "adj",
+         "satz": "The film is available on Netflix.",
+         "score": 2.1,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        },
+        {
+         "nr": 27,
+         "test": 2,
+         "en": "graphic novel",
+         "de": "Comic-Roman",
+         "pos": "noun",
+         "satz": "She prefers graphic novels to normal novels.",
+         "score": 3.4,
+         "zipf": 3.63,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 82"
+        },
+        {
+         "nr": 28,
+         "test": 2,
+         "en": "separate",
+         "de": "trennen",
+         "pos": "verb",
+         "satz": "The characters are separated into different groups.",
+         "score": 1.1,
+         "zipf": 4.83,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 79"
+        },
+        {
+         "nr": 29,
+         "test": 2,
+         "en": "unbelievable",
+         "de": "unglaublich",
+         "pos": "adj",
+         "satz": "The final scene was completely unbelievable.",
+         "score": 4.4,
+         "zipf": 4.08,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 8, S. 80"
+        },
+        {
+         "nr": 30,
+         "test": 2,
+         "en": "rewind",
+         "de": "zurückspulen",
+         "pos": "verb",
+         "satz": "Can you rewind to that scene?",
+         "score": 2.8,
+         "zipf": 0.0,
+         "quelle": "ergänzt",
+         "abschnitt": ""
+        }
+       ],
+       "echt": {
+        "t1A": {
+         "woerter": [
+          "recommendation",
+          "imagination",
+          "disappointing",
+          "predictable",
+          "mixture",
+          "entertaining",
+          "main character",
+          "recover",
+          "storyline",
+          "take place",
+          "mystery",
+          "amazed"
+         ],
+         "luecken": [
+          "recover",
+          "recommendation",
+          "disappointing",
+          "imagination"
+         ],
+         "schnitt": 3.44,
+         "textstufe": 2.92,
+         "textmass": {
+          "woerter": 79,
+          "satzlaenge": 11.3,
+          "lesbarkeit": 85.1,
+          "grad": 4.2,
+          "nebensaetze": 0.43
+         }
+        },
+        "t1B": {
+         "woerter": [
+          "ending",
+          "based on",
+          "journey",
+          "issue",
+          "missing",
+          "setting",
+          "amazed",
+          "cast",
+          "suffer",
+          "mystery",
+          "storyline",
+          "take place"
+         ],
+         "luecken": [
+          "take place",
+          "storyline",
+          "amazed",
+          "mystery"
+         ],
+         "schnitt": 1.8,
+         "textstufe": 1.09,
+         "textmass": {
+          "woerter": 52,
+          "satzlaenge": 8.7,
+          "lesbarkeit": 95.5,
+          "grad": 2.1,
+          "nebensaetze": 0.17
+         }
+        },
+        "t2A": {
+         "woerter": [
+          "adaptation",
+          "unbelievable",
+          "performance",
+          "nomination",
+          "audience",
+          "graphic novel",
+          "dubbed",
+          "soundtrack",
+          "premiere",
+          "rewind",
+          "display",
+          "available"
+         ],
+         "luecken": [
+          "rewind",
+          "adaptation",
+          "unbelievable",
+          "performance"
+         ],
+         "schnitt": 3.46,
+         "textstufe": 3.1,
+         "textmass": {
+          "woerter": 78,
+          "satzlaenge": 13.0,
+          "lesbarkeit": 78.7,
+          "grad": 5.5,
+          "nebensaetze": 0.17
+         }
+        },
+        "t2B": {
+         "woerter": [
+          "avoid",
+          "crime",
+          "separate",
+          "nominate",
+          "act",
+          "direct",
+          "release",
+          "effect",
+          "star",
+          "viewer",
+          "available",
+          "episode"
+         ],
+         "luecken": [
+          "star",
+          "episode",
+          "available",
+          "viewer"
+         ],
+         "schnitt": 1.56,
+         "textstufe": 1.64,
+         "textmass": {
+          "woerter": 52,
+          "satzlaenge": 10.4,
+          "lesbarkeit": 84.0,
+          "grad": 4.1,
+          "nebensaetze": 0.0
+         }
+        }
+       },
+       "pruefungen": [
+        {
+         "teil": 1,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "predictable",
+           "de": "vorhersehbar",
+           "luecke": false,
+           "score": 3.8
+          },
+          {
+           "en": "mixture",
+           "de": "Mischung",
+           "luecke": false,
+           "score": 3.6
+          },
+          {
+           "en": "entertaining",
+           "de": "unterhaltsam",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "main character",
+           "de": "Hauptfigur",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "storyline",
+           "de": "Handlungsverlauf",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "take place",
+           "de": "spielen / stattfinden",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "mystery",
+           "de": "Geheimnis / Rätsel",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "amazed",
+           "de": "erstaunt",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "recover",
+           "de": "sich erholen",
+           "luecke": true,
+           "score": 3.0
+          },
+          {
+           "en": "recommendation",
+           "de": "Empfehlung",
+           "luecke": true,
+           "score": 5.7
+          },
+          {
+           "en": "disappointing",
+           "de": "enttäuschend",
+           "luecke": true,
+           "score": 3.8
+          },
+          {
+           "en": "imagination",
+           "de": "Vorstellungskraft",
+           "luecke": true,
+           "score": 5.6
+          }
+         ],
+         "text": "The book begins in a hospital. A boy is waiting to {1} after a bad accident. He has nothing to do all day, so he invents a whole city in his head. I picked the book up because of a {2} from my English teacher. I finished it in two evenings. The first half is quiet and slow, and some readers find it {3}. For me it was the opposite: a boy with that much {4} is never boring.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+           "woerter": [
+            {
+             "en": "predictable",
+             "de": "vorhersehbar"
+            },
+            {
+             "en": "mixture",
+             "de": "Mischung"
+            },
+            {
+             "en": "entertaining",
+             "de": "unterhaltsam"
+            },
+            {
+             "en": "main character",
+             "de": "Hauptfigur"
+            },
+            {
+             "en": "storyline",
+             "de": "Handlungsverlauf"
+            },
+            {
+             "en": "take place",
+             "de": "spielen / stattfinden"
+            },
+            {
+             "en": "mystery",
+             "de": "Geheimnis / Rätsel"
+            },
+            {
+             "en": "amazed",
+             "de": "erstaunt"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+           "woerter": [
+            {
+             "en": "recover",
+             "de": "sich erholen"
+            },
+            {
+             "en": "recommendation",
+             "de": "Empfehlung"
+            },
+            {
+             "en": "disappointing",
+             "de": "enttäuschend"
+            },
+            {
+             "en": "imagination",
+             "de": "Vorstellungskraft"
+            }
+           ],
+           "text": "The book begins in a hospital. A boy is waiting to {1} after a bad accident. He has nothing to do all day, so he invents a whole city in his head. I picked the book up because of a {2} from my English teacher. I finished it in two evenings. The first half is quiet and slow, and some readers find it {3}. For me it was the opposite: a boy with that much {4} is never boring.",
+           "bank": [
+            "Empfehlung",
+            "Vorstellungskraft",
+            "enttäuschend",
+            "sich erholen"
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA.docx",
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA_Loesung.docx"
+        },
+        {
+         "teil": 1,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "ending",
+           "de": "Ende / Schluss",
+           "luecke": false,
+           "score": 0.3
+          },
+          {
+           "en": "based on",
+           "de": "basierend auf",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "journey",
+           "de": "Reise",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "issue",
+           "de": "Thema / Problem",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "missing",
+           "de": "vermisst",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "setting",
+           "de": "Schauplatz / Handlungsort",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "cast",
+           "de": "Besetzung / Schauspieler eines Films",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "suffer",
+           "de": "an etwas leiden",
+           "luecke": false,
+           "score": 2.3
+          },
+          {
+           "en": "take place",
+           "de": "spielen / stattfinden",
+           "luecke": true,
+           "score": 2.6
+          },
+          {
+           "en": "storyline",
+           "de": "Handlungsverlauf",
+           "luecke": true,
+           "score": 2.6
+          },
+          {
+           "en": "amazed",
+           "de": "erstaunt",
+           "luecke": true,
+           "score": 2.2
+          },
+          {
+           "en": "mystery",
+           "de": "Geheimnis / Rätsel",
+           "luecke": true,
+           "score": 2.4
+          }
+         ],
+         "text": "My class read a short book last month. The events {1} in a small village in Wales. The {2} is easy to follow. A dog finds a gold ring in the garden. We were all {3} by the last page. Nobody in the class had guessed the {4} before the final page.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+           "woerter": [
+            {
+             "en": "ending",
+             "de": "Ende / Schluss"
+            },
+            {
+             "en": "based on",
+             "de": "basierend auf"
+            },
+            {
+             "en": "journey",
+             "de": "Reise"
+            },
+            {
+             "en": "issue",
+             "de": "Thema / Problem"
+            },
+            {
+             "en": "missing",
+             "de": "vermisst"
+            },
+            {
+             "en": "setting",
+             "de": "Schauplatz / Handlungsort"
+            },
+            {
+             "en": "cast",
+             "de": "Besetzung / Schauspieler eines Films"
+            },
+            {
+             "en": "suffer",
+             "de": "an etwas leiden"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+           "woerter": [
+            {
+             "en": "take place",
+             "de": "spielen / stattfinden"
+            },
+            {
+             "en": "storyline",
+             "de": "Handlungsverlauf"
+            },
+            {
+             "en": "amazed",
+             "de": "erstaunt"
+            },
+            {
+             "en": "mystery",
+             "de": "Geheimnis / Rätsel"
+            }
+           ],
+           "text": "My class read a short book last month. The events {1} in a small village in Wales. The {2} is easy to follow. A dog finds a gold ring in the garden. We were all {3} by the last page. Nobody in the class had guessed the {4} before the final page.",
+           "bank": [
+            "erstaunt",
+            "Handlungsverlauf",
+            "spielen / stattfinden",
+            "Geheimnis / Rätsel"
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB.docx",
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB_Loesung.docx"
+        },
+        {
+         "teil": 2,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "nomination",
+           "de": "Nominierung",
+           "luecke": false,
+           "score": 4.2
+          },
+          {
+           "en": "audience",
+           "de": "Publikum",
+           "luecke": false,
+           "score": 3.6
+          },
+          {
+           "en": "graphic novel",
+           "de": "Comic-Roman",
+           "luecke": false,
+           "score": 3.4
+          },
+          {
+           "en": "dubbed",
+           "de": "Synchronisiert / übersetzt",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "soundtrack",
+           "de": "Filmmusik",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "premiere",
+           "de": "Uraufführung / Erste Aufführung",
+           "luecke": false,
+           "score": 2.8
+          },
+          {
+           "en": "display",
+           "de": "anzeigen / ausstellen",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "available",
+           "de": "verfügbar",
+           "luecke": false,
+           "score": 2.1
+          },
+          {
+           "en": "rewind",
+           "de": "zurückspulen",
+           "luecke": true,
+           "score": 2.8
+          },
+          {
+           "en": "adaptation",
+           "de": "Anpassung / Bearbeitung",
+           "luecke": true,
+           "score": 5.3
+          },
+          {
+           "en": "unbelievable",
+           "de": "unglaublich",
+           "luecke": true,
+           "score": 4.4
+          },
+          {
+           "en": "performance",
+           "de": "schauspielerische Leistung / Auftritt",
+           "luecke": true,
+           "score": 4.3
+          }
+         ],
+         "text": "Last Friday my cousin and I watched an old film about a runaway girl. Twice we had to {1} the first ten minutes, because the sound was too quiet. My sister read the same novel at school, and she says the {2} is quite free. She kept telling us what would happen next. Some of the scenes were completely {3}: nobody survives such a drop. But the young actress was wonderful, and her {4} saved the whole evening.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+           "woerter": [
+            {
+             "en": "nomination",
+             "de": "Nominierung"
+            },
+            {
+             "en": "audience",
+             "de": "Publikum"
+            },
+            {
+             "en": "graphic novel",
+             "de": "Comic-Roman"
+            },
+            {
+             "en": "dubbed",
+             "de": "Synchronisiert / übersetzt"
+            },
+            {
+             "en": "soundtrack",
+             "de": "Filmmusik"
+            },
+            {
+             "en": "premiere",
+             "de": "Uraufführung / Erste Aufführung"
+            },
+            {
+             "en": "display",
+             "de": "anzeigen / ausstellen"
+            },
+            {
+             "en": "available",
+             "de": "verfügbar"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+           "woerter": [
+            {
+             "en": "rewind",
+             "de": "zurückspulen"
+            },
+            {
+             "en": "adaptation",
+             "de": "Anpassung / Bearbeitung"
+            },
+            {
+             "en": "unbelievable",
+             "de": "unglaublich"
+            },
+            {
+             "en": "performance",
+             "de": "schauspielerische Leistung / Auftritt"
+            }
+           ],
+           "text": "Last Friday my cousin and I watched an old film about a runaway girl. Twice we had to {1} the first ten minutes, because the sound was too quiet. My sister read the same novel at school, and she says the {2} is quite free. She kept telling us what would happen next. Some of the scenes were completely {3}: nobody survives such a drop. But the young actress was wonderful, and her {4} saved the whole evening.",
+           "bank": [
+            "schauspielerische Leistung / Auftritt",
+            "Anpassung / Bearbeitung",
+            "zurückspulen",
+            "unglaublich"
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA.docx",
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA_Loesung.docx"
+        },
+        {
+         "teil": 2,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "avoid",
+           "de": "vermeiden",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "crime",
+           "de": "Verbrechen",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "separate",
+           "de": "trennen",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "nominate",
+           "de": "nominieren",
+           "luecke": false,
+           "score": 1.2
+          },
+          {
+           "en": "act",
+           "de": "schauspielern",
+           "luecke": false,
+           "score": 1.5
+          },
+          {
+           "en": "direct",
+           "de": "Regie führen",
+           "luecke": false,
+           "score": 1.5
+          },
+          {
+           "en": "release",
+           "de": "veröffentlichen / herausbringen",
+           "luecke": false,
+           "score": 1.5
+          },
+          {
+           "en": "effect",
+           "de": "Wirkung",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "star",
+           "de": "in einer Hauptrolle spielen",
+           "luecke": true,
+           "score": 1.9
+          },
+          {
+           "en": "episode",
+           "de": "Folge",
+           "luecke": true,
+           "score": 2.2
+          },
+          {
+           "en": "available",
+           "de": "verfügbar",
+           "luecke": true,
+           "score": 2.1
+          },
+          {
+           "en": "viewer",
+           "de": "Zuschauer/in",
+           "luecke": true,
+           "score": 1.9
+          }
+         ],
+         "text": "My brother loves police series. Two famous actors {1} in the one he likes best. Last night we watched the first {2} of the new season. The series is only {3} on one channel, so we went to my uncle's flat. Every {4} in the room was quiet until the very end.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+           "woerter": [
+            {
+             "en": "avoid",
+             "de": "vermeiden"
+            },
+            {
+             "en": "crime",
+             "de": "Verbrechen"
+            },
+            {
+             "en": "separate",
+             "de": "trennen"
+            },
+            {
+             "en": "nominate",
+             "de": "nominieren"
+            },
+            {
+             "en": "act",
+             "de": "schauspielern"
+            },
+            {
+             "en": "direct",
+             "de": "Regie führen"
+            },
+            {
+             "en": "release",
+             "de": "veröffentlichen / herausbringen"
+            },
+            {
+             "en": "effect",
+             "de": "Wirkung"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+           "woerter": [
+            {
+             "en": "star",
+             "de": "in einer Hauptrolle spielen"
+            },
+            {
+             "en": "episode",
+             "de": "Folge"
+            },
+            {
+             "en": "available",
+             "de": "verfügbar"
+            },
+            {
+             "en": "viewer",
+             "de": "Zuschauer/in"
+            }
+           ],
+           "text": "My brother loves police series. Two famous actors {1} in the one he likes best. Last night we watched the first {2} of the new season. The series is only {3} on one channel, so we went to my uncle's flat. Every {4} in the room was quiet until the very end.",
+           "bank": [
+            "verfügbar",
+            "in einer Hauptrolle spielen",
+            "Folge",
+            "Zuschauer/in"
+           ]
+          }
+         ],
+         "blatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB.docx",
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB_Loesung.docx"
+        }
+       ],
+       "liste_blatt": "EnglishPlus3_Unit08_V1_VocabularyList.docx"
+      }
+     ],
      "hauptteil": [
       {
        "en": "science fiction",

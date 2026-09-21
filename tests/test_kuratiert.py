@@ -79,7 +79,19 @@ def test_paket_ist_fehlerfrei(pfad, settings):
 def test_paket_ist_vollstaendig(pfad):
     pack = Pack.load(pfad)
     assert pack.vollstaendig, f"noch offen: {pack.offen()[:5]}"
-    assert len(pack.all_entries) == 60
+    if pack.liste_gegeben:
+        # Eine Liste, die fertig hereinkommt, hat so viele Wörter, wie ihre
+        # Quelle hat. Auf 60 gebracht würde sie nicht vollständiger, nur
+        # verändert - und die Aufteilung in Test 1 und Test 2 stammt dann
+        # nicht mehr von der Lehrperson. Vollständig heisst hier: kein
+        # Eintrag ohne Wort, ohne Übersetzung, ohne Satz.
+        assert pack.all_entries, "eine Liste ohne Wörter ist keine"
+        for eintrag in pack.all_entries:
+            for feld in ("englisch", "deutsch", "satz"):
+                assert str(eintrag.get(feld, "")).strip(), (
+                    f"Nr. {eintrag.get('nr')}: '{feld}' fehlt")
+    else:
+        assert len(pack.all_entries) == 60
     assert len(pack.exams) == 4, "je Unit vier Prüfungen: Teil I/II mal Niveau A/B"
 
 

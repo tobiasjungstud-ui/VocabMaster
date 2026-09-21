@@ -1,0 +1,1210 @@
+{
+  "schema": 2,
+  "unit": 8,
+  "unit_label": "Unit 8",
+  "titel": "Unit 8",
+  "thema": "Film, Fernsehen und Geschichten",
+  "leitwoerter": [
+    "genre",
+    "thriller",
+    "comedy",
+    "science fiction",
+    "actor",
+    "screen",
+    "adaptation",
+    "episode",
+    "award",
+    "viewer"
+  ],
+  "quelle": {
+    "datei": "ep2e_level3_german_wordlist.xlsx",
+    "tabellenblatt": "Sheet1",
+    "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
+    "importiert": "2026-09-15"
+  },
+  "lehrmittel": "EnglishPlus3",
+  "liste_version": 1,
+  "erzeugt": "2026-09-21",
+  "fehlbestand": 24,
+  "herkunft_uebersicht": {
+    "hauptteil": 26,
+    "zusatzteile": [
+      {
+        "englisch": "scientific research",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "storytelling",
+        "bereich": "Culture"
+      },
+      {
+        "englisch": "robotic",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "invade",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "narrator",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "necessity",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "translate",
+        "bereich": "Culture"
+      },
+      {
+        "englisch": "probe",
+        "bereich": "Curriculum extra"
+      },
+      {
+        "englisch": "confusing",
+        "bereich": "Extra Listening and Speaking"
+      },
+      {
+        "englisch": "orbit",
+        "bereich": "Curriculum extra"
+      }
+    ],
+    "zu_ergaenzen": 24,
+    "ausnahme": "Ausnahme: Der Hauptteil von Unit 8 gibt nur 26 geeignete Wörter her. Das liegt über der Grenze von 40 Prozent eigener Ergänzungen, deshalb wurden 10 Wörter aus den Zusatzteilen derselben Unit nachgezogen (Culture, Curriculum extra, Project). Sie stehen einzeln im Bericht."
+  },
+  "anleitung": [
+    "Feld 'satz' je Eintrag ausfüllen: ein natürlicher, idiomatischer",
+    "Beispielsatz, der das Zielwort erschliessbar macht, ohne die deutsche",
+    "Lösung zu verraten. Keine Definitionen ('A villain is a bad person').",
+    "Die Liste lernen beide Gruppen, deshalb höchstens 13 Wörter je Satz.",
+    "Feld 'form' ist die im Satz verwendete Wortform für die Fettschrift und",
+    "darf leer bleiben - sie wird dann selbst bestimmt.",
+    "Einträge mit 'herkunft': 'ergänzt' stehen nicht in der Wortliste des",
+    "Lehrmittels und müssen thematisch zur Unit passen; ihr Anteil ist auf",
+    "40 Prozent begrenzt und wird im Prüfbericht ausgewiesen.",
+    "In jeder der vier Prüfungen den Lückentext schreiben: {1} bis {4}",
+    "markieren die Lücken, die Reihenfolge in 'gaps' ist die im Text."
+  ],
+  "liste": {
+    "test1": [
+      {
+        "nr": 1,
+        "deutsch": "Abenteuer",
+        "englisch": "adventure",
+        "satz": "The story is about a dangerous adventure.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 84"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Handlung",
+        "englisch": "plot",
+        "satz": "The plot becomes more exciting towards the end.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "zusatzteil",
+        "abschnitt": "Curriculum extra 8, S. 103"
+      },
+      {
+        "nr": 3,
+        "deutsch": "Handlungsverlauf",
+        "englisch": "storyline",
+        "satz": "The storyline is simple but interesting.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 4,
+        "deutsch": "Schauplatz / Handlungsort",
+        "englisch": "setting",
+        "satz": "They chose a small town in Wales as the setting.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 5,
+        "deutsch": "spielen / stattfinden",
+        "englisch": "take place",
+        "satz": "The story takes place in New York.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 6,
+        "deutsch": "basierend auf",
+        "englisch": "based on",
+        "satz": "The film is based on a true story.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 7,
+        "deutsch": "Szene",
+        "englisch": "scene",
+        "satz": "My favourite scene is at the end of the film.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 8,
+        "deutsch": "Ende / Schluss",
+        "englisch": "ending",
+        "satz": "I didn't understand the ending of the film.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 9,
+        "deutsch": "Hauptfigur",
+        "englisch": "main character",
+        "satz": "The main character changes a lot during the story.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 10,
+        "deutsch": "Bösewicht / Gegenspieler",
+        "englisch": "villain",
+        "satz": "The villain is more interesting than the hero.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 11,
+        "deutsch": "Rolle",
+        "englisch": "role",
+        "satz": "She plays the role of a young detective.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 12,
+        "deutsch": "vermisst",
+        "englisch": "missing",
+        "satz": "The story is about a missing girl.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 13,
+        "deutsch": "Geheimnis / Rätsel",
+        "englisch": "mystery",
+        "satz": "Nobody knows the answer to the mystery.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Reise",
+        "englisch": "journey",
+        "satz": "They begin a long journey across the country.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 15,
+        "deutsch": "Mischung",
+        "englisch": "mixture",
+        "satz": "The film is a mixture of comedy and action.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Vorstellungskraft",
+        "englisch": "imagination",
+        "satz": "You need a lot of imagination to write stories.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Humor",
+        "englisch": "humour",
+        "satz": "The book has a great sense of humour.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 18,
+        "deutsch": "unterhaltsam",
+        "englisch": "entertaining",
+        "satz": "The film was funny and really entertaining.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 19,
+        "deutsch": "fesselnd / spannend",
+        "englisch": "gripping",
+        "satz": "The story was so gripping that I couldn't stop reading.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 20,
+        "deutsch": "vorhersehbar",
+        "englisch": "predictable",
+        "satz": "The ending was a bit predictable.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 21,
+        "deutsch": "enttäuschend",
+        "englisch": "disappointing",
+        "satz": "I found the second half rather disappointing.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 22,
+        "deutsch": "erstaunt",
+        "englisch": "amazed",
+        "satz": "I was amazed by the ending of the film.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Thema / Problem",
+        "englisch": "issue",
+        "satz": "The book deals with important issues such as bullying.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 24,
+        "deutsch": "Angst / Angstzustand",
+        "englisch": "anxiety",
+        "satz": "The character suffers from anxiety at school.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 25,
+        "deutsch": "an etwas leiden",
+        "englisch": "suffer",
+        "satz": "Some teenagers suffer from anxiety.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 26,
+        "deutsch": "sich erholen",
+        "englisch": "recover",
+        "satz": "It took her several weeks to recover.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 85"
+      },
+      {
+        "nr": 27,
+        "deutsch": "Rezension / Kritik",
+        "englisch": "review",
+        "satz": "I read a positive review of the film online.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 28,
+        "deutsch": "Empfehlung",
+        "englisch": "recommendation",
+        "satz": "My friend's recommendation made me watch the series.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 29,
+        "deutsch": "Besetzung / Schauspieler eines Films",
+        "englisch": "cast",
+        "satz": "The film has a great cast.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      }
+    ],
+    "test2": [
+      {
+        "nr": 1,
+        "deutsch": "schauspielern",
+        "englisch": "act",
+        "satz": "Have you ever acted in a school play?",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 2,
+        "deutsch": "Regie führen",
+        "englisch": "direct",
+        "satz": "Who directed this film?",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 83"
+      },
+      {
+        "nr": 3,
+        "deutsch": "in einer Hauptrolle spielen",
+        "englisch": "star",
+        "satz": "The new film stars several famous actors.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 4,
+        "deutsch": "schauspielerische Leistung / Auftritt",
+        "englisch": "performance",
+        "satz": "Her performance in the film was excellent.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 5,
+        "deutsch": "Auszeichnung",
+        "englisch": "award",
+        "satz": "The film won an award for best music.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 6,
+        "deutsch": "nominieren",
+        "englisch": "nominate",
+        "satz": "They nominated her for best actress.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 83"
+      },
+      {
+        "nr": 7,
+        "deutsch": "Nominierung",
+        "englisch": "nomination",
+        "satz": "The actor received an Oscar nomination.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 8,
+        "deutsch": "Uraufführung / Erste Aufführung",
+        "englisch": "premiere",
+        "satz": "Many famous actors attended the film premiere.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 9,
+        "deutsch": "veröffentlichen / herausbringen",
+        "englisch": "release",
+        "satz": "The studio will release the film next year.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 10,
+        "deutsch": "anpassen",
+        "englisch": "adapt",
+        "satz": "The story was adapted for television.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 11,
+        "deutsch": "Anpassung / Bearbeitung",
+        "englisch": "adaptation",
+        "satz": "The film adaptation is different from the book.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 12,
+        "deutsch": "Fortsetzung",
+        "englisch": "sequel",
+        "satz": "The sequel wasn't as good as the first film.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 13,
+        "deutsch": "Folge",
+        "englisch": "episode",
+        "satz": "I watched three episodes last night.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 14,
+        "deutsch": "Publikum",
+        "englisch": "audience",
+        "satz": "The audience laughed during the whole film.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 15,
+        "deutsch": "Zuschauer/in",
+        "englisch": "viewer",
+        "satz": "The series attracted millions of viewers.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 81"
+      },
+      {
+        "nr": 16,
+        "deutsch": "Wirkung",
+        "englisch": "effect",
+        "satz": "The music has a strong effect on the audience.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 17,
+        "deutsch": "Spezialeffekt",
+        "englisch": "special effect",
+        "satz": "The explosion was only a special effect.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 18,
+        "deutsch": "Filmmusik",
+        "englisch": "soundtrack",
+        "satz": "The film has an amazing soundtrack.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 19,
+        "deutsch": "Animation / Trickfilm",
+        "englisch": "animation",
+        "satz": "The animation looks incredibly realistic.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 20,
+        "deutsch": "anzeigen / ausstellen",
+        "englisch": "display",
+        "satz": "The winning pictures are displayed in the museum.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 83"
+      },
+      {
+        "nr": 21,
+        "deutsch": "Drehbuch",
+        "englisch": "script",
+        "satz": "The script contains a lot of funny dialogue.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 22,
+        "deutsch": "Verbrechen",
+        "englisch": "crime",
+        "satz": "The police are trying to solve a crime.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 23,
+        "deutsch": "Untertitel",
+        "englisch": "subtitles",
+        "satz": "I watched the film in English with German subtitles.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 24,
+        "deutsch": "Synchronisiert / übersetzt",
+        "englisch": "dubbed",
+        "satz": "The film was dubbed into German.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 25,
+        "deutsch": "vermeiden",
+        "englisch": "avoid",
+        "satz": "I try to avoid spoilers.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 26,
+        "deutsch": "verfügbar",
+        "englisch": "available",
+        "satz": "The film is available on Netflix.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      },
+      {
+        "nr": 27,
+        "deutsch": "Comic-Roman",
+        "englisch": "graphic novel",
+        "satz": "She prefers graphic novels to normal novels.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 82"
+      },
+      {
+        "nr": 28,
+        "deutsch": "trennen",
+        "englisch": "separate",
+        "satz": "The characters are separated into different groups.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 79"
+      },
+      {
+        "nr": 29,
+        "deutsch": "unglaublich",
+        "englisch": "unbelievable",
+        "satz": "The final scene was completely unbelievable.",
+        "form": "",
+        "wortart": "",
+        "herkunft": "wortliste",
+        "abschnitt": "Unit 8, S. 80"
+      },
+      {
+        "nr": 30,
+        "deutsch": "zurückspulen",
+        "englisch": "rewind",
+        "satz": "Can you rewind to that scene?",
+        "form": "",
+        "wortart": "",
+        "herkunft": "ergänzt",
+        "abschnitt": "",
+        "begruendung": "Aus der Vokabelliste der Lehrperson übernommen (Word-Dokument 'Vocabulary Unit 8'). Gehört zum Wortfeld Film, Fernsehen und Geschichten, steht aber nicht in der Wortliste des Lehrmittels."
+      }
+    ]
+  },
+  "pruefungen": {
+    "teil1": {
+      "A": {
+        "meta": {
+          "titel": "Unit 8 Part I - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-21",
+          "liste_version": 1,
+          "liste_fingerabdruck": "04e2936da1d2"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 8,
+          "luecken": 4
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part I",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+            "items": [
+              {
+                "english": "predictable",
+                "german": "vorhersehbar",
+                "pos": "adj"
+              },
+              {
+                "english": "mixture",
+                "german": "Mischung",
+                "pos": "noun"
+              },
+              {
+                "english": "entertaining",
+                "german": "unterhaltsam",
+                "pos": "adj"
+              },
+              {
+                "english": "main character",
+                "german": "Hauptfigur",
+                "pos": "noun"
+              },
+              {
+                "english": "storyline",
+                "german": "Handlungsverlauf",
+                "pos": "noun"
+              },
+              {
+                "english": "take place",
+                "german": "spielen / stattfinden",
+                "pos": "verb"
+              },
+              {
+                "english": "mystery",
+                "german": "Geheimnis / Rätsel",
+                "pos": "noun"
+              },
+              {
+                "english": "amazed",
+                "german": "erstaunt",
+                "pos": "adj"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "Empfehlung",
+              "Vorstellungskraft",
+              "enttäuschend",
+              "sich erholen"
+            ],
+            "gaps": [
+              {
+                "english": "recover",
+                "german": "sich erholen",
+                "pos": "verb",
+                "answer": "recover"
+              },
+              {
+                "english": "recommendation",
+                "german": "Empfehlung",
+                "pos": "noun",
+                "answer": "recommendation",
+                "unique_because": "Eine Empfehlung kommt von jemandem ('from my English teacher'); Vorstellungskraft hat man."
+              },
+              {
+                "english": "disappointing",
+                "german": "enttäuschend",
+                "pos": "adj",
+                "answer": "disappointing"
+              },
+              {
+                "english": "imagination",
+                "german": "Vorstellungskraft",
+                "pos": "noun",
+                "answer": "imagination",
+                "unique_because": "'that much' verlangt ein nicht zählbares Wort - eine Empfehlung wäre zählbar."
+              }
+            ],
+            "text": "The book begins in a hospital. A boy is waiting to {1} after a bad accident. He has nothing to do all day, so he invents a whole city in his head. I picked the book up because of a {2} from my English teacher. I finished it in two evenings. The first half is quiet and slow, and some readers find it {3}. For me it was the opposite: a boy with that much {4} is never boring."
+          }
+        ]
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 8 Part I - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 1",
+          "fassung": 1,
+          "erzeugt": "2026-09-21",
+          "liste_version": 1,
+          "liste_fingerabdruck": "04e2936da1d2"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 8,
+          "luecken": 4
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part I Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 8 part i.",
+            "items": [
+              {
+                "english": "ending",
+                "german": "Ende / Schluss",
+                "pos": "noun"
+              },
+              {
+                "english": "based on",
+                "german": "basierend auf",
+                "pos": "adj"
+              },
+              {
+                "english": "journey",
+                "german": "Reise",
+                "pos": "noun"
+              },
+              {
+                "english": "issue",
+                "german": "Thema / Problem",
+                "pos": "noun"
+              },
+              {
+                "english": "missing",
+                "german": "vermisst",
+                "pos": "adj"
+              },
+              {
+                "english": "setting",
+                "german": "Schauplatz / Handlungsort",
+                "pos": "noun"
+              },
+              {
+                "english": "cast",
+                "german": "Besetzung / Schauspieler eines Films",
+                "pos": "noun"
+              },
+              {
+                "english": "suffer",
+                "german": "an etwas leiden",
+                "pos": "verb"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part i. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "erstaunt",
+              "Handlungsverlauf",
+              "spielen / stattfinden",
+              "Geheimnis / Rätsel"
+            ],
+            "gaps": [
+              {
+                "english": "take place",
+                "german": "spielen / stattfinden",
+                "pos": "verb",
+                "answer": "take place"
+              },
+              {
+                "english": "storyline",
+                "german": "Handlungsverlauf",
+                "pos": "noun",
+                "answer": "storyline",
+                "unique_because": "Ein Handlungsverlauf ist 'easy to follow'; ein Geheimnis wäre 'easy to solve'."
+              },
+              {
+                "english": "amazed",
+                "german": "erstaunt",
+                "pos": "adj",
+                "answer": "amazed"
+              },
+              {
+                "english": "mystery",
+                "german": "Geheimnis / Rätsel",
+                "pos": "noun",
+                "answer": "mystery",
+                "unique_because": "Was man 'errät' ('guessed'), ist das Rätsel, nicht der Handlungsverlauf."
+              }
+            ],
+            "text": "My class read a short book last month. The events {1} in a small village in Wales. The {2} is easy to follow. A dog finds a gold ring in the garden. We were all {3} by the last page. Nobody in the class had guessed the {4} before the final page."
+          }
+        ]
+      }
+    },
+    "teil2": {
+      "A": {
+        "meta": {
+          "titel": "Unit 8 Part II - Vokabelprüfung, Niveau A",
+          "niveau": "A",
+          "cefr": "B1.2-B2.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-21",
+          "liste_version": 1,
+          "liste_fingerabdruck": "04e2936da1d2"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 8,
+          "luecken": 4
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part II",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+            "items": [
+              {
+                "english": "nomination",
+                "german": "Nominierung",
+                "pos": "noun"
+              },
+              {
+                "english": "audience",
+                "german": "Publikum",
+                "pos": "noun"
+              },
+              {
+                "english": "graphic novel",
+                "german": "Comic-Roman",
+                "pos": "noun"
+              },
+              {
+                "english": "dubbed",
+                "german": "Synchronisiert / übersetzt",
+                "pos": "noun"
+              },
+              {
+                "english": "soundtrack",
+                "german": "Filmmusik",
+                "pos": "noun"
+              },
+              {
+                "english": "premiere",
+                "german": "Uraufführung / Erste Aufführung",
+                "pos": "noun"
+              },
+              {
+                "english": "display",
+                "german": "anzeigen / ausstellen",
+                "pos": "verb"
+              },
+              {
+                "english": "available",
+                "german": "verfügbar",
+                "pos": "adj"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "schauspielerische Leistung / Auftritt",
+              "Anpassung / Bearbeitung",
+              "zurückspulen",
+              "unglaublich"
+            ],
+            "gaps": [
+              {
+                "english": "rewind",
+                "german": "zurückspulen",
+                "pos": "verb",
+                "answer": "rewind"
+              },
+              {
+                "english": "adaptation",
+                "german": "Anpassung / Bearbeitung",
+                "pos": "noun",
+                "answer": "adaptation",
+                "unique_because": "Eine Bearbeitung eines Romans kann 'frei' sein; eine Leistung nicht."
+              },
+              {
+                "english": "unbelievable",
+                "german": "unglaublich",
+                "pos": "adj",
+                "answer": "unbelievable"
+              },
+              {
+                "english": "performance",
+                "german": "schauspielerische Leistung / Auftritt",
+                "pos": "noun",
+                "answer": "performance",
+                "unique_because": "'her' und 'saved the evening' zeigen auf die Leistung der Schauspielerin."
+              }
+            ],
+            "text": "Last Friday my cousin and I watched an old film about a runaway girl. Twice we had to {1} the first ten minutes, because the sound was too quiet. My sister read the same novel at school, and she says the {2} is quite free. She kept telling us what would happen next. Some of the scenes were completely {3}: nobody survives such a drop. But the young actress was wonderful, and her {4} saved the whole evening."
+          }
+        ]
+      },
+      "B": {
+        "meta": {
+          "titel": "Unit 8 Part II - Vokabelprüfung, Niveau B",
+          "niveau": "B",
+          "cefr": "A2.2-B1.1",
+          "quelle_liste": "Test 2",
+          "fassung": 1,
+          "erzeugt": "2026-09-21",
+          "liste_version": 1,
+          "liste_fingerabdruck": "04e2936da1d2"
+        },
+        "aufgabenplan": {
+          "uebersetzen": 8,
+          "luecken": 4
+        },
+        "total_words": 12,
+        "header": {
+          "title": " Vocabulary",
+          "unit": "Unit 8 |Part II Niv. B",
+          "name_label": "Name:",
+          "grade_label": "Grade :"
+        },
+        "aufgaben": [
+          {
+            "art": "uebersetzen",
+            "instruction": "1) Translate using the vocabulary from unit 8 part ii.",
+            "items": [
+              {
+                "english": "avoid",
+                "german": "vermeiden",
+                "pos": "verb"
+              },
+              {
+                "english": "crime",
+                "german": "Verbrechen",
+                "pos": "noun"
+              },
+              {
+                "english": "separate",
+                "german": "trennen",
+                "pos": "verb"
+              },
+              {
+                "english": "nominate",
+                "german": "nominieren",
+                "pos": "verb"
+              },
+              {
+                "english": "act",
+                "german": "schauspielern",
+                "pos": "verb"
+              },
+              {
+                "english": "direct",
+                "german": "Regie führen",
+                "pos": "verb"
+              },
+              {
+                "english": "release",
+                "german": "veröffentlichen / herausbringen",
+                "pos": "verb"
+              },
+              {
+                "english": "effect",
+                "german": "Wirkung",
+                "pos": "noun"
+              }
+            ]
+          },
+          {
+            "art": "luecken",
+            "instruction": "2)  Fill in the gaps using the vocabulary from unit 8 part ii. ",
+            "word_bank_label": "Words:",
+            "word_bank": [
+              "verfügbar",
+              "in einer Hauptrolle spielen",
+              "Folge",
+              "Zuschauer/in"
+            ],
+            "gaps": [
+              {
+                "english": "star",
+                "german": "in einer Hauptrolle spielen",
+                "pos": "verb",
+                "answer": "star"
+              },
+              {
+                "english": "episode",
+                "german": "Folge",
+                "pos": "noun",
+                "answer": "episode",
+                "unique_because": "'the first ... of the new season' ist die Folge."
+              },
+              {
+                "english": "available",
+                "german": "verfügbar",
+                "pos": "adj",
+                "answer": "available"
+              },
+              {
+                "english": "viewer",
+                "german": "Zuschauer/in",
+                "pos": "noun",
+                "answer": "viewer",
+                "unique_because": "'Every ... in the room' ist eine Person, keine Folge."
+              }
+            ],
+            "text": "My brother loves police series. Two famous actors {1} in the one he likes best. Last night we watched the first {2} of the new season. The series is only {3} on one channel, so we went to my uncle's flat. Every {4} in the room was quiet until the very end."
+          }
+        ]
+      }
+    }
+  },
+  "liste_gegeben": "Word-Dokument 'Vocabulary Unit 8 (updated)' der Lehrperson - Wortwahl, Aufteilung in Test 1 und Test 2 und alle Beispielsätze stammen daraus.",
+  "akzeptierte_warnungen": [
+    {
+      "enthaelt": "gegebene Liste - gesagt, nicht beanstandet",
+      "grund": "Die Liste kommt fertig aus dem Word-Dokument der Lehrperson. Test 1 hat 29 Wörter statt 30, und 'nominate/nomination', 'adapt/adaptation' sowie 'effect/special effect' stehen bewusst als Paare nebeneinander. Die Anwendung sagt es, hält den Bau aber nicht auf: Sie hat diese Wahl nicht getroffen."
+    },
+    {
+      "enthaelt": "ergänzt = 41% (Grenze 40%)",
+      "grund": "24 der 59 Wörter stehen nicht in der Wortliste von English Plus 3 - Filmvokabular wie 'subtitles', 'soundtrack', 'sequel', 'script'. Sie sind nicht ergänzt worden, sondern gegeben; die Grenze gilt der eigenen Ergänzung."
+    },
+    {
+      "enthaelt": "41% ergänzt - über der Grenze",
+      "grund": "Gleicher Grund: gegebene Liste, keine eigene Ergänzung."
+    },
+    {
+      "enthaelt": "dürfte für B1.1-B2.1 zu einfach sein",
+      "grund": "Wortschatz der Lehrperson. Wörter wie 'role', 'scene' oder 'take place' sind häufig, gehören aber zum Grundgerüst, mit dem man über einen Film spricht."
+    },
+    {
+      "enthaelt": "ist für B1.1-B2.1 zu selten",
+      "grund": "Gleicher Grund: gegebener Wortschatz. Ein Fachwort wie 'storyline' oder 'dubbed' ist selten und trotzdem genau das, was die Unit braucht."
+    },
+    {
+      "enthaelt": "Die Beispielsätze erreichen Lesbarkeit",
+      "grund": "Die Beispielsätze stammen aus dem Word-Dokument der Lehrperson und sind bewusst so knapp. 69 statt 70 ist eine Kommastelle, kein Niveauproblem."
+    },
+    {
+      "enthaelt": "Wortart 'noun' ist ungleich verteilt",
+      "grund": "Test 1 erzählt über Geschichten (Handlung, Figur, Schauplatz), Test 2 über das Filmemachen. Beides ist nomenlastig; die Aufteilung stammt aus dem Dokument."
+    },
+    {
+      "enthaelt": "Test 2, 'direct': Nur 4 Wörter",
+      "grund": "'Who directed this film?' steht so im Word-Dokument der Lehrperson. Eine Frage ist als Beispielsatz kürzer als eine Aussage und hier genau richtig."
+    },
+    {
+      "enthaelt": "ist ungleich verteilt",
+      "grund": "Test 1 erzählt über Geschichten, Test 2 über das Filmemachen - das eine ist nomen-, das andere verblastig. Die Aufteilung stammt aus dem Dokument und wurde nicht ausgeglichen."
+    },
+    {
+      "enthaelt": "41% der Wörter sind ergänzt",
+      "grund": "Die Liste ist gegeben, nicht ergänzt: 24 der 59 Wörter stehen nicht in der Wortliste von English Plus 3 (subtitles, soundtrack, sequel, script, villain, cast ...). Die 40-Prozent-Grenze gilt der eigenen Ergänzung einer gewählten Liste; hier hat die Anwendung nichts gewählt."
+    },
+    {
+      "enthaelt": "stammen nicht aus dem Hauptteil, sondern aus Zusatzteilen",
+      "grund": "'plot' steht in Curriculum extra 8, nicht im Hauptteil. Es steht so im Dokument der Lehrperson und ist für eine Unit über Geschichten unverzichtbar."
+    },
+    {
+      "enthaelt": "Der Hauptteil von Unit 8 gibt nur 26 geeignete Wörter her",
+      "grund": "Diese Zeile beschreibt, was die Auswahl getan hätte. Getan hat sie hier nichts - die Liste kommt fertig aus dem Word-Dokument."
+    }
+  ]
+}

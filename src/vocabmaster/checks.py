@@ -970,6 +970,15 @@ def pruefe_herkunft(pack: Pack, bericht: Pruefbericht) -> None:
 # ---------------------------------------------------------------------------
 # Die geerbten Prüfungen der beiden Ursprungsanwendungen
 # ---------------------------------------------------------------------------
+#: Befunde, die nicht das Material beurteilen, sondern die **Wahl**: wie
+#: viele Wörter auf einen Test kommen und ob zwei davon dasselbe prüfen.
+#: Bei einer gegebenen Liste ist das eine Angabe der Lehrperson, keine
+#: Nachlässigkeit der Auswahl. Alles andere - ein Eintrag ohne Wort, eine
+#: fehlende Übersetzung, ein Satz, der die Lösung verrät, eine Liste, die
+#: nicht auf die Seite passt - bleibt in jeder Liste ein Fehler.
+WAHLBEFUNDE = frozenset({"falsche_anzahl", "doppelung", "ueberschneidung"})
+
+
 def pruefe_liste(pack: Pack, settings: Settings, bericht: Pruefbericht) -> None:
     """Die Listenkontrolle aus dem VocabListMaker, unverändert."""
     bericht.gelaufen.append("liste")
@@ -989,13 +998,25 @@ def pruefe_liste(pack: Pack, settings: Settings, bericht: Pruefbericht) -> None:
     bounds = LIST_BOUNDS
     test1, test2 = to_candidates("test1"), to_candidates("test2")
     report = validate_all(test1, test2, settings.words_per_test, bounds=bounds)
+    gegeben = pack.liste_gegeben
     for issue in report.issues:
         stufe = {
             Severity.ERROR: FEHLER,
             Severity.WARNING: WARNUNG,
             Severity.INFO: HINWEIS,
         }[issue.severity]
-        bericht.add(stufe, "liste", str(issue.message))
+        nachsatz = ""
+        if gegeben and stufe is FEHLER and issue.code in WAHLBEFUNDE:
+            # Diese drei Befunde beurteilen die **Wahl** der 60 Wörter. Ist
+            # die Liste gegeben und nicht gewählt, beurteilen sie eine Wahl,
+            # die niemand getroffen hat: Wer 'adapt' und 'adaptation'
+            # nebeneinander auf die Liste setzt, meint das so, und 29 Wörter
+            # in Test 1 sind 29 Wörter. Gesagt wird es weiterhin - aber es
+            # hält den Bau nicht auf, sonst liesse sich die eigene Liste
+            # der Lehrperson gar nicht bauen.
+            stufe = WARNUNG
+            nachsatz = " (gegebene Liste - gesagt, nicht beanstandet)"
+        bericht.add(stufe, "liste", str(issue.message) + nachsatz)
     bericht.kennzahlen["liste"] = (
         f"{len(test1)}+{len(test2)} Wörter, Schwierigkeitsdifferenz "
         f"{report.stats.get('schwierigkeit_differenz', 0):.3f}"

@@ -31,6 +31,8 @@ from vocabmaster.pack import (
     scaffold,
 )
 
+from .helpers import fill
+
 ZWEITES = "EnglishPlus3"
 
 
@@ -123,3 +125,50 @@ def test_ein_paket_ohne_das_feld_heisst_wie_bisher(pack):
     assert dateiname(alt.unit, "VocabularyList",
                      lehrmittel=alt.lehrmittel) == (
         "Unit01_V1_VocabularyList.docx")
+
+
+# ---------------------------------------------------------------------------
+# Eine Liste, die gegeben ist statt gewählt
+# ---------------------------------------------------------------------------
+def test_eine_gegebene_liste_haelt_den_bau_nicht_auf(db, settings):
+    """Drei Befunde beurteilen die Wahl - bei einer gegebenen gibt es keine.
+
+    Die Liste kommt fertig aus dem Word-Dokument der Lehrperson: eigene
+    Aufteilung, eigene Sätze, eigene Paare wie 'adapt' und 'adaptation'.
+    Die Anwendung soll das sagen, aber nicht verhindern - sonst liesse sich
+    die eigene Liste gar nicht bauen.
+    """
+    from vocabmaster.checks import Pruefbericht, pruefe_liste
+
+    pack = Pack(data=fill(scaffold(db, 1, settings)))
+    # Ein Wort weniger, und zwei, die dasselbe prüfen: dasselbe Wort
+    # zweimal, samt seinem Satz - so, wie es in einer von Hand
+    # geschriebenen Liste vorkommt.
+    pack.data["liste"]["test1"] = pack.data["liste"]["test1"][:-1]
+    zwei = pack.data["liste"]["test2"]
+    zwei[1] = {**zwei[0], "nr": zwei[1]["nr"]}
+
+    ohne = Pruefbericht()
+    pruefe_liste(pack, settings, ohne)
+    assert ohne.fehler, "ohne Angabe bleibt es ein Fehler"
+
+    pack.data["liste_gegeben"] = "Word-Dokument der Lehrperson"
+    mit = Pruefbericht()
+    pruefe_liste(pack, settings, mit)
+    assert not mit.fehler, "\n".join(str(b) for b in mit.fehler)
+    assert any("gesagt, nicht beanstandet" in b.text for b in mit.warnungen), (
+        "verschwiegen werden darf es nicht")
+
+
+def test_eine_gegebene_liste_entschuldigt_keinen_echten_mangel(db, settings):
+    """Was in jeder Liste ein Fehler wäre, bleibt einer."""
+    from vocabmaster.checks import Pruefbericht, pruefe_liste
+
+    pack = Pack(data=fill(scaffold(db, 1, settings)))
+    pack.data["liste_gegeben"] = "Word-Dokument der Lehrperson"
+    pack.data["liste"]["test1"][0] = {
+        **pack.data["liste"]["test1"][0], "deutsch": ""}
+
+    bericht = Pruefbericht()
+    pruefe_liste(pack, settings, bericht)
+    assert any("keine deutsche Übersetzung" in b.text for b in bericht.fehler)

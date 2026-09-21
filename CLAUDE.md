@@ -350,6 +350,40 @@ Satzlänge, Textlänge und Nebensatzdichte des Lückentextes.
 Die Beispielsätze der Liste lernen beide Gruppen, deshalb gilt für sie das
 engere Mass: **höchstens 13 Wörter je Satz.**
 
+## Eine Liste, die gegeben ist statt gewählt
+
+Der Normalfall ist, dass die Anwendung die 60 Wörter aus der Datenbank
+wählt. Eine Liste kann aber auch **fertig hereinkommen** — aus dem
+Word-Dokument der Lehrperson, mit eigener Aufteilung in Test 1 und Test 2
+und eigenen Beispielsätzen. Dann steht im Paket, woher:
+
+```json
+"liste_gegeben": "Word-Dokument 'Vocabulary Unit 8 (updated)' der Lehrperson …"
+```
+
+Das ist keine Formalie. Drei Kontrollen beurteilen die **Wahl** der Wörter —
+wie viele auf einen Test kommen (`falsche_anzahl`) und ob zwei davon
+dasselbe prüfen (`doppelung`, `ueberschneidung`). Bei einer gegebenen Liste
+beurteilen sie eine Wahl, die niemand getroffen hat: Wer `adapt` und
+`adaptation` nebeneinander auf die Liste setzt, meint das so, und 29 Wörter
+in Test 1 sind 29 Wörter. Sie werden weiterhin **gesagt** — als Warnung mit
+dem Zusatz „gegebene Liste — gesagt, nicht beanstandet" —, halten den Bau
+aber nicht auf. Sonst liesse sich die eigene Liste der Lehrperson gar nicht
+bauen.
+
+**Alles andere bleibt ein Fehler.** Ein Eintrag ohne Wort, eine fehlende
+Übersetzung, ein Satz, der die Lösung verrät, eine Liste, die nicht auf die
+A4-Seite passt — das sind Mängel in jeder Liste, gewählt oder gegeben. Und
+was an der Prüfung hängt (Listenabdruck, Lösungsschlüssel, Aufgabenformen,
+Platzhalter) wird unverändert scharf geprüft.
+
+`ausgleichen` wird auf eine gegebene Liste **nicht** angewendet: Es würde
+die Aufteilung neu würfeln, und die stammt von der Lehrperson.
+
+Ein Test hält fest, dass ein solches Paket nicht an der 60 scheitert,
+sondern daran gemessen wird, ob jeder Eintrag Wort, Übersetzung und Satz
+hat.
+
 ## Welche Liste meint dieser Test?
 
 Das ist die Frage, die sich zwei Tage nach dem Bauen stellt. Jede

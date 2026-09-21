@@ -793,6 +793,23 @@ class Pack:
         return str(self.data.get("lehrmittel", ""))
 
     @property
+    def liste_gegeben(self) -> str:
+        """Woher die Liste stammt, wenn sie **nicht** gewählt wurde.
+
+        Der Normalfall ist, dass die Anwendung die 60 Wörter aus der
+        Datenbank wählt; dann ist dieses Feld leer. Eine Liste kann aber
+        auch fertig hereinkommen - aus dem Word-Dokument der Lehrperson,
+        mit eigener Aufteilung in Test 1 und Test 2 und eigenen
+        Beispielsätzen. Dann steht hier, woher.
+
+        Der Unterschied ist keine Formalie: Die Kontrollen, die **die Wahl**
+        beurteilen, beurteilen dann eine Wahl, die niemand getroffen hat.
+        Sie melden weiterhin, was sie sehen - aber sie halten den Bau nicht
+        auf. Was in jeder Liste ein Fehler wäre, bleibt einer.
+        """
+        return str(self.data.get("liste_gegeben", ""))
+
+    @property
     def liste_abdruck(self) -> str:
         """Der Fingerabdruck der Liste, wie sie **jetzt** im Paket steht."""
         return liste_fingerabdruck(self.all_entries)

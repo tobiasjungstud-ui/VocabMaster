@@ -1063,7 +1063,10 @@ td.satz{color:var(--ink-2); font-size:12.5px}
                der nicht kann. -->
           <span class="draht" id="draht"></span></div>
         <div class="auftrag">
-          <div class="befehl" id="befehl"></div>
+          <!-- Der Auftragssatz geht an den Chat, nicht an die Lehrperson: Er
+               steht im Dokument (für „Befehl kopieren"), aber nicht im Bild.
+               Was bestellt ist, sagt die Leiste. -->
+          <div class="befehl" id="befehl" hidden></div>
           <div class="knopfreihe">
             <button class="knopf haupt" id="ausloesen">Auftrag auslösen</button>
             <button class="knopf" id="kopieren">Befehl kopieren</button>
@@ -2965,7 +2968,11 @@ function zeichneBuch(){
   kasten.innerHTML = "";
   zeichneVerlauf();
   if(!buch.length) return;
-  const sichtbar = state.buchAlle ? buch : buch.filter(e => !e.ausgeblendet);
+  // Der Auftrag, der oben gross unter „Was gerade läuft" steht, steht nicht
+  // ein zweites Mal im Buch - zweimal dieselben Schritte sagen nichts mehr.
+  const oben = laufenderAuftrag();
+  const sichtbar = (state.buchAlle ? buch : buch.filter(e => !e.ausgeblendet))
+    .filter(e => e !== oben);
   const versteckt = buch.length - buch.filter(e => !e.ausgeblendet).length;
   for(const e of sichtbar.slice(0, 8)) kasten.appendChild(auftragszeile(e));
   if(versteckt){

@@ -124,8 +124,13 @@ def test_bei_mehreren_listen_zaehlt_die_gebaute_pruefung(ordner, tmp_path):
     leer = tmp_path / "out_leer"
     leer.mkdir()
     ohne = wh.vorschlaege(pack, 1, ordner, leer)
-    assert [(q.paket, q.folge) for q in ohne[:2]] == [
-        ("unit_01_v2.json", True), ("unit_01.json", True)]
+    # Die neueste Liste von Unit 1 zuerst - welche das ist, sagt der Ordner,
+    # nicht der Test: Es kommen Listen dazu.
+    neueste = max((wh.Pack.load(p) for p in ordner.glob("unit_01*.json")
+                   if wh.Pack.load(p).fassung == 1 and not wh.Pack.load(p).lehrmittel),
+                  key=lambda p: p.liste_version).pfad.name
+    assert ohne[0].paket == neueste and ohne[0].folge
+    assert all(q.folge for q in ohne[:2])
 
     gebaut = tmp_path / "out_gebaut"
     gebaut.mkdir()

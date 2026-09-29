@@ -27,6 +27,15 @@
   "Unit01_V1_Test_PartI_NiveauB_Loesung.docx": 13799,
   "Unit01_V1_VocabularyList.docx": 41992,
   "Unit01_V2_VocabularyList.docx": 41989,
+  "Unit01_V3_Test_PartII_NiveauA_2xA5.docx": 14917,
+  "Unit01_V3_Test_PartII_NiveauA_Loesung.docx": 14734,
+  "Unit01_V3_Test_PartII_NiveauB_2xA5.docx": 14707,
+  "Unit01_V3_Test_PartII_NiveauB_Loesung.docx": 14536,
+  "Unit01_V3_Test_PartI_NiveauA_2xA5.docx": 14950,
+  "Unit01_V3_Test_PartI_NiveauA_Loesung.docx": 14763,
+  "Unit01_V3_Test_PartI_NiveauB_2xA5.docx": 14700,
+  "Unit01_V3_Test_PartI_NiveauB_Loesung.docx": 14511,
+  "Unit01_V3_VocabularyList.docx": 41993,
   "Unit02_V1_Test_PartII_NiveauA.docx": 13807,
   "Unit02_V1_Test_PartII_NiveauA_Loesung.docx": 13942,
   "Unit02_V1_Test_PartII_NiveauB.docx": 13723,
@@ -2711,6 +2720,16 @@
            "folge": true
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
+           "grund": "Part I der Liste V3 dieser Unit - eine andere Liste als die geprüfte",
+           "folge": true
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 1,
            "unit": 1,
@@ -4361,6 +4380,1966 @@
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part I · V2",
            "grund": "Part I derselben Liste V2 - kommt unmittelbar vor Part II",
+           "folge": true
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
+           "grund": "Part I der Liste V3 dieser Unit - eine andere Liste als die geprüfte",
+           "folge": true
+          },
+          {
+           "paket": "unit_01.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 1,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V1",
+           "grund": "Part I der Liste V1 dieser Unit - eine andere Liste als die geprüfte",
+           "folge": true
+          },
+          {
+           "paket": "unit_08_englishplus3.json",
+           "teil": 2,
+           "unit": 8,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_08_englishplus3.json",
+           "teil": 1,
+           "unit": 8,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_englishplus3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_englishplus3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          }
+         ],
+         "luecke": ""
+        }
+       }
+      },
+      {
+       "version": 3,
+       "datei": "unit_01_v3.json",
+       "abdruck": "29dddb2b73a7",
+       "erzeugt": "2026-09-29",
+       "aufgewertet": [],
+       "offen": 0,
+       "fassungen": [],
+       "woerter": [
+        {
+         "nr": 1,
+         "test": 1,
+         "en": "desperately",
+         "de": "verzweifelt",
+         "pos": "adv",
+         "satz": "He searched desperately for the ring he had lost.",
+         "score": 3.5,
+         "zipf": 3.98,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 2,
+         "test": 1,
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "pos": "noun",
+         "satz": "She spent her first six years in an orphanage.",
+         "score": 4.1,
+         "zipf": 3.38,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 3,
+         "test": 1,
+         "en": "adopt",
+         "de": "adoptieren",
+         "pos": "verb",
+         "satz": "They decided to adopt a child from another country.",
+         "score": 1.8,
+         "zipf": 4.19,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 4,
+         "test": 1,
+         "en": "treasure",
+         "de": "schätzen",
+         "pos": "verb",
+         "satz": "I treasure the letters my grandfather sent me.",
+         "score": 3.7,
+         "zipf": 4.17,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 5,
+         "test": 1,
+         "en": "immense",
+         "de": "riesig",
+         "pos": "adj",
+         "satz": "The old library holds an immense collection of maps.",
+         "score": 2.7,
+         "zipf": 3.88,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 6,
+         "test": 1,
+         "en": "apologize",
+         "de": "sich entschuldigen",
+         "pos": "verb",
+         "satz": "He wrote a letter to apologize for the broken vase.",
+         "score": 3.9,
+         "zipf": 4.16,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 7,
+         "test": 1,
+         "en": "damaged",
+         "de": "beschädigt",
+         "pos": "adj",
+         "satz": "The photograph was badly damaged by the rain.",
+         "score": 1.1,
+         "zipf": 4.39,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 8,
+         "test": 1,
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "pos": "adj",
+         "satz": "The ending of the film was rather disappointing.",
+         "score": 3.8,
+         "zipf": 4.02,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 9,
+         "test": 1,
+         "en": "fragile",
+         "de": "zerbrechlich",
+         "pos": "adj",
+         "satz": "Please wrap the glass carefully, because it is fragile.",
+         "score": 2.2,
+         "zipf": 3.86,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 10,
+         "test": 1,
+         "en": "rotten",
+         "de": "verfault",
+         "pos": "adj",
+         "satz": "We found rotten apples at the back of the box.",
+         "score": 2.7,
+         "zipf": 3.81,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 11,
+         "test": 1,
+         "en": "valuable",
+         "de": "wertvoll",
+         "pos": "adj",
+         "satz": "Grandfather said the stamp was more valuable than the album.",
+         "score": 1.6,
+         "zipf": 4.51,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 12,
+         "test": 1,
+         "en": "worthless",
+         "de": "wertlos",
+         "pos": "adj",
+         "satz": "Without its original box, the toy is almost worthless.",
+         "score": 1.9,
+         "zipf": 3.82,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 13,
+         "test": 1,
+         "en": "action figure",
+         "de": "Action-Figur",
+         "pos": "noun",
+         "satz": "My brother still keeps his old action figures in a box.",
+         "score": 5.2,
+         "zipf": 4.47,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 14,
+         "test": 1,
+         "en": "document",
+         "de": "Dokument",
+         "pos": "noun",
+         "satz": "Grandpa found an old document with his parents' names.",
+         "score": 0.1,
+         "zipf": 4.5,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 15,
+         "test": 1,
+         "en": "girlfriend",
+         "de": "Freundin",
+         "pos": "noun",
+         "satz": "He showed the silver ring to his girlfriend.",
+         "score": 3.4,
+         "zipf": 4.68,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 13"
+        },
+        {
+         "nr": 16,
+         "test": 1,
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "pos": "adv",
+         "satz": "Thankfully, nothing was broken inside the heavy parcel.",
+         "score": 4.0,
+         "zipf": 3.8,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 17,
+         "test": 1,
+         "en": "theme park",
+         "de": "Themenpark",
+         "pos": "noun",
+         "satz": "We spent the whole day at a theme park.",
+         "score": 0.0,
+         "zipf": 4.02,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 18,
+         "test": 1,
+         "en": "campsite",
+         "de": "Zeltplatz",
+         "pos": "noun",
+         "satz": "Our tent stood at the edge of the campsite.",
+         "score": 2.2,
+         "zipf": 3.09,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 19,
+         "test": 1,
+         "en": "picnic",
+         "de": "Picknick",
+         "pos": "noun",
+         "satz": "We had a picnic beside the lake last summer.",
+         "score": 0.0,
+         "zipf": 3.8,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 20,
+         "test": 1,
+         "en": "sailor",
+         "de": "Matrose",
+         "pos": "noun",
+         "satz": "His grandfather worked as a sailor for thirty years.",
+         "score": 2.2,
+         "zipf": 3.78,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 21,
+         "test": 1,
+         "en": "come across",
+         "de": "auf etw. stoßen",
+         "pos": "verb",
+         "satz": "I came across an old diary yesterday.",
+         "score": 3.6,
+         "zipf": 4.65,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 16"
+        },
+        {
+         "nr": 22,
+         "test": 1,
+         "en": "cannon",
+         "de": "Kanone",
+         "pos": "noun",
+         "satz": "An old cannon still stands outside the castle gate.",
+         "score": 1.8,
+         "zipf": 4.02,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 23,
+         "test": 1,
+         "en": "weapon",
+         "de": "Waffe",
+         "pos": "noun",
+         "satz": "The museum shows an old weapon from 1850.",
+         "score": 2.4,
+         "zipf": 4.54,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 24,
+         "test": 1,
+         "en": "survive",
+         "de": "überleben",
+         "pos": "verb",
+         "satz": "Only a few letters survived the big fire.",
+         "score": 1.1,
+         "zipf": 4.52,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 25,
+         "test": 1,
+         "en": "attic",
+         "de": "Dachboden",
+         "pos": "noun",
+         "satz": "We found a dusty suitcase up in the attic.",
+         "score": 1.6,
+         "zipf": 3.63,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 26,
+         "test": 1,
+         "en": "belong to",
+         "de": "gehören",
+         "pos": "verb",
+         "satz": "All these letters belong to my grandmother.",
+         "score": 2.2,
+         "zipf": 3.78,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 27,
+         "test": 1,
+         "en": "engage",
+         "de": "engagieren",
+         "pos": "verb",
+         "satz": "Our art teacher tried to engage the whole class.",
+         "score": 2.3,
+         "zipf": 4.36,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 28,
+         "test": 1,
+         "en": "remind of",
+         "de": "jmd. an etw. erinnern",
+         "pos": "verb",
+         "satz": "These songs remind me of our summer in Italy.",
+         "score": 3.0,
+         "zipf": 3.77,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 29,
+         "test": 1,
+         "en": "get rid of",
+         "de": "los werden",
+         "pos": "verb",
+         "satz": "It was hard to get rid of the old furniture.",
+         "score": 2.5,
+         "zipf": 3.9,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 9"
+        },
+        {
+         "nr": 30,
+         "test": 1,
+         "en": "instructive",
+         "de": "lehrreich",
+         "pos": "adj",
+         "satz": "The visit to the war museum was very instructive.",
+         "score": 2.8,
+         "zipf": 2.98,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1"
+        },
+        {
+         "nr": 1,
+         "test": 2,
+         "en": "graceful",
+         "de": "elegant",
+         "pos": "adj",
+         "satz": "Her grandmother was still a graceful dancer at seventy.",
+         "score": 2.6,
+         "zipf": 3.39,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 2,
+         "test": 2,
+         "en": "romantic",
+         "de": "romantisch",
+         "pos": "adj",
+         "satz": "They chose a romantic spot beside the old bridge.",
+         "score": 0.0,
+         "zipf": 4.43,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 3,
+         "test": 2,
+         "en": "dramatically",
+         "de": "dramatisch",
+         "pos": "adv",
+         "satz": "The value of those old coins rose dramatically.",
+         "score": 2.7,
+         "zipf": 3.95,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 4,
+         "test": 2,
+         "en": "beg",
+         "de": "betteln",
+         "pos": "verb",
+         "satz": "The boy had to beg for food on the streets.",
+         "score": 2.6,
+         "zipf": 4.05,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 5,
+         "test": 2,
+         "en": "on board",
+         "de": "an Bord",
+         "pos": "noun",
+         "satz": "There were forty people on board the ship.",
+         "score": 1.0,
+         "zipf": 4.64,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 10"
+        },
+        {
+         "nr": 6,
+         "test": 2,
+         "en": "emotionally",
+         "de": "emotional",
+         "pos": "adv",
+         "satz": "She reacted emotionally when she saw those old photos.",
+         "score": 0.7,
+         "zipf": 4.04,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 7,
+         "test": 2,
+         "en": "waterfall",
+         "de": "Wasserfall",
+         "pos": "noun",
+         "satz": "We took a photo beside the waterfall in the valley.",
+         "score": 0.3,
+         "zipf": 3.54,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 11"
+        },
+        {
+         "nr": 8,
+         "test": 2,
+         "en": "fashionable",
+         "de": "modisch",
+         "pos": "adj",
+         "satz": "That coat was fashionable when my mother was young.",
+         "score": 3.8,
+         "zipf": 3.65,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 9,
+         "test": 2,
+         "en": "historic",
+         "de": "historisch",
+         "pos": "adj",
+         "satz": "The historic bridge in our town is over 500 years old.",
+         "score": 0.1,
+         "zipf": 4.49,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 10,
+         "test": 2,
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "pos": "adj",
+         "satz": "My uncle still writes with an old-fashioned pen.",
+         "score": 4.1,
+         "zipf": 3.93,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 11,
+         "test": 2,
+         "en": "unpopular",
+         "de": "unbeliebt",
+         "pos": "adj",
+         "satz": "His decision was unpopular with the whole class.",
+         "score": 2.8,
+         "zipf": 3.72,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 12,
+         "test": 2,
+         "en": "useless",
+         "de": "nutzlos",
+         "pos": "adj",
+         "satz": "The old camera is useless without its battery.",
+         "score": 2.7,
+         "zipf": 4.22,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 13,
+         "test": 2,
+         "en": "smelly",
+         "de": "stinkend",
+         "pos": "adj",
+         "satz": "He finally threw away the smelly old football boots.",
+         "score": 2.9,
+         "zipf": 3.29,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 14,
+         "test": 2,
+         "en": "capsule",
+         "de": "Kapsel",
+         "pos": "noun",
+         "satz": "We buried a time capsule in the school garden.",
+         "score": 1.0,
+         "zipf": 3.7,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 15,
+         "test": 2,
+         "en": "memory stick",
+         "de": "Speicherstick",
+         "pos": "noun",
+         "satz": "All my holiday photos are saved on a memory stick.",
+         "score": 3.1,
+         "zipf": 4.16,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 12"
+        },
+        {
+         "nr": 16,
+         "test": 2,
+         "en": "fisherman",
+         "de": "Angler, Fischer",
+         "pos": "noun",
+         "satz": "An old fisherman showed us the harbour at dawn.",
+         "score": 1.8,
+         "zipf": 3.49,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 13"
+        },
+        {
+         "nr": 17,
+         "test": 2,
+         "en": "anecdote",
+         "de": "Anekdote",
+         "pos": "noun",
+         "satz": "My aunt told a funny anecdote about her school days.",
+         "score": 0.0,
+         "zipf": 3.2,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 18,
+         "test": 2,
+         "en": "childhood",
+         "de": "Kindheit",
+         "pos": "noun",
+         "satz": "These pictures take me back to my childhood in Wales.",
+         "score": 2.6,
+         "zipf": 4.51,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 19,
+         "test": 2,
+         "en": "memorize",
+         "de": "sich etw. merken",
+         "pos": "verb",
+         "satz": "She had to memorize the long poem before Friday.",
+         "score": 3.2,
+         "zipf": 3.22,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 14"
+        },
+        {
+         "nr": 20,
+         "test": 2,
+         "en": "afterwards",
+         "de": "danach",
+         "pos": "adv",
+         "satz": "We visited the museum and had tea afterwards.",
+         "score": 3.0,
+         "zipf": 4.42,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 21,
+         "test": 2,
+         "en": "eventful",
+         "de": "ereignisreich",
+         "pos": "adj",
+         "satz": "Our journey through Scotland was long and eventful.",
+         "score": 2.6,
+         "zipf": 3.02,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 22,
+         "test": 2,
+         "en": "meanwhile",
+         "de": "inzwischen",
+         "pos": "adv",
+         "satz": "I packed the bags; meanwhile, Tom made the sandwiches.",
+         "score": 2.4,
+         "zipf": 4.48,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 15"
+        },
+        {
+         "nr": 23,
+         "test": 2,
+         "en": "civil war",
+         "de": "Bürgerkrieg",
+         "pos": "noun",
+         "satz": "These letters were written during the civil war.",
+         "score": 2.4,
+         "zipf": 4.33,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 24,
+         "test": 2,
+         "en": "explosive",
+         "de": "Sprengstoff",
+         "pos": "noun",
+         "satz": "The soldiers hid the explosive under the bridge.",
+         "score": 2.2,
+         "zipf": 3.97,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 25,
+         "test": 2,
+         "en": "hook",
+         "de": "Haken",
+         "pos": "noun",
+         "satz": "His coat hangs on a hook behind the door.",
+         "score": 2.4,
+         "zipf": 4.37,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 17"
+        },
+        {
+         "nr": 26,
+         "test": 2,
+         "en": "object",
+         "de": "Gegenstand",
+         "pos": "noun",
+         "satz": "Every object in that box has its own story.",
+         "score": 1.1,
+         "zipf": 4.56,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 27,
+         "test": 2,
+         "en": "teddy bear",
+         "de": "Teddybär",
+         "pos": "noun",
+         "satz": "Her old teddy bear still sits on the shelf.",
+         "score": 0.2,
+         "zipf": 3.28,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 28,
+         "test": 2,
+         "en": "regret",
+         "de": "bedauern",
+         "pos": "verb",
+         "satz": "I regret selling my grandfather's watch last year.",
+         "score": 2.6,
+         "zipf": 4.37,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 29,
+         "test": 2,
+         "en": "look forward to",
+         "de": "sich auf etw. freuen",
+         "pos": "verb",
+         "satz": "We look forward to the summer holidays every year.",
+         "score": 4.3,
+         "zipf": 4.52,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 8"
+        },
+        {
+         "nr": 30,
+         "test": 2,
+         "en": "perform",
+         "de": "spielen, auftreten",
+         "pos": "verb",
+         "satz": "The class will perform a short play tonight.",
+         "score": 1.9,
+         "zipf": 4.66,
+         "quelle": "wortliste",
+         "abschnitt": "Unit 1, S. 9"
+        }
+       ],
+       "echt": {
+        "t1A": {
+         "woerter": [
+          "action figure",
+          "orphanage",
+          "thankfully",
+          "apologize",
+          "disappointing",
+          "treasure",
+          "come across",
+          "desperately",
+          "girlfriend",
+          "remind of",
+          "instructive",
+          "immense",
+          "rotten",
+          "weapon",
+          "engage"
+         ],
+         "luecken": [
+          "apologize",
+          "action figure",
+          "disappointing"
+         ],
+         "schnitt": 3.41,
+         "textstufe": 3.23,
+         "textmass": {
+          "woerter": 86,
+          "satzlaenge": 12.3,
+          "lesbarkeit": 89.1,
+          "grad": 3.9,
+          "nebensaetze": 0.57
+         }
+        },
+        "t1B": {
+         "woerter": [
+          "picnic",
+          "damaged",
+          "survive",
+          "attic",
+          "valuable",
+          "adopt",
+          "cannon",
+          "worthless",
+          "belong to",
+          "campsite",
+          "fragile",
+          "sailor",
+          "engage",
+          "weapon",
+          "get rid of"
+         ],
+         "luecken": [
+          "get rid of",
+          "weapon",
+          "fragile"
+         ],
+         "schnitt": 1.79,
+         "textstufe": 0.86,
+         "textmass": {
+          "woerter": 60,
+          "satzlaenge": 8.6,
+          "lesbarkeit": 102.3,
+          "grad": 1.1,
+          "nebensaetze": 0.0
+         }
+        },
+        "t2A": {
+         "woerter": [
+          "look forward to",
+          "old-fashioned",
+          "memorize",
+          "memory stick",
+          "afterwards",
+          "smelly",
+          "unpopular",
+          "dramatically",
+          "useless",
+          "beg",
+          "childhood",
+          "eventful",
+          "graceful",
+          "regret",
+          "civil war"
+         ],
+         "luecken": [
+          "look forward to",
+          "memory stick",
+          "old-fashioned"
+         ],
+         "schnitt": 2.95,
+         "textstufe": 3.6,
+         "textmass": {
+          "woerter": 79,
+          "satzlaenge": 13.2,
+          "lesbarkeit": 73.5,
+          "grad": 6.3,
+          "nebensaetze": 0.33
+         }
+        },
+        "t2B": {
+         "woerter": [
+          "teddy bear",
+          "capsule",
+          "on board",
+          "object",
+          "fisherman",
+          "perform",
+          "explosive",
+          "hook",
+          "meanwhile",
+          "beg",
+          "childhood",
+          "eventful",
+          "graceful",
+          "regret",
+          "dramatically"
+         ],
+         "luecken": [
+          "beg",
+          "childhood",
+          "eventful"
+         ],
+         "schnitt": 1.98,
+         "textstufe": 1.07,
+         "textmass": {
+          "woerter": 57,
+          "satzlaenge": 8.1,
+          "lesbarkeit": 96.2,
+          "grad": 1.9,
+          "nebensaetze": 0.14
+         }
+        }
+       },
+       "pruefungen": [
+        {
+         "teil": 1,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "orphanage",
+           "de": "Waisenhaus",
+           "luecke": false,
+           "score": 4.1
+          },
+          {
+           "en": "thankfully",
+           "de": "glücklicherweise",
+           "luecke": false,
+           "score": 4.0
+          },
+          {
+           "en": "treasure",
+           "de": "schätzen",
+           "luecke": false,
+           "score": 3.7
+          },
+          {
+           "en": "come across",
+           "de": "auf etw. stoßen",
+           "luecke": false,
+           "score": 3.6
+          },
+          {
+           "en": "desperately",
+           "de": "verzweifelt",
+           "luecke": false,
+           "score": 3.5
+          },
+          {
+           "en": "girlfriend",
+           "de": "Freundin",
+           "luecke": false,
+           "score": 3.4
+          },
+          {
+           "en": "apologize",
+           "de": "sich entschuldigen",
+           "luecke": true,
+           "score": 3.9
+          },
+          {
+           "en": "action figure",
+           "de": "Action-Figur",
+           "luecke": true,
+           "score": 5.2
+          },
+          {
+           "en": "disappointing",
+           "de": "enttäuschend",
+           "luecke": true,
+           "score": 3.8
+          },
+          {
+           "en": "remind of",
+           "de": "jmd. an etw. erinnern",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "instructive",
+           "de": "lehrreich",
+           "luecke": false,
+           "score": 2.8
+          },
+          {
+           "en": "immense",
+           "de": "riesig",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "rotten",
+           "de": "verfault",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "weapon",
+           "de": "Waffe",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "engage",
+           "de": "engagieren",
+           "luecke": false,
+           "score": 2.3
+          }
+         ],
+         "text": "When I was eight, I broke my little brother's favourite toy by accident. I knew I had to {1}, but I was too scared to tell him. It was a small plastic {2} of a football player, and he played with it every day. For a whole week I hid the pieces under my bed. When my mother found them, she was not angry. She said it was {3} that I had lied for so long. That evening I said sorry, and my brother forgave me.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+           "woerter": [
+            {
+             "en": "orphanage",
+             "de": "Waisenhaus"
+            },
+            {
+             "en": "thankfully",
+             "de": "glücklicherweise"
+            },
+            {
+             "en": "treasure",
+             "de": "schätzen"
+            },
+            {
+             "en": "come across",
+             "de": "auf etw. stoßen"
+            },
+            {
+             "en": "desperately",
+             "de": "verzweifelt"
+            },
+            {
+             "en": "girlfriend",
+             "de": "Freundin"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+           "woerter": [
+            {
+             "en": "apologize",
+             "de": "sich entschuldigen"
+            },
+            {
+             "en": "action figure",
+             "de": "Action-Figur"
+            },
+            {
+             "en": "disappointing",
+             "de": "enttäuschend"
+            }
+           ],
+           "text": "When I was eight, I broke my little brother's favourite toy by accident. I knew I had to {1}, but I was too scared to tell him. It was a small plastic {2} of a football player, and he played with it every day. For a whole week I hid the pieces under my bed. When my mother found them, she was not angry. She said it was {3} that I had lied for so long. That evening I said sorry, and my brother forgave me.",
+           "bank": [
+            "Action-Figur",
+            "enttäuschend",
+            "sich entschuldigen"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "remind of",
+             "de": "jmd. an etw. erinnern"
+            },
+            {
+             "en": "instructive",
+             "de": "lehrreich"
+            },
+            {
+             "en": "immense",
+             "de": "riesig"
+            }
+           ],
+           "items": [
+            {
+             "en": "remind of",
+             "richtig": 3,
+             "saetze": [
+              "I always remind of my keys when I leave the house.",
+              "She reminded of the answer during the test.",
+              "This song reminds me of our holiday in Italy."
+             ]
+            },
+            {
+             "en": "instructive",
+             "richtig": 1,
+             "saetze": [
+              "The museum tour was very instructive, and we learned a lot.",
+              "The soup was so instructive that I ate two bowls.",
+              "My little brother is instructive and never sits still."
+             ]
+            },
+            {
+             "en": "immense",
+             "richtig": 2,
+             "saetze": [
+              "The ant was so immense that I could hardly see it.",
+              "The old castle has an immense hall with a high ceiling.",
+              "Please speak immense, the baby is sleeping."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "rotten",
+             "de": "verfault"
+            },
+            {
+             "en": "weapon",
+             "de": "Waffe"
+            },
+            {
+             "en": "engage",
+             "de": "engagieren"
+            }
+           ],
+           "items": [
+            {
+             "en": "rotten",
+             "umschreibung": "gone bad and soft, so that you cannot eat it any more"
+            },
+            {
+             "en": "weapon",
+             "umschreibung": "a thing such as a gun or a knife that people use to fight"
+            },
+            {
+             "en": "engage",
+             "umschreibung": "to take part in something and put time and energy into it"
+            }
+           ]
+          }
+         ],
+         "blatt": "Unit01_V3_Test_PartI_NiveauA.docx",
+         "loesung": "Unit01_V3_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V3_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          82,
+          95
+         ]
+        },
+        {
+         "teil": 1,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "picnic",
+           "de": "Picknick",
+           "luecke": false,
+           "score": 0.0
+          },
+          {
+           "en": "damaged",
+           "de": "beschädigt",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "survive",
+           "de": "überleben",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "attic",
+           "de": "Dachboden",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "valuable",
+           "de": "wertvoll",
+           "luecke": false,
+           "score": 1.6
+          },
+          {
+           "en": "adopt",
+           "de": "adoptieren",
+           "luecke": false,
+           "score": 1.8
+          },
+          {
+           "en": "get rid of",
+           "de": "los werden",
+           "luecke": true,
+           "score": 2.5
+          },
+          {
+           "en": "weapon",
+           "de": "Waffe",
+           "luecke": true,
+           "score": 2.4
+          },
+          {
+           "en": "fragile",
+           "de": "zerbrechlich",
+           "luecke": true,
+           "score": 2.2
+          },
+          {
+           "en": "cannon",
+           "de": "Kanone",
+           "luecke": false,
+           "score": 1.8
+          },
+          {
+           "en": "worthless",
+           "de": "wertlos",
+           "luecke": false,
+           "score": 1.9
+          },
+          {
+           "en": "belong to",
+           "de": "gehören",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "campsite",
+           "de": "Zeltplatz",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "sailor",
+           "de": "Matrose",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "engage",
+           "de": "engagieren",
+           "luecke": false,
+           "score": 2.3
+          }
+         ],
+         "text": "Last spring we cleaned out our garage. My dad wanted to {1} all the old things. In one box we found a knight's sword. It was a real {2} from a museum sale. My mum found some old glasses too. They were very {3}, so we held them with care. In the end we kept the sword and the glasses.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+           "woerter": [
+            {
+             "en": "picnic",
+             "de": "Picknick"
+            },
+            {
+             "en": "damaged",
+             "de": "beschädigt"
+            },
+            {
+             "en": "survive",
+             "de": "überleben"
+            },
+            {
+             "en": "attic",
+             "de": "Dachboden"
+            },
+            {
+             "en": "valuable",
+             "de": "wertvoll"
+            },
+            {
+             "en": "adopt",
+             "de": "adoptieren"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+           "woerter": [
+            {
+             "en": "get rid of",
+             "de": "los werden"
+            },
+            {
+             "en": "weapon",
+             "de": "Waffe"
+            },
+            {
+             "en": "fragile",
+             "de": "zerbrechlich"
+            }
+           ],
+           "text": "Last spring we cleaned out our garage. My dad wanted to {1} all the old things. In one box we found a knight's sword. It was a real {2} from a museum sale. My mum found some old glasses too. They were very {3}, so we held them with care. In the end we kept the sword and the glasses.",
+           "bank": [
+            "zerbrechlich",
+            "los werden",
+            "Waffe"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "cannon",
+             "de": "Kanone"
+            },
+            {
+             "en": "worthless",
+             "de": "wertlos"
+            },
+            {
+             "en": "belong to",
+             "de": "gehören"
+            }
+           ],
+           "items": [
+            {
+             "en": "cannon",
+             "richtig": 2,
+             "saetze": [
+              "I drink my tea from a cannon every morning.",
+              "The old ship had a cannon on each side.",
+              "She put the cannon on her head because it was cold."
+             ]
+            },
+            {
+             "en": "worthless",
+             "richtig": 3,
+             "saetze": [
+              "This ring is worthless, so we keep it in a safe.",
+              "The worthless doctor saved many lives.",
+              "The old coin looked nice, but it was worthless."
+             ]
+            },
+            {
+             "en": "belong to",
+             "richtig": 1,
+             "saetze": [
+              "This bag belongs to my sister.",
+              "We belong to the cinema every Friday.",
+              "Please belong to the bus quickly."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "campsite",
+             "de": "Zeltplatz"
+            },
+            {
+             "en": "sailor",
+             "de": "Matrose"
+            },
+            {
+             "en": "engage",
+             "de": "engagieren"
+            }
+           ],
+           "items": [
+            {
+             "en": "campsite",
+             "umschreibung": "a place where people put up their tents for the night"
+            },
+            {
+             "en": "sailor",
+             "umschreibung": "a person who works on a ship"
+            },
+            {
+             "en": "engage",
+             "umschreibung": "to get involved in something and help actively"
+            }
+           ]
+          }
+         ],
+         "blatt": "Unit01_V3_Test_PartI_NiveauB.docx",
+         "loesung": "Unit01_V3_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V3_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          76,
+          83
+         ]
+        },
+        {
+         "teil": 2,
+         "niveau": "A",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "memorize",
+           "de": "sich etw. merken",
+           "luecke": false,
+           "score": 3.2
+          },
+          {
+           "en": "afterwards",
+           "de": "danach",
+           "luecke": false,
+           "score": 3.0
+          },
+          {
+           "en": "smelly",
+           "de": "stinkend",
+           "luecke": false,
+           "score": 2.9
+          },
+          {
+           "en": "unpopular",
+           "de": "unbeliebt",
+           "luecke": false,
+           "score": 2.8
+          },
+          {
+           "en": "dramatically",
+           "de": "dramatisch",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "useless",
+           "de": "nutzlos",
+           "luecke": false,
+           "score": 2.7
+          },
+          {
+           "en": "look forward to",
+           "de": "sich auf etw. freuen",
+           "luecke": true,
+           "score": 4.3
+          },
+          {
+           "en": "memory stick",
+           "de": "Speicherstick",
+           "luecke": true,
+           "score": 3.1
+          },
+          {
+           "en": "old-fashioned",
+           "de": "altmodisch",
+           "luecke": true,
+           "score": 4.1
+          },
+          {
+           "en": "beg",
+           "de": "betteln",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "childhood",
+           "de": "Kindheit",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "eventful",
+           "de": "ereignisreich",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "graceful",
+           "de": "elegant",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "regret",
+           "de": "bedauern",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "civil war",
+           "de": "Bürgerkrieg",
+           "luecke": false,
+           "score": 2.4
+          }
+         ],
+         "text": "Every summer my sister and I {1} the week at our grandparents' farm. This year I brought a {2} with all my holiday photos from last year. My grandfather laughed, because he still prints every picture on paper. His camera is so {3} that you can hardly buy films for it anymore. In the evening we sat together and looked at my pictures on his computer. He said they were nice, but he still likes his thick albums best.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+           "woerter": [
+            {
+             "en": "memorize",
+             "de": "sich etw. merken"
+            },
+            {
+             "en": "afterwards",
+             "de": "danach"
+            },
+            {
+             "en": "smelly",
+             "de": "stinkend"
+            },
+            {
+             "en": "unpopular",
+             "de": "unbeliebt"
+            },
+            {
+             "en": "dramatically",
+             "de": "dramatisch"
+            },
+            {
+             "en": "useless",
+             "de": "nutzlos"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+           "woerter": [
+            {
+             "en": "look forward to",
+             "de": "sich auf etw. freuen"
+            },
+            {
+             "en": "memory stick",
+             "de": "Speicherstick"
+            },
+            {
+             "en": "old-fashioned",
+             "de": "altmodisch"
+            }
+           ],
+           "text": "Every summer my sister and I {1} the week at our grandparents' farm. This year I brought a {2} with all my holiday photos from last year. My grandfather laughed, because he still prints every picture on paper. His camera is so {3} that you can hardly buy films for it anymore. In the evening we sat together and looked at my pictures on his computer. He said they were nice, but he still likes his thick albums best.",
+           "bank": [
+            "altmodisch",
+            "sich auf etw. freuen",
+            "Speicherstick"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "beg",
+             "de": "betteln"
+            },
+            {
+             "en": "childhood",
+             "de": "Kindheit"
+            },
+            {
+             "en": "eventful",
+             "de": "ereignisreich"
+            }
+           ],
+           "items": [
+            {
+             "en": "beg",
+             "richtig": 2,
+             "saetze": [
+              "I begged the answer in my maths book.",
+              "The dog begged for food under the table.",
+              "She begs a new song every evening on stage."
+             ]
+            },
+            {
+             "en": "childhood",
+             "richtig": 3,
+             "saetze": [
+              "My childhood starts at eight o'clock tomorrow.",
+              "He put on his childhood because it was raining.",
+              "I spent most of my childhood in a small village."
+             ]
+            },
+            {
+             "en": "eventful",
+             "richtig": 1,
+             "saetze": [
+              "It was an eventful day: we missed the bus and found a lost dog.",
+              "The glass is eventful, so please fill it with water.",
+              "Nothing happened all day; it was really eventful."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "graceful",
+             "de": "elegant"
+            },
+            {
+             "en": "regret",
+             "de": "bedauern"
+            },
+            {
+             "en": "civil war",
+             "de": "Bürgerkrieg"
+            }
+           ],
+           "items": [
+            {
+             "en": "graceful",
+             "umschreibung": "moving in a smooth and beautiful way, like a dancer"
+            },
+            {
+             "en": "regret",
+             "umschreibung": "to feel sorry about something you did or did not do"
+            },
+            {
+             "en": "civil war",
+             "umschreibung": "fighting between groups of people who live in the same country"
+            }
+           ]
+          }
+         ],
+         "blatt": "Unit01_V3_Test_PartII_NiveauA.docx",
+         "loesung": "Unit01_V3_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V3_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          85,
+          92
+         ]
+        },
+        {
+         "teil": 2,
+         "niveau": "B",
+         "fassung": 1,
+         "woerter": [
+          {
+           "en": "teddy bear",
+           "de": "Teddybär",
+           "luecke": false,
+           "score": 0.2
+          },
+          {
+           "en": "capsule",
+           "de": "Kapsel",
+           "luecke": false,
+           "score": 1.0
+          },
+          {
+           "en": "on board",
+           "de": "an Bord",
+           "luecke": false,
+           "score": 1.0
+          },
+          {
+           "en": "object",
+           "de": "Gegenstand",
+           "luecke": false,
+           "score": 1.1
+          },
+          {
+           "en": "fisherman",
+           "de": "Angler, Fischer",
+           "luecke": false,
+           "score": 1.8
+          },
+          {
+           "en": "perform",
+           "de": "spielen, auftreten",
+           "luecke": false,
+           "score": 1.9
+          },
+          {
+           "en": "beg",
+           "de": "betteln",
+           "luecke": true,
+           "score": 2.6
+          },
+          {
+           "en": "childhood",
+           "de": "Kindheit",
+           "luecke": true,
+           "score": 2.6
+          },
+          {
+           "en": "eventful",
+           "de": "ereignisreich",
+           "luecke": true,
+           "score": 2.6
+          },
+          {
+           "en": "explosive",
+           "de": "Sprengstoff",
+           "luecke": false,
+           "score": 2.2
+          },
+          {
+           "en": "hook",
+           "de": "Haken",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "meanwhile",
+           "de": "inzwischen",
+           "luecke": false,
+           "score": 2.4
+          },
+          {
+           "en": "graceful",
+           "de": "elegant",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "regret",
+           "de": "bedauern",
+           "luecke": false,
+           "score": 2.6
+          },
+          {
+           "en": "dramatically",
+           "de": "dramatisch",
+           "luecke": false,
+           "score": 2.7
+          }
+         ],
+         "text": "My grandmother often tells stories about the past. As a child, she had to {1} her parents for a bike. She got one when she was ten. She says her {2} was simple but happy. Her life has been very {3}. She has lived in four countries. Now she is writing it all down in a book.",
+         "aufgaben": [
+          {
+           "art": "uebersetzen",
+           "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+           "woerter": [
+            {
+             "en": "teddy bear",
+             "de": "Teddybär"
+            },
+            {
+             "en": "capsule",
+             "de": "Kapsel"
+            },
+            {
+             "en": "on board",
+             "de": "an Bord"
+            },
+            {
+             "en": "object",
+             "de": "Gegenstand"
+            },
+            {
+             "en": "fisherman",
+             "de": "Angler, Fischer"
+            },
+            {
+             "en": "perform",
+             "de": "spielen, auftreten"
+            }
+           ]
+          },
+          {
+           "art": "luecken",
+           "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+           "woerter": [
+            {
+             "en": "beg",
+             "de": "betteln"
+            },
+            {
+             "en": "childhood",
+             "de": "Kindheit"
+            },
+            {
+             "en": "eventful",
+             "de": "ereignisreich"
+            }
+           ],
+           "text": "My grandmother often tells stories about the past. As a child, she had to {1} her parents for a bike. She got one when she was ten. She says her {2} was simple but happy. Her life has been very {3}. She has lived in four countries. Now she is writing it all down in a book.",
+           "bank": [
+            "betteln",
+            "ereignisreich",
+            "Kindheit"
+           ]
+          },
+          {
+           "art": "wortwahl",
+           "instruction": "3)  Tick the sentence that uses the word correctly. ",
+           "woerter": [
+            {
+             "en": "explosive",
+             "de": "Sprengstoff"
+            },
+            {
+             "en": "hook",
+             "de": "Haken"
+            },
+            {
+             "en": "meanwhile",
+             "de": "inzwischen"
+            }
+           ],
+           "items": [
+            {
+             "en": "explosive",
+             "richtig": 3,
+             "saetze": [
+              "I put some explosive on my bread for breakfast.",
+              "The baby slept on a soft explosive.",
+              "The police found explosives in the old tunnel."
+             ]
+            },
+            {
+             "en": "hook",
+             "richtig": 1,
+             "saetze": [
+              "Hang your coat on the hook by the door.",
+              "I wrote a hook to my friend in Spain.",
+              "We ate a big hook for lunch."
+             ]
+            },
+            {
+             "en": "meanwhile",
+             "richtig": 2,
+             "saetze": [
+              "Meanwhile is my favourite day of the week.",
+              "I cooked dinner. Meanwhile, my brother set the table.",
+              "She has a meanwhile in her bag."
+             ]
+            }
+           ]
+          },
+          {
+           "art": "definition",
+           "instruction": "4)  Read the description and write the word it describes. ",
+           "woerter": [
+            {
+             "en": "graceful",
+             "de": "elegant"
+            },
+            {
+             "en": "regret",
+             "de": "bedauern"
+            },
+            {
+             "en": "dramatically",
+             "de": "dramatisch"
+            }
+           ],
+           "items": [
+            {
+             "en": "graceful",
+             "umschreibung": "moving in a soft and beautiful way"
+            },
+            {
+             "en": "regret",
+             "umschreibung": "to wish that you had not done something"
+            },
+            {
+             "en": "dramatically",
+             "umschreibung": "in a very big and sudden way"
+            }
+           ]
+          }
+         ],
+         "blatt": "Unit01_V3_Test_PartII_NiveauB.docx",
+         "loesung": "Unit01_V3_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V3_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          75,
+          83
+         ]
+        }
+       ],
+       "liste_blatt": "Unit01_V3_VocabularyList.docx",
+       "wiederholung": {
+        "1": {
+         "quellen": [
+          {
+           "paket": "unit_08_englishplus3.json",
+           "teil": 2,
+           "unit": 8,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_08_englishplus3.json",
+           "teil": 1,
+           "unit": 8,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_englishplus3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_englishplus3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 1,
+           "lehrmittel": "EnglishPlus3",
+           "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
+           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+           "folge": false
+          }
+         ],
+         "luecke": "Unmittelbar vor Unit 1 · Part I kommt Starter Unit · Part II - dazu gibt es in der Werkstatt keine Liste."
+        },
+        "2": {
+         "quellen": [
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
+           "grund": "Part I derselben Liste V3 - kommt unmittelbar vor Part II",
+           "folge": true
+          },
+          {
+           "paket": "unit_01_v2.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 2,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V2",
+           "grund": "Part I der Liste V2 dieser Unit - eine andere Liste als die geprüfte",
            "folge": true
           },
           {
@@ -8117,6 +10096,16 @@
            "folge": true
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V3: die Vokabelliste wurde gebaut",
+           "folge": true
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -8125,6 +10114,16 @@
            "bezeichnung": "Unit 1 · Part II · V2",
            "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V2: die Vokabelliste wurde gebaut",
            "folge": true
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
           },
           {
            "paket": "unit_01_v2.json",
@@ -8202,6 +10201,16 @@
            "folge": true
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -8218,6 +10227,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -8301,6 +10320,16 @@
          "folge": true
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V3: die Vokabelliste wurde gebaut",
+         "folge": true
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -8309,6 +10338,16 @@
          "bezeichnung": "Unit 1 · Part II · V2",
          "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V2: die Vokabelliste wurde gebaut",
          "folge": true
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
         },
         {
          "paket": "unit_01_v2.json",
@@ -11765,6 +13804,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -11781,6 +13830,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -11880,6 +13939,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -11896,6 +13965,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -11948,16 +14027,6 @@
            "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
            "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
            "folge": false
-          },
-          {
-           "paket": "unit_01_englishplus3.json",
-           "teil": 1,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
           }
          ],
          "luecke": ""
@@ -11989,6 +14058,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -12005,6 +14084,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -14953,6 +17042,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -14969,6 +17068,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -15009,26 +17118,6 @@
            "version": 1,
            "lehrmittel": "EnglishPlus3",
            "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
-          },
-          {
-           "paket": "unit_01_englishplus3.json",
-           "teil": 2,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
-          },
-          {
-           "paket": "unit_01_englishplus3.json",
-           "teil": 1,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
            "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
            "folge": false
           }
@@ -15088,6 +17177,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -15104,6 +17203,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -15134,26 +17243,6 @@
            "version": 1,
            "lehrmittel": "EnglishPlus3",
            "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
-          },
-          {
-           "paket": "unit_08_englishplus3.json",
-           "teil": 1,
-           "unit": 8,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
-          },
-          {
-           "paket": "unit_01_englishplus3.json",
-           "teil": 2,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
            "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
            "folge": false
           }
@@ -15207,6 +17296,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -15223,6 +17322,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -15263,26 +17372,6 @@
          "version": 1,
          "lehrmittel": "EnglishPlus3",
          "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 2,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
          "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
@@ -18221,6 +20310,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -18237,6 +20336,16 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           },
@@ -18258,26 +20367,6 @@
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part I · V1",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_08_englishplus3.json",
-           "teil": 2,
-           "unit": 8,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-           "folge": false
-          },
-          {
-           "paket": "unit_08_englishplus3.json",
-           "teil": 1,
-           "unit": 8,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
            "folge": false
           }
          ],
@@ -18356,6 +20445,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -18376,6 +20475,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 1,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part I · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 1,
            "unit": 1,
@@ -18383,26 +20492,6 @@
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part I · V2",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_01.json",
-           "teil": 1,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part I · V1",
-           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_08_englishplus3.json",
-           "teil": 2,
-           "unit": 8,
-           "version": 1,
-           "lehrmittel": "EnglishPlus3",
-           "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-           "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
            "folge": false
           }
          ],
@@ -18475,6 +20564,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -18491,6 +20590,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -18512,26 +20621,6 @@
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part I · V1",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 2,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 1,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
        ],
@@ -21409,6 +23498,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -21429,22 +23528,12 @@
            "folge": false
           },
           {
-           "paket": "unit_01_v2.json",
+           "paket": "unit_01_v3.json",
            "teil": 1,
            "unit": 1,
-           "version": 2,
+           "version": 3,
            "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part I · V2",
-           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_01.json",
-           "teil": 1,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part I · V1",
+           "bezeichnung": "Unit 1 · Part I · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           }
@@ -21544,6 +23633,16 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
@@ -21560,16 +23659,6 @@
            "version": 1,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V1",
-           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_01_v2.json",
-           "teil": 1,
-           "unit": 1,
-           "version": 2,
-           "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part I · V2",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           }
@@ -21663,6 +23752,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -21683,22 +23782,12 @@
          "folge": false
         },
         {
-         "paket": "unit_01_v2.json",
+         "paket": "unit_01_v3.json",
          "teil": 1,
          "unit": 1,
-         "version": 2,
+         "version": 3,
          "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V2",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V1",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -24197,22 +26286,22 @@
            "folge": false
           },
           {
+           "paket": "unit_01_v3.json",
+           "teil": 2,
+           "unit": 1,
+           "version": 3,
+           "lehrmittel": "",
+           "bezeichnung": "Unit 1 · Part II · V3",
+           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+           "folge": false
+          },
+          {
            "paket": "unit_01_v2.json",
            "teil": 2,
            "unit": 1,
            "version": 2,
            "lehrmittel": "",
            "bezeichnung": "Unit 1 · Part II · V2",
-           "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-           "folge": false
-          },
-          {
-           "paket": "unit_01.json",
-           "teil": 2,
-           "unit": 1,
-           "version": 1,
-           "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part II · V1",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           }
@@ -24332,12 +26421,12 @@
            "folge": false
           },
           {
-           "paket": "unit_01_v2.json",
+           "paket": "unit_01_v3.json",
            "teil": 2,
            "unit": 1,
-           "version": 2,
+           "version": 3,
            "lehrmittel": "",
-           "bezeichnung": "Unit 1 · Part II · V2",
+           "bezeichnung": "Unit 1 · Part II · V3",
            "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
            "folge": false
           }
@@ -24451,22 +26540,22 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
          "version": 2,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V2",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01.json",
-         "teil": 2,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part II · V1",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -53949,6 +56038,16 @@
          "folge": true
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "Part I der Liste V3 dieser Unit - eine andere Liste als die geprüfte",
+         "folge": true
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 1,
          "unit": 1,
@@ -55599,6 +57698,1966 @@
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part I · V2",
          "grund": "Part I derselben Liste V2 - kommt unmittelbar vor Part II",
+         "folge": true
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "Part I der Liste V3 dieser Unit - eine andere Liste als die geprüfte",
+         "folge": true
+        },
+        {
+         "paket": "unit_01.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 1,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V1",
+         "grund": "Part I der Liste V1 dieser Unit - eine andere Liste als die geprüfte",
+         "folge": true
+        },
+        {
+         "paket": "unit_08_englishplus3.json",
+         "teil": 2,
+         "unit": 8,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_08_englishplus3.json",
+         "teil": 1,
+         "unit": 8,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_englishplus3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_englishplus3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        }
+       ],
+       "luecke": ""
+      }
+     }
+    },
+    {
+     "version": 3,
+     "datei": "unit_01_v3.json",
+     "abdruck": "29dddb2b73a7",
+     "erzeugt": "2026-09-29",
+     "aufgewertet": [],
+     "offen": 0,
+     "fassungen": [],
+     "woerter": [
+      {
+       "nr": 1,
+       "test": 1,
+       "en": "desperately",
+       "de": "verzweifelt",
+       "pos": "adv",
+       "satz": "He searched desperately for the ring he had lost.",
+       "score": 3.5,
+       "zipf": 3.98,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 2,
+       "test": 1,
+       "en": "orphanage",
+       "de": "Waisenhaus",
+       "pos": "noun",
+       "satz": "She spent her first six years in an orphanage.",
+       "score": 4.1,
+       "zipf": 3.38,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 3,
+       "test": 1,
+       "en": "adopt",
+       "de": "adoptieren",
+       "pos": "verb",
+       "satz": "They decided to adopt a child from another country.",
+       "score": 1.8,
+       "zipf": 4.19,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 4,
+       "test": 1,
+       "en": "treasure",
+       "de": "schätzen",
+       "pos": "verb",
+       "satz": "I treasure the letters my grandfather sent me.",
+       "score": 3.7,
+       "zipf": 4.17,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 5,
+       "test": 1,
+       "en": "immense",
+       "de": "riesig",
+       "pos": "adj",
+       "satz": "The old library holds an immense collection of maps.",
+       "score": 2.7,
+       "zipf": 3.88,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 6,
+       "test": 1,
+       "en": "apologize",
+       "de": "sich entschuldigen",
+       "pos": "verb",
+       "satz": "He wrote a letter to apologize for the broken vase.",
+       "score": 3.9,
+       "zipf": 4.16,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 7,
+       "test": 1,
+       "en": "damaged",
+       "de": "beschädigt",
+       "pos": "adj",
+       "satz": "The photograph was badly damaged by the rain.",
+       "score": 1.1,
+       "zipf": 4.39,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 8,
+       "test": 1,
+       "en": "disappointing",
+       "de": "enttäuschend",
+       "pos": "adj",
+       "satz": "The ending of the film was rather disappointing.",
+       "score": 3.8,
+       "zipf": 4.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 9,
+       "test": 1,
+       "en": "fragile",
+       "de": "zerbrechlich",
+       "pos": "adj",
+       "satz": "Please wrap the glass carefully, because it is fragile.",
+       "score": 2.2,
+       "zipf": 3.86,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 10,
+       "test": 1,
+       "en": "rotten",
+       "de": "verfault",
+       "pos": "adj",
+       "satz": "We found rotten apples at the back of the box.",
+       "score": 2.7,
+       "zipf": 3.81,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 11,
+       "test": 1,
+       "en": "valuable",
+       "de": "wertvoll",
+       "pos": "adj",
+       "satz": "Grandfather said the stamp was more valuable than the album.",
+       "score": 1.6,
+       "zipf": 4.51,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 12,
+       "test": 1,
+       "en": "worthless",
+       "de": "wertlos",
+       "pos": "adj",
+       "satz": "Without its original box, the toy is almost worthless.",
+       "score": 1.9,
+       "zipf": 3.82,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 13,
+       "test": 1,
+       "en": "action figure",
+       "de": "Action-Figur",
+       "pos": "noun",
+       "satz": "My brother still keeps his old action figures in a box.",
+       "score": 5.2,
+       "zipf": 4.47,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 14,
+       "test": 1,
+       "en": "document",
+       "de": "Dokument",
+       "pos": "noun",
+       "satz": "Grandpa found an old document with his parents' names.",
+       "score": 0.1,
+       "zipf": 4.5,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 15,
+       "test": 1,
+       "en": "girlfriend",
+       "de": "Freundin",
+       "pos": "noun",
+       "satz": "He showed the silver ring to his girlfriend.",
+       "score": 3.4,
+       "zipf": 4.68,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 13"
+      },
+      {
+       "nr": 16,
+       "test": 1,
+       "en": "thankfully",
+       "de": "glücklicherweise",
+       "pos": "adv",
+       "satz": "Thankfully, nothing was broken inside the heavy parcel.",
+       "score": 4.0,
+       "zipf": 3.8,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 17,
+       "test": 1,
+       "en": "theme park",
+       "de": "Themenpark",
+       "pos": "noun",
+       "satz": "We spent the whole day at a theme park.",
+       "score": 0.0,
+       "zipf": 4.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 18,
+       "test": 1,
+       "en": "campsite",
+       "de": "Zeltplatz",
+       "pos": "noun",
+       "satz": "Our tent stood at the edge of the campsite.",
+       "score": 2.2,
+       "zipf": 3.09,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 19,
+       "test": 1,
+       "en": "picnic",
+       "de": "Picknick",
+       "pos": "noun",
+       "satz": "We had a picnic beside the lake last summer.",
+       "score": 0.0,
+       "zipf": 3.8,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 20,
+       "test": 1,
+       "en": "sailor",
+       "de": "Matrose",
+       "pos": "noun",
+       "satz": "His grandfather worked as a sailor for thirty years.",
+       "score": 2.2,
+       "zipf": 3.78,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 21,
+       "test": 1,
+       "en": "come across",
+       "de": "auf etw. stoßen",
+       "pos": "verb",
+       "satz": "I came across an old diary yesterday.",
+       "score": 3.6,
+       "zipf": 4.65,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 16"
+      },
+      {
+       "nr": 22,
+       "test": 1,
+       "en": "cannon",
+       "de": "Kanone",
+       "pos": "noun",
+       "satz": "An old cannon still stands outside the castle gate.",
+       "score": 1.8,
+       "zipf": 4.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 23,
+       "test": 1,
+       "en": "weapon",
+       "de": "Waffe",
+       "pos": "noun",
+       "satz": "The museum shows an old weapon from 1850.",
+       "score": 2.4,
+       "zipf": 4.54,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 24,
+       "test": 1,
+       "en": "survive",
+       "de": "überleben",
+       "pos": "verb",
+       "satz": "Only a few letters survived the big fire.",
+       "score": 1.1,
+       "zipf": 4.52,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 25,
+       "test": 1,
+       "en": "attic",
+       "de": "Dachboden",
+       "pos": "noun",
+       "satz": "We found a dusty suitcase up in the attic.",
+       "score": 1.6,
+       "zipf": 3.63,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 26,
+       "test": 1,
+       "en": "belong to",
+       "de": "gehören",
+       "pos": "verb",
+       "satz": "All these letters belong to my grandmother.",
+       "score": 2.2,
+       "zipf": 3.78,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 27,
+       "test": 1,
+       "en": "engage",
+       "de": "engagieren",
+       "pos": "verb",
+       "satz": "Our art teacher tried to engage the whole class.",
+       "score": 2.3,
+       "zipf": 4.36,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 28,
+       "test": 1,
+       "en": "remind of",
+       "de": "jmd. an etw. erinnern",
+       "pos": "verb",
+       "satz": "These songs remind me of our summer in Italy.",
+       "score": 3.0,
+       "zipf": 3.77,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 29,
+       "test": 1,
+       "en": "get rid of",
+       "de": "los werden",
+       "pos": "verb",
+       "satz": "It was hard to get rid of the old furniture.",
+       "score": 2.5,
+       "zipf": 3.9,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 9"
+      },
+      {
+       "nr": 30,
+       "test": 1,
+       "en": "instructive",
+       "de": "lehrreich",
+       "pos": "adj",
+       "satz": "The visit to the war museum was very instructive.",
+       "score": 2.8,
+       "zipf": 2.98,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1"
+      },
+      {
+       "nr": 1,
+       "test": 2,
+       "en": "graceful",
+       "de": "elegant",
+       "pos": "adj",
+       "satz": "Her grandmother was still a graceful dancer at seventy.",
+       "score": 2.6,
+       "zipf": 3.39,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 2,
+       "test": 2,
+       "en": "romantic",
+       "de": "romantisch",
+       "pos": "adj",
+       "satz": "They chose a romantic spot beside the old bridge.",
+       "score": 0.0,
+       "zipf": 4.43,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 3,
+       "test": 2,
+       "en": "dramatically",
+       "de": "dramatisch",
+       "pos": "adv",
+       "satz": "The value of those old coins rose dramatically.",
+       "score": 2.7,
+       "zipf": 3.95,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 4,
+       "test": 2,
+       "en": "beg",
+       "de": "betteln",
+       "pos": "verb",
+       "satz": "The boy had to beg for food on the streets.",
+       "score": 2.6,
+       "zipf": 4.05,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 5,
+       "test": 2,
+       "en": "on board",
+       "de": "an Bord",
+       "pos": "noun",
+       "satz": "There were forty people on board the ship.",
+       "score": 1.0,
+       "zipf": 4.64,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 10"
+      },
+      {
+       "nr": 6,
+       "test": 2,
+       "en": "emotionally",
+       "de": "emotional",
+       "pos": "adv",
+       "satz": "She reacted emotionally when she saw those old photos.",
+       "score": 0.7,
+       "zipf": 4.04,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 7,
+       "test": 2,
+       "en": "waterfall",
+       "de": "Wasserfall",
+       "pos": "noun",
+       "satz": "We took a photo beside the waterfall in the valley.",
+       "score": 0.3,
+       "zipf": 3.54,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 11"
+      },
+      {
+       "nr": 8,
+       "test": 2,
+       "en": "fashionable",
+       "de": "modisch",
+       "pos": "adj",
+       "satz": "That coat was fashionable when my mother was young.",
+       "score": 3.8,
+       "zipf": 3.65,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 9,
+       "test": 2,
+       "en": "historic",
+       "de": "historisch",
+       "pos": "adj",
+       "satz": "The historic bridge in our town is over 500 years old.",
+       "score": 0.1,
+       "zipf": 4.49,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 10,
+       "test": 2,
+       "en": "old-fashioned",
+       "de": "altmodisch",
+       "pos": "adj",
+       "satz": "My uncle still writes with an old-fashioned pen.",
+       "score": 4.1,
+       "zipf": 3.93,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 11,
+       "test": 2,
+       "en": "unpopular",
+       "de": "unbeliebt",
+       "pos": "adj",
+       "satz": "His decision was unpopular with the whole class.",
+       "score": 2.8,
+       "zipf": 3.72,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 12,
+       "test": 2,
+       "en": "useless",
+       "de": "nutzlos",
+       "pos": "adj",
+       "satz": "The old camera is useless without its battery.",
+       "score": 2.7,
+       "zipf": 4.22,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 13,
+       "test": 2,
+       "en": "smelly",
+       "de": "stinkend",
+       "pos": "adj",
+       "satz": "He finally threw away the smelly old football boots.",
+       "score": 2.9,
+       "zipf": 3.29,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 14,
+       "test": 2,
+       "en": "capsule",
+       "de": "Kapsel",
+       "pos": "noun",
+       "satz": "We buried a time capsule in the school garden.",
+       "score": 1.0,
+       "zipf": 3.7,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 15,
+       "test": 2,
+       "en": "memory stick",
+       "de": "Speicherstick",
+       "pos": "noun",
+       "satz": "All my holiday photos are saved on a memory stick.",
+       "score": 3.1,
+       "zipf": 4.16,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 12"
+      },
+      {
+       "nr": 16,
+       "test": 2,
+       "en": "fisherman",
+       "de": "Angler, Fischer",
+       "pos": "noun",
+       "satz": "An old fisherman showed us the harbour at dawn.",
+       "score": 1.8,
+       "zipf": 3.49,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 13"
+      },
+      {
+       "nr": 17,
+       "test": 2,
+       "en": "anecdote",
+       "de": "Anekdote",
+       "pos": "noun",
+       "satz": "My aunt told a funny anecdote about her school days.",
+       "score": 0.0,
+       "zipf": 3.2,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 18,
+       "test": 2,
+       "en": "childhood",
+       "de": "Kindheit",
+       "pos": "noun",
+       "satz": "These pictures take me back to my childhood in Wales.",
+       "score": 2.6,
+       "zipf": 4.51,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 19,
+       "test": 2,
+       "en": "memorize",
+       "de": "sich etw. merken",
+       "pos": "verb",
+       "satz": "She had to memorize the long poem before Friday.",
+       "score": 3.2,
+       "zipf": 3.22,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 14"
+      },
+      {
+       "nr": 20,
+       "test": 2,
+       "en": "afterwards",
+       "de": "danach",
+       "pos": "adv",
+       "satz": "We visited the museum and had tea afterwards.",
+       "score": 3.0,
+       "zipf": 4.42,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 21,
+       "test": 2,
+       "en": "eventful",
+       "de": "ereignisreich",
+       "pos": "adj",
+       "satz": "Our journey through Scotland was long and eventful.",
+       "score": 2.6,
+       "zipf": 3.02,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 22,
+       "test": 2,
+       "en": "meanwhile",
+       "de": "inzwischen",
+       "pos": "adv",
+       "satz": "I packed the bags; meanwhile, Tom made the sandwiches.",
+       "score": 2.4,
+       "zipf": 4.48,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 15"
+      },
+      {
+       "nr": 23,
+       "test": 2,
+       "en": "civil war",
+       "de": "Bürgerkrieg",
+       "pos": "noun",
+       "satz": "These letters were written during the civil war.",
+       "score": 2.4,
+       "zipf": 4.33,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 24,
+       "test": 2,
+       "en": "explosive",
+       "de": "Sprengstoff",
+       "pos": "noun",
+       "satz": "The soldiers hid the explosive under the bridge.",
+       "score": 2.2,
+       "zipf": 3.97,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 25,
+       "test": 2,
+       "en": "hook",
+       "de": "Haken",
+       "pos": "noun",
+       "satz": "His coat hangs on a hook behind the door.",
+       "score": 2.4,
+       "zipf": 4.37,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 17"
+      },
+      {
+       "nr": 26,
+       "test": 2,
+       "en": "object",
+       "de": "Gegenstand",
+       "pos": "noun",
+       "satz": "Every object in that box has its own story.",
+       "score": 1.1,
+       "zipf": 4.56,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 27,
+       "test": 2,
+       "en": "teddy bear",
+       "de": "Teddybär",
+       "pos": "noun",
+       "satz": "Her old teddy bear still sits on the shelf.",
+       "score": 0.2,
+       "zipf": 3.28,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 28,
+       "test": 2,
+       "en": "regret",
+       "de": "bedauern",
+       "pos": "verb",
+       "satz": "I regret selling my grandfather's watch last year.",
+       "score": 2.6,
+       "zipf": 4.37,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 29,
+       "test": 2,
+       "en": "look forward to",
+       "de": "sich auf etw. freuen",
+       "pos": "verb",
+       "satz": "We look forward to the summer holidays every year.",
+       "score": 4.3,
+       "zipf": 4.52,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 8"
+      },
+      {
+       "nr": 30,
+       "test": 2,
+       "en": "perform",
+       "de": "spielen, auftreten",
+       "pos": "verb",
+       "satz": "The class will perform a short play tonight.",
+       "score": 1.9,
+       "zipf": 4.66,
+       "quelle": "wortliste",
+       "abschnitt": "Unit 1, S. 9"
+      }
+     ],
+     "echt": {
+      "t1A": {
+       "woerter": [
+        "action figure",
+        "orphanage",
+        "thankfully",
+        "apologize",
+        "disappointing",
+        "treasure",
+        "come across",
+        "desperately",
+        "girlfriend",
+        "remind of",
+        "instructive",
+        "immense",
+        "rotten",
+        "weapon",
+        "engage"
+       ],
+       "luecken": [
+        "apologize",
+        "action figure",
+        "disappointing"
+       ],
+       "schnitt": 3.41,
+       "textstufe": 3.23,
+       "textmass": {
+        "woerter": 86,
+        "satzlaenge": 12.3,
+        "lesbarkeit": 89.1,
+        "grad": 3.9,
+        "nebensaetze": 0.57
+       }
+      },
+      "t1B": {
+       "woerter": [
+        "picnic",
+        "damaged",
+        "survive",
+        "attic",
+        "valuable",
+        "adopt",
+        "cannon",
+        "worthless",
+        "belong to",
+        "campsite",
+        "fragile",
+        "sailor",
+        "engage",
+        "weapon",
+        "get rid of"
+       ],
+       "luecken": [
+        "get rid of",
+        "weapon",
+        "fragile"
+       ],
+       "schnitt": 1.79,
+       "textstufe": 0.86,
+       "textmass": {
+        "woerter": 60,
+        "satzlaenge": 8.6,
+        "lesbarkeit": 102.3,
+        "grad": 1.1,
+        "nebensaetze": 0.0
+       }
+      },
+      "t2A": {
+       "woerter": [
+        "look forward to",
+        "old-fashioned",
+        "memorize",
+        "memory stick",
+        "afterwards",
+        "smelly",
+        "unpopular",
+        "dramatically",
+        "useless",
+        "beg",
+        "childhood",
+        "eventful",
+        "graceful",
+        "regret",
+        "civil war"
+       ],
+       "luecken": [
+        "look forward to",
+        "memory stick",
+        "old-fashioned"
+       ],
+       "schnitt": 2.95,
+       "textstufe": 3.6,
+       "textmass": {
+        "woerter": 79,
+        "satzlaenge": 13.2,
+        "lesbarkeit": 73.5,
+        "grad": 6.3,
+        "nebensaetze": 0.33
+       }
+      },
+      "t2B": {
+       "woerter": [
+        "teddy bear",
+        "capsule",
+        "on board",
+        "object",
+        "fisherman",
+        "perform",
+        "explosive",
+        "hook",
+        "meanwhile",
+        "beg",
+        "childhood",
+        "eventful",
+        "graceful",
+        "regret",
+        "dramatically"
+       ],
+       "luecken": [
+        "beg",
+        "childhood",
+        "eventful"
+       ],
+       "schnitt": 1.98,
+       "textstufe": 1.07,
+       "textmass": {
+        "woerter": 57,
+        "satzlaenge": 8.1,
+        "lesbarkeit": 96.2,
+        "grad": 1.9,
+        "nebensaetze": 0.14
+       }
+      }
+     },
+     "pruefungen": [
+      {
+       "teil": 1,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "orphanage",
+         "de": "Waisenhaus",
+         "luecke": false,
+         "score": 4.1
+        },
+        {
+         "en": "thankfully",
+         "de": "glücklicherweise",
+         "luecke": false,
+         "score": 4.0
+        },
+        {
+         "en": "treasure",
+         "de": "schätzen",
+         "luecke": false,
+         "score": 3.7
+        },
+        {
+         "en": "come across",
+         "de": "auf etw. stoßen",
+         "luecke": false,
+         "score": 3.6
+        },
+        {
+         "en": "desperately",
+         "de": "verzweifelt",
+         "luecke": false,
+         "score": 3.5
+        },
+        {
+         "en": "girlfriend",
+         "de": "Freundin",
+         "luecke": false,
+         "score": 3.4
+        },
+        {
+         "en": "apologize",
+         "de": "sich entschuldigen",
+         "luecke": true,
+         "score": 3.9
+        },
+        {
+         "en": "action figure",
+         "de": "Action-Figur",
+         "luecke": true,
+         "score": 5.2
+        },
+        {
+         "en": "disappointing",
+         "de": "enttäuschend",
+         "luecke": true,
+         "score": 3.8
+        },
+        {
+         "en": "remind of",
+         "de": "jmd. an etw. erinnern",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "instructive",
+         "de": "lehrreich",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "immense",
+         "de": "riesig",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "rotten",
+         "de": "verfault",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "weapon",
+         "de": "Waffe",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "engage",
+         "de": "engagieren",
+         "luecke": false,
+         "score": 2.3
+        }
+       ],
+       "text": "When I was eight, I broke my little brother's favourite toy by accident. I knew I had to {1}, but I was too scared to tell him. It was a small plastic {2} of a football player, and he played with it every day. For a whole week I hid the pieces under my bed. When my mother found them, she was not angry. She said it was {3} that I had lied for so long. That evening I said sorry, and my brother forgave me.",
+       "aufgaben": [
+        {
+         "art": "uebersetzen",
+         "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+         "woerter": [
+          {
+           "en": "orphanage",
+           "de": "Waisenhaus"
+          },
+          {
+           "en": "thankfully",
+           "de": "glücklicherweise"
+          },
+          {
+           "en": "treasure",
+           "de": "schätzen"
+          },
+          {
+           "en": "come across",
+           "de": "auf etw. stoßen"
+          },
+          {
+           "en": "desperately",
+           "de": "verzweifelt"
+          },
+          {
+           "en": "girlfriend",
+           "de": "Freundin"
+          }
+         ]
+        },
+        {
+         "art": "luecken",
+         "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+         "woerter": [
+          {
+           "en": "apologize",
+           "de": "sich entschuldigen"
+          },
+          {
+           "en": "action figure",
+           "de": "Action-Figur"
+          },
+          {
+           "en": "disappointing",
+           "de": "enttäuschend"
+          }
+         ],
+         "text": "When I was eight, I broke my little brother's favourite toy by accident. I knew I had to {1}, but I was too scared to tell him. It was a small plastic {2} of a football player, and he played with it every day. For a whole week I hid the pieces under my bed. When my mother found them, she was not angry. She said it was {3} that I had lied for so long. That evening I said sorry, and my brother forgave me.",
+         "bank": [
+          "Action-Figur",
+          "enttäuschend",
+          "sich entschuldigen"
+         ]
+        },
+        {
+         "art": "wortwahl",
+         "instruction": "3)  Tick the sentence that uses the word correctly. ",
+         "woerter": [
+          {
+           "en": "remind of",
+           "de": "jmd. an etw. erinnern"
+          },
+          {
+           "en": "instructive",
+           "de": "lehrreich"
+          },
+          {
+           "en": "immense",
+           "de": "riesig"
+          }
+         ],
+         "items": [
+          {
+           "en": "remind of",
+           "richtig": 3,
+           "saetze": [
+            "I always remind of my keys when I leave the house.",
+            "She reminded of the answer during the test.",
+            "This song reminds me of our holiday in Italy."
+           ]
+          },
+          {
+           "en": "instructive",
+           "richtig": 1,
+           "saetze": [
+            "The museum tour was very instructive, and we learned a lot.",
+            "The soup was so instructive that I ate two bowls.",
+            "My little brother is instructive and never sits still."
+           ]
+          },
+          {
+           "en": "immense",
+           "richtig": 2,
+           "saetze": [
+            "The ant was so immense that I could hardly see it.",
+            "The old castle has an immense hall with a high ceiling.",
+            "Please speak immense, the baby is sleeping."
+           ]
+          }
+         ]
+        },
+        {
+         "art": "definition",
+         "instruction": "4)  Read the description and write the word it describes. ",
+         "woerter": [
+          {
+           "en": "rotten",
+           "de": "verfault"
+          },
+          {
+           "en": "weapon",
+           "de": "Waffe"
+          },
+          {
+           "en": "engage",
+           "de": "engagieren"
+          }
+         ],
+         "items": [
+          {
+           "en": "rotten",
+           "umschreibung": "gone bad and soft, so that you cannot eat it any more"
+          },
+          {
+           "en": "weapon",
+           "umschreibung": "a thing such as a gun or a knife that people use to fight"
+          },
+          {
+           "en": "engage",
+           "umschreibung": "to take part in something and put time and energy into it"
+          }
+         ]
+        }
+       ],
+       "blatt": "Unit01_V3_Test_PartI_NiveauA.docx",
+       "loesung": "Unit01_V3_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V3_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        82,
+        95
+       ]
+      },
+      {
+       "teil": 1,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "picnic",
+         "de": "Picknick",
+         "luecke": false,
+         "score": 0.0
+        },
+        {
+         "en": "damaged",
+         "de": "beschädigt",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "survive",
+         "de": "überleben",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "attic",
+         "de": "Dachboden",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "valuable",
+         "de": "wertvoll",
+         "luecke": false,
+         "score": 1.6
+        },
+        {
+         "en": "adopt",
+         "de": "adoptieren",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "get rid of",
+         "de": "los werden",
+         "luecke": true,
+         "score": 2.5
+        },
+        {
+         "en": "weapon",
+         "de": "Waffe",
+         "luecke": true,
+         "score": 2.4
+        },
+        {
+         "en": "fragile",
+         "de": "zerbrechlich",
+         "luecke": true,
+         "score": 2.2
+        },
+        {
+         "en": "cannon",
+         "de": "Kanone",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "worthless",
+         "de": "wertlos",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "belong to",
+         "de": "gehören",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "campsite",
+         "de": "Zeltplatz",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "sailor",
+         "de": "Matrose",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "engage",
+         "de": "engagieren",
+         "luecke": false,
+         "score": 2.3
+        }
+       ],
+       "text": "Last spring we cleaned out our garage. My dad wanted to {1} all the old things. In one box we found a knight's sword. It was a real {2} from a museum sale. My mum found some old glasses too. They were very {3}, so we held them with care. In the end we kept the sword and the glasses.",
+       "aufgaben": [
+        {
+         "art": "uebersetzen",
+         "instruction": "1) Translate using the vocabulary from unit 1 part i.",
+         "woerter": [
+          {
+           "en": "picnic",
+           "de": "Picknick"
+          },
+          {
+           "en": "damaged",
+           "de": "beschädigt"
+          },
+          {
+           "en": "survive",
+           "de": "überleben"
+          },
+          {
+           "en": "attic",
+           "de": "Dachboden"
+          },
+          {
+           "en": "valuable",
+           "de": "wertvoll"
+          },
+          {
+           "en": "adopt",
+           "de": "adoptieren"
+          }
+         ]
+        },
+        {
+         "art": "luecken",
+         "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part i. ",
+         "woerter": [
+          {
+           "en": "get rid of",
+           "de": "los werden"
+          },
+          {
+           "en": "weapon",
+           "de": "Waffe"
+          },
+          {
+           "en": "fragile",
+           "de": "zerbrechlich"
+          }
+         ],
+         "text": "Last spring we cleaned out our garage. My dad wanted to {1} all the old things. In one box we found a knight's sword. It was a real {2} from a museum sale. My mum found some old glasses too. They were very {3}, so we held them with care. In the end we kept the sword and the glasses.",
+         "bank": [
+          "zerbrechlich",
+          "los werden",
+          "Waffe"
+         ]
+        },
+        {
+         "art": "wortwahl",
+         "instruction": "3)  Tick the sentence that uses the word correctly. ",
+         "woerter": [
+          {
+           "en": "cannon",
+           "de": "Kanone"
+          },
+          {
+           "en": "worthless",
+           "de": "wertlos"
+          },
+          {
+           "en": "belong to",
+           "de": "gehören"
+          }
+         ],
+         "items": [
+          {
+           "en": "cannon",
+           "richtig": 2,
+           "saetze": [
+            "I drink my tea from a cannon every morning.",
+            "The old ship had a cannon on each side.",
+            "She put the cannon on her head because it was cold."
+           ]
+          },
+          {
+           "en": "worthless",
+           "richtig": 3,
+           "saetze": [
+            "This ring is worthless, so we keep it in a safe.",
+            "The worthless doctor saved many lives.",
+            "The old coin looked nice, but it was worthless."
+           ]
+          },
+          {
+           "en": "belong to",
+           "richtig": 1,
+           "saetze": [
+            "This bag belongs to my sister.",
+            "We belong to the cinema every Friday.",
+            "Please belong to the bus quickly."
+           ]
+          }
+         ]
+        },
+        {
+         "art": "definition",
+         "instruction": "4)  Read the description and write the word it describes. ",
+         "woerter": [
+          {
+           "en": "campsite",
+           "de": "Zeltplatz"
+          },
+          {
+           "en": "sailor",
+           "de": "Matrose"
+          },
+          {
+           "en": "engage",
+           "de": "engagieren"
+          }
+         ],
+         "items": [
+          {
+           "en": "campsite",
+           "umschreibung": "a place where people put up their tents for the night"
+          },
+          {
+           "en": "sailor",
+           "umschreibung": "a person who works on a ship"
+          },
+          {
+           "en": "engage",
+           "umschreibung": "to get involved in something and help actively"
+          }
+         ]
+        }
+       ],
+       "blatt": "Unit01_V3_Test_PartI_NiveauB.docx",
+       "loesung": "Unit01_V3_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V3_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        76,
+        83
+       ]
+      },
+      {
+       "teil": 2,
+       "niveau": "A",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "memorize",
+         "de": "sich etw. merken",
+         "luecke": false,
+         "score": 3.2
+        },
+        {
+         "en": "afterwards",
+         "de": "danach",
+         "luecke": false,
+         "score": 3.0
+        },
+        {
+         "en": "smelly",
+         "de": "stinkend",
+         "luecke": false,
+         "score": 2.9
+        },
+        {
+         "en": "unpopular",
+         "de": "unbeliebt",
+         "luecke": false,
+         "score": 2.8
+        },
+        {
+         "en": "dramatically",
+         "de": "dramatisch",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "useless",
+         "de": "nutzlos",
+         "luecke": false,
+         "score": 2.7
+        },
+        {
+         "en": "look forward to",
+         "de": "sich auf etw. freuen",
+         "luecke": true,
+         "score": 4.3
+        },
+        {
+         "en": "memory stick",
+         "de": "Speicherstick",
+         "luecke": true,
+         "score": 3.1
+        },
+        {
+         "en": "old-fashioned",
+         "de": "altmodisch",
+         "luecke": true,
+         "score": 4.1
+        },
+        {
+         "en": "beg",
+         "de": "betteln",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "childhood",
+         "de": "Kindheit",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "eventful",
+         "de": "ereignisreich",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "graceful",
+         "de": "elegant",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "regret",
+         "de": "bedauern",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "civil war",
+         "de": "Bürgerkrieg",
+         "luecke": false,
+         "score": 2.4
+        }
+       ],
+       "text": "Every summer my sister and I {1} the week at our grandparents' farm. This year I brought a {2} with all my holiday photos from last year. My grandfather laughed, because he still prints every picture on paper. His camera is so {3} that you can hardly buy films for it anymore. In the evening we sat together and looked at my pictures on his computer. He said they were nice, but he still likes his thick albums best.",
+       "aufgaben": [
+        {
+         "art": "uebersetzen",
+         "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+         "woerter": [
+          {
+           "en": "memorize",
+           "de": "sich etw. merken"
+          },
+          {
+           "en": "afterwards",
+           "de": "danach"
+          },
+          {
+           "en": "smelly",
+           "de": "stinkend"
+          },
+          {
+           "en": "unpopular",
+           "de": "unbeliebt"
+          },
+          {
+           "en": "dramatically",
+           "de": "dramatisch"
+          },
+          {
+           "en": "useless",
+           "de": "nutzlos"
+          }
+         ]
+        },
+        {
+         "art": "luecken",
+         "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+         "woerter": [
+          {
+           "en": "look forward to",
+           "de": "sich auf etw. freuen"
+          },
+          {
+           "en": "memory stick",
+           "de": "Speicherstick"
+          },
+          {
+           "en": "old-fashioned",
+           "de": "altmodisch"
+          }
+         ],
+         "text": "Every summer my sister and I {1} the week at our grandparents' farm. This year I brought a {2} with all my holiday photos from last year. My grandfather laughed, because he still prints every picture on paper. His camera is so {3} that you can hardly buy films for it anymore. In the evening we sat together and looked at my pictures on his computer. He said they were nice, but he still likes his thick albums best.",
+         "bank": [
+          "altmodisch",
+          "sich auf etw. freuen",
+          "Speicherstick"
+         ]
+        },
+        {
+         "art": "wortwahl",
+         "instruction": "3)  Tick the sentence that uses the word correctly. ",
+         "woerter": [
+          {
+           "en": "beg",
+           "de": "betteln"
+          },
+          {
+           "en": "childhood",
+           "de": "Kindheit"
+          },
+          {
+           "en": "eventful",
+           "de": "ereignisreich"
+          }
+         ],
+         "items": [
+          {
+           "en": "beg",
+           "richtig": 2,
+           "saetze": [
+            "I begged the answer in my maths book.",
+            "The dog begged for food under the table.",
+            "She begs a new song every evening on stage."
+           ]
+          },
+          {
+           "en": "childhood",
+           "richtig": 3,
+           "saetze": [
+            "My childhood starts at eight o'clock tomorrow.",
+            "He put on his childhood because it was raining.",
+            "I spent most of my childhood in a small village."
+           ]
+          },
+          {
+           "en": "eventful",
+           "richtig": 1,
+           "saetze": [
+            "It was an eventful day: we missed the bus and found a lost dog.",
+            "The glass is eventful, so please fill it with water.",
+            "Nothing happened all day; it was really eventful."
+           ]
+          }
+         ]
+        },
+        {
+         "art": "definition",
+         "instruction": "4)  Read the description and write the word it describes. ",
+         "woerter": [
+          {
+           "en": "graceful",
+           "de": "elegant"
+          },
+          {
+           "en": "regret",
+           "de": "bedauern"
+          },
+          {
+           "en": "civil war",
+           "de": "Bürgerkrieg"
+          }
+         ],
+         "items": [
+          {
+           "en": "graceful",
+           "umschreibung": "moving in a smooth and beautiful way, like a dancer"
+          },
+          {
+           "en": "regret",
+           "umschreibung": "to feel sorry about something you did or did not do"
+          },
+          {
+           "en": "civil war",
+           "umschreibung": "fighting between groups of people who live in the same country"
+          }
+         ]
+        }
+       ],
+       "blatt": "Unit01_V3_Test_PartII_NiveauA.docx",
+       "loesung": "Unit01_V3_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V3_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        85,
+        92
+       ]
+      },
+      {
+       "teil": 2,
+       "niveau": "B",
+       "fassung": 1,
+       "woerter": [
+        {
+         "en": "teddy bear",
+         "de": "Teddybär",
+         "luecke": false,
+         "score": 0.2
+        },
+        {
+         "en": "capsule",
+         "de": "Kapsel",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "on board",
+         "de": "an Bord",
+         "luecke": false,
+         "score": 1.0
+        },
+        {
+         "en": "object",
+         "de": "Gegenstand",
+         "luecke": false,
+         "score": 1.1
+        },
+        {
+         "en": "fisherman",
+         "de": "Angler, Fischer",
+         "luecke": false,
+         "score": 1.8
+        },
+        {
+         "en": "perform",
+         "de": "spielen, auftreten",
+         "luecke": false,
+         "score": 1.9
+        },
+        {
+         "en": "beg",
+         "de": "betteln",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "childhood",
+         "de": "Kindheit",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "eventful",
+         "de": "ereignisreich",
+         "luecke": true,
+         "score": 2.6
+        },
+        {
+         "en": "explosive",
+         "de": "Sprengstoff",
+         "luecke": false,
+         "score": 2.2
+        },
+        {
+         "en": "hook",
+         "de": "Haken",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "meanwhile",
+         "de": "inzwischen",
+         "luecke": false,
+         "score": 2.4
+        },
+        {
+         "en": "graceful",
+         "de": "elegant",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "regret",
+         "de": "bedauern",
+         "luecke": false,
+         "score": 2.6
+        },
+        {
+         "en": "dramatically",
+         "de": "dramatisch",
+         "luecke": false,
+         "score": 2.7
+        }
+       ],
+       "text": "My grandmother often tells stories about the past. As a child, she had to {1} her parents for a bike. She got one when she was ten. She says her {2} was simple but happy. Her life has been very {3}. She has lived in four countries. Now she is writing it all down in a book.",
+       "aufgaben": [
+        {
+         "art": "uebersetzen",
+         "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
+         "woerter": [
+          {
+           "en": "teddy bear",
+           "de": "Teddybär"
+          },
+          {
+           "en": "capsule",
+           "de": "Kapsel"
+          },
+          {
+           "en": "on board",
+           "de": "an Bord"
+          },
+          {
+           "en": "object",
+           "de": "Gegenstand"
+          },
+          {
+           "en": "fisherman",
+           "de": "Angler, Fischer"
+          },
+          {
+           "en": "perform",
+           "de": "spielen, auftreten"
+          }
+         ]
+        },
+        {
+         "art": "luecken",
+         "instruction": "2)  Fill in the gaps using the vocabulary from unit 1 part ii. ",
+         "woerter": [
+          {
+           "en": "beg",
+           "de": "betteln"
+          },
+          {
+           "en": "childhood",
+           "de": "Kindheit"
+          },
+          {
+           "en": "eventful",
+           "de": "ereignisreich"
+          }
+         ],
+         "text": "My grandmother often tells stories about the past. As a child, she had to {1} her parents for a bike. She got one when she was ten. She says her {2} was simple but happy. Her life has been very {3}. She has lived in four countries. Now she is writing it all down in a book.",
+         "bank": [
+          "betteln",
+          "ereignisreich",
+          "Kindheit"
+         ]
+        },
+        {
+         "art": "wortwahl",
+         "instruction": "3)  Tick the sentence that uses the word correctly. ",
+         "woerter": [
+          {
+           "en": "explosive",
+           "de": "Sprengstoff"
+          },
+          {
+           "en": "hook",
+           "de": "Haken"
+          },
+          {
+           "en": "meanwhile",
+           "de": "inzwischen"
+          }
+         ],
+         "items": [
+          {
+           "en": "explosive",
+           "richtig": 3,
+           "saetze": [
+            "I put some explosive on my bread for breakfast.",
+            "The baby slept on a soft explosive.",
+            "The police found explosives in the old tunnel."
+           ]
+          },
+          {
+           "en": "hook",
+           "richtig": 1,
+           "saetze": [
+            "Hang your coat on the hook by the door.",
+            "I wrote a hook to my friend in Spain.",
+            "We ate a big hook for lunch."
+           ]
+          },
+          {
+           "en": "meanwhile",
+           "richtig": 2,
+           "saetze": [
+            "Meanwhile is my favourite day of the week.",
+            "I cooked dinner. Meanwhile, my brother set the table.",
+            "She has a meanwhile in her bag."
+           ]
+          }
+         ]
+        },
+        {
+         "art": "definition",
+         "instruction": "4)  Read the description and write the word it describes. ",
+         "woerter": [
+          {
+           "en": "graceful",
+           "de": "elegant"
+          },
+          {
+           "en": "regret",
+           "de": "bedauern"
+          },
+          {
+           "en": "dramatically",
+           "de": "dramatisch"
+          }
+         ],
+         "items": [
+          {
+           "en": "graceful",
+           "umschreibung": "moving in a soft and beautiful way"
+          },
+          {
+           "en": "regret",
+           "umschreibung": "to wish that you had not done something"
+          },
+          {
+           "en": "dramatically",
+           "umschreibung": "in a very big and sudden way"
+          }
+         ]
+        }
+       ],
+       "blatt": "Unit01_V3_Test_PartII_NiveauB.docx",
+       "loesung": "Unit01_V3_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V3_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        75,
+        83
+       ]
+      }
+     ],
+     "liste_blatt": "Unit01_V3_VocabularyList.docx",
+     "wiederholung": {
+      "1": {
+       "quellen": [
+        {
+         "paket": "unit_08_englishplus3.json",
+         "teil": 2,
+         "unit": 8,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_08_englishplus3.json",
+         "teil": 1,
+         "unit": 8,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_englishplus3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_englishplus3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 1,
+         "lehrmittel": "EnglishPlus3",
+         "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
+         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
+         "folge": false
+        }
+       ],
+       "luecke": "Unmittelbar vor Unit 1 · Part I kommt Starter Unit · Part II - dazu gibt es in der Werkstatt keine Liste."
+      },
+      "2": {
+       "quellen": [
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "Part I derselben Liste V3 - kommt unmittelbar vor Part II",
+         "folge": true
+        },
+        {
+         "paket": "unit_01_v2.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 2,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V2",
+         "grund": "Part I der Liste V2 dieser Unit - eine andere Liste als die geprüfte",
          "folge": true
         },
         {
@@ -59355,6 +63414,16 @@
          "folge": true
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V3: die Vokabelliste wurde gebaut",
+         "folge": true
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -59363,6 +63432,16 @@
          "bezeichnung": "Unit 1 · Part II · V2",
          "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V2: die Vokabelliste wurde gebaut",
          "folge": true
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
         },
         {
          "paket": "unit_01_v2.json",
@@ -59440,6 +63519,16 @@
          "folge": true
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -59456,6 +63545,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -59539,6 +63638,16 @@
        "folge": true
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V3: die Vokabelliste wurde gebaut",
+       "folge": true
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
@@ -59547,6 +63656,16 @@
        "bezeichnung": "Unit 1 · Part II · V2",
        "grund": "Unit 1 · Part II ist der Part vor Unit 2 · Part I; V2: die Vokabelliste wurde gebaut",
        "folge": true
+      },
+      {
+       "paket": "unit_01_v3.json",
+       "teil": 1,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part I · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
       },
       {
        "paket": "unit_01_v2.json",
@@ -63003,6 +67122,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -63019,6 +67148,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -63118,6 +67257,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -63134,6 +67283,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -63186,16 +67345,6 @@
          "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
          "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
         }
        ],
        "luecke": ""
@@ -63227,6 +67376,16 @@
        "folge": false
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
@@ -63243,6 +67402,16 @@
        "version": 1,
        "lehrmittel": "",
        "bezeichnung": "Unit 1 · Part II · V1",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
+       "paket": "unit_01_v3.json",
+       "teil": 1,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part I · V3",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
        "folge": false
       },
@@ -66191,6 +70360,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -66207,6 +70386,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -66247,26 +70436,6 @@
          "version": 1,
          "lehrmittel": "EnglishPlus3",
          "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 2,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
          "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
@@ -66326,6 +70495,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -66342,6 +70521,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -66372,26 +70561,6 @@
          "version": 1,
          "lehrmittel": "EnglishPlus3",
          "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 1,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_englishplus3.json",
-         "teil": 2,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
          "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
@@ -66445,6 +70614,16 @@
        "folge": false
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
@@ -66461,6 +70640,16 @@
        "version": 1,
        "lehrmittel": "",
        "bezeichnung": "Unit 1 · Part II · V1",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
+       "paket": "unit_01_v3.json",
+       "teil": 1,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part I · V3",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
        "folge": false
       },
@@ -66501,26 +70690,6 @@
        "version": 1,
        "lehrmittel": "EnglishPlus3",
        "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-       "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-       "folge": false
-      },
-      {
-       "paket": "unit_01_englishplus3.json",
-       "teil": 2,
-       "unit": 1,
-       "version": 1,
-       "lehrmittel": "EnglishPlus3",
-       "bezeichnung": "EnglishPlus3 Unit 1 · Part II · V1",
-       "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-       "folge": false
-      },
-      {
-       "paket": "unit_01_englishplus3.json",
-       "teil": 1,
-       "unit": 1,
-       "version": 1,
-       "lehrmittel": "EnglishPlus3",
-       "bezeichnung": "EnglishPlus3 Unit 1 · Part I · V1",
        "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
        "folge": false
       }
@@ -69459,6 +73628,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -69475,6 +73654,16 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         },
@@ -69496,26 +73685,6 @@
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part I · V1",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 2,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 1,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
        ],
@@ -69594,6 +73763,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -69614,6 +73793,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 1,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part I · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 1,
          "unit": 1,
@@ -69621,26 +73810,6 @@
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part I · V2",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V1",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_08_englishplus3.json",
-         "teil": 2,
-         "unit": 8,
-         "version": 1,
-         "lehrmittel": "EnglishPlus3",
-         "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-         "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
          "folge": false
         }
        ],
@@ -69713,6 +73882,16 @@
        "folge": false
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
@@ -69729,6 +73908,16 @@
        "version": 1,
        "lehrmittel": "",
        "bezeichnung": "Unit 1 · Part II · V1",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
+       "paket": "unit_01_v3.json",
+       "teil": 1,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part I · V3",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
        "folge": false
       },
@@ -69750,26 +73939,6 @@
        "lehrmittel": "",
        "bezeichnung": "Unit 1 · Part I · V1",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-       "folge": false
-      },
-      {
-       "paket": "unit_08_englishplus3.json",
-       "teil": 2,
-       "unit": 8,
-       "version": 1,
-       "lehrmittel": "EnglishPlus3",
-       "bezeichnung": "EnglishPlus3 Unit 8 · Part II · V1",
-       "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
-       "folge": false
-      },
-      {
-       "paket": "unit_08_englishplus3.json",
-       "teil": 1,
-       "unit": 8,
-       "version": 1,
-       "lehrmittel": "EnglishPlus3",
-       "bezeichnung": "EnglishPlus3 Unit 8 · Part I · V1",
-       "grund": "Liste eines anderen Lehrmittels (EnglishPlus3)",
        "folge": false
       }
      ],
@@ -72647,6 +76816,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -72667,22 +76846,12 @@
          "folge": false
         },
         {
-         "paket": "unit_01_v2.json",
+         "paket": "unit_01_v3.json",
          "teil": 1,
          "unit": 1,
-         "version": 2,
+         "version": 3,
          "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V2",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V1",
+         "bezeichnung": "Unit 1 · Part I · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -72782,6 +76951,16 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
@@ -72798,16 +76977,6 @@
          "version": 1,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V1",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01_v2.json",
-         "teil": 1,
-         "unit": 1,
-         "version": 2,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part I · V2",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -72901,6 +77070,16 @@
        "folge": false
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
@@ -72921,22 +77100,12 @@
        "folge": false
       },
       {
-       "paket": "unit_01_v2.json",
+       "paket": "unit_01_v3.json",
        "teil": 1,
        "unit": 1,
-       "version": 2,
+       "version": 3,
        "lehrmittel": "",
-       "bezeichnung": "Unit 1 · Part I · V2",
-       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-       "folge": false
-      },
-      {
-       "paket": "unit_01.json",
-       "teil": 1,
-       "unit": 1,
-       "version": 1,
-       "lehrmittel": "",
-       "bezeichnung": "Unit 1 · Part I · V1",
+       "bezeichnung": "Unit 1 · Part I · V3",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
        "folge": false
       }
@@ -75435,22 +79604,22 @@
          "folge": false
         },
         {
+         "paket": "unit_01_v3.json",
+         "teil": 2,
+         "unit": 1,
+         "version": 3,
+         "lehrmittel": "",
+         "bezeichnung": "Unit 1 · Part II · V3",
+         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+         "folge": false
+        },
+        {
          "paket": "unit_01_v2.json",
          "teil": 2,
          "unit": 1,
          "version": 2,
          "lehrmittel": "",
          "bezeichnung": "Unit 1 · Part II · V2",
-         "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-         "folge": false
-        },
-        {
-         "paket": "unit_01.json",
-         "teil": 2,
-         "unit": 1,
-         "version": 1,
-         "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part II · V1",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -75570,12 +79739,12 @@
          "folge": false
         },
         {
-         "paket": "unit_01_v2.json",
+         "paket": "unit_01_v3.json",
          "teil": 2,
          "unit": 1,
-         "version": 2,
+         "version": 3,
          "lehrmittel": "",
-         "bezeichnung": "Unit 1 · Part II · V2",
+         "bezeichnung": "Unit 1 · Part II · V3",
          "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
          "folge": false
         }
@@ -75689,22 +79858,22 @@
        "folge": false
       },
       {
+       "paket": "unit_01_v3.json",
+       "teil": 2,
+       "unit": 1,
+       "version": 3,
+       "lehrmittel": "",
+       "bezeichnung": "Unit 1 · Part II · V3",
+       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
+       "folge": false
+      },
+      {
        "paket": "unit_01_v2.json",
        "teil": 2,
        "unit": 1,
        "version": 2,
        "lehrmittel": "",
        "bezeichnung": "Unit 1 · Part II · V2",
-       "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
-       "folge": false
-      },
-      {
-       "paket": "unit_01.json",
-       "teil": 2,
-       "unit": 1,
-       "version": 1,
-       "lehrmittel": "",
-       "bezeichnung": "Unit 1 · Part II · V1",
        "grund": "früherer Part dieses Lehrmittels - nicht der unmittelbar vorherige",
        "folge": false
       }

@@ -20,7 +20,7 @@
   "datei": "english_plus_2e_level_4_german_wordlist.xls",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
-  "importiert": "2026-09-10"
+  "importiert": "2026-09-29"
  },
  "anzahl": 294,
  "anzahl_hauptteil": 213,
@@ -237,7 +237,7 @@
   },
   {
    "english": "awesome",
-   "german": "großartig",
+   "german": "grossartig",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -552,7 +552,7 @@
   },
   {
    "english": "come across",
-   "german": "auf etw. stoßen",
+   "german": "auf etw. stossen",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -687,7 +687,7 @@
   },
   {
    "english": "cute",
-   "german": "süß",
+   "german": "süss",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -747,7 +747,7 @@
   },
   {
    "english": "decide",
-   "german": "beschließen",
+   "german": "beschliessen",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -1152,7 +1152,7 @@
   },
   {
    "english": "eventually",
-   "german": "schließlich, letztendlich",
+   "german": "schliesslich, letztendlich",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -1737,7 +1737,7 @@
   },
   {
    "english": "lock",
-   "german": "abschließen",
+   "german": "abschliessen",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",
@@ -2727,7 +2727,7 @@
   },
   {
    "english": "street",
-   "german": "Straße",
+   "german": "Strasse",
    "unit": 1,
    "kind": "hauptteil",
    "section": "Unit 1",

@@ -20,7 +20,7 @@
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
-  "importiert": "2026-09-15"
+  "importiert": "2026-09-29"
  },
  "anzahl": 143,
  "anzahl_hauptteil": 95,
@@ -1527,7 +1527,7 @@
   },
   {
    "english": "medium",
-   "german": "mittel(groß), durchschnittlich",
+   "german": "mittel(gross), durchschnittlich",
    "unit": 1,
    "kind": "extra_listening",
    "section": "Extra Listening and Speaking Unit 1",
@@ -1587,7 +1587,7 @@
   },
   {
    "english": "size",
-   "german": "Größe",
+   "german": "Grösse",
    "unit": 1,
    "kind": "extra_listening",
    "section": "Extra Listening and Speaking Unit 1",

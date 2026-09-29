@@ -20,7 +20,7 @@
   "datei": "english_plus_2e_level_4_german_wordlist.xls",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
-  "importiert": "2026-09-10"
+  "importiert": "2026-09-29"
  },
  "anzahl": 200,
  "anzahl_hauptteil": 133,
@@ -1617,7 +1617,7 @@
   },
   {
    "english": "size",
-   "german": "Größe",
+   "german": "Grösse",
    "unit": 3,
    "kind": "hauptteil",
    "section": "Unit 3",
@@ -2907,7 +2907,7 @@
   },
   {
    "english": "over-consumption",
-   "german": "übermäßiger Konsum",
+   "german": "übermässiger Konsum",
    "unit": 3,
    "kind": "culture",
    "section": "Culture 3",

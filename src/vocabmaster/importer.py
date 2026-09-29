@@ -115,6 +115,17 @@ _POS_MAP = {
 }
 
 
+def schweizerisch(text: str) -> str:
+    """Deutsch in Schweizer Rechtschreibung: kein ß, sondern ss.
+
+    Die Wortlisten der Verlage schreiben „auf etw. stoßen"; in der Klasse
+    steht „auf etw. stossen". Umgestellt wird beim Einlesen - so tragen
+    Datenbank, Pakete, Blätter und Seite dieselbe Schreibung, und keine
+    Kontrolle vergleicht „stoßen" mit „stossen".
+    """
+    return str(text or "").replace("ß", "ss").replace("ẞ", "SS")
+
+
 def strip_page_reference(section: str) -> str:
     """``'Starter Unit, p.4'`` -> ``'Starter Unit'``."""
     s = str(section).replace("\n", " ").strip()
@@ -357,7 +368,7 @@ def import_wordlist(path: str | Path) -> ImportResult:
 
     for offset, raw in enumerate(grid[header_index + 1 :], start=header_index + 2):
         row = list(raw) + [""] * (max(cols.values()) + 1 - len(raw))
-        english, german = row[en], row[de]
+        english, german = row[en], schweizerisch(row[de])
 
         if not english and not german:
             # Blocküberschrift: Text irgendwo in der Zeile, aber keine Vokabel.

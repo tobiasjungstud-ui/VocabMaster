@@ -100,9 +100,14 @@ def liste_fingerabdruck(eintraege: list[dict[str, Any]]) -> str:
     kann: Gehört diese Prüfung noch zu der Liste, die gerade im Paket liegt?
     Beispielsätze zählen nicht mit - wer einen Satz umformuliert, macht damit
     keine neue Liste.
+
+    Auch die Schreibung ß/ss zählt nicht: „stoßen" und „stossen" sind
+    dasselbe Wortpaar. Als die Glossen auf Schweizer Rechtschreibung
+    umgestellt wurden, hätte sich sonst jede Prüfung von ihrer Liste gelöst.
     """
     roh = "\n".join(
-        f"{e.get('englisch', '').strip().lower()}|{e.get('deutsch', '').strip().lower()}"
+        f"{e.get('englisch', '').strip().lower()}|"
+        f"{e.get('deutsch', '').strip().lower().replace('ß', 'ss')}"
         for e in eintraege
     )
     return hashlib.sha256(roh.encode("utf-8")).hexdigest()[:12]

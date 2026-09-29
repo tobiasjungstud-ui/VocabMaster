@@ -267,7 +267,7 @@
       },
       {
         "nr": 23,
-        "deutsch": "Bankschließfach",
+        "deutsch": "Bankschliessfach",
         "englisch": "safety deposit box",
         "satz": "The letters lay in a safety deposit box.",
         "form": "",
@@ -349,7 +349,7 @@
     "test2": [
       {
         "nr": 1,
-        "deutsch": "Straßenräuber(in)",
+        "deutsch": "Strassenräuber(in)",
         "englisch": "mugger",
         "satz": "A mugger took his phone near the station.",
         "form": "",
@@ -658,7 +658,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "d70a04625e5d",
+          "liste_fingerabdruck": "7e8cfc1ea477",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -683,7 +683,7 @@
               "pos": "noun"
             },
             {
-              "german": "Bankschließfach",
+              "german": "Bankschliessfach",
               "english": "safety deposit box",
               "pos": "noun"
             },
@@ -761,7 +761,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "d70a04625e5d",
+          "liste_fingerabdruck": "7e8cfc1ea477",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -866,7 +866,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "d70a04625e5d",
+          "liste_fingerabdruck": "7e8cfc1ea477",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -906,7 +906,7 @@
               "pos": "noun"
             },
             {
-              "german": "Straßenräuber(in)",
+              "german": "Strassenräuber(in)",
               "english": "mugger",
               "pos": "noun"
             },
@@ -969,7 +969,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "d70a04625e5d",
+          "liste_fingerabdruck": "7e8cfc1ea477",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },

@@ -257,7 +257,7 @@
       },
       {
         "nr": 22,
-        "deutsch": "auf etw. stoßen",
+        "deutsch": "auf etw. stossen",
         "englisch": "come across",
         "satz": "I came across an old diary yesterday.",
         "form": "",
@@ -660,7 +660,7 @@
           "fassung": 3,
           "erzeugt": "2026-09-11",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093"
+          "liste_fingerabdruck": "b1b169b01982"
         },
         "total_words": 12,
         "header": {
@@ -693,7 +693,7 @@
               "pos": "verb"
             },
             {
-              "german": "auf etw. stoßen",
+              "german": "auf etw. stossen",
               "english": "come across",
               "pos": "verb"
             },

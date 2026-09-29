@@ -580,7 +580,7 @@
       },
       {
         "nr": 22,
-        "deutsch": "auf etw. stoßen",
+        "deutsch": "auf etw. stossen",
         "englisch": "come across",
         "satz": "I came across an old diary yesterday.",
         "form": "",
@@ -681,7 +681,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-12",
           "liste_version": 2,
-          "liste_fingerabdruck": "7f5358049389"
+          "liste_fingerabdruck": "fc8c9dc0de29"
         },
         "total_words": 12,
         "header": {
@@ -782,7 +782,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-12",
           "liste_version": 2,
-          "liste_fingerabdruck": "7f5358049389"
+          "liste_fingerabdruck": "fc8c9dc0de29"
         },
         "total_words": 12,
         "header": {
@@ -887,7 +887,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-12",
           "liste_version": 2,
-          "liste_fingerabdruck": "7f5358049389"
+          "liste_fingerabdruck": "fc8c9dc0de29"
         },
         "total_words": 12,
         "header": {
@@ -900,7 +900,7 @@
           "instruction": "1) Translate using the vocabulary from unit 1 part ii.",
           "items": [
             {
-              "german": "auf etw. stoßen",
+              "german": "auf etw. stossen",
               "english": "come across",
               "pos": "verb"
             },
@@ -988,7 +988,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-12",
           "liste_version": 2,
-          "liste_fingerabdruck": "7f5358049389"
+          "liste_fingerabdruck": "fc8c9dc0de29"
         },
         "total_words": 12,
         "header": {

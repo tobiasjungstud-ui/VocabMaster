@@ -165,3 +165,25 @@ def test_nur_woerter_aus_dem_hauptteil(pfad):
             f"{entry['englisch']} ist als 'wortliste' geführt, steht aber nicht "
             f"im Hauptteil von Unit {pack.unit}"
         )
+
+
+def test_schweizer_rechtschreibung_kein_eszett():
+    """Es gilt Schweizer Rechtschreibung: kein ß - in keiner Glosse, keinem
+    Paket, keiner Datenbank und nicht auf der Seite.
+
+    Die Wortlisten der Verlage schreiben „stoßen"; der Import stellt um
+    (`importer.schweizerisch`). Der Listenabdruck rechnet ß und ss gleich,
+    damit so eine Umstellung keine Prüfung von ihrer Liste löst.
+    """
+    from vocabmaster.importer import schweizerisch
+    from vocabmaster.pack import liste_fingerabdruck
+
+    wurzel = Path(__file__).resolve().parent.parent
+    dateien = list((wurzel / "kuratiert").glob("*.json"))
+    dateien += list((wurzel / "src" / "vocabmaster" / "data").rglob("*.json"))
+    dateien += [wurzel / "werkstatt" / "daten.json", wurzel / "werkstatt" / "vorlage.html"]
+    mit = [p.name for p in dateien if p.exists() and "ß" in p.read_text("utf-8")]
+    assert not mit, f"ß in: {mit}"
+    assert schweizerisch("auf etw. stoßen") == "auf etw. stossen"
+    assert liste_fingerabdruck([{"englisch": "come across", "deutsch": "stoßen"}]) == \
+        liste_fingerabdruck([{"englisch": "come across", "deutsch": "stossen"}])

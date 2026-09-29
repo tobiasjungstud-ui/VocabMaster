@@ -308,7 +308,7 @@
       },
       {
         "nr": 27,
-        "deutsch": "Spaß haben",
+        "deutsch": "Spass haben",
         "englisch": "have a laugh with",
         "satz": "We always have a laugh with our neighbours.",
         "form": "",
@@ -660,7 +660,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "6513cdc05c9c",
+          "liste_fingerabdruck": "9aaa6a0e0309",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -723,11 +723,11 @@
             "Entspannung",
             "Säugetier",
             "offensichtlich",
-            "Spaß haben"
+            "Spass haben"
           ],
           "gaps": [
             {
-              "german": "Spaß haben",
+              "german": "Spass haben",
               "english": "have a laugh with",
               "answer": "have a laugh with",
               "pos": "verb"
@@ -763,7 +763,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "6513cdc05c9c",
+          "liste_fingerabdruck": "9aaa6a0e0309",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -868,7 +868,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "6513cdc05c9c",
+          "liste_fingerabdruck": "9aaa6a0e0309",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -971,7 +971,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "6513cdc05c9c",
+          "liste_fingerabdruck": "9aaa6a0e0309",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },

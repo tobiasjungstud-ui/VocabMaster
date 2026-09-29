@@ -378,7 +378,7 @@
       },
       {
         "nr": 3,
-        "deutsch": "großzügig",
+        "deutsch": "grosszügig",
         "englisch": "generous",
         "satz": "He was generous with both time and money.",
         "form": "",
@@ -604,7 +604,7 @@
       },
       {
         "nr": 25,
-        "deutsch": "außergewöhnlich",
+        "deutsch": "aussergewöhnlich",
         "englisch": "extraordinary",
         "satz": "She has an extraordinary memory for names.",
         "form": "",
@@ -673,7 +673,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "0e4ed90c3fb4",
+          "liste_fingerabdruck": "55ad3bfb269f",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -776,7 +776,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "0e4ed90c3fb4",
+          "liste_fingerabdruck": "55ad3bfb269f",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -881,7 +881,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "0e4ed90c3fb4",
+          "liste_fingerabdruck": "55ad3bfb269f",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -921,7 +921,7 @@
               "pos": "adj"
             },
             {
-              "german": "außergewöhnlich",
+              "german": "aussergewöhnlich",
               "english": "extraordinary",
               "pos": "adj"
             },
@@ -984,7 +984,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "0e4ed90c3fb4",
+          "liste_fingerabdruck": "55ad3bfb269f",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -1044,7 +1044,7 @@
           "instruction": "2)  Fill in the gaps using the vocabulary from unit 6 part ii. ",
           "word_bank_label": "Words:",
           "word_bank": [
-            "großzügig",
+            "grosszügig",
             "einbeziehen",
             "Einstellung",
             "bescheiden"
@@ -1063,7 +1063,7 @@
               "pos": "noun"
             },
             {
-              "german": "großzügig",
+              "german": "grosszügig",
               "english": "generous",
               "answer": "generous",
               "pos": "adj",

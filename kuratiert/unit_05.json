@@ -269,7 +269,7 @@
       },
       {
         "nr": 23,
-        "deutsch": "Außerirdische(r)",
+        "deutsch": "Ausserirdische(r)",
         "englisch": "alien",
         "satz": "The film shows an alien who cannot speak.",
         "form": "",
@@ -662,7 +662,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25",
+          "liste_fingerabdruck": "c2689e9c8c13",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -677,7 +677,7 @@
           "instruction": "1) Translate using the vocabulary from unit 5 part i.",
           "items": [
             {
-              "german": "Außerirdische(r)",
+              "german": "Ausserirdische(r)",
               "english": "alien",
               "pos": "noun"
             },
@@ -765,7 +765,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25",
+          "liste_fingerabdruck": "c2689e9c8c13",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -870,7 +870,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25",
+          "liste_fingerabdruck": "c2689e9c8c13",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -973,7 +973,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "b7d061d86b25",
+          "liste_fingerabdruck": "c2689e9c8c13",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },

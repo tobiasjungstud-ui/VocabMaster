@@ -20,7 +20,7 @@
   "datei": "english_plus_2e_level_4_german_wordlist.xls",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
-  "importiert": "2026-09-10"
+  "importiert": "2026-09-29"
  },
  "anzahl": 181,
  "anzahl_hauptteil": 119,
@@ -1002,7 +1002,7 @@
   },
   {
    "english": "mugger",
-   "german": "Straßenräuber(in)",
+   "german": "Strassenräuber(in)",
    "unit": 8,
    "kind": "hauptteil",
    "section": "Unit 8",
@@ -1392,7 +1392,7 @@
   },
   {
    "english": "safety deposit box",
-   "german": "Bankschließfach",
+   "german": "Bankschliessfach",
    "unit": 8,
    "kind": "hauptteil",
    "section": "Unit 8",
@@ -1857,7 +1857,7 @@
   },
   {
    "english": "locker",
-   "german": "Schließfach",
+   "german": "Schliessfach",
    "unit": 8,
    "kind": "extra_listening",
    "section": "Extra Listening and Speaking Unit 8",
@@ -2082,7 +2082,7 @@
   },
   {
    "english": "ankle tag",
-   "german": "(elektronische) Fußfessel",
+   "german": "(elektronische) Fussfessel",
    "unit": 8,
    "kind": "culture",
    "section": "Culture 8",
@@ -2307,7 +2307,7 @@
   },
   {
    "english": "pedestrian",
-   "german": "Fußgänger(in)",
+   "german": "Fussgänger(in)",
    "unit": 8,
    "kind": "culture",
    "section": "Culture 8",
@@ -2412,7 +2412,7 @@
   },
   {
    "english": "shoot",
-   "german": "schießen",
+   "german": "schiessen",
    "unit": 8,
    "kind": "culture",
    "section": "Culture 8",
@@ -2532,7 +2532,7 @@
   },
   {
    "english": "beyond the reach",
-   "german": "außerhalb der Reichweite",
+   "german": "ausserhalb der Reichweite",
    "unit": 8,
    "kind": "literature",
    "section": "Literature 8",
@@ -2727,7 +2727,7 @@
   },
   {
    "english": "sweet",
-   "german": "süß",
+   "german": "süss",
    "unit": 8,
    "kind": "literature",
    "section": "Literature 8",

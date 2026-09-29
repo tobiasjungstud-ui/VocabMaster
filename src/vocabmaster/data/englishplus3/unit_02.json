@@ -20,7 +20,7 @@
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
-  "importiert": "2026-09-15"
+  "importiert": "2026-09-29"
  },
  "anzahl": 146,
  "anzahl_hauptteil": 106,
@@ -132,7 +132,7 @@
   },
   {
    "english": "awesome",
-   "german": "großartig",
+   "german": "grossartig",
    "unit": 2,
    "kind": "hauptteil",
    "section": "Unit 2",
@@ -492,7 +492,7 @@
   },
   {
    "english": "extraordinary",
-   "german": "außergewöhnlich",
+   "german": "aussergewöhnlich",
    "unit": 2,
    "kind": "hauptteil",
    "section": "Unit 2",
@@ -1002,7 +1002,7 @@
   },
   {
    "english": "raft",
-   "german": "Floß",
+   "german": "Floss",
    "unit": 2,
    "kind": "hauptteil",
    "section": "Unit 2",

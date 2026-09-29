@@ -249,7 +249,7 @@
       },
       {
         "nr": 21,
-        "deutsch": "auf etw. stoßen",
+        "deutsch": "auf etw. stossen",
         "englisch": "come across",
         "satz": "I came across an old diary yesterday.",
         "form": "",
@@ -662,7 +662,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-29",
           "liste_version": 3,
-          "liste_fingerabdruck": "29dddb2b73a7"
+          "liste_fingerabdruck": "1d96c3064584"
         },
         "aufgabenplan": {
           "uebersetzen": 6,
@@ -699,7 +699,7 @@
               },
               {
                 "english": "come across",
-                "german": "auf etw. stoßen",
+                "german": "auf etw. stossen",
                 "pos": "verb"
               },
               {
@@ -857,7 +857,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-29",
           "liste_version": 3,
-          "liste_fingerabdruck": "29dddb2b73a7"
+          "liste_fingerabdruck": "1d96c3064584"
         },
         "aufgabenplan": {
           "uebersetzen": 6,
@@ -1044,7 +1044,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-29",
           "liste_version": 3,
-          "liste_fingerabdruck": "29dddb2b73a7"
+          "liste_fingerabdruck": "1d96c3064584"
         },
         "aufgabenplan": {
           "uebersetzen": 6,
@@ -1221,7 +1221,7 @@
             "unit": 1,
             "teil": 1,
             "liste_version": 3,
-            "abdruck": "29dddb2b73a7",
+            "abdruck": "1d96c3064584",
             "pruefsumme": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
             "lehrmittel": "",
             "unit_label": "Unit 1"
@@ -1239,7 +1239,7 @@
           "fassung": 1,
           "erzeugt": "2026-09-29",
           "liste_version": 3,
-          "liste_fingerabdruck": "29dddb2b73a7"
+          "liste_fingerabdruck": "1d96c3064584"
         },
         "aufgabenplan": {
           "uebersetzen": 6,
@@ -1406,7 +1406,7 @@
             "unit": 1,
             "teil": 1,
             "liste_version": 3,
-            "abdruck": "29dddb2b73a7",
+            "abdruck": "1d96c3064584",
             "pruefsumme": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
             "lehrmittel": "",
             "unit_label": "Unit 1"

@@ -246,6 +246,15 @@ Die Oberfläche liest die Themen nicht mehr aus einer Datei, sondern aus der
 geladenen Datenbank (`Database.themen`); dort stehen sie ohnehin, weil der
 Import sie in die Unit-Dateien schreibt.
 
+## Schweizer Rechtschreibung — kein ß
+
+Es gilt **Schweizer Rechtschreibung**: kein ß, sondern ss — in Glossen,
+Sätzen, Aufgaben, auf der Seite und im Chat. Die Wortlisten der Verlage
+schreiben „auf etw. stoßen"; der Import stellt beim Einlesen um
+(`importer.schweizerisch`), so tragen Datenbank, Pakete und Blätter
+dieselbe Schreibung. Der Listenabdruck rechnet ß und ss gleich — sonst
+löste die Umstellung jede Prüfung von ihrer Liste. Ein Test wacht darüber.
+
 ## Datengrundlage — nur die neue Wortliste
 
 Einzige Quelle ist `data/english_plus_2e_level_4_german_wordlist.xls`

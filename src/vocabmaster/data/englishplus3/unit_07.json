@@ -20,7 +20,7 @@
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
-  "importiert": "2026-09-15"
+  "importiert": "2026-09-29"
  },
  "anzahl": 120,
  "anzahl_hauptteil": 75,
@@ -357,7 +357,7 @@
   },
   {
    "english": "equally",
-   "german": "gleich, gleichermaßen",
+   "german": "gleich, gleichermassen",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",
@@ -417,7 +417,7 @@
   },
   {
    "english": "generous",
-   "german": "großzügig",
+   "german": "grosszügig",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",

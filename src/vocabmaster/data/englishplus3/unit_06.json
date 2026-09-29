@@ -20,7 +20,7 @@
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
-  "importiert": "2026-09-15"
+  "importiert": "2026-09-29"
  },
  "anzahl": 124,
  "anzahl_hauptteil": 85,
@@ -237,7 +237,7 @@
   },
   {
    "english": "conclude",
-   "german": "(ab)schließen",
+   "german": "(ab)schliessen",
    "unit": 6,
    "kind": "hauptteil",
    "section": "Unit 6",
@@ -927,7 +927,7 @@
   },
   {
    "english": "procedure",
-   "german": "Prozedur, Maßnahme",
+   "german": "Prozedur, Massnahme",
    "unit": 6,
    "kind": "hauptteil",
    "section": "Unit 6",
@@ -1587,7 +1587,7 @@
   },
   {
    "english": "moderate",
-   "german": "mäßig",
+   "german": "mässig",
    "unit": 6,
    "kind": "curriculum_extra",
    "section": "Curriculum extra 6",

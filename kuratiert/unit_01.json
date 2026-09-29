@@ -257,7 +257,7 @@
       },
       {
         "nr": 22,
-        "deutsch": "auf etw. stoßen",
+        "deutsch": "auf etw. stossen",
         "englisch": "come across",
         "satz": "I came across an old diary yesterday.",
         "form": "",
@@ -658,7 +658,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093",
+          "liste_fingerabdruck": "b1b169b01982",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -678,7 +678,7 @@
               "pos": "adj"
             },
             {
-              "german": "auf etw. stoßen",
+              "german": "auf etw. stossen",
               "english": "come across",
               "pos": "verb"
             },
@@ -759,7 +759,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 1",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093",
+          "liste_fingerabdruck": "b1b169b01982",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -862,7 +862,7 @@
           "cefr": "B1.2-B2.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093",
+          "liste_fingerabdruck": "b1b169b01982",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },
@@ -963,7 +963,7 @@
           "cefr": "A2.2-B1.1",
           "quelle_liste": "Test 2",
           "liste_version": 1,
-          "liste_fingerabdruck": "f2ad6b039093",
+          "liste_fingerabdruck": "b1b169b01982",
           "fassung": 1,
           "erzeugt": "2026-09-10"
         },

@@ -20,7 +20,7 @@
   "datei": "english_plus_2e_level_4_german_wordlist.xls",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
-  "importiert": "2026-09-10"
+  "importiert": "2026-09-29"
  },
  "anzahl": 65,
  "anzahl_hauptteil": 65,
@@ -72,7 +72,7 @@
   },
   {
    "english": "amazing",
-   "german": "großartig",
+   "german": "grossartig",
    "unit": 0,
    "kind": "starter",
    "section": "Starter Unit",

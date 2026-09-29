@@ -20,7 +20,7 @@
   "datei": "ep2e_level3_german_wordlist.xlsx",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "568af2ccc2144e9a9796eee1703cfe5dba18a14c9ebc105e9f4fae622bff2396",
-  "importiert": "2026-09-15"
+  "importiert": "2026-09-29"
  },
  "anzahl": 70,
  "anzahl_hauptteil": 70,
@@ -267,7 +267,7 @@
   },
   {
    "english": "finish",
-   "german": "enden, abschließen",
+   "german": "enden, abschliessen",
    "unit": 0,
    "kind": "starter",
    "section": "Starter Unit",

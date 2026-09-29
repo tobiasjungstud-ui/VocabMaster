@@ -20,7 +20,7 @@
   "datei": "english_plus_2e_level_4_german_wordlist.xls",
   "tabellenblatt": "Sheet1",
   "pruefsumme_sha256": "d1739535e03d9024c21026789de86ab86114040de701f2ccfd5f88852c53bbbb",
-  "importiert": "2026-09-10"
+  "importiert": "2026-09-29"
  },
  "anzahl": 162,
  "anzahl_hauptteil": 100,
@@ -102,7 +102,7 @@
   },
   {
    "english": "avenue",
-   "german": "(breite) Straße",
+   "german": "(breite) Strasse",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",
@@ -312,7 +312,7 @@
   },
   {
    "english": "demolish",
-   "german": "abreißen",
+   "german": "abreissen",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",
@@ -462,7 +462,7 @@
   },
   {
    "english": "fun",
-   "german": "spaßig",
+   "german": "spassig",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",
@@ -912,7 +912,7 @@
   },
   {
    "english": "pedestrian walkway",
-   "german": "Fußgängerweg",
+   "german": "Fussgängerweg",
    "unit": 7,
    "kind": "hauptteil",
    "section": "Unit 7",

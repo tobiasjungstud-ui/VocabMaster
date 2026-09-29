@@ -1068,7 +1068,6 @@ td.satz{color:var(--ink-2); font-size:12.5px}
                Was bestellt ist, sagt die Leiste. -->
           <div class="befehl" id="befehl" hidden></div>
           <div class="knopfreihe">
-            <button class="knopf haupt" id="ausloesen">Auftrag auslösen</button>
             <button class="knopf" id="kopieren">Befehl kopieren</button>
             <button class="knopf" id="herunterladen" hidden>Als JSON sichern</button>
           </div>
@@ -3118,10 +3117,11 @@ function zeichneAusloeser(){
   // sagt nichts - genau das ist schon einmal als „nix passiert"
   // angekommen. Er bleibt anklickbar und antwortet.
   const dran = verbunden();
-  $("ausloesen").title = dran
+  // Es gibt **einen** Auslöser, den in der Leiste: Zwei Knöpfe, die
+  // dasselbe tun, waren einer zu viel.
+  $("bauen").title = dran
     ? "Legt den Auftrag ab und weckt die Chat-Sitzung."
     : "Ohne Verbindung wird der Befehl stattdessen kopiert.";
-  $("bauen").title = $("ausloesen").title;
   zeichneKnopf();
   zeichneDraht();
 }
@@ -4078,7 +4078,6 @@ async function auftragAusloesen(knopf){
   await ausloesen(a, "u" + String(a.unit).padStart(2, "0"), knopf, melde);
 }
 
-$("ausloesen").addEventListener("click", () => auftragAusloesen($("ausloesen")));
 $("bauen").addEventListener("click", () => auftragAusloesen($("bauen")));
 
 $("herunterladen").addEventListener("click", async () => {

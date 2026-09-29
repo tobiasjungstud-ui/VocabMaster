@@ -1446,12 +1446,17 @@ Tabelle: Wer ein Feld hinzufügt und das Ausblenden vergisst, merkt es dort.
 
 ### Der Auslöser — der Knopf weckt den Chat
 
-**Es sind zwei Knöpfe, und sie tun dasselbe**: der grosse unten in der
-Leiste und „Auftrag auslösen" in der Tafel. Der in der Leiste hatte eine
-Zeit lang gar keinen Horcher — und weil er der auffälligere ist, wurde er
-geklickt: „wenn ich auf Auftrag erstellen klicke, passiert nichts." Beide
-gehen jetzt über **eine** Stelle (`auftragAusloesen`), und keiner von
-beiden wird je abgeschaltet.
+**Es gibt einen Auslöser**: den grossen unten in der Leiste, der beim
+Rollen stehen bleibt. Einen zweiten, gleichen in der Tafel brauchte die
+Lehrperson nicht — er ist weg. Der in der Leiste hatte früher eine Zeit
+lang gar keinen Horcher: „wenn ich auf Auftrag erstellen klicke, passiert
+nichts." Er geht über `auftragAusloesen` und wird nie abgeschaltet.
+
+Den **Auftragssatz** selbst zeigt die Tafel nicht mehr — er ist für den
+Chat, nicht für die Lehrperson. Er bleibt im Dokument (`#befehl`, hidden),
+damit „Befehl kopieren" ihn weiterhin mitnimmt. Und der laufende Auftrag
+steht nur einmal da: gross unter „Was gerade läuft", nicht noch einmal im
+Auftragsbuch darunter.
 
 **Ohne Verbindung wird der Befehl kopiert**, statt den Klick verfallen zu
 lassen. Das ist der Weg, der dann offensteht, und der Knopf sagt es schon

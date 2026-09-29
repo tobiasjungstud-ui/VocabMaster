@@ -207,7 +207,7 @@ def test_der_ausloeser_haelt_sich_an_die_datenbank():
     )
     # Ohne beide Fähigkeiten muss der Knopf aus sein, statt ins Leere zu greifen.
     assert "!db || !selbst" in körper
-    for aufrufer in ('$("ausloesen").addEventListener', "lehrmittelAusloesen"):
+    for aufrufer in ('$("bauen").addEventListener', "lehrmittelAusloesen"):
         assert aufrufer in seite
 
 
@@ -610,20 +610,17 @@ def test_die_schritte_stehen_im_auftrag_nicht_in_der_seite():
         )
 
 
-def test_beide_knoepfe_loesen_denselben_auftrag_aus():
-    """„Auftrag erstellen" tat nichts - es war der auffälligere Knopf.
+def test_ein_einziger_ausloeser_und_er_hat_einen_horcher():
+    """„Auftrag erstellen" tat einmal nichts - es war der auffälligere Knopf.
 
-    Der grosse in der Leiste und der in der Tafel bestellen dasselbe.
-    Einer von beiden hatte keinen Horcher, und weil er der grössere war,
-    wurde er geklickt: „wenn ich auf Auftrag erstellen klicke, passiert
-    nichts."
+    Es gab zwei Knöpfe, die dasselbe bestellten, und einer davon hatte
+    keinen Horcher. Jetzt gibt es nur noch den in der Leiste (die Lehrperson
+    brauchte den zweiten nicht), und er geht über `auftragAusloesen`.
     """
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
-    for knopf in ("bauen", "ausloesen"):
-        assert f'$("{knopf}").addEventListener("click"' in seite, \
-            f"{knopf} hat keinen Horcher"
-    # Beide gehen über dieselbe Stelle - sonst driften sie auseinander.
-    assert seite.count("auftragAusloesen($(") == 2
+    assert '$("bauen").addEventListener("click"' in seite, "bauen hat keinen Horcher"
+    assert 'id="ausloesen"' not in seite, "der zweite Auslöser ist zurück"
+    assert seite.count("auftragAusloesen($(") == 1
 
     körper = seite[seite.index("async function auftragAusloesen("):]
     körper = körper[:körper.index("\n}")]

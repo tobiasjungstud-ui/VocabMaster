@@ -11,10 +11,13 @@ import re
 import zipfile
 from xml.etree import ElementTree as ET
 
+from . import doppelblatt as _doppel
 from .builder import (
     GAP,
     LINE,
+    WRITING_LINE,
     aufgaben_des_specs,
+    build_document_xml,
     choice_letter,
     wiederholung_des_specs,
 )
@@ -44,19 +47,39 @@ REQUIRED_MARKUP = {
 }
 
 
-def document_text(path: str) -> str:
+#: dasselbe für das Doppelblatt - dieselbe Prüfung zweimal auf A4 quer
+REQUIRED_MARKUP_DOPPELBLATT = {
+    **{k: v for k, v in REQUIRED_MARKUP.items()
+       if k not in ('w:val="680"', 'w:w="9067"')},
+    f'w:val="{_doppel.ZEILE}"': "the row height of the translation table",
+    f'w:w="{_doppel.SPALTE}"': "the width of the translation table",
+    'w:orient="landscape"': "the landscape page",
+    'w:num="2"': "the two columns",
+}
+
+
+def _root(path: str):
     with zipfile.ZipFile(path) as zf:
-        root = ET.fromstring(zf.read("word/document.xml"))
+        return ET.fromstring(zf.read("word/document.xml"))
+
+
+def _text_von(root) -> str:
     out = []
     for para in root.iter(f"{W}p"):
         out.append("".join(t.text or "" for t in para.iter(f"{W}t")))
     return "\n".join(out)
 
 
+def document_text(path: str) -> str:
+    return _text_von(_root(path))
+
+
 def tables(path: str) -> list[list[list[str]]]:
     """Every table of the document as rows of cell texts, in document order."""
-    with zipfile.ZipFile(path) as zf:
-        root = ET.fromstring(zf.read("word/document.xml"))
+    return _tabellen_von(_root(path))
+
+
+def _tabellen_von(root) -> list[list[list[str]]]:
     out = []
     for table in root.iter(f"{W}tbl"):
         rows = []
@@ -70,8 +93,81 @@ def tables(path: str) -> list[list[list[str]]]:
     return out
 
 
+def _haelften(root) -> tuple[list[list], object]:
+    """Die Hälften eines Doppelblatts - getrennt an den Spaltenumbrüchen.
+
+    Blatt für Blatt: links, rechts, links, rechts. Auf jedem Blatt müssen
+    beide gleich sein.
+    """
+    body = root.find(f"{W}body")
+    teile: list[list] = [[]]
+    for kind in body:
+        if kind.tag == f"{W}sectPr":
+            continue
+        if any(br.get(f"{W}type") == "column" for br in kind.iter(f"{W}br")):
+            teile.append([])
+        else:
+            teile[-1].append(kind)
+    return teile, body.find(f"{W}sectPr")
+
+
+def _pruefe_doppelblatt(root, spec: dict, add):
+    """Die Form des Doppelblatts - und ob links und rechts dasselbe steht.
+
+    Gibt die linken Hälften, Blatt für Blatt aneinandergereiht, als eigenes
+    Dokument zurück: Das ist die Prüfung, wie sie eine Schülerin, ein
+    Schüler nach dem Schnitt in der Hand hat. An ihr laufen danach alle
+    Inhaltskontrollen, die auch das A4-Blatt durchläuft.
+    """
+    teile, sect = _haelften(root)
+    if len(teile) < 2 or len(teile) % 2:
+        add(ERROR, "doppelblatt",
+            f"the sheet splits into {len(teile)} column(s) - it is not the "
+            "same page twice, side by side")
+        return None
+    for blatt in range(len(teile) // 2):
+        links, rechts = teile[2 * blatt], teile[2 * blatt + 1]
+        if [ET.tostring(e) for e in links] != [ET.tostring(e) for e in rechts]:
+            add(ERROR, "doppelblatt",
+                f"sheet {blatt + 1}: left and right differ - after cutting, "
+                "two pupils would get two different exams")
+    if sect is not None:
+        seite = sect.find(f"{W}pgSz")
+        rand = sect.find(f"{W}pgMar")
+        spalten = sect.find(f"{W}cols")
+        if seite is None or int(seite.get(f"{W}w", 0)) <= int(seite.get(f"{W}h", 0)):
+            add(ERROR, "doppelblatt", "the page is not in landscape")
+        if spalten is None or spalten.get(f"{W}num") != "2":
+            add(ERROR, "doppelblatt", "the page is not split into two columns")
+        elif rand is not None:
+            links_r, rechts_r = int(rand.get(f"{W}left", 0)), int(rand.get(f"{W}right", 0))
+            if links_r != rechts_r or int(spalten.get(f"{W}space", 0)) != 2 * links_r:
+                add(ERROR, "doppelblatt",
+                    "the gap between the columns is not twice the outer margin - "
+                    "the cut would not leave both halves with the same margins")
+    haelfte = ET.Element(f"{W}document")
+    koerper = ET.SubElement(haelfte, f"{W}body")
+    for blatt in range(len(teile) // 2):
+        koerper.extend(teile[2 * blatt])
+    # Dieselbe Prüfung wie auf dem A4-Blatt? Der Text muss Absatz für Absatz
+    # derselbe sein - nur die Schreiblinie ist kürzer.
+    a4 = _text_von(ET.fromstring(build_document_xml(spec).encode("utf-8")))
+    a4 = a4.replace(WRITING_LINE, _doppel.SCHREIBLINIE)
+    if [z for z in a4.splitlines() if z.strip()] != \
+            [z for z in _text_von(haelfte).splitlines() if z.strip()]:
+        add(ERROR, "doppelblatt",
+            "the half sheets do not read like the A4 sheet of this exam")
+    blaetter = len(teile) // 2
+    erwartet = len(_doppel.aufteilung(spec))
+    if blaetter != erwartet:
+        add(ERROR, "doppelblatt",
+            f"the exam is set on {blaetter} sheet(s), the page plan says {erwartet}")
+    return haelfte
+
+
 def verify_document(path: str, spec: dict, template_path: str,
-                    is_answer_key: bool = False) -> list[Finding]:
+                    is_answer_key: bool = False,
+                    doppelblatt: bool = False) -> list[Finding]:
     findings: list[Finding] = []
 
     def add(level, check, message):
@@ -101,11 +197,19 @@ def verify_document(path: str, spec: dict, template_path: str,
         add(ERROR, "package", f"the document cannot be read: {exc!r}")
         return findings
 
-    for markup, what in REQUIRED_MARKUP.items():
+    markups = REQUIRED_MARKUP_DOPPELBLATT if doppelblatt else REQUIRED_MARKUP
+    for markup, what in markups.items():
         if markup not in document:
             add(ERROR, "design", f"{what} is missing from the document")
 
-    text = document_text(path)
+    root = ET.fromstring(document.encode("utf-8"))
+    if doppelblatt:
+        # Alle Inhaltskontrollen laufen an **einer** Hälfte; dass die andere
+        # dieselbe ist, hat _pruefe_doppelblatt gezeigt.
+        root = _pruefe_doppelblatt(root, spec, add)
+        if root is None:
+            return findings
+    text = _text_von(root)
     flat = re.sub(r"\s+", " ", text)
     aufgaben = aufgaben_des_specs(spec)
     nach_art = {}
@@ -159,7 +263,7 @@ def verify_document(path: str, spec: dict, template_path: str,
         add(ERROR, "content", "the document still contains TODO text")
 
     # --- die Übersetzungstabelle ----------------------------------------
-    all_tables = tables(path)
+    all_tables = _tabellen_von(root)
     tabellen_aufgaben = list(nach_art.get("uebersetzen", []))
     if wiederholung:
         # Die Wiederholung ist eine Übersetzungstabelle wie die andere und
@@ -244,7 +348,14 @@ def verify_document(path: str, spec: dict, template_path: str,
                         f"'{en}' of writing task {nummer} is not on the sheet")
 
     # a vocabulary exam that runs onto a second page has been laid out wrongly
-    estimate = _page_estimate(spec)
+    estimate = 1 if doppelblatt else _page_estimate(spec)
+    if doppelblatt:
+        passt, prozente = _doppel.passt(spec)
+        if not passt:
+            add(ERROR, "layout",
+                "a single task is taller than half a page (estimated "
+                + " / ".join(f"{p} %" for p in prozente) + ") - it runs into "
+                "the other half, and left and right differ")
     if estimate > 1:
         zusatz = [a for a in aufgaben
                   if str(a.get("art")) not in ("uebersetzen", "luecken")]

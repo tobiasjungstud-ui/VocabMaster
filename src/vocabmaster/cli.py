@@ -30,7 +30,7 @@ from .aufgaben import DEFINITION, LUECKEN, SAETZE_ZUR_WAHL, SCHREIBEN, sortiert
 from .checks import FEHLER, WARNUNG, pruefe_paket
 from .config import PACKAGE_ROOT, Settings
 from .database import Database
-from .documents import baue_alles
+from .documents import BLATTFORMATE, baue_alles
 from .importer import (
     import_wordlist,
     load_themes,
@@ -1113,7 +1113,7 @@ def cmd_bauen(args) -> int:
     pruefungsteile = (args.teil,) if args.teil else (1, 2)
     ergebnis = baue_alles(
         pack, args.ausgabe, settings, teile, not args.ohne_loesung, niveaus,
-        pruefungsteile,
+        pruefungsteile, args.blatt,
     )
     print(f"\nGeschrieben nach {args.ausgabe}/:")
     for pfad in ergebnis.dateien:
@@ -1305,6 +1305,10 @@ def build_parser() -> argparse.ArgumentParser:
                    help="nur die Prüfungen dieses Teils schreiben - ein "
                         "Paket trägt immer alle vier, bestellt ist oft eine")
     p.add_argument("--ohne-loesung", action="store_true", dest="ohne_loesung")
+    p.add_argument("--blatt", choices=BLATTFORMATE, default="a4",
+                   help="a4: ein Blatt je Prüfung (wie bisher); a5: dieselbe "
+                        "Prüfung zweimal auf A4 quer, in der Mitte zu "
+                        "schneiden; beide: beides. Das Lösungsblatt bleibt A4.")
     p.add_argument("-a", "--ausfuehrlich", action="store_true")
     p.add_argument("--streng", action="store_true")
     p.add_argument("--trotzdem", action="store_true",

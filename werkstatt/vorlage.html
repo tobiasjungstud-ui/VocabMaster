@@ -93,6 +93,110 @@ button,input,select,textarea{font:inherit; color:inherit}
 }
 .rail section{padding:12px 16px 16px; border-bottom:1px solid var(--line)}
 .gruppe section:last-child{border-bottom:0; padding-bottom:18px}
+
+/* Die Leiste rollt in sich, der Auftrag bleibt unten stehen. Vier
+   Bildschirme Leiste und der Knopf ganz unten: Man rollte die Seite, um zu
+   bestellen, und sah dabei nicht mehr, was man bestellt. */
+.leistenrumpf{display:flex; flex-direction:column; gap:2px; min-height:0}
+@media (min-width:901px){
+  .rail{max-height:calc(100vh - 32px)}
+  .leistenrumpf{overflow-y:auto; overscroll-behavior:contain; flex:1 1 auto;
+    scrollbar-width:thin}
+}
+.gruppe.fuss{
+  border-top:2px solid var(--line-2); border-bottom:0; flex:none;
+  background:var(--surface); box-shadow:0 -12px 18px -18px rgba(23,26,34,.55);
+}
+.gruppe.fuss section{padding-top:8px}
+.gruppe.fuss textarea{min-height:40px}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden;
+  clip:rect(0 0 0 0); white-space:nowrap}
+
+/* Zuklappen. Zugeklappt steht im Titel, was eingestellt ist - sonst
+   verschwände eine Einstellung aus dem Blick und bliebe doch im Auftrag. */
+details > summary{list-style:none; cursor:pointer}
+details > summary::-webkit-details-marker{display:none}
+summary.gruppentitel{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:0 8px; padding:12px 16px;
+}
+details.gruppe[open] > summary.gruppentitel{padding-bottom:0}
+summary.gruppentitel::before, details.unter > summary::before{
+  content:"›"; display:inline-block; width:.7em; flex:none;
+  color:var(--ink-3); font-family:var(--sans); font-weight:600;
+  transition:transform .15s;
+}
+details[open] > summary.gruppentitel::before,
+details.unter[open] > summary::before{transform:rotate(90deg)}
+summary:hover::before{color:var(--accent)}
+/* Die Zeile steht unter dem Titel, eingerückt wie er: Daneben bräche ein
+   langer Titel um, und der Stand würde abgeschnitten. */
+.kurz{
+  flex:1 0 100%; min-width:0; margin-left:calc(.7em + 8px); margin-top:2px;
+  font-family:var(--mono); font-size:10.5px; font-weight:400; letter-spacing:0;
+  text-transform:none; color:var(--ink-2); line-height:1.45;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+details[open] > summary > .kurz{display:none}
+details.unter{border-bottom:1px solid var(--line); padding:0 16px}
+details.unter > summary{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:0 6px; padding:10px 0;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3);
+}
+details.unter[open]{padding-bottom:14px}
+details.unter:last-child{border-bottom:0}
+details.unter.kennzahlen{padding:0; border:0; margin-top:10px}
+details.unter.kennzahlen .herkunft{margin-top:4px}
+details.unter .kurz{margin-left:calc(.7em + 6px)}
+
+/* Vier Prüfungen: zwei Teile mal zwei Niveaus. */
+.matrix{
+  display:grid; grid-template-columns:minmax(0,1fr) 60px 60px;
+  gap:5px 6px; align-items:center; margin-top:6px;
+}
+.spaltenkopf{
+  font-family:var(--mono); font-size:10px; font-weight:600; text-align:center;
+}
+.spaltenkopf.a{color:var(--nivA)} .spaltenkopf.b{color:var(--nivB)}
+.zeilenkopf{font-size:13.5px; line-height:1.3}
+.zeilenkopf .sub{display:block; color:var(--ink-3); font-size:11px; font-family:var(--mono)}
+.zelle{
+  display:flex; justify-content:center; align-items:center; height:34px;
+  border:1px solid var(--line); border-radius:var(--r); cursor:pointer;
+  background:var(--paper);
+}
+.zelle input{width:16px; height:16px; margin:0; cursor:pointer}
+.zelle.a input{accent-color:var(--nivA)} .zelle.b input{accent-color:var(--nivB)}
+.zelle.a:has(input:checked){background:var(--nivA-soft); border-color:var(--nivA-line)}
+.zelle.b:has(input:checked){background:var(--nivB-soft); border-color:var(--nivB-line)}
+.zelle:hover{border-color:var(--line-2)}
+
+/* Das Blattformat: drei Karten mit Bild. */
+.blattwahl{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:6px}
+.blattkarte{
+  position:relative; display:flex; flex-direction:column; align-items:center;
+  gap:1px; padding:7px 4px 8px; text-align:center; cursor:pointer;
+  border:1px solid var(--line-2); border-radius:var(--r); background:var(--paper);
+  font-size:12.5px; line-height:1.25;
+}
+.blattkarte input{position:absolute; opacity:0; pointer-events:none}
+.blattkarte svg{width:58px; height:40px; margin-bottom:2px}
+/* Eigene Klassennamen: `.balken` gehört dem Lineal, und dessen Höhe
+   griffe sonst auch auf das Rechteck im Bild. */
+.blattkarte .bl-papier{fill:var(--surface); stroke:var(--ink-3); stroke-width:1.2}
+.blattkarte .bl-kopf{fill:var(--ink-3)}
+.blattkarte .bl-zeilen{stroke:var(--line-2); stroke-width:1.5; fill:none}
+.blattkarte .sub{font-family:var(--mono); font-size:9.5px; color:var(--ink-3)}
+.blattkarte:hover{border-color:var(--accent)}
+.blattkarte:has(input:checked){
+  border-color:var(--accent); background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent);
+}
+.blattkarte:has(input:checked) .bl-papier{stroke:var(--accent)}
+.blattkarte:has(input:checked) .bl-kopf{fill:var(--accent)}
+.blattkarte:has(input:focus-visible){outline:2px solid var(--accent); outline-offset:2px}
+#blatthinweis{margin-top:9px}
+#blatthinweis b{color:var(--ink-2); font-weight:600}
 .legende{
   font-family:var(--mono); font-size:10.5px; letter-spacing:.09em;
   text-transform:uppercase; color:var(--ink-3); margin-bottom:11px; display:block;
@@ -708,18 +812,23 @@ td.satz{color:var(--ink-2); font-size:12.5px}
   <div class="werkbank">
     <!-- ============ Steuerleiste ============ -->
     <aside class="rail">
-      <div class="gruppe">
-        <span class="gruppentitel">Datenbank</span>
+      <!-- Jede Gruppe klappt zu und sagt dann in einer Zeile, was in ihr
+           eingestellt ist. So bleibt alles auf einer Seite einstellbar,
+           ohne dass die Leiste vier Bildschirme lang wird - und nichts
+           verschwindet unbemerkt: Zugeklappt steht der Stand im Titel. -->
+      <div class="leistenrumpf" id="leistenrumpf">
+      <details class="gruppe" data-merke="datenbank">
+        <summary class="gruppentitel">Datenbank<span class="kurz" id="kurzDatenbank"></span></summary>
         <section>
           <select id="datenbank"></select>
           <p class="hinweis" id="dbhinweis"></p>
           <button class="zurueck" id="umbenennenAuf" type="button">umbenennen</button>
           <button class="knopf breit" id="lehrmittelAuf" type="button">＋ Neues Lehrmittel</button>
         </section>
-      </div>
+      </details>
 
-      <div class="gruppe">
-        <span class="gruppentitel">Unitwahl</span>
+      <details class="gruppe" open data-merke="unit">
+        <summary class="gruppentitel">Unitwahl<span class="kurz" id="kurzUnit"></span></summary>
         <section>
           <select id="unit"></select>
         </section>
@@ -729,30 +838,38 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <!-- Die Kennzahlen gehören zu einer bestimmten Liste, nicht zur
                Unit im Ganzen. Sie zeigen deshalb die Liste, über der die
                Maus steht - und sonst die gewählte. -->
-          <dl class="herkunft" id="herkunft"></dl>
+          <details class="unter kennzahlen" data-merke="kennzahlen">
+            <summary>Kennzahlen<span class="kurz" id="kurzKennzahlen"></span></summary>
+            <dl class="herkunft" id="herkunft"></dl>
+          </details>
           <p class="hinweis" id="listenhinweis"></p>
         </section>
-      </div>
+      </details>
 
-      <div class="gruppe">
-        <span class="gruppentitel">Was soll entstehen</span>
+      <details class="gruppe" open data-merke="entstehen">
+        <summary class="gruppentitel">Was soll entstehen<span class="kurz" id="kurzEntstehen"></span></summary>
         <section>
         <label class="tick" for="bLi"><input type="checkbox" id="bLi" checked>
           <span><span id="bLiLabel">Neue Vokabelliste</span><span class="sub">60 Wörter · beide Gruppen · aus der oben gewählten</span></span></label>
         <p class="warnband" id="neuhinweis" hidden></p>
-        <label class="tick a" for="b1A"><input type="checkbox" id="b1A" checked>
-          <span>Prüfung Teil I · <strong>Niveau A</strong><span class="sub">aus Test 1</span></span></label>
-        <label class="tick b" for="b1B"><input type="checkbox" id="b1B" checked>
-          <span>Prüfung Teil I · <strong>Niveau B</strong><span class="sub">aus Test 1</span></span></label>
-        <label class="tick a" for="b2A"><input type="checkbox" id="b2A" checked>
-          <span>Prüfung Teil II · <strong>Niveau A</strong><span class="sub">aus Test 2</span></span></label>
-        <label class="tick b" for="b2B"><input type="checkbox" id="b2B" checked>
-          <span>Prüfung Teil II · <strong>Niveau B</strong><span class="sub">aus Test 2</span></span></label>
+        <!-- Vier Prüfungen sind zwei Teile mal zwei Niveaus - als Raster
+             liest sich das auf einen Blick, als vier Zeilen nicht. -->
+        <div class="matrix" role="group" aria-label="Prüfungen">
+          <span></span>
+          <span class="spaltenkopf a">Niveau A</span>
+          <span class="spaltenkopf b">Niveau B</span>
+          <span class="zeilenkopf">Prüfung Teil I<span class="sub">aus Test 1</span></span>
+          <label class="zelle a" for="b1A" title="Prüfung Teil I · Niveau A"><input type="checkbox" id="b1A" checked aria-label="Prüfung Teil I · Niveau A"></label>
+          <label class="zelle b" for="b1B" title="Prüfung Teil I · Niveau B"><input type="checkbox" id="b1B" checked aria-label="Prüfung Teil I · Niveau B"></label>
+          <span class="zeilenkopf">Prüfung Teil II<span class="sub">aus Test 2</span></span>
+          <label class="zelle a" for="b2A" title="Prüfung Teil II · Niveau A"><input type="checkbox" id="b2A" checked aria-label="Prüfung Teil II · Niveau A"></label>
+          <label class="zelle b" for="b2B" title="Prüfung Teil II · Niveau B"><input type="checkbox" id="b2B" checked aria-label="Prüfung Teil II · Niveau B"></label>
+        </div>
         </section>
-      </div>
+      </details>
 
-      <div class="gruppe" id="gruppeListe">
-        <span class="gruppentitel">Einstellungen der Vokabelliste</span>
+      <details class="gruppe" id="gruppeListe" data-merke="liste">
+        <summary class="gruppentitel">Einstellungen der Vokabelliste<span class="kurz" id="kurzListe"></span></summary>
         <section>
         <div id="fancyfeld">
         <span class="legende" id="fancylabel">Aufgewertete Wörter — nur für eine neue Liste</span>
@@ -785,12 +902,12 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <p class="hinweis" id="stufehinweis"></p>
         </div>
         </section>
-      </div>
+      </details>
 
-      <div class="gruppe" id="gruppePruefung">
-        <span class="gruppentitel">Prüfungssettings</span>
-      <section id="anspruchfeld">
-        <span class="legende">Anspruch der Prüfung</span>
+      <details class="gruppe" id="gruppePruefung" open data-merke="pruefung">
+        <summary class="gruppentitel">Prüfungssettings<span class="kurz" id="kurzPruefung"></span></summary>
+      <details class="unter" id="anspruchfeld" data-merke="anspruch">
+        <summary>Anspruch der Prüfung<span class="kurz" id="kurzAnspruch"></span></summary>
         <div class="regler a" id="anspruchA">
           <div class="regler-kopf">
             <b>Niveau A</b><span class="cefr">B1.2–B2.1</span>
@@ -810,10 +927,10 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <div class="skala"><span>leicht</span><span class="normal" id="normWortB">0–10</span><span>schwer</span></div>
         </div>
         <button class="zurueck" id="zurueck" hidden>auf die Voreinstellung dieser Unit zurück</button>
-      </section>
+      </details>
 
-      <section id="textfeld">
-        <span class="legende">Schwierigkeit des Lückentexts</span>
+      <details class="unter" id="textfeld" data-merke="text">
+        <summary>Schwierigkeit des Lückentexts<span class="kurz" id="kurzText"></span></summary>
         <div class="regler a" id="textreglerA">
           <div class="regler-kopf">
             <b>Niveau A</b><span class="cefr" id="tcefrA">B1.2–B2.1</span>
@@ -835,10 +952,10 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <div class="zielband" id="tbandB"></div>
         </div>
         <button class="zurueck" id="tzurueck" hidden>auf die Normallage zurück</button>
-      </section>
+      </details>
 
-        <section>
-          <span class="legende">Aufbau der Prüfung</span>
+        <details class="unter" data-merke="aufbau">
+          <summary>Aufbau der Prüfung<span class="kurz" id="kurzAufbau"></span></summary>
         <div id="pruefmasse">
           <div class="feld">
             <label for="gesamtwoerter">Wörter je Prüfung —
@@ -852,10 +969,13 @@ td.satz{color:var(--ink-2); font-size:12.5px}
               was je Aufgabe dasteht</span></span></label>
           <div id="aufgabenwahl"></div>
           <p class="hinweis" id="aufgabenhinweis"></p>
+        </div>
+        </details>
+        <details class="unter" data-merke="fassung">
+          <summary>Fassung<span class="kurz" id="kurzFassung"></span></summary>
           <!-- Bei einer **neuen** Liste gibt es nichts zu wählen: Ihre
                Prüfungen sind zwangsläufig ihre ersten. -->
-          <span class="legende" style="margin-top:14px">Fassung</span>
-          <div class="feld" id="fassungFeld" style="margin-top:10px">
+          <div class="feld" id="fassungFeld">
             <label for="variante">Fassung</label>
             <select id="variante"></select>
           </div>
@@ -866,26 +986,69 @@ td.satz{color:var(--ink-2); font-size:12.5px}
             <input type="number" id="fassungAnzahl" min="1" max="12" value="1">
           </div>
           <p class="hinweis" id="fassunghinweis"></p>
-        </div>
-        </section>
+        </details>
         <!-- Wörter aus dem vorherigen Vocabulary. Standard aus: Wer nichts
              ankreuzt, bekommt die Prüfung von bisher. -->
-        <section id="wiederholungfeld">
-          <span class="legende">Wiederholung</span>
+        <details class="unter" id="wiederholungfeld" data-merke="wiederholung">
+          <summary>Wiederholung<span class="kurz" id="kurzWiederholung"></span></summary>
           <label class="tick" for="wiederholung"><input type="checkbox" id="wiederholung">
             <span>Wörter aus dem vorherigen Vocabulary<span class="sub">Niveau A: 4 Wörter, zählen mit ·
               Niveau B: 2 Wörter als Bonus</span></span></label>
           <div id="wiederholungWahl" hidden></div>
           <p class="hinweis" id="wiederholungHinweis"></p>
+        </details>
+      </details>
+
+      <!-- Wie die Prüfungen aufs Papier kommen. Der Inhalt ist derselbe;
+           2 × A5 legt ihn zweimal auf ein A4-Blatt quer. -->
+      <details class="gruppe" id="gruppeAusgabe" open data-merke="ausgabe">
+        <summary class="gruppentitel">Ausgabe der Prüfungen<span class="kurz" id="kurzAusgabe"></span></summary>
+        <section>
+          <div class="blattwahl" role="radiogroup" aria-label="Blattformat">
+            <label class="blattkarte" for="blattA4">
+              <input type="radio" name="blatt" id="blattA4" value="a4" checked>
+              <svg viewBox="0 0 64 44" aria-hidden="true">
+                <rect x="21" y="3" width="22" height="31" rx="1.5" class="bl-papier"/>
+                <rect x="24" y="6" width="16" height="3" class="bl-kopf"/>
+                <path d="M24 13h16M24 17h16M24 21h12M24 25h16M24 29h10" class="bl-zeilen"/>
+              </svg>
+              <b>A4 hoch</b><span class="sub">eine Prüfung je Blatt</span>
+            </label>
+            <label class="blattkarte" for="blattA5">
+              <input type="radio" name="blatt" id="blattA5" value="a5">
+              <svg viewBox="0 0 64 44" aria-hidden="true">
+                <rect x="4" y="6" width="56" height="31" rx="1.5" class="bl-papier"/>
+                <rect x="8" y="9" width="20" height="3" class="bl-kopf"/>
+                <path d="M8 16h20M8 20h20M8 24h14M8 28h20M8 32h11" class="bl-zeilen"/>
+                <rect x="36" y="9" width="20" height="3" class="bl-kopf"/>
+                <path d="M36 16h20M36 20h20M36 24h14M36 28h20M36 32h11" class="bl-zeilen"/>
+              </svg>
+              <b>2 × A5</b><span class="sub">A4 quer, zum Halbieren</span>
+            </label>
+            <label class="blattkarte" for="blattBeide">
+              <input type="radio" name="blatt" id="blattBeide" value="beide">
+              <svg viewBox="0 0 64 44" aria-hidden="true">
+                <rect x="4" y="6" width="17" height="24" rx="1.5" class="bl-papier"/>
+                <path d="M7 10h11M7 14h11M7 18h8M7 22h11" class="bl-zeilen"/>
+                <rect x="25" y="10" width="35" height="20" rx="1.5" class="bl-papier"/>
+                <path d="M28 14h11M28 18h11M28 22h8M46 14h11M46 18h11M46 22h8" class="bl-zeilen"/>
+              </svg>
+              <b>beides</b><span class="sub">A4 und 2 × A5</span>
+            </label>
+          </div>
+          <p class="hinweis" id="blatthinweis"></p>
         </section>
+      </details>
       </div>
 
-      <div class="gruppe">
+      <!-- Der Auftrag bleibt unten stehen, gleich wie weit die Leiste
+           gerollt ist: Er ist das, weswegen man sie ausfüllt. -->
+      <div class="gruppe fuss">
         <span class="gruppentitel">Auftrag</span>
         <section>
-          <label for="notiz">Notiz an mich</label>
-          <textarea id="notiz" placeholder="z. B. Thema des Lückentexts, Wörter die drin sein müssen …"></textarea>
-          <button class="bauen" id="bauen" style="margin-top:12px">Auftrag erstellen</button>
+          <label for="notiz" class="sr">Notiz an mich</label>
+          <textarea id="notiz" rows="2" placeholder="Notiz an mich — z. B. Thema des Lückentexts, Wörter, die drin sein müssen …"></textarea>
+          <button class="bauen" id="bauen" style="margin-top:10px">Auftrag erstellen</button>
           <p class="bauen-hinweis" id="bauenHinweis"></p>
         </section>
       </div>
@@ -1184,6 +1347,9 @@ const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnza
   // wird. `quelle` merkt sich je Teil die gewählte Quelle als "paket|part";
   // passt sie nach einem Wechsel nicht mehr, gilt wieder der Vorschlag.
   wiederholung:false, wQuelle:{1:"", 2:""},
+  // Das Blattformat der Prüfungen: "a4" wie bisher, "a5" zweimal auf A4
+  // quer zum Halbieren, "beide". Das Lösungsblatt bleibt immer A4.
+  blatt:"a4",
   // Welche Aufgaben die Prüfung hat und wie viele Wörter jede bekommt.
   // `eigen` trägt nur, was von Hand gesetzt wurde - der Rest verteilt
   // sich. Ohne Eintrag darin wandert eine Aufgabe mit.
@@ -1432,6 +1598,9 @@ function zeichneHerkunft(li){
     posten("in dieser Liste", ausListe) +
     posten("aufgewertet", ergaenzt, ergaenzt > 0) +
     posten("Zusatzteile", h.zusatzteile, h.zusatzteile > 0);
+  $("kurzKennzahlen").textContent = h.hauptteil + " → " + h.gefiltert +
+    " aussortiert → " + (li.version ? "V" + li.version + ": " + ausListe +
+    (ergaenzt ? " + " + ergaenzt : "") : "keine Liste");
 }
 
 function posten(titel, wert, betont){
@@ -1834,20 +2003,22 @@ function pruefkarte(pr, li){
   const noten = pr.woerter.map(w => Number(w.score) || 0);
   const schnitt = noten.length
     ? (noten.reduce((a, b) => a + b, 0) / noten.length) : 0;
-  const gebaut = istGebaut(pr.blatt);
+  const gebaut = istGebaut(pr.blatt) || !!(pr.doppelblatt && istGebaut(pr.doppelblatt));
 
   const kopf = document.createElement("h3");
   kopf.innerHTML =
     "Teil " + (pr.teil === 1 ? "I" : "II") + " · Niveau " + pr.niveau +
     " · Fassung " + pr.fassung +
     '<span class="mass">' + pr.woerter.length + " Wörter, davon " +
-    luecken.length + " Lücken · Ø " + schnitt.toFixed(1) + "/10</span>";
+    luecken.length + " Lücken · Ø " + schnitt.toFixed(1) + "/10" +
+    (pr.a5 && pr.a5.length ? " · als 2 × A5: " + blaetter(pr.a5.length) : "") +
+    "</span>";
   const griffe = document.createElement("span");
   griffe.className = "griffe";
-  if(gebaut){
-    griffe.appendChild(ladeknopf("Blatt", pr.blatt));
-    if(istGebaut(pr.loesung)) griffe.appendChild(ladeknopf("Lösung", pr.loesung));
-  }
+  if(gebaut) griffe.appendChild(ladeknopf("Blatt", pr.blatt));
+  if(pr.doppelblatt && istGebaut(pr.doppelblatt))
+    griffe.appendChild(ladeknopf("2 × A5", pr.doppelblatt));
+  if(istGebaut(pr.loesung)) griffe.appendChild(ladeknopf("Lösung", pr.loesung));
   kopf.appendChild(griffe);
   k.appendChild(kopf);
 
@@ -2338,6 +2509,8 @@ function zeichneSichtbarkeit(){
   // Die Wiederholung gehört zur Prüfung; ihre Quellwahl erst zum Häkchen.
   $("wiederholungfeld").hidden = !b.pruefungen;
   $("wiederholungWahl").hidden = !b.wiederholung;
+  // Das Blattformat gibt es nur für Prüfungen - die Vokabelliste hat eines.
+  $("gruppeAusgabe").hidden = !b.pruefungen;
 }
 
 /* ---------------- Wiederholung aus dem vorherigen Vocabulary ----------------
@@ -2497,8 +2670,10 @@ function auftrag(){
     // Wörter aus dem vorherigen Vocabulary: je Teil die gewählte Quelle.
     // Niveau A zählt sie, Niveau B nur als Bonus.
     wiederholung:wiederholungAuftrag(pruefungen),
+    blatt:state.blatt,
     dokumente:stueckzahl(
-      teile, state.variante === 0 ? Math.max(1, state.fassungAnzahl) : 1),
+      teile, state.variante === 0 ? Math.max(1, state.fassungAnzahl) : 1,
+      state.blatt),
     erzeugt:new Date().toISOString()
   };
 }
@@ -2559,6 +2734,18 @@ function wiederholungsSatz(a){
     "Quellliste neu ein und prüft jedes Wort dagegen.";
 }
 
+/* Das Blattformat im Auftrag - ausgeschrieben und als Befehl. */
+function blattSatz(a){
+  return (a.blatt === "a5"
+      ? "Blattformat 2 × A5: jede Prüfung zweimal auf A4 quer, links und " +
+        "rechts dasselbe, in der Mitte zu schneiden — kein A4-Blatt dazu"
+      : "Blattformat A4 und 2 × A5: jede Prüfung als A4-Blatt und dazu " +
+        "zweimal auf A4 quer, links und rechts dasselbe") +
+    ". Passt eine Prüfung nicht auf eine halbe Seite, kommt ein zweites " +
+    "Blatt, umbrochen zwischen zwei Aufgaben. Das Lösungsblatt bleibt A4. " +
+    "Bauen mit 'vocabmaster bauen … --nur test --blatt " + a.blatt + "'.";
+}
+
 function befehlstext(a){
   if(!a.teile.length) return "Nichts ausgewählt — links mindestens einen Punkt ankreuzen.";
   const zeilen = ["Unit " + a.unit + ": " + a.teile.map(t => t.text).join(", ") + "."];
@@ -2587,6 +2774,7 @@ function befehlstext(a){
   }
   if(a.hatPruefungen) zeilen.push(aufbauSatz(a));
   if(a.wiederholung) zeilen.push(wiederholungsSatz(a));
+  if(a.hatPruefungen && a.blatt && a.blatt !== "a4") zeilen.push(blattSatz(a));
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
       a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
@@ -2671,7 +2859,7 @@ function befehlstext(a){
 /* Wieviele Dateien am Ende dastehen. Jede Prüfung bringt ihr Lösungsblatt
    mit, die Vokabelliste nicht - das ist der häufigste Rechenfehler beim
    Überfliegen und gehört deshalb ausgeschrieben in den Auftrag. */
-function stueckzahl(teile, fassungen){
+function stueckzahl(teile, fassungen, blatt){
   // Zwei Angaben, nicht der ganze Auftrag: Die Zahl wird einmal beim Bauen
   // des Auftrags gebraucht, wo es ihn noch nicht gibt, und einmal danach.
   // Mehrere Fassungen vervielfachen jede angekreuzte Prüfung - die
@@ -2681,10 +2869,13 @@ function stueckzahl(teile, fassungen){
   const listen = teile.filter(t => t.art !== "pruefung").length;
   const teilchen = [];
   if(listen) teilchen.push(listen === 1 ? "die Vokabelliste" : listen + " Listen");
+  // Ein Doppelblatt ist **eine** Datei, auch wenn es zwei Blätter hat; bei
+  // "beide" kommt es zum A4-Blatt dazu.
+  const format = {a5:" als 2 × A5", beide:" als A4 und 2 × A5"}[blatt] || "";
   if(pruefungen)
     teilchen.push(pruefungen + (pruefungen === 1 ? " Prüfung" : " Prüfungen") +
-                  " mit Lösungsblatt");
-  const dateien = listen + pruefungen * 2;
+                  format + " mit Lösungsblatt");
+  const dateien = listen + pruefungen * (blatt === "beide" ? 3 : 2);
   return teilchen.join(" und ") + " — " + dateien +
          (dateien === 1 ? " Datei" : " Dateien");
 }
@@ -2693,6 +2884,9 @@ function zeichneAuftrag(){
   const a = auftrag();
   $("befehl").textContent = befehlstext(a);
   zeichneKnopf(a);
+  // Was sich am Auftrag ändert, ändert auch die Zeile einer zugeklappten
+  // Gruppe - an derselben Stelle nachgezogen, damit keine veraltet.
+  zeichneKurz();
 }
 
 /* Der grosse Knopf sagt, was er tun wird - und er wird von **zwei** Seiten
@@ -2708,7 +2902,7 @@ function zeichneKnopf(a){
     ? "Auftrag auslösen" : "Befehl kopieren";
   $("bauenHinweis").textContent = a.teile.length === 0
     ? "Links auswählen, was entstehen soll."
-    : stueckzahl(a.teile, a.neueFassung ? a.fassungAnzahl : 1) + " — " +
+    : stueckzahl(a.teile, a.neueFassung ? a.fassungAnzahl : 1, a.blatt) + " — " +
       (verbunden() ? "geht direkt an den Chat."
                    : "wird kopiert; im Chat einfügen.");
 }
@@ -3077,7 +3271,88 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAufgabenwahl(); zeichneWiederholung(); zeichneAuftrag(); }
+/* ---------------- Ausgabe der Prüfungen ----------------
+   Wie viele Blätter eine Prüfung als 2 × A5 braucht, rechnet die Seite
+   nicht selbst: Es steht in den Daten, geschätzt von derselben Stelle,
+   die beim Bauen umbricht. Eine Prüfung, deren Text noch nicht
+   geschrieben ist, lässt sich nicht schätzen - das steht dann so da. */
+const BLATTNAMEN = {a4:"A4 hoch", a5:"2 × A5", beide:"A4 und 2 × A5"};
+function blaetter(n){ return n + (n === 1 ? " Blatt" : " Blätter"); }
+function zeichneAusgabe(){
+  document.querySelectorAll('input[name="blatt"]').forEach(
+    el => { el.checked = el.value === state.blatt; });
+  const hinweis = $("blatthinweis");
+  if(state.blatt === "a4"){
+    hinweis.textContent = "Wie bisher: eine Prüfung je A4-Blatt, dazu das Lösungsblatt.";
+    return;
+  }
+  const li = legtNeueListeAn() ? null : listenDaten();
+  const angaben = gewaehlteTeile().filter(t => t.art === "pruefung").map(t => {
+    const pr = li && state.variante
+      ? (li.pruefungen || []).find(p => p.teil === t.teil &&
+          p.niveau === t.niveau && p.fassung === state.variante)
+      : null;
+    const name = "Teil " + (t.teil === 1 ? "I" : "II") + " " + t.niveau;
+    // Die Wiederholung ist noch nicht im Paket - sie kommt erst mit dem
+    // Auftrag dazu und macht die Prüfung länger, als die Daten wissen.
+    if(!pr || !pr.a5 || !pr.a5.length || state.wiederholung)
+      return name + ": beim Bauen umbrochen";
+    return name + ": " + blaetter(pr.a5.length);
+  });
+  hinweis.innerHTML =
+    "Links und rechts dieselbe Prüfung auf A4 quer — in der Mitte schneiden, " +
+    "daraus werden zwei A5-Blätter. Passt sie nicht auf eine halbe Seite, " +
+    "kommt ein zweites Blatt, umbrochen zwischen zwei Aufgaben: " +
+    "<b>beidseitig drucken</b>, dann hat jede und jeder ein A5-Blatt, vorn " +
+    "und hinten. Das Lösungsblatt bleibt A4." +
+    (angaben.length ? "<br>" + esc(angaben.join(" · ")) : "");
+}
+
+/* Zugeklappt sagt jede Gruppe in einer Zeile, was in ihr eingestellt ist.
+   Sonst verschwände eine Einstellung aus dem Blick und stünde doch im
+   Auftrag - man bestellte, was man nicht mehr sieht. */
+function zeichneKurz(){
+  const b = bestellt();
+  const setze = (id, text) => { const el = $(id); el.textContent = text; el.title = text; };
+  const wahl = $("datenbank").selectedOptions[0];
+  setze("kurzDatenbank", state.datenbank || (wahl ? wahl.textContent : ""));
+  const u = unitDaten() || {};
+  setze("kurzUnit", (u.unit === 0 ? "Starter Unit" : "Unit " + state.unit) +
+    (hatListe() ? " · V" + listenDaten().version : " · noch keine Liste"));
+  const n = gewaehlteTeile().filter(t => t.art === "pruefung").length;
+  setze("kurzEntstehen", [b.liste ? "Liste V" + neueVersion() : "",
+    n ? n + (n === 1 ? " Prüfung" : " Prüfungen") : ""].filter(Boolean).join(" · ")
+    || "nichts");
+  const auf = [[state.fancy, "Wörter"], [state.ausdruecke, "Wendungen"],
+               [state.chunks, "Satzanfänge"]].filter(([z]) => z > 0)
+              .map(([z, was]) => z + " " + was);
+  setze("kurzListe", (auf.length ? "aufgewertet: " + auf.join(", ") : "nichts aufgewertet") +
+    " · " + (state.paed ? "pädagogisch" + (state.stufe ? " (" + state.stufe + ")" : "")
+                        : "nach Häufigkeit"));
+  const niv = ["A", "B"].filter(x => b[x]);
+  const anspruch = niv.map(x => x + " " + state.ziel[x].toFixed(1)).join(" · ");
+  setze("kurzAnspruch", anspruch + (state.eigen ? " (eigen)" : ""));
+  setze("kurzText", niv.map(x => x + " " + state.text[x].toFixed(1)).join(" · ") +
+    (state.textEigen ? " (eigen)" : ""));
+  const pl = plan();
+  setze("kurzAufbau", planSumme() + " Wörter: " + Object.keys(pl).map(
+    k => (artInfo(k).titel || k).replace(/^Tabellen-/, "") + " " + pl[k]).join(", "));
+  const neu = legtNeueListeAn();
+  setze("kurzFassung", (neu ? "Fassung 1 der neuen Liste"
+      : state.variante === 0 ? "neue Fassung " + naechsteFassung()
+      : "Fassung " + state.variante) +
+    (b.neueFassung && state.fassungAnzahl > 1 ? " · " + state.fassungAnzahl + " auf einmal" : ""));
+  const wdh = !state.wiederholung ? "aus" : [1, 2].filter(t => b.teil(t)).map(t => {
+    const q = gewaehlteQuelle(t);
+    return (t === 1 ? "I" : "II") + " ← " + (q ? q.bezeichnung : "keine");
+  }).join(" · ");
+  setze("kurzWiederholung", wdh);
+  setze("kurzPruefung", [anspruch, planSumme() + " Wörter",
+    state.wiederholung ? "Wiederholung" : ""].filter(Boolean).join(" · "));
+  setze("kurzAusgabe", BLATTNAMEN[state.blatt] || "");
+}
+
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAufgabenwahl(); zeichneWiederholung(); zeichneAusgabe(); zeichneAuftrag(); }
 
 /* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
    es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es
@@ -3126,6 +3401,42 @@ $("wiederholung").addEventListener("change", e => {
   state.wiederholung = e.target.checked;
   alles();
 });
+// Das Blattformat.
+document.querySelectorAll('input[name="blatt"]').forEach(el =>
+  el.addEventListener("change", e => {
+    if(!e.target.checked) return;
+    state.blatt = e.target.value;
+    alles();
+  }));
+/* Die Leiste ist so hoch wie das, was vom Fenster zu sehen ist. Oben auf
+   der Seite schiebt der Kopf sie nach unten; mit fester Höhe stünde der
+   Auftrag dann halb unter dem Fensterrand. */
+function leisteEinpassen(){
+  const leiste = document.querySelector(".rail");
+  if(window.innerWidth <= 900){ leiste.style.maxHeight = ""; return; }
+  const oben = Math.max(16, leiste.getBoundingClientRect().top);
+  leiste.style.maxHeight = Math.max(320, window.innerHeight - oben - 16) + "px";
+}
+window.addEventListener("scroll", leisteEinpassen, {passive:true});
+window.addEventListener("resize", leisteEinpassen);
+leisteEinpassen();
+/* Welche Gruppen offen stehen, merkt sich der Browser - nur hier, nur für
+   diese Person. Geht das nicht (private Ansicht, gesperrter Speicher),
+   stehen sie wie im Quelltext. */
+(function klappenMerken(){
+  let offen = {};
+  try { offen = JSON.parse(localStorage.getItem("werkstatt.offen") || "{}") || {}; }
+  catch(e){ offen = {}; }
+  document.querySelectorAll("details[data-merke]").forEach(d => {
+    const k = d.dataset.merke;
+    if(Object.prototype.hasOwnProperty.call(offen, k)) d.open = !!offen[k];
+    d.addEventListener("toggle", () => {
+      offen[k] = d.open;
+      try { localStorage.setItem("werkstatt.offen", JSON.stringify(offen)); }
+      catch(e){ /* dann eben nicht gemerkt */ }
+    });
+  });
+})();
 
 for(const niv of ["A","B"]){
   $("ziel" + niv).addEventListener("input", e => {

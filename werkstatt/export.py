@@ -34,6 +34,7 @@ from vocabmaster.aufgaben import (  # noqa: E402
 from vocabmaster.config import Settings  # noqa: E402
 from vocabmaster.database import Database  # noqa: E402
 from vocabmaster.documents import dateiname  # noqa: E402
+from vocabmaster.exam import doppelblatt as _doppel  # noqa: E402
 from vocabmaster.exam.difficulty import score  # noqa: E402
 from vocabmaster.exam.english import readability  # noqa: E402
 from vocabmaster.list.dedup import deduplicate  # noqa: E402
@@ -307,6 +308,14 @@ def _pruefungen(pack: dict, fassung: int, woerter: list[dict]) -> list[dict]:
                                      loesung=True, fassung=fassung,
                                      liste_version=version,
                                      lehrmittel=lehrmittel),
+                # Dieselbe Prüfung zweimal auf A4 quer - und wie voll jede
+                # A5-Seite geschätzt wird. Die Zahl der Einträge ist die
+                # Zahl der Blätter; ausgerechnet von derselben Stelle, die
+                # beim Bauen umbricht.
+                "doppelblatt": dateiname(unit, "Test", teil=tnr, niveau=niveau,
+                                         fassung=fassung, liste_version=version,
+                                         lehrmittel=lehrmittel, doppelblatt=True),
+                "a5": _doppel.aufteilung(pruef),
             })
     return heraus
 

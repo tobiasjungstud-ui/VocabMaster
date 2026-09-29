@@ -231,6 +231,7 @@ SICHTBARKEIT = {
     "aufgabenwahl": "b.aufbau",
     "wiederholungfeld": "b.pruefungen",
     "wiederholungWahl": "b.wiederholung",
+    "gruppeAusgabe": "b.pruefungen",
 }
 
 
@@ -772,3 +773,136 @@ def test_ohne_vorherigen_part_schlaegt_die_seite_nichts_vor():
     wahl = wahl[:wahl.index("\n}\n")]
     assert "q.folge" in wahl and "w.quellen[0]" not in wahl
     assert "return null" in wahl
+
+
+# ---------------------------------------------------------------------------
+# Die Leiste: zuklappbar, ohne Funktionsverlust
+# ---------------------------------------------------------------------------
+#: Jedes Element der Leiste, wie sie vor dem Zuklappen war. Die Leiste wurde
+#: kürzer, weil Gruppen zuklappen - nicht, weil etwas wegfiel. Wer eines
+#: davon entfernt, entfernt eine Einstellung.
+LEISTE_VORHER = [
+    "datenbank", "dbhinweis", "umbenennenAuf", "lehrmittelAuf", "unit",
+    "listenwahl", "herkunft", "listenhinweis", "bLi", "bLiLabel", "neuhinweis",
+    "b1A", "b1B", "b2A", "b2B", "gruppeListe", "fancyfeld", "fancylabel",
+    "fancy", "ausdruecke", "chunks", "fancyquelle", "fancywoerter",
+    "fancyhinweis", "paed", "paedfeld", "stufe", "stufehinweis",
+    "gruppePruefung", "anspruchfeld", "anspruchA", "wertA", "markeA", "zielA",
+    "normWortA", "anspruchB", "wertB", "markeB", "zielB", "normWortB",
+    "zurueck", "textfeld", "textreglerA", "tcefrA", "twertA", "tmarkeA",
+    "textA", "normTextA", "tbandA", "textreglerB", "tcefrB", "twertB",
+    "tmarkeB", "textB", "normTextB", "tbandB", "tzurueck", "pruefmasse",
+    "gesamtwert", "gesamtwoerter", "autoVerteilen", "aufgabenwahl",
+    "aufgabenhinweis", "fassungFeld", "variante", "fassungAnzahlFeld",
+    "fassungAnzahl", "fassunghinweis", "wiederholungfeld", "wiederholung",
+    "wiederholungWahl", "wiederholungHinweis", "notiz", "bauen", "bauenHinweis",
+]
+
+
+def _leiste() -> str:
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    return seite[seite.index('<aside class="rail">'):seite.index("</aside>")]
+
+
+def test_die_leiste_hat_alles_behalten():
+    leiste = _leiste()
+    fehlt = [k for k in LEISTE_VORHER if f'id="{k}"' not in leiste]
+    assert not fehlt, f"aus der Leiste verschwunden: {fehlt}"
+
+
+def test_jede_zugeklappte_gruppe_sagt_was_in_ihr_steht():
+    """Zugeklappt steht der Stand im Titel - und keine Zeile bleibt leer.
+
+    Eine Gruppe, die zuklappt und dann nichts mehr sagt, versteckt eine
+    Einstellung, die trotzdem im Auftrag steht.
+    """
+    import re as _re
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    leiste = _leiste()
+    klappbar = _re.findall(r"<details[^>]*>\s*<summary[^>]*>[^<]*<span class=\"kurz\" id=\"(\w+)\"",
+                           leiste)
+    assert len(klappbar) == leiste.count("<details"), \
+        "eine zuklappbare Gruppe ohne Zeile für ihren Stand"
+    kurz = seite[seite.index("function zeichneKurz()"):]
+    kurz = kurz[:kurz.index("\n}\n")]
+    herkunft = seite[seite.index("function zeichneHerkunft("):]
+    herkunft = herkunft[:herkunft.index("\n}\n")]
+    for kennung in klappbar:
+        assert f'"{kennung}"' in kurz or f'$("{kennung}")' in herkunft, \
+            f"{kennung} wird nirgends gefüllt"
+    # Nachgezogen bei jeder Änderung am Auftrag, nicht nur beim ganzen Durchgang.
+    auftrag = seite[seite.index("function zeichneAuftrag()"):]
+    assert "zeichneKurz();" in auftrag[:auftrag.index("\n}\n")]
+
+
+def test_der_auftrag_steht_ausserhalb_der_rollbahn():
+    """Der Knopf bleibt unten stehen, gleich wie weit die Leiste gerollt ist."""
+    leiste = _leiste()
+    rumpf_ende = leiste.index('<div class="gruppe fuss">')
+    assert 'id="leistenrumpf"' in leiste[:rumpf_ende]
+    assert 'id="bauen"' in leiste[rumpf_ende:] and 'id="bauen"' not in leiste[:rumpf_ende]
+
+
+# ---------------------------------------------------------------------------
+# Ausgabe der Prüfungen: A4 oder 2 × A5
+# ---------------------------------------------------------------------------
+def test_das_blattformat_ist_voreingestellt_a4():
+    leiste = _leiste()
+    assert 'id="blattA4" value="a4" checked' in leiste
+    for wert in ("a5", "beide"):
+        assert f'value="{wert}">' in leiste
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert 'blatt:"a4",' in seite
+
+
+def test_der_auftrag_nennt_das_blattformat_mit_befehl():
+    from vocabmaster.documents import BLATTFORMATE
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    satz = seite[seite.index("function blattSatz("):]
+    satz = satz[:satz.index("\n}\n")]
+    assert "--blatt " in satz and "a.blatt" in satz
+    assert "Lösungsblatt bleibt A4" in satz
+    # Die Werte der Seite sind die Werte des Befehls.
+    for wert in BLATTFORMATE:
+        assert f'value="{wert}"' in seite
+    befehl = seite[seite.index("function befehlstext("):]
+    assert "blattSatz(a)" in befehl[:befehl.index("\n}\n")]
+
+
+def test_die_stueckzahl_zaehlt_das_doppelblatt_mit():
+    """Bei „beides" sind es drei Dateien je Prüfung, sonst zwei."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    zahl = seite[seite.index("function stueckzahl("):]
+    zahl = zahl[:zahl.index("\n}")]
+    assert '(blatt === "beide" ? 3 : 2)' in zahl
+
+
+def test_die_seite_rechnet_die_blaetter_nicht_selbst(abgelegt):
+    """Wie viele Blätter eine Prüfung als 2 × A5 braucht, steht in den Daten.
+
+    Ausgerechnet von derselben Stelle, die beim Bauen umbricht - eine
+    zweite Schätzung in JavaScript liefe irgendwann auseinander.
+    """
+    from vocabmaster.documents import dateiname
+    from vocabmaster.exam import doppelblatt
+    from vocabmaster.pack import Pack
+
+    kuratiert = WURZEL / "kuratiert"
+    geprueft = 0
+    for db in abgelegt["datenbanken"]:
+        for u in db["units"]:
+            for li in u["listen"]:
+                pack = Pack.load(kuratiert / li["datei"])
+                for pr in li["pruefungen"]:
+                    if pr["fassung"] != pack.fassung:
+                        continue
+                    spec = pack.exam(pr["teil"], pr["niveau"])
+                    assert pr["a5"] == doppelblatt.aufteilung(spec)
+                    assert pr["doppelblatt"] == dateiname(
+                        pack.unit, "Test", pr["teil"], pr["niveau"],
+                        fassung=pack.fassung, liste_version=pack.liste_version,
+                        lehrmittel=pack.lehrmittel, doppelblatt=True)
+                    geprueft += 1
+    assert geprueft
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert "SPALTE_HOCH" not in seite and "hoehen(" not in seite

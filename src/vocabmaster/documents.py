@@ -10,6 +10,8 @@ und vier Prüfungen mit ihren Lösungsblättern.
 ``Unit03_V1_Test_PartII_NiveauA.docx``        Prüfung zu Test 2, stärkere Gruppe
 ``Unit03_V1_Test_PartII_NiveauB.docx``        Prüfung zu Test 2, schwächere Gruppe
 ``…_Loesung.docx``                            je Prüfung ein Lösungsblatt
+``…_NiveauA_2xA5.docx``                       auf Bestellung: dieselbe Prüfung zweimal
+                                              auf A4 quer, zum Halbieren
 ============================================  ==========================================
 
 Beide Layouts stammen unverändert aus den Ursprungsanwendungen: Die
@@ -31,6 +33,7 @@ from pathlib import Path
 
 from .checks import FEHLER, HINWEIS, WARNUNG, Pruefbericht, _pair_from_pack
 from .config import Settings
+from .exam import doppelblatt
 from .exam.builder import build_answer_key, build_docx
 from .exam.verify import verify_document
 from .list.docx_writer import build_document
@@ -39,11 +42,19 @@ from .pack import Pack, kennzeichen
 
 TEIL_NAMEN = {1: "PartI", 2: "PartII"}
 
+#: Die Blattformate einer Prüfung. ``a4`` ist das Blatt der Vorlage;
+#: ``a5`` legt dieselbe Prüfung zweimal auf ein A4-Blatt quer, zum
+#: Halbieren; ``beide`` baut beides. Das Lösungsblatt bleibt immer A4 -
+#: es liegt beim Korrigieren auf dem Tisch, nicht in der Klasse.
+BLATTFORMATE = ("a4", "a5", "beide")
+#: Die Endung des Doppelblatts im Dateinamen.
+DOPPELBLATT = "2xA5"
+
 
 def dateiname(unit: int, art: str, teil: int | None = None,
               niveau: str | None = None, loesung: bool = False,
               fassung: int = 1, liste_version: int = 1,
-              lehrmittel: str = "") -> str:
+              lehrmittel: str = "", doppelblatt: bool = False) -> str:
     """Einheitliche Benennung: ``Unit03_V1_Test_PartI_NiveauB_Loesung.docx``.
 
     Der Code **V1, V2, V3** benennt die Vokabelliste. Er steht auf der Liste
@@ -61,6 +72,11 @@ def dateiname(unit: int, art: str, teil: int | None = None,
     ``EnglishPlus3_Unit01_V1_VocabularyList.docx``. Ohne sie schriebe Unit 1
     von English Plus 3 die Blätter von Unit 1 von English Plus 4 still
     nieder - dieselbe Unit-Nummer, derselbe Dateiname, anderer Wortschatz.
+
+    Das **Doppelblatt** - dieselbe Prüfung zweimal auf A4 quer - trägt
+    ``2xA5`` am Ende: ``Unit03_V1_Test_PartI_NiveauA_2xA5.docx``. Es liegt
+    damit neben dem A4-Blatt derselben Prüfung, und keines überschreibt das
+    andere.
     """
     parts = [f"Unit{unit:02d}", f"V{max(1, int(liste_version))}", art]
     marke = kennzeichen(lehrmittel)
@@ -76,6 +92,8 @@ def dateiname(unit: int, art: str, teil: int | None = None,
         parts.append(f"Fassung{fassung}")
     if loesung:
         parts.append("Loesung")
+    elif doppelblatt:
+        parts.append(DOPPELBLATT)
     return "_".join(parts) + ".docx"
 
 
@@ -132,15 +150,45 @@ def _spec_mit_herkunft(pack: Pack, teil: int, niveau: str) -> dict:
     return {**spec, "meta": meta}
 
 
+def doppelblatt_satz(prozente: list[int]) -> str:
+    """Wie viele Blätter ein Doppelblatt hat, und wie man es druckt."""
+    if len(prozente) == 1:
+        return (f"1 Blatt A4 quer, links und rechts dieselbe Prüfung (A5 geschätzt "
+                f"{prozente[0]} % voll); in der Mitte schneiden.")
+    seiten = ", ".join(f"Seite {i}: {p} %" for i, p in enumerate(prozente, start=1))
+    return (f"{len(prozente)} Blätter A4 quer, auf jedem links und rechts "
+            f"dieselbe A5-Seite ({seiten}). Beidseitig drucken und in der Mitte "
+            "schneiden - dann hat jede und jeder ein A5-Blatt, vorn und hinten.")
+
+
 def schreibe_pruefung(
     pack: Pack, teil: int, niveau: str, ziel: Path,
     settings: Settings | None = None, mit_loesung: bool = True,
+    blatt: str = "a4",
 ) -> list[Path]:
-    """Prüfung und Lösungsblatt, byteweise im Layout der Referenzprüfung."""
+    """Prüfung und Lösungsblatt, byteweise im Layout der Referenzprüfung.
+
+    ``blatt`` wählt das Format des Prüfungsblatts (:data:`BLATTFORMATE`).
+    Ob das Doppelblatt passt, prüft :func:`baue_alles` vorher - hier wird
+    geschrieben, was bestellt ist.
+    """
+    if blatt not in BLATTFORMATE:
+        raise ValueError(f"unbekanntes Blattformat {blatt!r} - "
+                         f"möglich sind {', '.join(BLATTFORMATE)}")
     settings = settings or Settings()
     spec = _spec_mit_herkunft(pack, teil, niveau)
     ziel.parent.mkdir(parents=True, exist_ok=True)
-    geschrieben = [Path(build_docx(spec, str(settings.exam_template), str(ziel)))]
+    geschrieben = []
+    if blatt in ("a4", "beide"):
+        geschrieben.append(Path(build_docx(spec, str(settings.exam_template),
+                                           str(ziel))))
+    if blatt in ("a5", "beide"):
+        doppel = ziel.with_name(
+            dateiname(pack.unit, "Test", teil, niveau, fassung=pack.fassung,
+                      liste_version=pack.liste_version,
+                      lehrmittel=pack.lehrmittel, doppelblatt=True))
+        geschrieben.append(Path(doppelblatt.build_doppelblatt(
+            spec, str(settings.exam_template), str(doppel))))
     if mit_loesung:
         loesung = ziel.with_name(
             dateiname(pack.unit, "Test", teil, niveau, loesung=True,
@@ -161,6 +209,7 @@ def baue_alles(
     mit_loesung: bool = True,
     niveaus: tuple[str, ...] = NIVEAUS,
     pruefungsteile: tuple[int, ...] = (1, 2),
+    blatt: str = "a4",
 ) -> Ergebnis:
     """Schreibt die gewünschten Dokumente und kontrolliert sie danach.
 
@@ -172,7 +221,17 @@ def baue_alles(
     enthält immer die Gerüste aller vier Prüfungen; das ist seine Form.
     Bestellt wird aber oft **eine**, und was nicht bestellt ist, wird nicht
     gebaut.
+
+    ``blatt="a5"`` legt jede Prüfung zweimal auf ein A4-Blatt quer. Ist sie
+    länger als eine halbe Seite, wird sie zwischen zwei Aufgaben auf mehrere
+    Blätter umbrochen - links und rechts bleibt auf jedem dasselbe. Nur eine
+    **einzelne** Aufgabe, die schon für sich höher ist als eine halbe Seite,
+    lässt sich so nicht setzen; ihr Doppelblatt wird nicht geschrieben, und
+    das steht als Fehler im Bericht.
     """
+    if blatt not in BLATTFORMATE:
+        raise ValueError(f"unbekanntes Blattformat {blatt!r} - "
+                         f"möglich sind {', '.join(BLATTFORMATE)}")
     settings = settings or Settings()
     ziel = Path(verzeichnis)
     ergebnis = Ergebnis()
@@ -192,16 +251,39 @@ def baue_alles(
                                     fassung=pack.fassung,
                                     liste_version=pack.liste_version,
                                     lehrmittel=pack.lehrmittel)
+            spec = _spec_mit_herkunft(pack, teil, niveau)
+            format_hier = blatt
+            if blatt in ("a5", "beide"):
+                passt, prozente = doppelblatt.passt(spec)
+                name = dateiname(pack.unit, "Test", teil, niveau,
+                                 fassung=pack.fassung,
+                                 liste_version=pack.liste_version,
+                                 lehrmittel=pack.lehrmittel, doppelblatt=True)
+                if not passt:
+                    ergebnis.bericht.add(
+                        FEHLER, "dokument",
+                        f"{name} - nicht gebaut: Eine einzelne Aufgabe ist höher "
+                        "als eine halbe Seite (geschätzt "
+                        + " / ".join(f"{p} %" for p in prozente) + "). Sie liefe "
+                        "in die rechte Hälfte, und links und rechts stünde nicht "
+                        "mehr dasselbe - als A4 bauen (--blatt a4).")
+                    if blatt == "a5":
+                        continue
+                    format_hier = "a4"
+                else:
+                    ergebnis.bericht.add(HINWEIS, "dokument",
+                                         f"{name} - {doppelblatt_satz(prozente)}")
             geschrieben = schreibe_pruefung(
-                pack, teil, niveau, pfad, settings, mit_loesung
+                pack, teil, niveau, pfad, settings, mit_loesung, format_hier
             )
             ergebnis.dateien.extend(geschrieben)
             # Nachkontrolle des geschriebenen Dokuments gegen die Vorlage.
-            spec = _spec_mit_herkunft(pack, teil, niveau)
             for pfad_geschrieben in geschrieben:
                 ist_loesung = pfad_geschrieben.name.endswith("_Loesung.docx")
+                ist_doppel = pfad_geschrieben.name.endswith(f"_{DOPPELBLATT}.docx")
                 for finding in verify_document(
-                    str(pfad_geschrieben), spec, str(settings.exam_template), ist_loesung
+                    str(pfad_geschrieben), spec, str(settings.exam_template),
+                    ist_loesung, doppelblatt=ist_doppel,
                 ):
                     stufe = {"ERROR": FEHLER, "WARN": WARNUNG, "INFO": HINWEIS}[
                         finding.level

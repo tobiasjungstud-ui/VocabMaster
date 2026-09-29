@@ -518,7 +518,9 @@ vocabmaster bauen kuratiert/unit_01.json --nur test --niveau A --teil 1
 ```
 
 Das sind drei Dateien — die Vokabelliste, das Blatt und sein Lösungsblatt.
-Ohne `--teil` wären es fünf gewesen.
+Ohne `--teil` wären es fünf gewesen. `--blatt a5` ändert daran nichts (das
+Doppelblatt ersetzt das A4-Blatt), `--blatt beide` legt je Prüfung eine
+Datei dazu.
 
 ## Der Bestand als Ganzes
 
@@ -846,10 +848,97 @@ vocabmaster wiederholung kuratiert/unit_02.json --teil 1 --weg
 Ohne Vorschlag (Unit 1 · Part I) setzt der Befehl nichts und listet die
 Möglichkeiten.
 
+Auf dem A4-Blatt kann die Wiederholung auf eine zweite Seite rutschen -
+das ist ausdrücklich in Ordnung (Wunsch der Lehrperson). Auf dem
+Doppelblatt kommt sie dann aufs zweite Blatt (siehe unten).
+
 Auf der Seite steht das Häkchen unter „Aufbau der Prüfung", darunter je
 bestelltem Teil die Quellwahl — die Vorschläge rechnet `export.py` mit
 derselben Stelle aus, die Seite kennt die Folge nicht selbst. 40 Tests
 in `tests/test_wiederholung.py`, vier in `tests/test_werkstatt.py`.
+
+## Blattformat: A4 oder 2 × A5 zum Halbieren
+
+Eine Prüfung kommt entweder wie bisher auf ein A4-Blatt, oder **zweimal auf
+ein A4-Blatt quer**: zwei gleich breite Spalten, links und rechts genau
+dasselbe. In der Mitte geschnitten, werden aus einem Blatt zwei
+A5-Prüfungsblätter.
+
+```bash
+vocabmaster bauen kuratiert/unit_02.json --nur test --blatt a5      # nur 2 × A5
+vocabmaster bauen kuratiert/unit_02.json --nur test --blatt beide   # A4 und 2 × A5
+```
+
+Die Datei heisst `Unit02_V1_Test_PartI_NiveauA_2xA5.docx`, liegt neben dem
+A4-Blatt und überschreibt es nie. **Das Lösungsblatt bleibt A4** - es
+liegt beim Korrigieren auf dem Tisch, nicht in der Klasse. Voreingestellt
+ist `a4`; wer nichts umstellt, bekommt Byte für Byte das Blatt von gestern.
+
+### Links und rechts ist immer dasselbe - auch über zwei Blätter
+
+Passt eine Prüfung nicht auf eine halbe Seite (sechs Aufgabenarten, die
+Wiederholung dazu), dann wird sie **auf mehrere A5-Seiten** verteilt, und
+jede davon steht wieder zweimal nebeneinander:
+
+```
+Blatt 1:  | Seite 1 | Seite 1 |
+Blatt 2:  | Seite 2 | Seite 2 |
+```
+
+Umbrochen wird **zwischen** zwei Aufgaben, nie mitten in einer. Weil links
+und rechts gleich sind, geht auch der beidseitige Druck auf, gleich wie das
+Blatt gewendet wird: nach dem Schnitt ein A5-Blatt je Schülerin und
+Schüler, vorn Seite 1, hinten Seite 2.
+
+Das war der erste Fehler dieser Funktion, und die Lehrperson hat ihn
+gefunden: Eine lange Prüfung floss einmal aus der linken Spalte in die
+rechte - links und rechts standen dann verschiedene Hälften. Eine
+**Schnittlinie** wird nicht gedruckt; die Mitte findet die
+Schneidemaschine selbst.
+
+Nicht setzen lässt sich nur eine **einzelne** Aufgabe, die schon für sich
+höher ist als eine halbe Seite; ihr Doppelblatt wird nicht geschrieben
+(FEHLER, mit dem Rat `--blatt a4`).
+
+### Derselbe Inhalt, nicht ein zweiter Setzer
+
+`exam/doppelblatt.py` nimmt das `document.xml`, das der Setzer für das
+A4-Blatt schreibt, und formt es nur um: 10 statt 12 pt, Tabellen auf die
+Spaltenbreite (12.45 cm), Zeilenhöhe 480 statt 680, Punktzahl rechtsbündig
+statt hinter fünf Tabulatoren, Rand aussen 12 mm und zwischen den Spalten
+24 mm - so hat nach dem Schnitt jede Hälfte links und rechts denselben
+Rand. `styles.xml` und alles andere der Vorlage bleiben unangetastet. Der
+Lückentext behält seinen 1.5-fachen Zeilenabstand und die Lücke ihre 26
+Striche: In die Lücke wird von Hand geschrieben.
+
+Die Nachkontrolle (`verify_document(..., doppelblatt=True)`) teilt das Blatt
+an den Spaltenumbrüchen, verlangt auf **jedem** Blatt links = rechts, liest
+die linken Hälften hintereinander und verlangt Absatz für Absatz den Text
+des A4-Blatts. Danach laufen an dieser Hälfte alle Kontrollen des
+A4-Blatts (Lücken, verratene Lösungen, Tabellen, Wortbank).
+
+### Wo umbrochen wird, ist geschätzt - und an Messungen geprüft
+
+Die Höhe je Aufgabe schätzt `doppelblatt.hoehen()`; Lückentexte werden
+dabei umbrochen, nicht gezählt, denn eine Lücke von 26 Zeichen kostet mehr
+Zeile als ihre Wörter. Gemessen wurde mit LibreOffice an allen 46
+mitgelieferten Prüfungen (eine Kopie, eine Spalte, eine sehr hohe Seite).
+Die Ersatzschrift dort läuft breiter als Aptos, die Werte liegen also eher
+zu hoch. `tests/test_doppelblatt.py` hält die Messungen fest und verlangt:
+Wo die Messung eine Seite zeigt, plant die Schätzung eine Seite - und liegt
+nie darunter. Die gewohnte Prüfung (8 Übersetzungen, 4 Lücken) füllt eine
+halbe Seite zu höchstens 94 % und kommt immer auf ein Blatt.
+
+Wer das Layout des Doppelblatts ändert, misst neu. LibreOffice ist in
+dieser Umgebung nicht vollständig vorinstalliert:
+`apt-get install -y libreoffice-writer`, dann
+`soffice --headless --convert-to pdf`.
+
+Auf der Seite steht dafür die Gruppe **„Ausgabe der Prüfungen"**: drei
+Karten mit Bild (A4 hoch · 2 × A5 · beides). Darunter steht je bestellter
+Prüfung, auf wie viele Blätter sie kommt - aus `daten.json`, ausgerechnet
+von derselben Stelle, die beim Bauen umbricht. Der Auftrag nennt das Format
+mit Befehl, die Stückzahl zählt bei „beides" drei Dateien je Prüfung.
 
 ## Schwierigkeit des Lückentexts
 
@@ -1095,12 +1184,45 @@ darin:
 | **Unitwahl** | die Unit (mit Thema und Seiten), ihre Vokabellisten, deren Kennzahlen |
 | **Was soll entstehen** | die fünf Häkchen |
 | **Einstellungen der Vokabelliste** | aufgewertete Fächer, pädagogisches Ranking |
-| **Prüfungssettings** | Anspruch der Prüfung, Schwierigkeit des Lückentexts, Feinheiten |
+| **Prüfungssettings** | Anspruch, Schwierigkeit des Lückentexts, Aufbau, Fassung, Wiederholung |
+| **Ausgabe der Prüfungen** | das Blattformat: A4 hoch, 2 × A5, beides |
 | **Auftrag** | Notiz, „Auftrag erstellen" |
 
 Ausgeblendet wird die **ganze Gruppe**, nicht das einzelne Feld: Bliebe der
 Übertitel „Prüfungssettings" über einer leeren Fläche stehen, suchte man
 darunter nach etwas, das es nicht gibt.
+
+Dazu kommt **„Ausgabe der Prüfungen"** (das Blattformat), zwischen den
+Prüfungssettings und dem Auftrag.
+
+#### Zuklappen statt weglassen
+
+Die Leiste war auf vier Bildschirmhöhen gewachsen (3477 px). Weggelassen
+wurde nichts - ein Test hält alle 75 Elemente der alten Leiste fest.
+Stattdessen:
+
+* **Jede Gruppe klappt zu** (`<details>`), die Prüfungssettings auch in
+  ihren fünf Unterabschnitten (Anspruch, Lückentext, Aufbau, Fassung,
+  Wiederholung), die Kennzahlen unter den Listen ebenso. **Zugeklappt steht
+  der Stand in einer Zeile unter dem Titel** - „A 3.3 · B 1.6", „12 Wörter:
+  Übersetzung 8, Lückentext 4", „aus". Eine Gruppe, die zuklappt und dann
+  nichts mehr sagt, versteckte eine Einstellung, die trotzdem im Auftrag
+  steht; ein Test verlangt für jede zuklappbare Gruppe eine gefüllte Zeile.
+  Nachgezogen wird sie in `zeichneAuftrag` - also bei jeder Änderung, auch
+  beim Schieben eines Reglers.
+* **Die vier Prüfungen stehen als Raster** Teil I/II × Niveau A/B.
+* **Die Leiste rollt in sich**, der Auftrag (Notiz, Knopf, Stückzahl) steht
+  darunter fest und ist immer zu sehen. Ihre Höhe folgt dem, was vom
+  Fenster sichtbar ist (`leisteEinpassen`) - oben auf der Seite schiebt der
+  Kopf sie nach unten.
+* **Welche Gruppen offen stehen, merkt sich der Browser** (`localStorage`,
+  nur für diese Person; geht es nicht, gelten die Voreinstellungen).
+  Voreingestellt offen: Unitwahl, Was soll entstehen, Prüfungssettings,
+  Ausgabe; zu: Datenbank, Einstellungen der Vokabelliste und die
+  Unterabschnitte.
+
+Unter 900 px Breite steht die Leiste wie bisher über der Arbeitsfläche,
+ohne eigene Rollbahn.
 
 ### Der Unit-Block steht in der Leiste
 
@@ -1311,6 +1433,7 @@ gleich brauchen wird.
 | die Fassungswahl | „Neue Vokabelliste" angekreuzt ist — ihre Prüfungen sind ihre ersten |
 | „Wie viele Fassungen auf einmal" | weder eine neue Fassung noch eine neue Liste bestellt ist |
 | der Aufbau der Prüfung (Regler und die sechs Häkchen) | keine Prüfung angekreuzt ist |
+| „Ausgabe der Prüfungen" (das Blattformat) | keine Prüfung angekreuzt ist |
 
 Die **Listenwahl selbst bleibt**: Sie sagt auch den Prüfungen, an welcher
 Liste sie hängen. War „neue Liste" gewählt und wird die Vokabelliste

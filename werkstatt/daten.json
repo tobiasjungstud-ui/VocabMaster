@@ -1866,7 +1866,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit01_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          92
+         ]
         },
         {
          "teil": 1,
@@ -2017,7 +2021,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit01_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          82
+         ]
         },
         {
          "teil": 2,
@@ -2168,7 +2176,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit01_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 2,
@@ -2319,7 +2331,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit01_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          90
+         ]
         },
         {
          "teil": 1,
@@ -2472,7 +2488,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung2.docx",
-         "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_Fassung2_2xA5.docx",
+         "a5": [
+          91
+         ]
         },
         {
          "teil": 1,
@@ -2623,7 +2643,11 @@
           }
          ],
          "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung3.docx",
-         "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx"
+         "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx",
+         "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_Fassung3_2xA5.docx",
+         "a5": [
+          91
+         ]
         }
        ],
        "liste_blatt": "Unit01_V1_VocabularyList.docx",
@@ -3807,7 +3831,11 @@
           }
          ],
          "blatt": "Unit01_V2_Test_PartI_NiveauA.docx",
-         "loesung": "Unit01_V2_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit01_V2_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V2_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          91
+         ]
         },
         {
          "teil": 1,
@@ -3958,7 +3986,11 @@
           }
          ],
          "blatt": "Unit01_V2_Test_PartI_NiveauB.docx",
-         "loesung": "Unit01_V2_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit01_V2_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V2_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -4109,7 +4141,11 @@
           }
          ],
          "blatt": "Unit01_V2_Test_PartII_NiveauA.docx",
-         "loesung": "Unit01_V2_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit01_V2_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit01_V2_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          94
+         ]
         },
         {
          "teil": 2,
@@ -4260,7 +4296,11 @@
           }
          ],
          "blatt": "Unit01_V2_Test_PartII_NiveauB.docx",
-         "loesung": "Unit01_V2_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit01_V2_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit01_V2_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          90
+         ]
         }
        ],
        "liste_blatt": "Unit01_V2_VocabularyList.docx",
@@ -7589,7 +7629,11 @@
           }
          ],
          "blatt": "Unit02_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit02_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit02_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit02_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 1,
@@ -7740,7 +7784,11 @@
           }
          ],
          "blatt": "Unit02_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit02_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit02_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit02_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -7891,7 +7939,11 @@
           }
          ],
          "blatt": "Unit02_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit02_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit02_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit02_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          94
+         ]
         },
         {
          "teil": 2,
@@ -8042,7 +8094,11 @@
           }
          ],
          "blatt": "Unit02_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit02_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit02_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit02_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit02_V1_VocabularyList.docx",
@@ -11211,7 +11267,11 @@
           }
          ],
          "blatt": "Unit03_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit03_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit03_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit03_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          91
+         ]
         },
         {
          "teil": 1,
@@ -11362,7 +11422,11 @@
           }
          ],
          "blatt": "Unit03_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit03_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit03_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit03_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -11513,7 +11577,11 @@
           }
          ],
          "blatt": "Unit03_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit03_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit03_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit03_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          94
+         ]
         },
         {
          "teil": 2,
@@ -11664,7 +11732,11 @@
           }
          ],
          "blatt": "Unit03_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit03_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit03_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit03_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit03_V1_VocabularyList.docx",
@@ -14363,7 +14435,11 @@
           }
          ],
          "blatt": "Unit04_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit04_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit04_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit04_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          92
+         ]
         },
         {
          "teil": 1,
@@ -14514,7 +14590,11 @@
           }
          ],
          "blatt": "Unit04_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit04_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit04_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit04_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -14665,7 +14745,11 @@
           }
          ],
          "blatt": "Unit04_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit04_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit04_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit04_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 2,
@@ -14816,7 +14900,11 @@
           }
          ],
          "blatt": "Unit04_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit04_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit04_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit04_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit04_V1_VocabularyList.docx",
@@ -17595,7 +17683,11 @@
           }
          ],
          "blatt": "Unit05_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit05_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit05_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit05_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          91
+         ]
         },
         {
          "teil": 1,
@@ -17746,7 +17838,11 @@
           }
          ],
          "blatt": "Unit05_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit05_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit05_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit05_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -17897,7 +17993,11 @@
           }
          ],
          "blatt": "Unit05_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit05_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit05_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit05_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 2,
@@ -18048,7 +18148,11 @@
           }
          ],
          "blatt": "Unit05_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit05_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit05_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit05_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit05_V1_VocabularyList.docx",
@@ -20747,7 +20851,11 @@
           }
          ],
          "blatt": "Unit06_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit06_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit06_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit06_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          94
+         ]
         },
         {
          "teil": 1,
@@ -20898,7 +21006,11 @@
           }
          ],
          "blatt": "Unit06_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit06_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit06_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit06_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          88
+         ]
         },
         {
          "teil": 2,
@@ -21049,7 +21161,11 @@
           }
          ],
          "blatt": "Unit06_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit06_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit06_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit06_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          96
+         ]
         },
         {
          "teil": 2,
@@ -21200,7 +21316,11 @@
           }
          ],
          "blatt": "Unit06_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit06_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit06_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit06_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit06_V1_VocabularyList.docx",
@@ -23499,7 +23619,11 @@
           }
          ],
          "blatt": "Unit07_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit07_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit07_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit07_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 1,
@@ -23650,7 +23774,11 @@
           }
          ],
          "blatt": "Unit07_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit07_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit07_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit07_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -23801,7 +23929,11 @@
           }
          ],
          "blatt": "Unit07_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit07_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit07_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit07_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          96
+         ]
         },
         {
          "teil": 2,
@@ -23952,7 +24084,11 @@
           }
          ],
          "blatt": "Unit07_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit07_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit07_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit07_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit07_V1_VocabularyList.docx",
@@ -26371,7 +26507,11 @@
           }
          ],
          "blatt": "Unit08_V1_Test_PartI_NiveauA.docx",
-         "loesung": "Unit08_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "Unit08_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit08_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          95
+         ]
         },
         {
          "teil": 1,
@@ -26522,7 +26662,11 @@
           }
          ],
          "blatt": "Unit08_V1_Test_PartI_NiveauB.docx",
-         "loesung": "Unit08_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "Unit08_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit08_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          85
+         ]
         },
         {
          "teil": 2,
@@ -26673,7 +26817,11 @@
           }
          ],
          "blatt": "Unit08_V1_Test_PartII_NiveauA.docx",
-         "loesung": "Unit08_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "Unit08_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "Unit08_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 2,
@@ -26824,7 +26972,11 @@
           }
          ],
          "blatt": "Unit08_V1_Test_PartII_NiveauB.docx",
-         "loesung": "Unit08_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "Unit08_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "Unit08_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "Unit08_V1_VocabularyList.docx",
@@ -30396,7 +30548,12 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA.docx",
-         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          74,
+          91
+         ]
         },
         {
          "teil": 1,
@@ -30643,7 +30800,12 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB.docx",
-         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit01_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          98,
+          61
+         ]
         },
         {
          "teil": 2,
@@ -30890,7 +31052,12 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA.docx",
-         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          76,
+          91
+         ]
         },
         {
          "teil": 2,
@@ -31137,7 +31304,12 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB.docx",
-         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit01_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          96,
+          61
+         ]
         }
        ],
        "liste_blatt": "EnglishPlus3_Unit01_V1_VocabularyList.docx",
@@ -39574,7 +39746,11 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA.docx",
-         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauA_2xA5.docx",
+         "a5": [
+          92
+         ]
         },
         {
          "teil": 1,
@@ -39725,7 +39901,11 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB.docx",
-         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit08_V1_Test_PartI_NiveauB_2xA5.docx",
+         "a5": [
+          90
+         ]
         },
         {
          "teil": 2,
@@ -39876,7 +40056,11 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA.docx",
-         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauA_2xA5.docx",
+         "a5": [
+          97
+         ]
         },
         {
          "teil": 2,
@@ -40027,7 +40211,11 @@
           }
          ],
          "blatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB.docx",
-         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB_Loesung.docx"
+         "loesung": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB_Loesung.docx",
+         "doppelblatt": "EnglishPlus3_Unit08_V1_Test_PartII_NiveauB_2xA5.docx",
+         "a5": [
+          87
+         ]
         }
        ],
        "liste_blatt": "EnglishPlus3_Unit08_V1_VocabularyList.docx",
@@ -52916,7 +53104,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit01_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        92
+       ]
       },
       {
        "teil": 1,
@@ -53067,7 +53259,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit01_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        82
+       ]
       },
       {
        "teil": 2,
@@ -53218,7 +53414,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit01_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 2,
@@ -53369,7 +53569,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit01_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        90
+       ]
       },
       {
        "teil": 1,
@@ -53522,7 +53726,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung2.docx",
-       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung2_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_Fassung2_2xA5.docx",
+       "a5": [
+        91
+       ]
       },
       {
        "teil": 1,
@@ -53673,7 +53881,11 @@
         }
        ],
        "blatt": "Unit01_V1_Test_PartI_NiveauA_Fassung3.docx",
-       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx"
+       "loesung": "Unit01_V1_Test_PartI_NiveauA_Fassung3_Loesung.docx",
+       "doppelblatt": "Unit01_V1_Test_PartI_NiveauA_Fassung3_2xA5.docx",
+       "a5": [
+        91
+       ]
       }
      ],
      "liste_blatt": "Unit01_V1_VocabularyList.docx",
@@ -54857,7 +55069,11 @@
         }
        ],
        "blatt": "Unit01_V2_Test_PartI_NiveauA.docx",
-       "loesung": "Unit01_V2_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit01_V2_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V2_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        91
+       ]
       },
       {
        "teil": 1,
@@ -55008,7 +55224,11 @@
         }
        ],
        "blatt": "Unit01_V2_Test_PartI_NiveauB.docx",
-       "loesung": "Unit01_V2_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit01_V2_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V2_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -55159,7 +55379,11 @@
         }
        ],
        "blatt": "Unit01_V2_Test_PartII_NiveauA.docx",
-       "loesung": "Unit01_V2_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit01_V2_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit01_V2_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        94
+       ]
       },
       {
        "teil": 2,
@@ -55310,7 +55534,11 @@
         }
        ],
        "blatt": "Unit01_V2_Test_PartII_NiveauB.docx",
-       "loesung": "Unit01_V2_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit01_V2_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit01_V2_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        90
+       ]
       }
      ],
      "liste_blatt": "Unit01_V2_VocabularyList.docx",
@@ -58639,7 +58867,11 @@
         }
        ],
        "blatt": "Unit02_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit02_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit02_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit02_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 1,
@@ -58790,7 +59022,11 @@
         }
        ],
        "blatt": "Unit02_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit02_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit02_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit02_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -58941,7 +59177,11 @@
         }
        ],
        "blatt": "Unit02_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit02_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit02_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit02_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        94
+       ]
       },
       {
        "teil": 2,
@@ -59092,7 +59332,11 @@
         }
        ],
        "blatt": "Unit02_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit02_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit02_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit02_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit02_V1_VocabularyList.docx",
@@ -62261,7 +62505,11 @@
         }
        ],
        "blatt": "Unit03_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit03_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit03_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit03_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        91
+       ]
       },
       {
        "teil": 1,
@@ -62412,7 +62660,11 @@
         }
        ],
        "blatt": "Unit03_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit03_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit03_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit03_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -62563,7 +62815,11 @@
         }
        ],
        "blatt": "Unit03_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit03_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit03_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit03_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        94
+       ]
       },
       {
        "teil": 2,
@@ -62714,7 +62970,11 @@
         }
        ],
        "blatt": "Unit03_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit03_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit03_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit03_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit03_V1_VocabularyList.docx",
@@ -65413,7 +65673,11 @@
         }
        ],
        "blatt": "Unit04_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit04_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit04_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit04_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        92
+       ]
       },
       {
        "teil": 1,
@@ -65564,7 +65828,11 @@
         }
        ],
        "blatt": "Unit04_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit04_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit04_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit04_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -65715,7 +65983,11 @@
         }
        ],
        "blatt": "Unit04_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit04_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit04_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit04_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 2,
@@ -65866,7 +66138,11 @@
         }
        ],
        "blatt": "Unit04_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit04_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit04_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit04_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit04_V1_VocabularyList.docx",
@@ -68645,7 +68921,11 @@
         }
        ],
        "blatt": "Unit05_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit05_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit05_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit05_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        91
+       ]
       },
       {
        "teil": 1,
@@ -68796,7 +69076,11 @@
         }
        ],
        "blatt": "Unit05_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit05_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit05_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit05_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -68947,7 +69231,11 @@
         }
        ],
        "blatt": "Unit05_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit05_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit05_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit05_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 2,
@@ -69098,7 +69386,11 @@
         }
        ],
        "blatt": "Unit05_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit05_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit05_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit05_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit05_V1_VocabularyList.docx",
@@ -71797,7 +72089,11 @@
         }
        ],
        "blatt": "Unit06_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit06_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit06_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit06_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        94
+       ]
       },
       {
        "teil": 1,
@@ -71948,7 +72244,11 @@
         }
        ],
        "blatt": "Unit06_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit06_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit06_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit06_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        88
+       ]
       },
       {
        "teil": 2,
@@ -72099,7 +72399,11 @@
         }
        ],
        "blatt": "Unit06_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit06_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit06_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit06_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        96
+       ]
       },
       {
        "teil": 2,
@@ -72250,7 +72554,11 @@
         }
        ],
        "blatt": "Unit06_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit06_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit06_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit06_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit06_V1_VocabularyList.docx",
@@ -74549,7 +74857,11 @@
         }
        ],
        "blatt": "Unit07_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit07_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit07_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit07_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 1,
@@ -74700,7 +75012,11 @@
         }
        ],
        "blatt": "Unit07_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit07_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit07_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit07_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -74851,7 +75167,11 @@
         }
        ],
        "blatt": "Unit07_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit07_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit07_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit07_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        96
+       ]
       },
       {
        "teil": 2,
@@ -75002,7 +75322,11 @@
         }
        ],
        "blatt": "Unit07_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit07_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit07_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit07_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit07_V1_VocabularyList.docx",
@@ -77421,7 +77745,11 @@
         }
        ],
        "blatt": "Unit08_V1_Test_PartI_NiveauA.docx",
-       "loesung": "Unit08_V1_Test_PartI_NiveauA_Loesung.docx"
+       "loesung": "Unit08_V1_Test_PartI_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit08_V1_Test_PartI_NiveauA_2xA5.docx",
+       "a5": [
+        95
+       ]
       },
       {
        "teil": 1,
@@ -77572,7 +77900,11 @@
         }
        ],
        "blatt": "Unit08_V1_Test_PartI_NiveauB.docx",
-       "loesung": "Unit08_V1_Test_PartI_NiveauB_Loesung.docx"
+       "loesung": "Unit08_V1_Test_PartI_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit08_V1_Test_PartI_NiveauB_2xA5.docx",
+       "a5": [
+        85
+       ]
       },
       {
        "teil": 2,
@@ -77723,7 +78055,11 @@
         }
        ],
        "blatt": "Unit08_V1_Test_PartII_NiveauA.docx",
-       "loesung": "Unit08_V1_Test_PartII_NiveauA_Loesung.docx"
+       "loesung": "Unit08_V1_Test_PartII_NiveauA_Loesung.docx",
+       "doppelblatt": "Unit08_V1_Test_PartII_NiveauA_2xA5.docx",
+       "a5": [
+        97
+       ]
       },
       {
        "teil": 2,
@@ -77874,7 +78210,11 @@
         }
        ],
        "blatt": "Unit08_V1_Test_PartII_NiveauB.docx",
-       "loesung": "Unit08_V1_Test_PartII_NiveauB_Loesung.docx"
+       "loesung": "Unit08_V1_Test_PartII_NiveauB_Loesung.docx",
+       "doppelblatt": "Unit08_V1_Test_PartII_NiveauB_2xA5.docx",
+       "a5": [
+        87
+       ]
       }
      ],
      "liste_blatt": "Unit08_V1_VocabularyList.docx",

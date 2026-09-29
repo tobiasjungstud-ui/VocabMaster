@@ -840,6 +840,103 @@ def cmd_liste_neu(args) -> int:
     return 0
 
 
+def cmd_wiederholung(args) -> int:
+    """Wörter aus dem vorherigen Vocabulary in eine Prüfung aufnehmen.
+
+    Ohne Angabe nimmt der Befehl den Part, der im Gang durchs Lehrmittel
+    unmittelbar vor dem Test kommt. Mit ``--vorschlag`` zeigt er nur, was
+    in Frage kommt - der logischste Vorschlag zuerst -, mit ``--wahl N``
+    nimmt er einen anderen davon, mit ``--aus`` ein beliebiges Paket.
+    """
+    from . import wiederholung as wh
+
+    pack = Pack.load(args.paket)
+    teil = int(args.teil)
+    niveaus = (args.niveau,) if args.niveau else NIVEAUS
+    fehlend = [n for n in niveaus if not pack.exam(teil, n)]
+    if fehlend:
+        print(f"{pack.unit_label} hat keine Prüfung Teil {teil} Niveau "
+              f"{', '.join(fehlend)}.")
+        return 1
+
+    if args.weg:
+        weg = wh.entferne(pack, teil, niveaus)
+        pack.save()
+        print(f"Wiederholung aus {weg} Prüfung(en) von Teil {teil} entfernt.")
+        return 0
+
+    verzeichnis = Path(args.paket).parent
+    vorschlaege = wh.vorschlaege(pack, teil, verzeichnis, AUSGABE)
+    luecke = wh.fehlender_vorgaenger(pack, teil, vorschlaege)
+    ziel = f"{pack.unit_label} · {wh.part_name(teil)}"
+
+    if args.vorschlag or (not args.aus and args.wahl is None
+                          and not any(q.folge for q in vorschlaege[:1])):
+        print(f"Wiederholung für {ziel} (V{pack.liste_version}) - "
+              "was in Frage kommt, der logischste Vorschlag zuerst:\n")
+        if luecke:
+            print(f"  {luecke}\n")
+        for i, q in enumerate(vorschlaege, 1):
+            marke = "→" if i == 1 and q.folge else " "
+            print(f" {marke}{i:>2}  {q.bezeichnung:<34} {q.paket}")
+            print(f"       {q.grund}")
+        if not vorschlaege:
+            print("  Keine Liste im Ordner kommt in Frage.")
+        if not args.vorschlag:
+            print("\nKein unmittelbar vorheriger Part mit Liste - bitte mit "
+                  "--wahl N oder --aus PAKET --aus-teil N wählen.")
+            return 1
+        return 0
+
+    if args.aus:
+        quelle = Pack.load(args.aus)
+        qteil = int(args.aus_teil or 0)
+        if qteil not in (1, 2):
+            print("Mit --aus gehört --aus-teil 1 oder 2 dazu.")
+            return 1
+        passend = [q for q in vorschlaege
+                   if q.paket == quelle.pfad.name and q.teil == qteil]
+        folge = bool(passend and passend[0].folge)
+        grund = passend[0].grund if passend else "von Hand gewählt"
+    else:
+        nummer = 1 if args.wahl is None else int(args.wahl)
+        if not 1 <= nummer <= len(vorschlaege):
+            print(f"Es gibt {len(vorschlaege)} Vorschläge; "
+                  "'--vorschlag' zeigt sie.")
+            return 1
+        q = vorschlaege[nummer - 1]
+        quelle = Pack.load(verzeichnis / q.paket)
+        qteil, folge, grund = q.teil, q.folge, q.grund
+
+    anzahl = {"A": args.anzahl_a, "B": args.anzahl_b}
+    try:
+        gesetzt = wh.setze(pack, teil, quelle, qteil, niveaus, folge, grund,
+                           _settings(args),
+                           {k: v for k, v in anzahl.items() if v})
+    except ValueError as fehler:
+        print(str(fehler))
+        return 1
+    pack.save()
+
+    titel = (f"{quelle.unit_label} · {wh.part_name(qteil)} · "
+             f"V{quelle.liste_version}")
+    print(f"{args.paket}: Wiederholung für {ziel} aus {titel} "
+          f"({quelle.pfad.name}).")
+    print(f"  {grund}")
+    if not folge:
+        print("  Achtung: nicht der unmittelbar vorherige Part"
+              + (f" - {luecke}" if luecke else "."))
+    for niveau, block in gesetzt.items():
+        art = ("Bonus, zählt nur zugunsten" if block["bonus"]
+               else "zählt mit")
+        print(f"\n  Niveau {niveau} - {len(block['items'])} Wörter, {art}:")
+        for item in block["items"]:
+            print(f"    {item['german']:<32} {item['english']}")
+    print("\nDanach: 'vocabmaster prüfen' - die Kontrolle 'wiederholung' "
+          "liest die Quellliste neu ein und prüft jedes Wort dagegen.")
+    return 0
+
+
 def cmd_fassung(args) -> int:
     """Noch eine Fassung einer Prüfung anlegen - fortlaufend, hinterlegt."""
     pack = Pack.load(args.paket)
@@ -1173,6 +1270,29 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--überschreiben", "--ueberschreiben", dest="ueberschreiben",
                    action="store_true")
     p.set_defaults(func=cmd_fassung)
+
+    p = sub.add_parser(
+        "wiederholung",
+        help="Wörter aus dem vorherigen Vocabulary in eine Prüfung aufnehmen")
+    p.add_argument("paket", help="das Paket der Prüfung, z. B. kuratiert/unit_02.json")
+    p.add_argument("--teil", type=int, choices=(1, 2), required=True,
+                   help="Part I oder Part II - der Test, der wiederholen soll")
+    p.add_argument("--niveau", choices=list(NIVEAUS),
+                   help="nur dieses Niveau (Vorgabe: beide)")
+    p.add_argument("--vorschlag", action="store_true",
+                   help="nur zeigen, welche Listen in Frage kommen")
+    p.add_argument("--wahl", type=int,
+                   help="den N-ten Vorschlag nehmen statt des ersten")
+    p.add_argument("--aus", help="ein anderes Paket als Quelle")
+    p.add_argument("--aus-teil", dest="aus_teil", type=int, choices=(1, 2),
+                   help="welcher Part der Quelle")
+    p.add_argument("--anzahl-a", dest="anzahl_a", type=int,
+                   help="Wörter für Niveau A (Vorgabe: 4)")
+    p.add_argument("--anzahl-b", dest="anzahl_b", type=int,
+                   help="Bonuswörter für Niveau B (Vorgabe: 2)")
+    p.add_argument("--weg", action="store_true",
+                   help="die Wiederholung wieder herausnehmen")
+    p.set_defaults(func=cmd_wiederholung)
 
     p = sub.add_parser("bauen", help="prüfen und die Word-Dateien schreiben")
     p.add_argument("paket")

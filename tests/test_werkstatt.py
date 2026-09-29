@@ -229,6 +229,8 @@ SICHTBARKEIT = {
     "fassungFeld": "b.fassungswahl",
     "fassungAnzahlFeld": "b.neueFassung",
     "aufgabenwahl": "b.aufbau",
+    "wiederholungfeld": "b.pruefungen",
+    "wiederholungWahl": "b.wiederholung",
 }
 
 
@@ -709,3 +711,64 @@ def test_mehrere_fassungen_auf_einmal():
         "die Vokabelliste darf nicht mit vervielfacht werden"
     # Die Vokabelliste aber nicht - sie hat mit Fassungen nichts zu tun.
     assert 'teile.filter(t => t.art !== "pruefung").length' in zahl
+
+
+# ---------------------------------------------------------------------------
+# Wiederholung aus dem vorherigen Vocabulary
+# ---------------------------------------------------------------------------
+def test_die_wiederholung_ist_standardmaessig_aus():
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert '<input type="checkbox" id="wiederholung">' in seite, (
+        "das Häkchen muss ohne 'checked' dastehen")
+    assert "wiederholung:false" in seite
+
+
+def test_die_seite_zeigt_die_vorschlaege_der_anwendung(abgelegt):
+    """Die Folge steht **nicht** in JavaScript.
+
+    Sie steht fertig in `daten.json`, ausgerechnet von derselben Stelle,
+    die `vocabmaster wiederholung` benutzt. Stünde sie zweimal da, schlüge
+    die Seite irgendwann eine andere Liste vor, als der Befehl nimmt.
+    """
+    from vocabmaster import wiederholung as wh
+    from vocabmaster.pack import Pack
+
+    kuratiert = WURZEL / "kuratiert"
+    for db in abgelegt["datenbanken"]:
+        for u in db["units"]:
+            for li in u["listen"]:
+                pack = Pack.load(kuratiert / li["datei"])
+                for teil in (1, 2):
+                    erwartet = wh.vorschlaege(pack, teil, kuratiert,
+                                              WURZEL / "out")[:12]
+                    gezeigt = li["wiederholung"][str(teil)]["quellen"]
+                    assert [(q["paket"], q["teil"], q["folge"]) for q in gezeigt] == [
+                        (q.paket, q.teil, q.folge) for q in erwartet
+                    ], (db["name"], u["unit"], li["version"], teil)
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert "vorgaenger" not in seite and "units_des_lehrmittels" not in seite
+
+
+def test_der_auftrag_nennt_quelle_befehl_und_kontrolle():
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    satz = seite[seite.index("function wiederholungsSatz("):]
+    satz = satz[:satz.index("\n}\n")]
+    for pflicht in ("vocabmaster wiederholung", "--aus-teil", "Bonus",
+                    "nicht verschlechtern", "Höchstpunktzahl bleibt",
+                    "'vocabmaster prüfen'", "Kontrolle 'wiederholung'"):
+        assert pflicht in satz, pflicht
+
+
+def test_ohne_vorherigen_part_schlaegt_die_seite_nichts_vor():
+    """Unit 1 · Part I hat keinen Vorgänger mit Liste.
+
+    Vorn stand dort einmal Unit 8 eines **anderen Lehrmittels** - die erste
+    Zeile der Liste, nicht der vorherige Part. Voreingestellt ist deshalb
+    nur eine Quelle mit `folge`; gibt es keine, heisst es "keine
+    Wiederholung", und eine andere Liste muss man wählen.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    wahl = seite[seite.index("function gewaehlteQuelle("):]
+    wahl = wahl[:wahl.index("\n}\n")]
+    assert "q.folge" in wahl and "w.quellen[0]" not in wahl
+    assert "return null" in wahl

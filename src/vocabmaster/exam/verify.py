@@ -11,7 +11,13 @@ import re
 import zipfile
 from xml.etree import ElementTree as ET
 
-from .builder import GAP, LINE, aufgaben_des_specs, choice_letter
+from .builder import (
+    GAP,
+    LINE,
+    aufgaben_des_specs,
+    choice_letter,
+    wiederholung_des_specs,
+)
 from .check import ERROR, INFO, WARN, Finding, stem  # noqa: F401  (stem: Teil der API)
 
 W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
@@ -117,6 +123,10 @@ def verify_document(path: str, spec: dict, template_path: str,
         geheim += [g.get("answer", "") for g in a.get("gaps", [])]
     for a in nach_art.get("definition", []):
         geheim += [i.get("english", "") for i in a.get("items", [])]
+    # Die Wiederholung fragt ab wie die Übersetzung - ihre Lösungen
+    # dürfen ebensowenig irgendwo auf dem Blatt stehen.
+    wiederholung = wiederholung_des_specs(spec)
+    geheim += [i.get("english", "") for i in wiederholung.get("items", [])]
 
     alle_gaps = [g for a in nach_art.get("luecken", []) for g in a.get("gaps", [])]
     if not is_answer_key:
@@ -150,12 +160,18 @@ def verify_document(path: str, spec: dict, template_path: str,
 
     # --- die Übersetzungstabelle ----------------------------------------
     all_tables = tables(path)
-    erwartete_tabellen = 1 + len(nach_art.get("uebersetzen", []))
+    tabellen_aufgaben = list(nach_art.get("uebersetzen", []))
+    if wiederholung:
+        # Die Wiederholung ist eine Übersetzungstabelle wie die andere und
+        # steht als letzte auf dem Blatt.
+        tabellen_aufgaben.append(wiederholung)
+    erwartete_tabellen = 1 + len(tabellen_aufgaben)
     if len(all_tables) != erwartete_tabellen:
         add(ERROR, "content",
             f"the document has {len(all_tables)} tables, expected "
-            f"{erwartete_tabellen} (header and one per translation task)")
-    for nr, aufgabe in enumerate(nach_art.get("uebersetzen", []), start=1):
+            f"{erwartete_tabellen} (header and one per translation task"
+            + (", revision included" if wiederholung else "") + ")")
+    for nr, aufgabe in enumerate(tabellen_aufgaben, start=1):
         rows = all_tables[nr] if nr < len(all_tables) else []
         items = aufgabe.get("items", [])
         if len(rows) != len(items):
@@ -232,8 +248,15 @@ def verify_document(path: str, spec: dict, template_path: str,
     if estimate > 1:
         zusatz = [a for a in aufgaben
                   if str(a.get("art")) not in ("uebersetzen", "luecken")]
-        grund = (f" - {len(zusatz)} extra task(s) take space"
-                 if zusatz else "")
+        gruende = []
+        if zusatz:
+            gruende.append(f"{len(zusatz)} extra task(s)")
+        if wiederholung:
+            gruende.append("the revision table")
+        grund = (" - " + " and ".join(gruende)
+                 + (" take" if len(gruende) > 1 or zusatz and len(zusatz) > 1
+                    else " takes") + " space"
+                 if gruende else "")
         add(WARN, "layout",
             f"the sheet is estimated at {estimate} pages{grund} - "
             "check it in Word")
@@ -281,6 +304,9 @@ def _page_estimate(spec: dict) -> int:
             for block in aufgabe.get("items", []):
                 total += LINE * 2
                 total += LINE * max(2, int(block.get("mindestsaetze", 2) or 2))
+    wiederholung = wiederholung_des_specs(spec)
+    if wiederholung:
+        total += 500 + len(wiederholung.get("items", [])) * per_row
     total += 800
     usable = 16838 - 1417 - 635      # page height minus margins
     return max(1, -(-total // usable))

@@ -777,6 +777,80 @@ Die Prüfungskarte unter „Prüfungen ansehen" zeigt jede Aufgabe so, wie sie
 auf dem Blatt steht — mit markierter Lösung und mit „— noch nicht
 geschrieben —" dort, wo etwas fehlt.
 
+## Wiederholung aus dem vorherigen Vocabulary — zuschaltbar
+
+Voreingestellt **aus**. Eingeschaltet fragt jede Prüfung zusätzlich Wörter
+aus dem Vocabulary ab, das unmittelbar davor behandelt wurde — als
+Übersetzungstabelle (deutsch → englisch) am Ende des Blatts.
+
+| Niveau | Wörter | zählt |
+|---|---|---|
+| **A** | 4, die schwersten | mit: Höchstpunktzahl 12 + 4 = 16P |
+| **B** | 2, die zugänglichsten | als **Bonus** (`+2P`): kann die Note verbessern, nicht verschlechtern; die Höchstpunktzahl bleibt |
+
+### Welche Liste ist „die vorherige"?
+
+Die Folge läuft über Units und Parts hinweg: Unit 1 · Part II ← Unit 1 ·
+Part I, Unit 2 · Part I ← Unit 1 · Part II, Unit 2 · Part II ← Unit 2 ·
+Part I. Gerechnet wird über **alle Units des Lehrmittels** (aus seiner
+Datenbank), nicht nur über die, zu denen es eine Liste gibt: Fehlt dem
+vorherigen Part die Liste, wird **nicht** stillschweigend der vorletzte
+vorgeschlagen, sondern gesagt, dass er fehlt.
+
+* Part II wiederholt Part I **derselben** Liste.
+* Part I wiederholt Part II der vorigen Unit. Hat die mehrere Listen, kommt
+  zuerst die, zu deren Part schon eine Prüfung gebaut ist, dann die mit
+  gebauter Vokabelliste, dann die neueste — die Klasse hat die gelernt, die
+  ausgeteilt wurde.
+
+Der Vorschlag lässt sich wechseln (frühere Parts, andere Lehrmittel), steht
+dann aber als „nicht der vorherige Part" da. Unit 1 · Part I hat keinen
+Vorgänger mit Liste (die Starter Unit hat keine): Dort ist „keine
+Wiederholung" voreingestellt, eine andere Liste ist eine Wahl, kein
+Vorschlag.
+
+### Welche Wörter
+
+Gewählt wird mit derselben Stelle wie die Prüfungswörter
+(`waehle_pruefungswoerter`). Ausgeschlossen sind Wörter des aktuellen
+Parts samt Wortfamilie und jedes Wort, das **auf dem Blatt schon gedruckt
+steht** — im Lückentext, in einem Satz zur Wahl. Das hat der erste
+Probelauf gefunden: `picnic` stand als Wiederholung im Schlüssel und
+zugleich im Lückentext von Unit 2.
+
+### Wo es steht, und wer es prüft
+
+Der Block liegt **neben** den Aufgaben (`spec["wiederholung"]`), nicht
+darin: Aufgabenplan, Lösungsschlüssel und der geerbte Checker sehen ihn
+nicht, und ein Blatt ohne Wiederholung ist Byte für Byte das von vorher.
+Er trägt Paket, Part, Listenversion, Listenabdruck und Prüfsumme der
+Quelle. `ausgleichen` und `fassung` tragen ihn mit.
+
+Die Kontrolle `wiederholung` liest die **Quellliste neu ein** und prüft
+jedes Wort dagegen: steht es dort in diesem Part, mit dieser Übersetzung;
+passt der Abdruck noch; ist es kein Wort des aktuellen Parts, nicht
+doppelt, nicht auf dem Blatt gedruckt; stimmt die Bonus-Kennung zum
+Niveau. Das sind Fehler. Eine andere Wortzahl, eine Quelle, die nicht der
+vorherige Part ist, oder Part I einer anderen Listenversion sind
+Warnungen — gewählt ist gewählt, aber gesagt wird es.
+
+```bash
+vocabmaster wiederholung kuratiert/unit_02.json --teil 1 --vorschlag   # nur zeigen
+vocabmaster wiederholung kuratiert/unit_02.json --teil 1               # Vorschlag setzen
+vocabmaster wiederholung kuratiert/unit_02.json --teil 1 --wahl 2      # zweiten nehmen
+vocabmaster wiederholung kuratiert/unit_02.json --teil 1 \
+    --aus kuratiert/unit_01.json --aus-teil 2
+vocabmaster wiederholung kuratiert/unit_02.json --teil 1 --weg
+```
+
+Ohne Vorschlag (Unit 1 · Part I) setzt der Befehl nichts und listet die
+Möglichkeiten.
+
+Auf der Seite steht das Häkchen unter „Aufbau der Prüfung", darunter je
+bestelltem Teil die Quellwahl — die Vorschläge rechnet `export.py` mit
+derselben Stelle aus, die Seite kennt die Folge nicht selbst. 40 Tests
+in `tests/test_wiederholung.py`, vier in `tests/test_werkstatt.py`.
+
 ## Schwierigkeit des Lückentexts
 
 Zwei Regler, nicht einer. Der **Anspruch** wählt die geprüften *Wörter*, die

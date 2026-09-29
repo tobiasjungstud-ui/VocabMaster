@@ -22,6 +22,7 @@ sys.path.insert(0, str(WURZEL / "src"))
 from vocabmaster import aufgaben as _aufgaben  # noqa: E402
 from vocabmaster import datenbanken as _dbs  # noqa: E402
 from vocabmaster import paedagogik as _paed  # noqa: E402
+from vocabmaster import wiederholung as _wh  # noqa: E402
 from vocabmaster.aufgaben import (  # noqa: E402
     DEFINITION,
     KLASSISCH,
@@ -45,6 +46,7 @@ from vocabmaster.niveau import (  # noqa: E402
     textstufe,
 )
 from vocabmaster.pack import (  # noqa: E402
+    Pack,
     aufgabe_art,
     aufgaben_von,
     gepruefte_woerter,
@@ -345,6 +347,33 @@ def _dokumente(ordner: Path) -> dict[str, int]:
     return {d.name: d.stat().st_size for d in sorted(ordner.glob("*.docx"))}
 
 
+def _wiederholung(pack: Pack, teile=(1, 2)) -> dict:
+    """Woraus die Prüfungen dieser Liste wiederholen könnten - geordnet.
+
+    Ausgerechnet von derselben Stelle, die auch `vocabmaster wiederholung`
+    benutzt. Die Seite zeigt nur, was hier steht: Stünde die Folge noch
+    einmal in JavaScript, schlüge die Seite irgendwann eine andere Liste
+    vor, als der Befehl nimmt.
+    """
+    heraus = {}
+    for teil in teile:
+        quellen = _wh.vorschlaege(pack, teil, pack.pfad.parent if pack.pfad
+                                  else WURZEL / "kuratiert", GEBAUT)
+        heraus[str(teil)] = {
+            "quellen": [
+                {"paket": q.paket, "teil": q.teil, "unit": q.unit,
+                 "version": q.liste_version, "lehrmittel": q.lehrmittel,
+                 "bezeichnung": q.bezeichnung, "grund": q.grund,
+                 "folge": q.folge}
+                # Die zwölf naheliegendsten genügen zum Wechseln; der Befehl
+                # nimmt mit --aus jedes andere Paket.
+                for q in quellen[:12]
+            ],
+            "luecke": _wh.fehlender_vorgaenger(pack, teil, quellen),
+        }
+    return heraus
+
+
 def _gehoert_dazu(pack: dict, db: Database) -> bool:
     """Gehört dieses Paket zu dieser Datenbank?
 
@@ -447,6 +476,11 @@ def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, di
                                          liste_version=version,
                                          lehrmittel=str(
                                              pack.get("lehrmittel", ""))),
+                # Woraus die Prüfungen dieser Liste wiederholen können -
+                # der logischste Vorschlag zuerst.
+                "wiederholung": _wiederholung(Pack.load(
+                    pakete / datei_name(unit, version,
+                                        str(pack.get("lehrmittel", ""))))),
             })
         erstes = (roh.get(unit) or [{}])[0]
         units.append({
@@ -458,6 +492,14 @@ def _einheiten(pakete: Path, db: Database, settings: Settings) -> tuple[list, di
             "leitwoerter": thema.get("leitwoerter", []),
             "herkunft": _herkunft(db, unit, settings),
             "listen": listen,
+            # Für eine **neue** Liste dieser Unit: Part I wiederholt aus der
+            # Unit davor. Part II wiederholt Part I der neuen Liste selbst -
+            # die gibt es noch nicht, das sagt die Seite.
+            "wiederholung_neu": _wiederholung(Pack(data={
+                "unit": unit, "unit_label": (f"Unit {unit}" if unit
+                                             else "Starter Unit"),
+                "quelle": dict(db.quelle), "liste_version": 0,
+            }), teile=(1,)),
             # Was die Unit hergibt - alles, mit dem Urteil der Auswahl. Die
             # Oberfläche legt es neben die gewählte Liste, damit man sieht,
             # was fehlt, und einzelne Wörter von Hand herüberholen kann.

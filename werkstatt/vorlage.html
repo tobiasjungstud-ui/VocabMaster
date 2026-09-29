@@ -868,6 +868,16 @@ td.satz{color:var(--ink-2); font-size:12.5px}
           <p class="hinweis" id="fassunghinweis"></p>
         </div>
         </section>
+        <!-- Wörter aus dem vorherigen Vocabulary. Standard aus: Wer nichts
+             ankreuzt, bekommt die Prüfung von bisher. -->
+        <section id="wiederholungfeld">
+          <span class="legende">Wiederholung</span>
+          <label class="tick" for="wiederholung"><input type="checkbox" id="wiederholung">
+            <span>Wörter aus dem vorherigen Vocabulary<span class="sub">Niveau A: 4 Wörter, zählen mit ·
+              Niveau B: 2 Wörter als Bonus</span></span></label>
+          <div id="wiederholungWahl" hidden></div>
+          <p class="hinweis" id="wiederholungHinweis"></p>
+        </section>
       </div>
 
       <div class="gruppe">
@@ -1170,6 +1180,10 @@ const NIV = {A:{cefr:"B1.2–B2.1", name:"Niveau A"}, B:{cefr:"A2.2–B1.1", nam
 
 /* ---------------- Zustand ---------------- */
 const state = {unit:1, ziel:{A:3.5, B:1.7}, eigen:false, variante:1, fassungAnzahl:1, buchAlle:false,
+  // Wiederholung aus dem vorherigen Vocabulary - aus, bis sie angekreuzt
+  // wird. `quelle` merkt sich je Teil die gewählte Quelle als "paket|part";
+  // passt sie nach einem Wechsel nicht mehr, gilt wieder der Vorschlag.
+  wiederholung:false, wQuelle:{1:"", 2:""},
   // Welche Aufgaben die Prüfung hat und wie viele Wörter jede bekommt.
   // `eigen` trägt nur, was von Hand gesetzt wurde - der Rest verteilt
   // sich. Ohne Eintrag darin wandert eine Aufgabe mit.
@@ -2294,6 +2308,7 @@ function bestellt(){
     // Der Aufbau gehört zur Prüfung: Ohne angekreuzte Prüfung stünde
     // eine Aufgabenliste da, die niemand bestellt hat.
     aufbau: t.some(x => x.art === "pruefung"),
+    wiederholung: t.some(x => x.art === "pruefung") && state.wiederholung,
   };
 }
 
@@ -2320,6 +2335,121 @@ function zeichneSichtbarkeit(){
   // viele" stellt sich nur dort, wo etwas Neues entsteht.
   $("fassungAnzahlFeld").hidden = !b.neueFassung;
   $("aufgabenwahl").hidden = !b.aufbau;
+  // Die Wiederholung gehört zur Prüfung; ihre Quellwahl erst zum Häkchen.
+  $("wiederholungfeld").hidden = !b.pruefungen;
+  $("wiederholungWahl").hidden = !b.wiederholung;
+}
+
+/* ---------------- Wiederholung aus dem vorherigen Vocabulary ----------------
+   Woraus wiederholt wird, rechnet die Seite **nicht** selbst: Die Folge
+   (Part II <- Part I derselben Liste, Part I <- Part II der Unit davor)
+   und die Reihung der Listen stehen fertig in den Daten, ausgerechnet von
+   derselben Stelle, die `vocabmaster wiederholung` benutzt. Die Seite
+   zeigt den logischsten Vorschlag zuerst und lässt wechseln. */
+function wiederholungsQuellen(teil){
+  const u = unitDaten() || {};
+  if(legtNeueListeAn()){
+    if(teil === 2){
+      // Part II wiederholt Part I derselben Liste - hier der neuen, die
+      // mit dieser Bestellung erst entsteht.
+      return {luecke:"", quellen:[{paket:"", teil:1, neu:true, folge:true,
+        bezeichnung:"Part I der neuen Liste V" + neueVersion(),
+        grund:"kommt unmittelbar vor Part II; die Liste entsteht mit dieser Bestellung"}]};
+    }
+    return (u.wiederholung_neu || {})["1"] || {luecke:"", quellen:[]};
+  }
+  const li = listenDaten();
+  return ((li && li.wiederholung) || {})[String(teil)] || {luecke:"", quellen:[]};
+}
+function quellSchluessel(q){ return (q.paket || "neu") + "|" + q.teil; }
+// Vorgeschlagen wird nur der unmittelbar vorherige Part. Gibt es den
+// nicht - Unit 1 · Part I, oder der Part davor hat keine Liste -, steht
+// "keine Wiederholung" vorn: Eine Liste eines anderen Lehrmittels oder
+// eines früheren Parts ist eine Wahl, kein Vorschlag.
+const KEINE = "keine";
+function gewaehlteQuelle(teil){
+  const w = wiederholungsQuellen(teil), wahl = state.wQuelle[teil];
+  if(wahl === KEINE) return null;
+  return w.quellen.find(q => quellSchluessel(q) === wahl)
+      || w.quellen.find(q => q.folge) || null;
+}
+
+function zeichneWiederholung(){
+  const b = bestellt(), kasten = $("wiederholungWahl");
+  const hinweis = [];
+  kasten.innerHTML = "";
+  if(!b.wiederholung){
+    $("wiederholungHinweis").textContent = b.pruefungen
+      ? "Aus: Die Prüfung fragt nur das aktuelle Vocabulary ab." : "";
+    return;
+  }
+  for(const teil of [1, 2]){
+    if(!b.teil(teil)) continue;
+    const w = wiederholungsQuellen(teil);
+    const feld = document.createElement("div");
+    feld.className = "feld";
+    feld.style.marginTop = "8px";
+    const name = "Teil " + (teil === 1 ? "I" : "II");
+    const label = document.createElement("label");
+    label.htmlFor = "wQuelle" + teil;
+    label.textContent = "Quelle für " + name;
+    const wahl = document.createElement("select");
+    wahl.id = "wQuelle" + teil;
+    const keine = document.createElement("option");
+    keine.value = KEINE;
+    keine.textContent = "keine Wiederholung für " + name +
+      (w.quellen.some(q => q.folge) ? "" : " — kein vorheriger Part mit Liste");
+    const vorschlag = w.quellen.some(q => q.folge);
+    if(!vorschlag) wahl.appendChild(keine);
+    w.quellen.forEach((q, i) => {
+      const o = document.createElement("option");
+      o.value = quellSchluessel(q);
+      o.textContent = q.bezeichnung +
+        (i === 0 && q.folge ? " — Vorschlag" : q.folge ? "" : " — nicht der vorherige Part");
+      o.title = q.grund;
+      wahl.appendChild(o);
+    });
+    if(vorschlag) wahl.appendChild(keine);
+    const gewaehlt = gewaehlteQuelle(teil);
+    wahl.value = gewaehlt ? quellSchluessel(gewaehlt) : KEINE;
+    wahl.addEventListener("change", e => {
+      state.wQuelle[teil] = e.target.value;
+      zeichneWiederholung(); zeichneAuftrag();
+    });
+    feld.appendChild(label); feld.appendChild(wahl);
+    kasten.appendChild(feld);
+    if(w.luecke) hinweis.push(w.luecke);
+    if(!gewaehlt){
+      hinweis.push(name + ": ohne Wiederholung" +
+        (vorschlag ? " - so gewählt." : ". Soll trotzdem eine hinein, " +
+         "hier eine Liste wählen."));
+    } else {
+      hinweis.push(name + ": " + gewaehlt.grund + ".");
+      if(!gewaehlt.folge)
+        hinweis.push(name + ": Das ist nicht der unmittelbar vorherige Part — " +
+                     "bitte bewusst so wählen.");
+    }
+  }
+  $("wiederholungHinweis").textContent = hinweis.join(" ") +
+    (hinweis.length ? " " : "") +
+    "Niveau A: 4 Wörter, sie zählen mit. Niveau B: 2 Wörter als Bonus — " +
+    "sie können die Note verbessern, aber nicht verschlechtern; die " +
+    "Höchstpunktzahl bleibt.";
+}
+
+function wiederholungAuftrag(pruefungen){
+  if(!state.wiederholung || !pruefungen.length) return null;
+  const heraus = {};
+  for(const teil of [1, 2]){
+    if(!pruefungen.some(p => p.teil === teil)) continue;
+    const q = gewaehlteQuelle(teil);
+    // Ein Teil ohne Quelle wird nicht bestellt - er steht gar nicht da.
+    if(q) heraus["teil" + teil] = {
+      paket:q.paket || "", teil:q.teil, bezeichnung:q.bezeichnung,
+      folge:!!q.folge, neu:!!q.neu, grund:q.grund,
+    };
+  }
+  return Object.keys(heraus).length ? heraus : null;
 }
 
 function auftrag(){
@@ -2364,6 +2494,9 @@ function auftrag(){
     dazu:[...state.dazu], weg:[...state.weg], fest:[...state.fest],
     notiz:state.notiz.trim(),
     hatPruefungen:pruefungen.length > 0,
+    // Wörter aus dem vorherigen Vocabulary: je Teil die gewählte Quelle.
+    // Niveau A zählt sie, Niveau B nur als Bonus.
+    wiederholung:wiederholungAuftrag(pruefungen),
     dokumente:stueckzahl(
       teile, state.variante === 0 ? Math.max(1, state.fassungAnzahl) : 1),
     erzeugt:new Date().toISOString()
@@ -2395,6 +2528,37 @@ function aufbauSatz(a){
     "Anstösse entstehen im Chat.";
 }
 
+/* Die Wiederholung im Auftrag - mit Quelle, Zählweise und dem Befehl,
+   der genau das einträgt. Dazu die Kontrolle, die es nachprüft: Wer die
+   Wörter einer anderen Liste abfragt, muss belegen können, woher sie
+   stammen. */
+function wiederholungsSatz(a){
+  const li = legtNeueListeAn() ? null : listenDaten();
+  const paket = li && li.datei ? "kuratiert/" + li.datei : "kuratiert/<Paket der neuen Liste>";
+  const teile = Object.entries(a.wiederholung).map(([k, q]) => {
+    const teil = +k.slice(4), name = "Teil " + (teil === 1 ? "I" : "II");
+    const befehl = q.neu
+      ? "'vocabmaster wiederholung " + paket + " --teil 2 --aus " + paket + " --aus-teil 1'"
+      : "'vocabmaster wiederholung " + paket + " --teil " + teil +
+        " --aus kuratiert/" + q.paket + " --aus-teil " + q.teil + "'";
+    return name + " aus " + q.bezeichnung +
+      (q.folge ? " (der unmittelbar vorherige Part)"
+               : " (bewusst gewählt — nicht der unmittelbar vorherige Part)") +
+      ", " + befehl;
+  });
+  for(const teil of [1, 2]){
+    if(a.teile.some(t => t.art === "pruefung" && t.teil === teil) &&
+       !a.wiederholung["teil" + teil])
+      teile.push("Teil " + (teil === 1 ? "I" : "II") + " ohne Wiederholung");
+  }
+  return "Wiederholung aus dem vorherigen Vocabulary: " + teile.join("; ") +
+    ". Niveau A: 4 Wörter, sie zählen mit; Niveau B: 2 Wörter als Bonus — " +
+    "sie können die Note verbessern, aber nicht verschlechtern, die " +
+    "Höchstpunktzahl bleibt. Als Übersetzungstabelle am Ende des Blatts. " +
+    "Danach 'vocabmaster prüfen': Die Kontrolle 'wiederholung' liest die " +
+    "Quellliste neu ein und prüft jedes Wort dagegen.";
+}
+
 function befehlstext(a){
   if(!a.teile.length) return "Nichts ausgewählt — links mindestens einen Punkt ankreuzen.";
   const zeilen = ["Unit " + a.unit + ": " + a.teile.map(t => t.text).join(", ") + "."];
@@ -2422,6 +2586,7 @@ function befehlstext(a){
                 "Überschneidungen mit früheren Fassungen sind in Ordnung.");
   }
   if(a.hatPruefungen) zeilen.push(aufbauSatz(a));
+  if(a.wiederholung) zeilen.push(wiederholungsSatz(a));
   if(a.hatPruefungen){
     if(a.eigenerAnspruch) zeilen.push("Anspruch abweichend: Niveau A auf Ø " +
       a.ziel.A.toFixed(1) + "/10, Niveau B auf Ø " + a.ziel.B.toFixed(1) +
@@ -2912,7 +3077,7 @@ function esc(s){
     c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
 
-function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAufgabenwahl(); zeichneAuftrag(); }
+function alles(){ zeichneDatenbankwahl(); zeichneUnitwahl(); zeichneAusloeser(); zeichneRanking(); zeichneListenwahl(); zeichneFassungswahl(); zeichneKopf(); zeichneSichtbarkeit(); wortwahlZeichnen(); zeichneTeile(); zeichneListe(); zeichneTextband(); zeichneListenhinweis(); zeichneAufgabenwahl(); zeichneWiederholung(); zeichneAuftrag(); }
 
 /* Das Unit-Feld gehört zur Datenbank, nicht zur Seite: Beim Wechsel wird
    es neu gefüllt, und die gewählte Unit fällt auf die erste zurück, die es
@@ -2956,6 +3121,11 @@ $("unit").addEventListener("change", e => {
 // Liste zur Wahl steht. Deshalb der ganze Durchgang.
 ["bLi","b1A","b1B","b2A","b2B"].forEach(id =>
   $(id).addEventListener("change", alles));
+// Die Wiederholung: aus, bis sie angekreuzt wird.
+$("wiederholung").addEventListener("change", e => {
+  state.wiederholung = e.target.checked;
+  alles();
+});
 
 for(const niv of ["A","B"]){
   $("ziel" + niv).addEventListener("input", e => {

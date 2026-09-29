@@ -346,6 +346,61 @@ def aufgaben_des_specs(spec: dict) -> list[dict]:
     return heraus
 
 
+def wiederholung_des_specs(spec: dict) -> dict:
+    """Der Wiederholungsblock einer Prüfung - leer, wenn sie keinen hat.
+
+    Er steht **neben** den Aufgaben, nicht unter ihnen: Seine Wörter stammen
+    aus einer anderen Liste, und jede Kontrolle, die die Aufgaben gegen die
+    Liste dieses Pakets prüft, fände sie dort zu Recht nicht.
+    """
+    block = spec.get("wiederholung")
+    if isinstance(block, dict) and block.get("items"):
+        return block
+    return {}
+
+
+def punkte_der_wiederholung(block: dict) -> str:
+    """``4P`` für Niveau A, ``+2P`` für den Bonus auf Niveau B."""
+    n = len(block.get("items", []))
+    return f"+{n}P" if block.get("bonus") else f"{n}P"
+
+
+def hoechstpunktzahl(spec: dict) -> tuple[int, int]:
+    """Die Höchstpunktzahl und der mögliche Bonus einer Prüfung.
+
+    Die Wiederholung auf Niveau A zählt mit. Auf Niveau B ist sie Bonus:
+    Sie kann die Note verbessern, aber nicht verschlechtern - die
+    Höchstpunktzahl bleibt deshalb, wo sie ohne sie stand.
+    """
+    regulaer = sum(punktzahl(a) for a in aufgaben_des_specs(spec)
+                   if _renderer(str(a.get("art", ""))) is not None)
+    block = wiederholung_des_specs(spec)
+    n = len(block.get("items", []))
+    if not n:
+        return regulaer, 0
+    return (regulaer, n) if block.get("bonus") else (regulaer + n, 0)
+
+
+def _punktezeile(spec: dict) -> str:
+    """Eine Zeile unter der Lösung: woraus sich die Höchstpunktzahl ergibt.
+
+    Nur auf dem Lösungsblatt und nur, wenn eine Wiederholung dabei ist -
+    sonst steht dort, was schon immer dort stand.
+    """
+    block = wiederholung_des_specs(spec)
+    if not block:
+        return ""
+    maximum, bonus = hoechstpunktzahl(spec)
+    n = len(block["items"])
+    if bonus:
+        text = (f"Höchstpunktzahl: {maximum}P. Wiederholung als Bonus: bis "
+                f"+{bonus}P - zählt nur, wenn es die Note verbessert.")
+    else:
+        text = (f"Höchstpunktzahl: {maximum}P "
+                f"({maximum - n}P aktuelles Vocabulary + {n}P Wiederholung).")
+    return para(run(text, BOLD), ppr='<w:spacing w:before="240"/>', rpr=BOLD)
+
+
 def build_document_xml(spec: dict, show_answers: bool = False) -> str:
     header = spec["header"]
     parts = [
@@ -374,6 +429,21 @@ def build_document_xml(spec: dict, show_answers: bool = False) -> str:
             f"{punkte}P{endung}", tabs=TABS.get(art, 5),
         ))
         parts.append(setzer(aufgabe, show_answers))
+    # Die Wiederholung kommt zuletzt, mit der nächsten Nummer. Ohne sie
+    # entsteht Zeichen für Zeichen das Dokument von bisher.
+    block = wiederholung_des_specs(spec)
+    if block:
+        # Dieselbe Zählung wie oben: Jede Aufgabe des Specs hat ihre Nummer.
+        nummer = len(aufgaben) + 1
+        if nummer > 1:
+            parts.append(para(rpr=BOLD))
+        parts.append(_task_heading(
+            nummeriere(str(block.get("instruction", "")), nummer),
+            punkte_der_wiederholung(block), tabs=TABS["uebersetzen"],
+        ))
+        parts.append(_translation_table(block["items"], show_answers))
+        if show_answers:
+            parts.append(_punktezeile(spec))
     parts += [
         para(rpr=BOLD),
         para(rpr=BOLD),

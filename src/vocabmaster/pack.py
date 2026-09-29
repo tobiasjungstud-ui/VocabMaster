@@ -422,7 +422,10 @@ def klassische_sicht(spec: dict[str, Any]) -> dict[str, Any]:
     stattdessen diese Sicht. Fehlt eine der beiden Arten, steht dort ein
     leeres Fach; seine Kontrollen laufen dann darüber hinweg.
     """
-    sicht = {k: v for k, v in spec.items() if k != "aufgaben"}
+    # Die Wiederholung hat er nie gekannt; ihre Wörter stammen aus einer
+    # anderen Liste und haben ihre eigene Kontrolle.
+    sicht = {k: v for k, v in spec.items()
+             if k not in ("aufgaben", "wiederholung")}
     for aufgabe in aufgaben_von(spec):
         # Ohne die Art: Sein Schema kennt sie nicht und meldete einen
         # Tippfehler, wo eine Angabe steht.
@@ -1470,6 +1473,11 @@ def neue_fassung(
             )
         }
     }
+    # Eine Fassung ist dieselbe Prüfung noch einmal - eine bestellte
+    # Wiederholung gehört dazu.
+    if isinstance(alt.get("wiederholung"), dict):
+        neu.data["pruefungen"][f"teil{teil}"][prof.name]["wiederholung"] = (
+            json.loads(json.dumps(alt["wiederholung"])))
     return neu
 
 
@@ -1543,4 +1551,10 @@ def ausgleichen(pack: Pack, settings: Settings | None = None) -> Pack:
         _text_uebernehmen(
             spec, pack.data["pruefungen"][f"teil{teil}"][niveau]
         )
+        # Eine bestellte Wiederholung bleibt bestellt. Hat das Ausgleichen
+        # eines ihrer Wörter in den geprüften Part geschoben, meldet die
+        # Kontrolle `wiederholung` es - dann neu wählen lassen.
+        if isinstance(spec.get("wiederholung"), dict):
+            pack.data["pruefungen"][f"teil{teil}"][niveau]["wiederholung"] = (
+                spec["wiederholung"])
     return pack

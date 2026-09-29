@@ -64,6 +64,7 @@ from .pack import (
     aufgaben_von,
     gepruefte_woerter,
     klassische_sicht,
+    pruefungswoerter,
 )
 
 FEHLER, WARNUNG, HINWEIS = "FEHLER", "WARNUNG", "HINWEIS"
@@ -1138,6 +1139,203 @@ def pruefe_pruefungen(pack: Pack, bericht: Pruefbericht) -> None:
 # ---------------------------------------------------------------------------
 # Gesamtlauf
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
+# Wiederholung aus dem vorherigen Vocabulary
+# ---------------------------------------------------------------------------
+def pruefe_wiederholung(pack: Pack, bericht: Pruefbericht) -> None:
+    """Stammt jedes Wiederholungswort wirklich aus der Liste, die genannt ist?
+
+    Die Wiederholung fragt Wörter aus einer **anderen** Liste ab - aus einem
+    anderen Paket, oft einer anderen Unit. Alles, was die übrigen
+    Kontrollen gegen die Liste dieses Pakets prüfen, gilt für sie deshalb
+    nicht. Sie bekommt ihre eigene, und die liest das Quellpaket wieder ein,
+    statt dem Block zu glauben:
+
+    * das Quellpaket liegt noch da, und seine Liste ist Wort für Wort die,
+      aus der gewählt wurde (Abdruck, Version, Unit, Lehrmittel);
+    * jedes Wort steht in genau dem genannten Part, mit derselben
+      Übersetzung;
+    * keines steht im Part, den die Prüfung ohnehin abfragt, auch nicht als
+      Wortfamilie, und keines zweimal;
+    * Niveau A zählt die Wörter, Niveau B nur als Bonus;
+    * die Quelle ist der Part, der unmittelbar vor diesem Test kommt - wenn
+      nicht, sagt die Kontrolle, welcher es gewesen wäre.
+    """
+    from .wiederholung import (
+        ANZAHL,
+        BONUS,
+        aktuelle_woerter,
+        einheit_name,
+        gedruckter_text,
+        kollidiert,
+        part_name,
+        steht_gedruckt,
+        units_des_lehrmittels,
+        vorgaenger,
+    )
+    from .wiederholung import _schluessel as schluessel
+
+    bloecke = [(t, n, s) for (t, n), s in sorted(pack.exams.items())
+               if isinstance(s.get("wiederholung"), dict)]
+    if not bloecke:
+        return
+    bericht.gelaufen.append("wiederholung")
+    zeilen = []
+    eigene_summe = str(pack.quelle.get("pruefsumme_sha256", ""))
+    for teil, niveau, spec in bloecke:
+        block = spec["wiederholung"]
+        wo = f"Teil {teil}, Niveau {niveau}, Wiederholung"
+        items = [i for i in block.get("items", []) if isinstance(i, dict)]
+        q = block.get("quelle") or {}
+
+        if bool(block.get("bonus")) != BONUS[niveau]:
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: " + ("Auf Niveau B ist die Wiederholung Bonus - hier "
+                             "zählt sie mit und verschöbe die Höchstpunktzahl."
+                             if BONUS[niveau] else
+                             "Auf Niveau A zählt die Wiederholung mit - hier "
+                             "steht sie als Bonus."))
+        if not items:
+            bericht.add(FEHLER, "wiederholung",
+                        f"{wo}: Sie ist bestellt, enthält aber kein Wort.")
+            continue
+        if len(items) != ANZAHL[niveau]:
+            bericht.add(
+                WARNUNG, "wiederholung",
+                f"{wo}: {len(items)} Wörter, vorgesehen sind "
+                f"{ANZAHL[niveau]} für Niveau {niveau}.")
+
+        # --- die Quelle wieder einlesen ---------------------------------
+        if pack.pfad is None:
+            bericht.add(WARNUNG, "wiederholung",
+                        f"{wo}: Das Paket liegt nicht als Datei vor - die "
+                        "Quelle lässt sich nicht nachprüfen.")
+            continue
+        name = str(q.get("paket", ""))
+        pfad = pack.pfad.parent / name
+        if not name or not pfad.is_file():
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: Die Quellliste '{name or '?'}' liegt nicht im Ordner. "
+                "Ohne sie lässt sich nicht belegen, dass die Wörter aus dem "
+                "vorherigen Vocabulary stammen.")
+            continue
+        try:
+            quelle = Pack.load(pfad)
+        except (OSError, ValueError) as fehler:
+            bericht.add(FEHLER, "wiederholung",
+                        f"{wo}: '{name}' lässt sich nicht lesen ({fehler}).")
+            continue
+        qteil = int(q.get("teil", 0) or 0)
+        titel = (f"{quelle.unit_label} · {part_name(qteil)} · "
+                 f"V{quelle.liste_version}" if qteil in (1, 2) else name)
+        if qteil not in (1, 2):
+            bericht.add(FEHLER, "wiederholung",
+                        f"{wo}: Der Part der Quelle ist '{q.get('teil')}' - "
+                        "es gibt nur Part I und Part II.")
+            continue
+        if quelle.liste_abdruck != str(q.get("abdruck", "")):
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: Die Liste in '{name}' hat den Abdruck "
+                f"{quelle.liste_abdruck}, gewählt wurde aus "
+                f"{q.get('abdruck') or '?'}. Sie hat sich seither geändert - "
+                "die Wiederholung zeigt auf Wörter einer anderen Liste.")
+        if (quelle.unit != int(q.get("unit", -1))
+                or quelle.liste_version != int(q.get("liste_version", -1))):
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: Notiert ist Unit {q.get('unit')} V"
+                f"{q.get('liste_version')}, in '{name}' liegt "
+                f"{quelle.unit_label} V{quelle.liste_version}.")
+        quell_summe = str(quelle.quelle.get("pruefsumme_sha256", ""))
+        if str(q.get("pruefsumme", "")) not in ("", quell_summe):
+            bericht.add(FEHLER, "wiederholung",
+                        f"{wo}: '{name}' stammt aus einer anderen Wortliste "
+                        "als notiert.")
+        selbst = pfad.resolve() == pack.pfad.resolve()
+        if selbst and qteil == teil:
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: Die Quelle ist {part_name(teil)} dieser Liste - das "
+                "Vocabulary, das die Prüfung ohnehin abfragt.")
+
+        # --- jedes Wort gegen die Quelle --------------------------------
+        quellwoerter = {schluessel(e.get("englisch", "")): e
+                        for e in quelle.entries(f"test{qteil}")
+                        if e.get("englisch")}
+        aktuelle = aktuelle_woerter(pack, teil)
+        auf_dem_blatt = {schluessel(w) for w in pruefungswoerter(spec)}
+        gedruckt = gedruckter_text(spec)
+        gesehen: set[str] = set()
+        for item in items:
+            en, de = item.get("english", ""), item.get("german", "")
+            k = schluessel(en)
+            if k in gesehen:
+                bericht.add(FEHLER, "wiederholung",
+                            f"{wo}: '{en}' steht zweimal darin.")
+            gesehen.add(k)
+            eintrag = quellwoerter.get(k)
+            if eintrag is None:
+                bericht.add(
+                    FEHLER, "wiederholung",
+                    f"{wo}: '{en}' steht nicht in {titel}. Die Wiederholung "
+                    "darf nur Wörter aus genau dieser Liste abfragen.")
+            elif normalise(eintrag.get("deutsch", "")) != normalise(de):
+                bericht.add(
+                    FEHLER, "wiederholung",
+                    f"{wo}: {titel} übersetzt '{en}' mit "
+                    f"„{eintrag.get('deutsch')}“, die Wiederholung mit „{de}“.")
+            if k in auf_dem_blatt:
+                bericht.add(
+                    FEHLER, "wiederholung",
+                    f"{wo}: '{en}' wird auf demselben Blatt schon als "
+                    "aktuelles Vocabulary geprüft.")
+            elif kollidiert(en, aktuelle):
+                bericht.add(
+                    FEHLER, "wiederholung",
+                    f"{wo}: '{en}' steht - oder seine Wortfamilie - im "
+                    f"{part_name(teil)}, den die Prüfung abfragt.")
+            if steht_gedruckt(en, gedruckt):
+                bericht.add(
+                    FEHLER, "wiederholung",
+                    f"{wo}: '{en}' steht schon gedruckt auf dem Blatt - im "
+                    "Lückentext oder in einem Satz. Die Lösung läge offen; "
+                    "neu wählen lassen.")
+
+        # --- ist es der Part unmittelbar davor? ---------------------------
+        gleiches_lehrmittel = quell_summe == eigene_summe
+        units = units_des_lehrmittels(pack) or [pack.unit]
+        ziel = vorgaenger(pack.unit, teil, units)
+        ist_folge = (gleiches_lehrmittel and ziel == (quelle.unit, qteil))
+        if not ist_folge:
+            soll = (f"{einheit_name(ziel[0])} · {part_name(ziel[1])}"
+                    if ziel else "kein früherer Part in diesem Lehrmittel")
+            bericht.add(
+                WARNUNG, "wiederholung",
+                f"{wo}: Sie stammt aus {titel}"
+                + ("" if gleiches_lehrmittel else " (anderes Lehrmittel)")
+                + f"; unmittelbar vor {pack.unit_label} · {part_name(teil)} "
+                f"kommt {soll}. Bewusst so gewählt?")
+        elif teil == 2 and not selbst:
+            bericht.add(
+                WARNUNG, "wiederholung",
+                f"{wo}: Part I stammt aus V{quelle.liste_version}, geprüft "
+                f"wird V{pack.liste_version} - Part I einer anderen Liste "
+                "dieser Unit.")
+        if bool(block.get("folge")) and not ist_folge:
+            bericht.add(
+                FEHLER, "wiederholung",
+                f"{wo}: Der Block gibt sich als unmittelbar vorheriger Part "
+                "aus, ist es aber nicht.")
+        zeilen.append(
+            f"T{teil}/{niveau}: {len(items)} aus {titel}"
+            + (" (Bonus)" if block.get("bonus") else ""))
+    bericht.kennzahlen["wiederholung"] = (
+        "; ".join(zeilen) + " - jedes Wort gegen die Quellliste geprüft")
+
+
 def pruefe_paket(
     pack: Pack,
     db: Database,
@@ -1168,6 +1366,7 @@ def pruefe_paket(
         pruefe_loesungsschluessel(pack, bericht)
         pruefe_niveau_konsistenz(pack, bericht)
         pruefe_aufgabenformen(pack, bericht)
+        pruefe_wiederholung(pack, bericht)
     pruefe_platzhalter(pack, bericht, mit_pruefungen)
     pruefe_herkunft(pack, bericht)
     pruefe_liste(pack, settings, bericht)

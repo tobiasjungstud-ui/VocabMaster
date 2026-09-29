@@ -732,6 +732,41 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 @media (prefers-reduced-motion:reduce){
   .draht.dran .punkt, .verlaufsleib li.arbeit::before{animation:none}
 }
+/* Der Fortschritt. Streifen laufen nur, solange der Chat Lebenszeichen gibt
+   - ein Balken, der sich bewegt, obwohl nichts passiert, wäre eine Lüge. */
+.fortschritt{
+  margin:0 12px; height:8px; border-radius:4px; background:var(--sunk);
+  overflow:hidden; border:1px solid var(--line);
+}
+.fortschritt span{
+  display:block; height:100%; width:0; background:var(--ink-3);
+  transition:width .6s ease;
+}
+.verlauf.laeuft .fortschritt span{background:var(--accent)}
+.verlauf.fertig .fortschritt span{background:var(--ok)}
+.verlauf.haengt .fortschritt span{background:var(--crit)}
+.fortschritt.lebt span{
+  background-image:linear-gradient(45deg, rgba(255,255,255,.28) 25%, transparent 25%,
+    transparent 50%, rgba(255,255,255,.28) 50%, rgba(255,255,255,.28) 75%,
+    transparent 75%, transparent);
+  background-size:16px 16px; animation:streifen 1s linear infinite;
+}
+@keyframes streifen{from{background-position:0 0} to{background-position:16px 0}}
+.uhr{
+  margin:6px 12px 10px; font-family:var(--mono); font-size:11px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.uhr b{font-weight:600; color:var(--ink-2)}
+.uhr .frisch{color:var(--ok)} .uhr .alt{color:var(--crit)}
+.wache{
+  margin:0 12px 12px; padding:10px 12px; border-radius:var(--r);
+  background:var(--nivB-soft); border:1px solid var(--nivB-line); color:var(--ink);
+  font-size:12.5px; line-height:1.5;
+}
+.wache.schwer{border-color:var(--crit)}
+.wache b{color:var(--crit)}
+.wache .knopfreihe{margin-top:8px}
+@media (prefers-reduced-motion:reduce){ .fortschritt.lebt span{animation:none} }
 .status.ok{color:var(--ok)}
 .status.fehler{color:var(--crit)}
 
@@ -1080,6 +1115,12 @@ td.satz{color:var(--ink-2); font-size:12.5px}
               <span class="stand" id="verlaufStand"></span>
             </div>
             <div class="verlaufsleib" id="verlaufsleib"></div>
+            <!-- Der Balken, die Uhr und der Wächter. Die Uhr läuft in der
+                 Seite weiter, auch wenn der Chat nichts schreibt: Gerade
+                 dann muss man sehen, wie lange schon nichts kommt. -->
+            <div class="fortschritt" id="verlaufBalken"><span></span></div>
+            <p class="uhr" id="verlaufUhr"></p>
+            <div class="wache" id="verlaufWache" hidden></div>
           </section>
           <ul class="liste-auftraege" id="auftragsbuch"></ul>
         </div>
@@ -3144,6 +3185,139 @@ function laufenderAuftrag(){
   return buch.find(e => !e.ausgeblendet) || null;
 }
 
+/* ---------------- Der Wächter ----------------
+   Die Klingel ist nicht verlässlich: Eine neue Fassung soll die
+   Chat-Sitzung wecken, und zweimal hintereinander kam das Wecken nie an -
+   der Auftrag stand auf „Der Chat nimmt den Auftrag an", und nichts
+   sagte, dass nichts passiert. Deshalb misst die Seite selbst:
+
+   * Wie lange der Auftrag schon auf Annahme wartet. Der Chat setzt beim
+     Annehmen `angenommen`; fehlt das nach WACHE.annahme, schlägt der
+     Wächter an.
+   * Wann der Chat zuletzt etwas geschrieben hat. Er setzt `lebenszeichen`
+     bei jedem Schritt; ist das älter als WACHE.lebenszeichen, schlägt der
+     Wächter an - auch mitten in der Arbeit.
+
+   Angeschlagen bietet er die beiden Wege, die dann offenstehen: noch
+   einmal klingeln, und den Anstoss kopieren, um ihn in den Chat zu legen.
+   Der zweite geht immer. */
+const WACHE = {annahme: 2 * 60e3, lebenszeichen: 8 * 60e3};
+
+function dauer(ms){
+  const s = Math.max(0, Math.round(ms / 1000));
+  if(s < 60) return s + " s";
+  const m = Math.floor(s / 60);
+  if(m < 60) return m + " min " + String(s % 60).padStart(2, "0") + " s";
+  return Math.floor(m / 60) + " h " + String(m % 60).padStart(2, "0") + " min";
+}
+function zeit(iso){ const t = Date.parse(iso || ""); return isNaN(t) ? null : t; }
+
+/* Was der Wächter sieht - oder null, wenn alles in Ordnung ist. */
+function wache(e, jetzt){
+  const stand = standVon(e);
+  if(stand === "erledigt") return null;
+  const start = zeit(e.nachgeklingelt) || zeit(e.erzeugt) || jetzt;
+  if(!e.angenommen && (stand === "abgelegt" || stand === "ausgeloest")){
+    const warte = jetzt - start;
+    if(warte < WACHE.annahme) return null;
+    return {art:"annahme", schwer: warte > 3 * WACHE.annahme,
+      text:"Seit <b>" + dauer(warte) + "</b> hat der Chat den Auftrag nicht " +
+           "angenommen. Die Sitzung ist vermutlich nicht aufgewacht."};
+  }
+  const zeichen = zeit(e.lebenszeichen) || zeit(e.angenommen) || start;
+  const still = jetzt - zeichen;
+  if(stand === "arbeit" && still > WACHE.lebenszeichen)
+    return {art:"lebenszeichen", schwer: still > 2 * WACHE.lebenszeichen,
+      text:"Seit <b>" + dauer(still) + "</b> kein Lebenszeichen vom Chat. " +
+           "Er hängt womöglich — oder denkt an einem langen Schritt."};
+  return null;
+}
+
+/* Der Satz für den Chat, wenn das Wecken nicht ankommt. Kurz und immer
+   gültig: Der Auftrag selbst liegt ja im Buch. */
+function anstoss(e){
+  return "Nimm den offenen Auftrag " + e.id + " aus dem Auftragsbuch der " +
+         "Vokabelwerkstatt und führe ihn aus.";
+}
+
+async function nachklingeln(e, knopf){
+  if(!db || !selbst){ return anstossKopieren(e); }
+  knopf.disabled = true;
+  try{
+    await db.doc("auftraege/" + e.id).update({
+      nachgeklingelt:new Date().toISOString(),
+      schritt:"Noch einmal geklingelt \u2026",
+    });
+    await selbst.publish(bauePlatte({auftrag:e.id, zeit:new Date().toISOString()}));
+    melde("Noch einmal geklingelt. Kommt wieder nichts, den Anstoss kopieren " +
+          "und im Chat einfügen.", "ok");
+  }catch(fehler){
+    melde("Klingeln ging nicht" + (fehler && fehler.message ? " (" + fehler.message + ")" : "") +
+          " — den Anstoss kopieren und im Chat einfügen.", "fehler");
+  }
+  knopf.disabled = false;
+}
+
+async function anstossKopieren(e){
+  try{
+    await navigator.clipboard.writeText(anstoss(e));
+    melde("Kopiert — im Chat einfügen und abschicken. Das geht immer.", "ok");
+  }catch(fehler){
+    melde("Kopieren ging nicht. Im Chat schreiben: " + anstoss(e), "fehler");
+  }
+}
+
+/* Läuft jede Sekunde: Uhr, Balken und Wächter. Der Rest des Verlaufs wird
+   nur gezeichnet, wenn sich am Auftrag etwas ändert. */
+let wachschluessel = "";
+function zeichneUhr(){
+  const kasten = $("verlauf");
+  const e = laufenderAuftrag();
+  if(!e || kasten.hidden) return;
+  const jetzt = Date.now(), stand = standVon(e);
+  const start = zeit(e.erzeugt) || jetzt;
+  const zeichen = zeit(e.lebenszeichen) || zeit(e.angenommen);
+  const w = wache(e, jetzt);
+  const schritte = Array.isArray(e.schritte) ? e.schritte : [];
+  const anteil = stand === "erledigt" ? 1
+    : schritte.length ? Math.max(0.04, fortschritt(e)) : STAENDE[stand].anteil;
+  const balken = $("verlaufBalken");
+  balken.firstElementChild.style.width = Math.round(anteil * 100) + "%";
+  balken.classList.toggle("lebt", stand === "arbeit" && !w);
+  const teile = [];
+  if(stand === "erledigt"){
+    const ende = zeit(e.fertig) || zeichen;
+    teile.push("fertig" + (ende ? " nach <b>" + dauer(ende - start) + "</b>" : ""));
+  } else {
+    teile.push("ausgelöst vor <b>" + dauer(jetzt - start) + "</b>");
+    teile.push(e.angenommen ? "angenommen" : "noch nicht angenommen");
+    if(zeichen) teile.push('<span class="' + (jetzt - zeichen > WACHE.lebenszeichen
+      ? "alt" : "frisch") + '">letztes Lebenszeichen vor ' + dauer(jetzt - zeichen) + "</span>");
+  }
+  $("verlaufUhr").innerHTML = teile.join(" · ");
+  // Die Warnung nur neu bauen, wenn sich ihre Art ändert - sonst
+  // verschwänden die Knöpfe unter dem Finger.
+  const feld = $("verlaufWache");
+  const schluessel = w ? e.id + w.art + w.schwer : "";
+  if(!w){ feld.hidden = true; wachschluessel = ""; return; }
+  if(schluessel !== wachschluessel){
+    wachschluessel = schluessel;
+    feld.innerHTML = '<p class="wachtext"></p><div class="knopfreihe">' +
+      '<button class="knopf" type="button" data-tun="klingeln">Noch einmal klingeln</button>' +
+      '<button class="knopf haupt" type="button" data-tun="kopieren">Anstoss kopieren</button>' +
+      "</div>";
+    feld.querySelector('[data-tun="klingeln"]').addEventListener("click",
+      ev => nachklingeln(laufenderAuftrag(), ev.currentTarget));
+    feld.querySelector('[data-tun="kopieren"]').addEventListener("click",
+      () => anstossKopieren(laufenderAuftrag()));
+  }
+  feld.className = "wache" + (w.schwer ? " schwer" : "");
+  feld.hidden = false;
+  feld.querySelector(".wachtext").innerHTML = w.text +
+    " Der Anstoss, im Chat eingefügt, geht immer.";
+}
+setInterval(zeichneUhr, 1000);
+
 function zeichneVerlauf(){
   const kasten = $("verlauf");
   const e = laufenderAuftrag();
@@ -3161,6 +3335,8 @@ function zeichneVerlauf(){
           '<li class="' + esc((x && x.stand) || "offen") + '">' +
           esc((x && x.text) || "") + "</li>").join("") + "</ol>"
       : "");
+  wachschluessel = "";
+  zeichneUhr();
 }
 
 /* Solange der Chat noch nichts geschrieben hat, steht hier, worauf

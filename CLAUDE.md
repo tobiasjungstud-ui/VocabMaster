@@ -1510,6 +1510,33 @@ Aufträge lesen (`auftraege`, `erledigt: false`), genau das bauen, was
 darin steht — die Stückzahl gilt wie im kopierten Befehl —, und den Auftrag
 danach auf `erledigt: true` setzen.
 
+#### Die Klingel ist nicht verlässlich — der Wächter
+
+Zweimal stand ein Auftrag lange auf „Der Chat nimmt den Auftrag an", obwohl
+die Weckmeldung registriert war: Das Wecken kam nie an, und nichts auf der
+Seite sagte, dass nichts passiert. Seither gibt es drei Sicherungen:
+
+1. **Der Wächter auf der Seite.** Unter „Was gerade läuft" stehen ein
+   Fortschrittsbalken (erledigte Schritte), eine Uhr (seit wann ausgelöst,
+   angenommen oder nicht, letztes Lebenszeichen vor …) und ein Wächter. Er
+   schlägt an, wenn der Auftrag nach **2 Minuten** nicht angenommen ist
+   oder der Chat seit **8 Minuten** kein Lebenszeichen gegeben hat. Dann
+   bietet er zwei Wege: **„Noch einmal klingeln"** (neu veröffentlichen)
+   und **„Anstoss kopieren"** — ein Satz mit der Auftragskennung, im Chat
+   eingefügt, geht immer. Die Streifen im Balken laufen nur, solange
+   Lebenszeichen kommen.
+2. **Die Pflicht des Chats:** Beim Annehmen `angenommen` und
+   `lebenszeichen` setzen, danach bei **jedem** Schritt `lebenszeichen`
+   (ISO-Zeit), `schritt` und `schritte` nachführen; am Ende `fertig`.
+   Ein langer Schritt (Sätze schreiben) bekommt Zwischenmeldungen.
+3. **Die stündliche Runde** (Routine „Werkstatt: offene Aufträge prüfen",
+   `trig_01BCUxXmpq4Ee3rAToxtu2eZ`): Sie weckt diese Sitzung jede Stunde,
+   liest das Auftragsbuch und nimmt an, was liegen geblieben ist. Kürzer
+   als stündlich lässt der Dienst nicht zu.
+
+Doppelt ausgelöste Aufträge (gleicher Inhalt, Sekunden auseinander) werden
+einmal gebaut; der andere wird als „ersetzt" erledigt.
+
 #### Der Stand gehört zurück ins Auftragsbuch
 
 „Ausgelöst" und danach nichts mehr — das beantwortet „passiert eigentlich

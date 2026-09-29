@@ -903,3 +903,28 @@ def test_die_seite_rechnet_die_blaetter_nicht_selbst(abgelegt):
     assert geprueft
     seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
     assert "SPALTE_HOCH" not in seite and "hoehen(" not in seite
+
+
+# ---------------------------------------------------------------------------
+# Der Wächter: ein Auftrag, der hängt, muss zu sehen sein
+# ---------------------------------------------------------------------------
+def test_der_waechter_misst_selbst_und_bietet_zwei_auswege():
+    """Zweimal stand ein Auftrag stundenlang auf „Der Chat nimmt den
+    Auftrag an", und nichts sagte, dass nichts passiert.
+
+    Die Klingel ist nicht verlässlich. Die Seite misst deshalb selbst - wie
+    lange auf die Annahme gewartet wird, wann das letzte Lebenszeichen kam -
+    und bietet dann die beiden Wege an, die offenstehen.
+    """
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    assert "setInterval(zeichneUhr, 1000);" in seite, "die Uhr läuft nicht von selbst"
+    w = seite[seite.index("function wache("):]
+    w = w[:w.index("\n}\n")]
+    for feld in ("e.angenommen", "e.lebenszeichen", "WACHE.annahme", "WACHE.lebenszeichen"):
+        assert feld in w, feld
+    uhr = seite[seite.index("function zeichneUhr("):]
+    uhr = uhr[:uhr.index("\n}\n")]
+    assert 'data-tun="klingeln"' in uhr and 'data-tun="kopieren"' in uhr
+    # Der Balken läuft nur, solange es Lebenszeichen gibt.
+    assert 'toggle("lebt", stand === "arbeit" && !w)' in uhr
+    assert 'id="verlaufBalken"' in seite and 'id="verlaufUhr"' in seite

@@ -24,10 +24,31 @@ pytestmark = pytest.mark.skipif(
 )
 
 
+@pytest.fixture(scope="module")
+def gebaut(tmp_path_factory):
+    """Der Stand von `out/`, aus dem `daten.json` gebaut wurde.
+
+    `out/` steht in `.gitignore`: Lokal liegen dort die gebauten Word-Dateien,
+    in einem frischen Checkout (CI) nicht. `daten.json` hängt aber daran -
+    welche Dokumente angeboten werden und welche Liste die Wiederholung
+    zuerst vorschlägt. Ohne diesen Nachbau mässen die Tests den Checkout
+    statt der Seite. Nachgebaut wird aus `daten.json` selbst: Name und
+    Grösse jeder Datei, der Inhalt spielt für beides keine Rolle.
+    """
+    ordner = tmp_path_factory.mktemp("out")
+    daten = json.loads((WERKSTATT / "daten.json").read_text("utf-8"))
+    for name, groesse in daten.get("dokumente", {}).items():
+        with (ordner / name).open("wb") as f:
+            f.truncate(groesse)
+    return ordner
+
+
 @pytest.fixture
-def frisch(db, settings):
+def frisch(db, settings, gebaut, monkeypatch):
+    import export
     from export import baue
 
+    monkeypatch.setattr(export, "GEBAUT", gebaut)
     return baue(WURZEL / "kuratiert", db, settings)
 
 
@@ -721,7 +742,7 @@ def test_die_wiederholung_ist_standardmaessig_aus():
     assert "wiederholung:false" in seite
 
 
-def test_die_seite_zeigt_die_vorschlaege_der_anwendung(abgelegt):
+def test_die_seite_zeigt_die_vorschlaege_der_anwendung(abgelegt, gebaut):
     """Die Folge steht **nicht** in JavaScript.
 
     Sie steht fertig in `daten.json`, ausgerechnet von derselben Stelle,
@@ -738,7 +759,7 @@ def test_die_seite_zeigt_die_vorschlaege_der_anwendung(abgelegt):
                 pack = Pack.load(kuratiert / li["datei"])
                 for teil in (1, 2):
                     erwartet = wh.vorschlaege(pack, teil, kuratiert,
-                                              WURZEL / "out")[:12]
+                                              gebaut)[:12]
                     gezeigt = li["wiederholung"][str(teil)]["quellen"]
                     assert [(q["paket"], q["teil"], q["folge"]) for q in gezeigt] == [
                         (q.paket, q.teil, q.folge) for q in erwartet

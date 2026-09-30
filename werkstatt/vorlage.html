@@ -1067,7 +1067,7 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 }
 .ex-aufgabe[open] > summary > .kurz{display:inline}
 .ex-aufgabenleib{padding:2px 12px 14px; display:flex; flex-direction:column; gap:12px}
-.ex-rest{margin:0; padding:7px 0; font-family:var(--mono); font-size:12px; color:var(--ink-2)}
+.ex-feld input.fest{border-color:var(--accent); color:var(--accent); font-weight:600}
 .ex-weg{align-self:flex-start; color:var(--crit)}
 .ex-plus{
   margin-top:8px; width:100%; padding:9px 12px; cursor:pointer; text-align:left;
@@ -1526,6 +1526,10 @@ dialog#exVorlageFenster textarea{font-family:var(--mono); font-size:12px}
                   <label for="exDatum">Datum der Prüfung</label>
                   <input type="date" id="exDatum">
                 </div>
+                <div class="ex-feld">
+                  <label for="exAnzahl">Geprüfte Wörter je Prüfung</label>
+                  <input type="number" id="exAnzahl" min="2" max="30" step="1">
+                </div>
               </div>
             </div>
 
@@ -1563,11 +1567,13 @@ dialog#exVorlageFenster textarea{font-family:var(--mono); font-size:12px}
             <div class="ex-block">
               <div class="ex-blockkopf">
                 <span class="legende">Aufgaben — für beide Prüfungen gleich</span>
+                <button class="zurueck" id="exVerteilungZurueck" type="button" hidden>Verteilung zurücksetzen</button>
               </div>
               <div class="ex-aufgaben" id="exAufgaben"></div>
               <button class="ex-plus" id="exPlus" type="button">＋ Aufgabe hinzufügen</button>
-              <p class="hinweis">Die Wörter jeder Prüfung werden auf die Aufgaben verteilt, keines steht in zwei
-                Aufgaben. Aufgabe 1 nimmt, was die anderen übrig lassen.</p>
+              <p class="hinweis">Die geprüften Wörter verteilen sich nach Aufgabentyp: Wo ein Wort schnell
+                geprüft ist, kommen mehr hin, wo es viel Lesezeit kostet, weniger. Keines steht in zwei Aufgaben.
+                Eine getippte Zahl legt die Aufgabe fest, die übrigen teilen sich den Rest.</p>
             </div>
 
             <div class="ex-block">
@@ -4839,17 +4845,24 @@ const EX_ADRESSE = "https://lachenzelg.examiner.cloud";
 
 /* Die Aufgabentypen von eXaminer, in der Reihenfolge seiner Auswahl.
    Ausgebaut ist der Lückentext; bei den anderen nennt der Auftrag Typ und
-   Wörter, und wie die Aufgabe im Einzelnen aussieht, klärt der Chat. */
+   Wörter, und wie die Aufgabe im Einzelnen aussieht, klärt der Chat.
+
+   `gewicht` sagt, wie viele Wörter ein Typ bei der Verteilung bekommt:
+   Wo ein Wort schnell geprüft ist - hinschreiben, einsetzen, zuordnen -,
+   passen mehr hinein; wo eines viel Lesezeit kostet - vier Aussagen bei
+   K-Prim, ein ganzer Aufsatz -, weniger. `mindestens` ist, was der Typ
+   braucht, um überhaupt eine Aufgabe zu sein: Eine Wortbank mit einem
+   Wort verrät es, eine Zuordnung mit zwei Paaren löst sich von selbst. */
 const EX_TYPEN = [
-  {kennung:"lueckentext",     name:"Lückentext", ausgebaut:true, mindestens:2},
-  {kennung:"text",            name:"Text"},
-  {kennung:"aufsatz",         name:"Aufsatz"},
-  {kennung:"single_choice",   name:"Single Choice"},
-  {kennung:"multiple_choice", name:"Multiple Choice"},
-  {kennung:"k_prim",          name:"K-Prim"},
-  {kennung:"zuordnung",       name:"Zuordnung"},
-  {kennung:"reihenfolge",     name:"Reihenfolge"},
-  {kennung:"aufgabengruppe",  name:"Aufgabengruppe"},
+  {kennung:"lueckentext",     name:"Lückentext", ausgebaut:true, gewicht:2, mindestens:2},
+  {kennung:"text",            name:"Text",            gewicht:3, mindestens:1},
+  {kennung:"aufsatz",         name:"Aufsatz",         gewicht:1, mindestens:2},
+  {kennung:"single_choice",   name:"Single Choice",   gewicht:2, mindestens:1},
+  {kennung:"multiple_choice", name:"Multiple Choice", gewicht:2, mindestens:1},
+  {kennung:"k_prim",          name:"K-Prim",          gewicht:1, mindestens:1},
+  {kennung:"zuordnung",       name:"Zuordnung",       gewicht:2, mindestens:3},
+  {kennung:"reihenfolge",     name:"Reihenfolge",     gewicht:1, mindestens:3},
+  {kennung:"aufgabengruppe",  name:"Aufgabengruppe",  gewicht:2, mindestens:1},
 ];
 
 /* Wie eine Lücke gefüllt wird. Welche dieser Formen eXaminer beim
@@ -4879,7 +4892,7 @@ const EX_MODI = [
    Austeilen hat genau die Form, die die Klasse bekommt. */
 const EX_VORLAGE_STANDARD = {
   woerter:12, schwer:3,
-  aufgaben:[{typ:"lueckentext", woerter:null, antwort:"eintippen", wortbank:true, punkte:1}],
+  aufgaben:[{typ:"lueckentext", fest:null, antwort:"eintippen", wortbank:true, punkte:1}],
   name:"English Vocabulary Test {kuerzel} Unit {unit} Part {part} – Niveau {niveau}",
   thema:"{kuerzel}_Unit {unit}",
   unterthema:"Niveau {niveau}",
@@ -4896,7 +4909,11 @@ const ex = {
   // Die Wörter der beiden Prüfungen: vorbelegt nach der Vorlage, danach
   // abgewählt (`an: false`), getauscht (`statt`) oder dazugenommen (`dazu`).
   woerter:{A:[], B:[]},
-  // Die Aufgaben, für beide Prüfungen gleich. Aufgabe 1 nimmt den Rest.
+  // Wie viele Wörter je Prüfung geprüft werden - voreingestellt aus der
+  // Vorlage, auf der Seite änderbar.
+  anzahl:12,
+  // Die Aufgaben, für beide Prüfungen gleich. Die Wörter verteilen sich
+  // nach Typ darauf; eine getippte Zahl nagelt fest.
   aufgaben:[], offen:new Set([0]),
   // Hat jemand an der Wahl gedreht? Dann überschreibt eine Vorlage, die
   // gerade aus dem Auftragsbuch kommt, das Formular nicht mehr.
@@ -4930,11 +4947,12 @@ function exZahl(wert, min, max, sonst){
 function exZeile(wert, sonst, laenge){
   return typeof wert === "string" && wert.trim() ? wert.slice(0, laenge || 200) : sonst;
 }
-function exAufgabePruefen(a, erste){
+function exAufgabePruefen(a){
   const typ = EX_TYPEN.some(t => t.kennung === (a && a.typ)) ? a.typ : "lueckentext";
   return {
     typ:typ,
-    woerter:erste ? null : exZahl(a && a.woerter, 1, 30, 4),
+    // Eine festgenagelte Wortzahl, sonst null: dann verteilt die Seite.
+    fest:a && a.fest != null ? exZahl(a.fest, 1, 30, null) : null,
     antwort:EX_ANTWORTEN.some(x => x.kennung === (a && a.antwort)) ? a.antwort : "eintippen",
     wortbank:!(a && a.wortbank === false),
     punkte:(() => { const p = Number(a && a.punkte); return isFinite(p) && p > 0 && p <= 10 ? p : 1; })(),
@@ -4944,8 +4962,8 @@ function exVorlagePruefen(roh){
   const s = EX_VORLAGE_STANDARD, r = roh && typeof roh === "object" ? roh : {};
   const woerter = exZahl(r.woerter, 2, 30, s.woerter);
   const aufgaben = Array.isArray(r.aufgaben) && r.aufgaben.length
-    ? r.aufgaben.slice(0, 6).map((a, i) => exAufgabePruefen(a, i === 0))
-    : s.aufgaben.map((a, i) => exAufgabePruefen(a, i === 0));
+    ? r.aufgaben.slice(0, 6).map(a => exAufgabePruefen(a))
+    : s.aufgaben.map(a => exAufgabePruefen(a));
   return {
     woerter:woerter, schwer:exZahl(r.schwer, 0, woerter, Math.min(s.schwer, woerter)),
     aufgaben:aufgaben,
@@ -5033,10 +5051,16 @@ function exWortwahl(teil, echtA, echtB, n, k){
     .slice(0, n - k);
   const vergeben = new Set([...inA, ...leichte.map(w => w.en)]);
   const mittel = teil.filter(w => !vergeben.has(w.en)).sort(schwer).slice(0, k);
+  // Hat der Part nicht genug Wörter für zwei getrennte Prüfungen, bekommt
+  // B die zugänglichsten aus A dazu - ein Überschnitt ist erlaubt, eine
+  // kürzere Prüfung für B wäre es nicht.
+  const fehlt = n - leichte.length - mittel.length;
+  const geteilt = fehlt > 0 ? wahlA.slice().sort(leicht).slice(0, fehlt) : [];
   return {
     A:wahlA.map(w => w.en),
-    B:mittel.concat(leichte).sort(schwer).map(w => w.en),
+    B:mittel.concat(leichte, geteilt).sort(schwer).map(w => w.en),
     mittel:mittel.map(w => w.en),
+    geteilt:geteilt.map(w => w.en),
   };
 }
 
@@ -5048,7 +5072,7 @@ function exEcht(niveau){
 function exVorbelegung(niveau){
   const teil = exPart();
   if(!teil.length) return [];
-  const wahl = exWortwahl(teil, exEcht("A"), exEcht("B"), ex.vorlage.woerter, ex.vorlage.schwer);
+  const wahl = exWortwahl(teil, exEcht("A"), exEcht("B"), ex.anzahl, Math.min(ex.vorlage.schwer, ex.anzahl));
   const nach = new Map(teil.map(w => [w.en, w])), mittel = new Set(wahl.mittel);
   return wahl[niveau].map(en => nach.get(en)).map(w => ({
     en:w.en, de:w.de, score:w.score, an:true, statt:null, dazu:false,
@@ -5069,29 +5093,59 @@ function exPool(niveau){
 }
 
 /* ---------------- Die Aufgaben ----------------
-   Für beide Prüfungen gleich. Aufgabe 1 nimmt, was die anderen übrig
-   lassen; jede weitere hat ihre eigene Wortzahl. Kein Wort steht in zwei
+   Für beide Prüfungen gleich. Die Wörter einer Prüfung verteilen sich nach
+   dem Gewicht ihres Typs auf die Aufgaben; eine getippte Zahl nagelt fest
+   und kommt aus der Gesamtzahl, nicht obendrauf. Kein Wort steht in zwei
    Aufgaben - welches wohin gehört, entscheidet der Chat beim Schreiben. */
-function exNeueAufgabe(a, erste){
-  const p = exAufgabePruefen(a || {}, erste);
+
+/* Eine reine Rechnung, damit sie sich für sich prüfen lässt. Festes zuerst,
+   der Rest proportional zum Gewicht, übrige Wörter nach dem grössten
+   Bruchteil; was dann unter seiner Mindestzahl liegt, wird angehoben -
+   genommen von der freien Aufgabe, die am weitesten über ihrer liegt.
+   Zweimal dieselbe Eingabe gibt zweimal dasselbe. */
+function exVerteilen(gesamt, aufgaben){
+  const zahl = aufgaben.map(a => a.fest == null ? 0 : a.fest);
+  const frei = aufgaben.map((a, i) => i).filter(i => aufgaben[i].fest == null);
+  const rest = gesamt - zahl.reduce((s, z) => s + z, 0);
+  if(!frei.length || rest <= 0) return zahl;
+  const summe = frei.reduce((s, i) => s + aufgaben[i].gewicht, 0);
+  const anteile = frei.map(i => ({i:i, roh:rest * aufgaben[i].gewicht / summe}));
+  anteile.forEach(x => { zahl[x.i] = Math.floor(x.roh); });
+  let uebrig = rest - anteile.reduce((s, x) => s + Math.floor(x.roh), 0);
+  anteile.slice().sort((x, y) => (y.roh - Math.floor(y.roh)) - (x.roh - Math.floor(x.roh)) || x.i - y.i)
+    .forEach(x => { if(uebrig > 0){ zahl[x.i]++; uebrig--; } });
+  for(const i of frei){
+    while(zahl[i] < aufgaben[i].mindestens){
+      const geber = frei.filter(j => j !== i && zahl[j] > aufgaben[j].mindestens)
+        .sort((x, y) => (zahl[y] - aufgaben[y].mindestens) - (zahl[x] - aufgaben[x].mindestens) || x - y)[0];
+      if(geber === undefined) break;
+      zahl[geber]--; zahl[i]++;
+    }
+  }
+  return zahl;
+}
+function exVerteilung(niveau){
+  return exVerteilen(exGeprueft(niveau).length, ex.aufgaben.map(a => {
+    const typ = exTyp(a.typ);
+    return {gewicht:typ.gewicht || 1, mindestens:typ.mindestens || 1, fest:a.fest};
+  }));
+}
+function exNeueAufgabe(a){
+  const p = exAufgabePruefen(a || {});
   p.textstufe = {A:null, B:null};
   return p;
 }
 function exAufgabenAusVorlage(){
-  ex.aufgaben = ex.vorlage.aufgaben.map((a, i) => exNeueAufgabe(a, i === 0));
+  ex.aufgaben = ex.vorlage.aufgaben.map(a => exNeueAufgabe(a));
   ex.offen = new Set([0]);
-}
-function exRest(niveau){
-  return exGeprueft(niveau).length -
-    ex.aufgaben.slice(1).reduce((s, a) => s + (a.woerter || 0), 0);
 }
 function exTextstufe(a, niveau){
   return a.textstufe[niveau] === null ? normalText(niveau) : a.textstufe[niveau];
 }
 function exAufgabeKurz(a, i){
-  const zahl = i === 0 ? "Rest: A " + exRest("A") + " · B " + exRest("B")
-                       : a.woerter + (a.woerter === 1 ? " Wort" : " Wörter");
-  return exTyp(a.typ).name + " · " + zahl;
+  const zA = exVerteilung("A")[i], zB = exVerteilung("B")[i];
+  const zahl = zA === zB ? zA + (zA === 1 ? " Wort" : " Wörter") : "A " + zA + " · B " + zB + " Wörter";
+  return exTyp(a.typ).name + " · " + zahl + (a.fest == null ? "" : " (fest)");
 }
 
 /* ---------------- Zeichnen ---------------- */
@@ -5186,10 +5240,13 @@ function zeichneExWoerter(){
   if(fokus && $(fokus)) $(fokus).focus();
   const li = exListe();
   const mittel = ex.woerter.B.filter(w => w.an && w.mittel).length;
+  const inA = new Set(exGeprueft("A").map(w => w.en));
+  const geteilt = exGeprueft("B").filter(w => inA.has(w.en)).length;
   const geaendert = !exWieVorbelegt("A") || !exWieVorbelegt("B");
   $("exWoerterKurz").textContent = !li ? "Keine Vokabelliste gewählt."
     : "Niveau A: " + exGeprueft("A").length + " Wörter · Niveau B: " + exGeprueft("B").length +
       " Wörter" + (mittel ? ", davon " + mittel + " mittelschwer" : "") +
+      (geteilt ? ", " + geteilt + " auch in A (der Part reicht nicht für zwei getrennte)" : "") +
       (geaendert ? " · von Hand angepasst" : " · wie die Vorlage");
   $("exWoerterHinweis").textContent = !li
     ? "Diese Unit hat noch keine Vokabelliste. Zuerst in der Werkstatt eine bauen."
@@ -5213,10 +5270,9 @@ function zeichneExAufgaben(){
           '<div class="ex-feld"><label for="exTyp' + i + '">Aufgabentyp</label><select id="exTyp' + i +
             '" data-i="' + i + '" data-feld="typ">' + EX_TYPEN.map(t => '<option value="' + t.kennung + '"' +
             (t.kennung === a.typ ? " selected" : "") + ">" + esc(t.name) + "</option>").join("") + "</select></div>" +
-          '<div class="ex-feld"><label for="exZahl' + i + '">Wörter</label>' + (i === 0
-            ? '<p class="ex-rest" id="exRest">Rest</p>'
-            : '<input type="number" id="exZahl' + i + '" data-i="' + i + '" data-feld="woerter" min="1" max="30" value="' +
-              a.woerter + '">') + "</div>" +
+          '<div class="ex-feld"><label for="exZahl' + i + '">Wörter <span class="beilaeufig" id="exZahlWie' + i +
+            '"></span></label><input type="number" id="exZahl' + i + '" data-i="' + i +
+            '" data-feld="woerter" min="1" max="30"></div>' +
         "</div>" +
         (luecken
           ? '<div class="ex-felder">' +
@@ -5258,8 +5314,17 @@ function zeichneExAufgabenZeilen(){
       $("exTextNormal" + niv + i).hidden = a.textstufe[niv] === null;
     }
   });
-  const rest = $("exRest");
-  if(rest) rest.textContent = "Rest — Niveau A " + exRest("A") + ", Niveau B " + exRest("B");
+  const vA = exVerteilung("A"), vB = exVerteilung("B");
+  ex.aufgaben.forEach((a, i) => {
+    const feld = $("exZahl" + i), wie = $("exZahlWie" + i);
+    if(!feld) return;
+    if(document.activeElement !== feld) feld.value = a.fest == null ? vA[i] : a.fest;
+    feld.classList.toggle("fest", a.fest != null);
+    wie.textContent = a.fest != null ? "— festgelegt" :
+      vA[i] === vB[i] ? "— verteilt" : "— verteilt (B: " + vB[i] + ")";
+  });
+  $("exVerteilungZurueck").hidden = !ex.aufgaben.some(a => a.fest != null);
+  if(document.activeElement !== $("exAnzahl")) $("exAnzahl").value = ex.anzahl;
 }
 
 function zeichneExAblage(){
@@ -5291,7 +5356,8 @@ function exErstellenDaten(){
   const werte = exWerte("");
   const aufgaben = ex.aufgaben.map((a, i) => ({
     nr:i + 1, typ:a.typ, typname:exTyp(a.typ).name, ausgebaut:!!exTyp(a.typ).ausgebaut,
-    woerter:i === 0 ? {A:exRest("A"), B:exRest("B")} : {A:a.woerter, B:a.woerter},
+    woerter:{A:exVerteilung("A")[i], B:exVerteilung("B")[i]},
+    festgelegt:a.fest != null,
     lueckentext:a.typ === "lueckentext" ? {
       antwortform:a.antwort, wortbank:a.antwort === "eintippen" && a.wortbank, punkte:a.punkte,
       textstufe:{A:exTextstufe(a, "A"), B:exTextstufe(a, "B")},
@@ -5309,6 +5375,7 @@ function exErstellenDaten(){
     liste:li ? {version:li.version, datei:li.datei, abdruck:li.abdruck} : null,
     pruefungen:{A:exPruefungDaten("A"), B:exPruefungDaten("B")},
     aufgaben:aufgaben, ankuendigung:ankuendigung,
+    anzahl:ex.anzahl,
     vorlage:{woerter:ex.vorlage.woerter, schwer:ex.vorlage.schwer, quelle:ex.vorlageQuelle},
     notiz:$("exNotiz").value.trim(),
     erzeugt:new Date().toISOString(),
@@ -5381,17 +5448,23 @@ function exErstellenEinwand(a){
   for(const niv of ["A", "B"])
     if(!a.pruefungen[niv].woerter.length)
       return {feld:"exZufuegen" + niv, text:"Die Prüfung für Niveau " + niv + " hat kein Wort."};
-  const erste = ex.aufgaben[0], min = exTyp(erste.typ).mindestens || 1;
-  for(const niv of ["A", "B"])
-    if(exRest(niv) < min)
-      return {feld:ex.aufgaben.length > 1 ? "exZahl1" : "exZufuegen" + niv,
-              text:"Für Aufgabe 1 bleiben bei Niveau " + niv + " nur " + exRest(niv) +
-                   (exRest(niv) === 1 ? " Wort" : " Wörter") + " — " +
-                   exTyp(erste.typ).name + " braucht mindestens " + min + ". Die anderen Aufgaben kleiner machen."};
+  for(const niv of ["A", "B"]){
+    const gesamt = a.pruefungen[niv].woerter.length, v = exVerteilung(niv);
+    const summe = v.reduce((s, z) => s + z, 0);
+    const fest = ex.aufgaben.findIndex(x => x.fest != null);
+    if(summe !== gesamt)
+      return {feld:fest >= 0 ? "exZahl" + fest : "exAnzahl",
+              text:"Niveau " + niv + ": Die Aufgaben prüfen " + summe + " Wörter, die Prüfung hat " + gesamt +
+                   ". Festgelegte Zahlen anpassen oder „Verteilung zurücksetzen“."};
+    for(const [i, x] of ex.aufgaben.entries()){
+      const min = exTyp(x.typ).mindestens || 1;
+      if(v[i] < min)
+        return {feld:"exZahl" + i, text:"Aufgabe " + (i + 1) + " (" + exTyp(x.typ).name + ") bekommt bei Niveau " +
+                niv + " nur " + v[i] + (v[i] === 1 ? " Wort" : " Wörter") + " und braucht mindestens " + min +
+                ". Mehr Wörter prüfen oder eine Aufgabe weniger."};
+    }
+  }
   for(const [i, x] of ex.aufgaben.entries()){
-    if(i > 0 && x.woerter < (exTyp(x.typ).mindestens || 1))
-      return {feld:"exZahl" + i, text:"Aufgabe " + (i + 1) + " braucht mindestens " +
-              (exTyp(x.typ).mindestens || 1) + " Wörter."};
     if(x.typ === "lueckentext" && !(x.punkte > 0))
       return {feld:"exPunkte" + i, text:"Punkte je Lücke müssen grösser als 0 sein."};
   }
@@ -5710,6 +5783,7 @@ function exVorlageUebernehmen(vorlage, quelle, geaendert){
 function exVorlageAnwenden(){
   ex.vorlageNeu = false;
   ex.beruehrt = false;
+  ex.anzahl = ex.vorlage.woerter;
   exNeuBelegen();
   exAufgabenAusVorlage();
   if(ex.bereich === "examiner") zeichneExAufgaben();
@@ -5860,7 +5934,7 @@ function exVorlageFensterFuellen(v){
 function exVorlageFensterAufgaben(aufgaben){
   $("exVAufgaben").dataset.aufgaben = JSON.stringify(aufgaben);
   $("exVAufgaben").textContent = aufgaben.map((a, i) => (i + 1) + ". " + exTyp(a.typ).name +
-    (i === 0 ? " (Rest)" : " (" + a.woerter + (a.woerter === 1 ? " Wort)" : " Wörter)"))).join(" · ");
+    (a.fest == null ? " (verteilt)" : " (" + a.fest + (a.fest === 1 ? " Wort, fest)" : " Wörter, fest)"))).join(" · ");
 }
 function exVorlageAusFenster(){
   let aufgaben = [];
@@ -5983,6 +6057,17 @@ document.querySelectorAll('input[name="exTeil"]').forEach(el => el.addEventListe
   ex.teil = Number(e.target.value); exNeuBelegen(); zeichneExaminer();
 }));
 $("exDatum").addEventListener("input", e => { ex.datum = e.target.value; zeichneExaminer(); });
+/* Die Zahl der geprüften Wörter wählt die Wörter neu - von beiden Seiten:
+   A die schwersten, B die zugänglichsten samt den mittelschweren - und
+   verteilt sie neu auf die Aufgaben. */
+$("exAnzahl").addEventListener("input", e => {
+  const n = Math.round(Number(e.target.value));
+  if(!(n >= 2 && n <= 30)) return;
+  ex.anzahl = n; exGedreht(); exNeuBelegen(); zeichneExaminer();
+});
+$("exVerteilungZurueck").addEventListener("click", () => {
+  ex.aufgaben.forEach(a => { a.fest = null; }); exGedreht(); zeichneExaminer();
+});
 for(const niv of ["A", "B"]){
   $("exWortliste" + niv).addEventListener("change", e => {
     const el = e.target, li = exListe(), liste = ex.woerter[niv];
@@ -6029,7 +6114,11 @@ function exAufgabenFeld(e){
   if(!a || !feld) return;
   exGedreht();
   if(feld === "typ"){ a.typ = el.value; zeichneExAufgaben(); }
-  else if(feld === "woerter"){ const n = Math.round(Number(el.value)); a.woerter = isFinite(n) && n > 0 ? n : 0; }
+  else if(feld === "woerter"){
+    // Eine getippte Zahl nagelt fest; ein leeres Feld gibt die Aufgabe frei.
+    const n = Math.round(Number(el.value));
+    a.fest = el.value === "" ? null : isFinite(n) && n >= 0 ? n : 0;
+  }
   else if(feld === "antwort"){
     a.antwort = el.value;
     const wb = $("exAufgaben").querySelector('[data-wortbank="' + i + '"]');
@@ -6064,7 +6153,7 @@ $("exPlus").addEventListener("click", () => {
   exGedreht();
   const vorige = ex.aufgaben[ex.aufgaben.length - 1];
   const typ = EX_TYPEN.find(t => t.kennung !== (vorige && vorige.typ)) || EX_TYPEN[0];
-  ex.aufgaben.push(exNeueAufgabe({typ:typ.kennung, woerter:4}, false));
+  ex.aufgaben.push(exNeueAufgabe({typ:typ.kennung}));
   ex.offen.add(ex.aufgaben.length - 1);
   zeichneExAufgaben(); zeichneExErstellenKurz();
   const neu = $("exTyp" + (ex.aufgaben.length - 1));
@@ -6085,7 +6174,7 @@ $("exEinstellungen").addEventListener("click", () => {
 });
 $("exVorlageZu").addEventListener("click", () => $("exVorlageFenster").close());
 $("exVAufgabenUebernehmen").addEventListener("click", () => {
-  exVorlageFensterAufgaben(ex.aufgaben.map((a, i) => exAufgabePruefen(a, i === 0)));
+  exVorlageFensterAufgaben(ex.aufgaben.map(a => exAufgabePruefen(a)));
   exMelde("exVStatus", "Die Aufgaben der Seite sind übernommen — mit „Vorlage speichern“ gelten sie.", "ok");
 });
 $("exVStandard").addEventListener("click", () => {
@@ -6127,6 +6216,7 @@ function starteExaminer(){
   }catch(e){ /* dann der Standard */ }
   ex.db = DATA.aktive_datenbank || (exDatenbanken()[0] || {}).name || "";
   ex.datum = exHeute();
+  ex.anzahl = ex.vorlage.woerter;
   exUnitWaehlen(null);
   exAufgabenAusVorlage();
   $("exModus").innerHTML = EX_MODI.map(m =>

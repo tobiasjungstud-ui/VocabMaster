@@ -141,12 +141,55 @@ def test_aufgabe_eins_steht_offen_und_plus_bringt_weitere():
 
 
 def test_die_woerter_werden_auf_die_aufgaben_verteilt():
-    """Kein Wort in zwei Aufgaben - Aufgabe 1 nimmt den Rest."""
-    rest = _funktion("exRest")
-    assert "ex.aufgaben.slice(1)" in rest
+    """Kein Wort in zwei Aufgaben; die Zahl je Aufgabe folgt dem Typ."""
     assert "kein Wort in zwei Aufgaben" in _text(_funktion("exErstellenBefehl"))
-    # Reicht der Rest nicht, sagt die Seite es laut.
-    assert "exRest(niv) < min" in _funktion("exErstellenEinwand")
+    katalog = _konstante("EX_TYPEN")
+    assert len(re.findall(r"gewicht:\d+, mindestens:\d+", katalog)) == len(TYPEN)
+    # Stimmt die Summe nicht, sagt die Seite es laut.
+    einwand = _funktion("exErstellenEinwand")
+    assert "summe !== gesamt" in einwand and "v[i] < min" in einwand
+
+
+def test_die_zahl_der_geprueften_woerter_steht_auf_der_seite():
+    assert 'id="exAnzahl"' in _bereich()
+    assert "ex.anzahl, Math.min(ex.vorlage.schwer, ex.anzahl)" in _funktion("exVorbelegung")
+
+
+def _verteilen_in_node(faelle: list[dict]) -> list[list[int]]:
+    knoten = shutil.which("node")
+    if not knoten:
+        pytest.skip("node fehlt - die Rechnung der Seite lässt sich nicht ausführen")
+    skript = _funktion("exVerteilen") + (
+        "\nconst f = JSON.parse(require('fs').readFileSync(0, 'utf8'));\n"
+        "process.stdout.write(JSON.stringify(f.map(x => exVerteilen(x.gesamt, x.aufgaben))));\n")
+    lauf = subprocess.run([knoten, "-e", skript], input=json.dumps(faelle),
+                          capture_output=True, text=True, check=True)
+    return json.loads(lauf.stdout)
+
+
+def test_die_verteilung_folgt_gewicht_mindestzahl_und_festem():
+    """Die Rechnung der Seite, ausgeführt: proportional zum Gewicht, jede
+    Mindestzahl erfüllt, Festes kommt aus der Gesamtzahl, nie obendrauf."""
+    def a(gewicht, mindestens=1, fest=None):
+        return {"gewicht": gewicht, "mindestens": mindestens, "fest": fest}
+    faelle = [
+        {"gesamt": 12, "aufgaben": [a(2, 2)]},                    # nur Lückentext
+        {"gesamt": 12, "aufgaben": [a(2, 2), a(3)]},              # Lückentext + Text
+        {"gesamt": 12, "aufgaben": [a(2, 2), a(1, 3)]},           # + Reihenfolge
+        {"gesamt": 12, "aufgaben": [a(2, 2), a(1, 2), a(1, 3)]},  # Aufsatz, Reihenfolge
+        {"gesamt": 12, "aufgaben": [a(2, 2), a(3, 1, 7)]},        # Text festgelegt
+        {"gesamt": 10, "aufgaben": [a(2, 2), a(2, 3), a(3)]},
+    ]
+    z = _verteilen_in_node(faelle)
+    assert z[0] == [12]
+    assert z[1] == [5, 7]                  # 12 * 2/5 und 12 * 3/5
+    assert z[2] == [8, 4]
+    assert z[3][1] >= 2 and z[3][2] >= 3 and sum(z[3]) == 12
+    assert z[4] == [5, 7]
+    for fall, zahlen in zip(faelle, z, strict=True):
+        assert sum(zahlen) == fall["gesamt"]
+        assert all(n >= x["mindestens"] for n, x in zip(zahlen, fall["aufgaben"], strict=True))
+    assert _verteilen_in_node(faelle) == z, "zweimal dieselbe Eingabe, zweimal dasselbe"
 
 
 # ---------------------------------------------------------------------------
@@ -162,7 +205,7 @@ ANKUENDIGUNG = (
 def test_die_vorlage_steht_auf_zwoelf_woertern_und_drei_mittelschweren():
     vorlage = _konstante("EX_VORLAGE_STANDARD")
     assert "woerter:12, schwer:3," in vorlage
-    assert 'aufgaben:[{typ:"lueckentext", woerter:null' in vorlage
+    assert 'aufgaben:[{typ:"lueckentext", fest:null' in vorlage
 
 
 def test_der_text_zum_austeilen_hat_die_verlangte_form():
@@ -241,11 +284,17 @@ def test_die_wortwahl_haelt_sich_an_die_vorlage():
         {"teil": teil, "echtA": alle[-12:], "echtB": alle[:12], "n": 10, "k": 2},
         {"teil": teil, "echtA": alle[-12:], "echtB": alle[:12], "n": 12, "k": 0},
         {"teil": teil, "echtA": alle[-12:], "echtB": alle[:12], "n": 4, "k": 9},
+        {"teil": teil, "echtA": alle[-12:], "echtB": alle[:12], "n": 16, "k": 3},
     ])
     assert len(wahl[0]["A"]) == 10 and len(wahl[0]["mittel"]) == 2
     assert wahl[0]["A"] == alle[-10:][::-1]
     assert wahl[1]["mittel"] == [] and set(wahl[1]["B"]) == set(alle[:12])
     assert len(wahl[2]["B"]) == 4 and len(wahl[2]["mittel"]) == 4
+    # 30 Wörter reichen nicht für zweimal 16: B wird mit den zugänglichsten
+    # aus A aufgefüllt, statt kürzer zu werden.
+    assert len(wahl[3]["A"]) == 16 and len(wahl[3]["B"]) == 16
+    assert set(wahl[3]["geteilt"]) == set(wahl[3]["A"]) & set(wahl[3]["B"])
+    assert len(wahl[3]["geteilt"]) == 2
 
 
 # ---------------------------------------------------------------------------

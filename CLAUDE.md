@@ -1680,16 +1680,19 @@ Was jede neue Prüfung voreingestellt mitbringt, steht in der **Vorlage**;
 
 | Einstellung | Standard |
 |---|---|
-| Wörter je Prüfung | 12 |
+| Wörter je Prüfung | 12 — auf der Seite unter „Geprüfte Wörter je Prüfung" änderbar |
 | Niveau A | die 12 schwersten des Parts |
 | Niveau B | die 9 zugänglichsten und **3 mittelschwere** |
-| Aufgaben | Aufgabe 1: Lückentext (Eintippen, Wortbank, 1 Punkt je Lücke) |
+| Aufgaben | Aufgabe 1: Lückentext (Eintippen, Wortbank, 1 Punkt je Lücke), Wortzahl verteilt |
 | Name | `English Vocabulary Test {kuerzel} Unit {unit} Part {part} – Niveau {niveau}` |
 | Thema / Unterthema | `{kuerzel}_Unit {unit}` / `Niveau {niveau}` |
 
 „Mittelschwer" heisst: die schwersten Wörter, die **nicht** in der Prüfung für
 Niveau A stehen. So ist B kein Ausschnitt von A, und keine Prüfung verrät die
-andere. Beide Wahlen gehen zuerst von der Prüfungsauswahl der Anwendung aus
+andere. Reicht ein Part nicht für zwei getrennte Prüfungen (bei 30 Wörtern
+mehr als 15 je Prüfung), bekommt B die zugänglichsten aus A dazu — ein
+Überschnitt ist erlaubt, eine kürzere B-Prüfung nicht; die Zeile sagt es.
+Beide Wahlen gehen zuerst von der Prüfungsauswahl der Anwendung aus
 (`echt["t<Part>A"]`, `echt["t<Part>B"]`), die Kognate und Wortfamilien schon
 draussen hält. Die Rechnung steht in **einer** reinen Funktion
 (`exWortwahl`); ein Test führt sie mit Node an jeder Liste aus.
@@ -1707,13 +1710,25 @@ je Prüfung abwählen, tauschen, dazunehmen — nur mit Wörtern desselben Parts
 #### Die Aufgaben
 
 Die Aufgaben gelten für beide Prüfungen. Jede klappt auf und zu; **Aufgabe 1
-steht offen**, „＋ Aufgabe hinzufügen" bringt die nächste (anderer Typ,
-eigene Wortzahl). Die Wörter jeder Prüfung werden **auf die Aufgaben
-verteilt, keines steht in zwei**: Aufgabe 1 nimmt den Rest, reicht er nicht,
-sagt die Seite es laut und springt ins Feld. Ausgebaut ist der Lückentext
-(Antwortform, Wortbank, Punkte je Lücke, Schwierigkeit je Niveau); für die
-anderen acht Typen nennt der Auftrag Typ und Wortzahl, und der Chat fragt
-nach, bevor er anlegt.
+steht offen**, „＋ Aufgabe hinzufügen" bringt die nächste. Keines der
+geprüften Wörter steht in zwei Aufgaben.
+
+**Die Zahl der geprüften Wörter verteilt sich nach Aufgabentyp** (`gewicht`
+in `EX_TYPEN`): Wo ein Wort schnell geprüft ist — hinschreiben (Text 3),
+einsetzen (Lückentext 2), zuordnen (2) —, kommen mehr hin; wo es viel
+Lesezeit kostet — K-Prim mit vier Aussagen, Aufsatz, Reihenfolge (je 1) —,
+weniger. Jeder Typ hat seine Mindestzahl (Lückentext 2, Zuordnung und
+Reihenfolge 3). Gerechnet wird wie in der Werkstatt: proportional, der Rest
+nach dem grössten Bruchteil, Unterschreitungen angehoben. **Eine getippte
+Zahl legt die Aufgabe fest** und kommt aus der Gesamtzahl, nicht obendrauf;
+„Verteilung zurücksetzen" gibt alle frei. Stimmt die Summe nicht oder
+unterschreitet eine Aufgabe ihre Mindestzahl, sagt die Seite es laut und
+springt ins Feld. Die Rechnung ist eine reine Funktion (`exVerteilen`), die
+ein Test mit Node ausführt.
+
+Ausgebaut ist der Lückentext (Antwortform, Wortbank, Punkte je Lücke,
+Schwierigkeit je Niveau); für die anderen acht Typen nennt der Auftrag Typ
+und Wortzahl, und der Chat fragt nach, bevor er anlegt.
 
 #### Was aus eXaminer kommt — `examiner/pruefungen`
 
@@ -1749,7 +1764,7 @@ Nimmt eine Sitzung ohne Zugang einen solchen Auftrag an, erledigt sie, was
 ohne eXaminer geht — die Texte schreiben und unter `ergebnis.text` ablegen —,
 setzt den Auftrag auf `wartet` und nennt in `schritt` den Grund.
 
-23 Tests wachen über all das (`tests/test_examiner.py`).
+Tests in `tests/test_examiner.py` wachen über all das.
 
 ## Tests
 

@@ -1615,16 +1615,15 @@ das zweite steht jetzt als Zeile darin.
 
 eXaminer (<https://lachenzelg.examiner.cloud>) ist die Prüfungsplattform der
 Schule. Über der Werkstatt stehen deshalb zwei Reiter: **Vokabelwerkstatt**
-und **eXaminer**. Der zweite ist ein eigener Bereich mit drei Knöpfen:
+und **eXaminer**. Der zweite ist ein eigener Bereich mit zwei Knöpfen:
 
-| Knopf | was man wählt | Auftrag (`art`) |
+| Knopf | was entsteht | Auftrag (`art`) |
 |---|---|---|
-| **Aufgabe erstellen** | Unit → Vokabelliste → Part → Niveau → Aufgabentyp; die Wörter; Thema, Unterthema, Titel | `examiner-aufgabe` |
-| **Prüfung erstellen** | Name; die eigenen Aufgaben aus eXaminer zum Anhaken, in der Folge des Anhakens | `examiner-pruefung` |
-| **Prüfung korrigieren** | eine Prüfung mit Einträgen unter „Zu korrigieren"; was der Chat tun darf | `examiner-korrektur` |
+| **Prüfung erstellen** | die Aufgaben und daraus **immer zwei Prüfungen**, Niveau A und Niveau B, samt ihren Links für den Safe Exam Browser | `examiner-pruefungen` |
+| **Prüfung korrigieren** | Korrektur einer Prüfung mit Einträgen unter „Zu korrigieren" | `examiner-korrektur` |
 
-Dazu kommt **„Abgleich anfordern"** (`examiner-abgleich`): Der Chat liest in
-eXaminer, was die Seite zeigen soll.
+Dazu kommen **„Korrekturen abgleichen"** (`examiner-abgleich`) und
+**„Links holen"** (`examiner-links`, mit `bezug` auf den Prüfungsauftrag).
 
 **Die Werkstatt bleibt unberührt.** Der Bereich steht ausserhalb von Leiste
 und Arbeitsfläche, hat seinen eigenen Zustand (`ex`) und zeichnet nur sich
@@ -1634,52 +1633,94 @@ Element gleich gefunden. Voreingestellt ist der Reiter der Werkstatt; welcher
 zuletzt offen war, merkt sich der Browser (`localStorage`, nur für diese
 Person), weil die Seite nach dem Auslösen neu lädt.
 
-#### Aufgabe erstellen
+#### Ein Auftrag, zwei Prüfungen — in dieser Reihenfolge
 
-Die Wörter sind mit der **Prüfungsauswahl der gewählten Liste** vorbelegt —
-`echt["t<Part><Niveau>"]`, dieselbe Auswahl, die die Werkstatt unter
-„Prüfungen" zeigt. Das Häkchen nimmt ein Wort heraus; tauschen und
-dazunehmen geht **nur mit Wörtern desselben Parts**. Voreingestellt ist die
-neueste Liste mit gebauter Vokabelliste — die, die ausgeteilt wurde.
+Aufgaben erstellen und Prüfung erstellen sind **ein** Knopf. Der Chat hält
+die Reihenfolge ein, sie steht auch im Auftrag:
 
-Thema und Unterthema schlägt die Seite vor: **„EP3_Unit 8"** (Kürzel aus der
-Kennung `EnglishPlus3`, dann die Unit) und **„Niveau A"**; der Titel folgt der
-Wahl (`Unit 8 · V1 · Part I · Niveau A · Lückentext`). Wer eines davon
-ändert, behält es („— von Hand gesetzt").
+1. Je Niveau die Wörter auf die Aufgaben verteilen und die Inhalte schreiben
+   — Lückentexte wie jeder Text dieses Repositories im Chat, die Lösung nicht
+   verraten, danach selbst auf Grammatik, Natürlichkeit, Niveau und
+   verratene Lösung durchsehen.
+2. Die Aufgaben in eXaminer anlegen und speichern (Titel «Name der Prüfung ·
+   Aufgabe n», Thema und Unterthema aus der Vorlage).
+3. Zwei Prüfungen anlegen und speichern, eine je Niveau, die Aufgaben in der
+   bestellten Reihenfolge.
+4. Je Prüfung den **Link für den Safe Exam Browser** auslesen und unter
+   `ergebnis.links.A` und `ergebnis.links.B` in den Auftrag schreiben.
+5. Die geschriebenen Texte unter `ergebnis.text` ablegen.
 
-Die neun Aufgabentypen stehen in der Reihenfolge von eXaminer. **Ausgebaut
-ist der Lückentext**: Antwortform (Eintippen, Hineinziehen, Auswahl),
-Wortbank über dem Text, Punkte je Lücke, Schwierigkeit des Texts (Normallage
-wie in der Werkstatt, A 3.0 / B 1.7). Für die anderen acht nennt der Auftrag
-Typ, Wörter und Ablage; wie die Aufgabe aussieht, schlägt der Chat vor und
-fragt nach, bevor er sie anlegt.
+**Nicht freischalten.** Entsteht der Link erst beim Freischalten, setzt der
+Chat den Auftrag auf `wartet` und sagt in `schritt`, dass die beiden Prüfungen
+zum Freischalten bereitstehen. Hat die Lehrperson freigeschaltet, holt „Links
+holen" sie nach — der Chat schreibt sie dann in den ursprünglichen Auftrag.
 
-Den **Lückentext schreibt der Chat** — wie jeden Text dieses Repositories: eine
-Lücke je Wort, die Lösung nicht verraten, danach selbst auf Grammatik,
-Natürlichkeit, Niveau und verratene Lösung durchsehen. Bietet eXaminer die
-bestellte Antwortform nicht an, wird nachgefragt, nicht still eine andere
-genommen.
+#### Zum Austeilen
 
-#### Was aus eXaminer kommt — `examiner/`
-
-Die Seite erreicht eXaminer nicht: Sie läuft in einem abgeschotteten
-Rahmen, und eXaminer verlangt eine Anmeldung. Was sie zeigen soll, schreibt
-der Chat nach dem Abgleich — und nach jedem Auftrag, der etwas verändert —
-in zwei Dokumente des Auftragsbuchs:
+Sobald beide Links da sind, steht oben im Bereich der Text für die Klasse,
+mit einem Kopierknopf:
 
 ```
-examiner/aufgaben    {stand, aufgaben:[{id, titel, typ, thema, unterthema}]}
-examiner/pruefungen  {stand, pruefungen:[{id, name, zu_korrigieren, abgegeben, datum}]}
+English Vocabulary Test (Datum: 30.09.2026). Unit 8 Part I.
+If you are Niveau A, copy this link into your browser:
+<Link A>
+If you are Niveau B, copy this link into your browser:
+<Link B>
 ```
 
-`zu_korrigieren` ist die Zahl der Einträge unter „Zu korrigieren"; die Seite
-zeigt korrigierbar, was dort mehr als null hat, und zählt es am Knopf und am
-Reiter. Solange nichts abgeglichen ist, sagt jede Liste das und bietet den
-Abgleich an — ein leeres Kästchen sähe aus, als gäbe es in eXaminer nichts.
+Der Text kommt aus der Vorlage; der Auftrag trägt ihn mit allem eingesetzt
+ausser den Links (`ankuendigung`), damit eine spätere Änderung der Vorlage
+einen alten Auftrag nicht umschreibt. Ein Link kommt von aussen: Er steht als
+Text da, nie als Verweis, und nur, wenn er eine Zeile ohne Leerzeichen ist.
 
-Was der Chat dem Auftrag als Ergebnis mitgibt — den geschriebenen
-Lückentext, die Korrekturvorschläge —, steht unter **`ergebnis.text`** im
-Auftrag; die Seite zeigt es unter „Ergebnis ansehen" mit Kopierknopf.
+#### Die Vorlage — der Preset-Modus
+
+Was jede neue Prüfung voreingestellt mitbringt, steht in der **Vorlage**;
+„Einstellungen" öffnet sie. Standard:
+
+| Einstellung | Standard |
+|---|---|
+| Wörter je Prüfung | 12 |
+| Niveau A | die 12 schwersten des Parts |
+| Niveau B | die 9 zugänglichsten und **3 mittelschwere** |
+| Aufgaben | Aufgabe 1: Lückentext (Eintippen, Wortbank, 1 Punkt je Lücke) |
+| Name | `English Vocabulary Test {kuerzel} Unit {unit} Part {part} – Niveau {niveau}` |
+| Thema / Unterthema | `{kuerzel}_Unit {unit}` / `Niveau {niveau}` |
+
+„Mittelschwer" heisst: die schwersten Wörter, die **nicht** in der Prüfung für
+Niveau A stehen. So ist B kein Ausschnitt von A, und keine Prüfung verrät die
+andere. Beide Wahlen gehen zuerst von der Prüfungsauswahl der Anwendung aus
+(`echt["t<Part>A"]`, `echt["t<Part>B"]`), die Kognate und Wortfamilien schon
+draussen hält. Die Rechnung steht in **einer** reinen Funktion
+(`exWortwahl`); ein Test führt sie mit Node an jeder Liste aus.
+
+Die Vorlage liegt im Auftragsbuch unter **`examiner/vorlage`** — sie gilt auf
+jedem Gerät, und der Chat kann sie lesen. Sie kommt damit von aussen: Jeder
+Wert wird geprüft, bevor er gilt. Ohne Auftragsbuch gilt sie nur in diesem
+Browser. Eine neue Vorlage überschreibt ein Formular, an dem schon gedreht
+wurde, nicht still — die Seite bietet dann „Vorlage anwenden" an.
+
+Im Preset-Modus steht die Wortwahl **zugeklappt** da; die Zeile sagt, wie
+viele Wörter es je Niveau sind und ob von Hand angepasst wurde. Aufgeklappt:
+je Prüfung abwählen, tauschen, dazunehmen — nur mit Wörtern desselben Parts.
+
+#### Die Aufgaben
+
+Die Aufgaben gelten für beide Prüfungen. Jede klappt auf und zu; **Aufgabe 1
+steht offen**, „＋ Aufgabe hinzufügen" bringt die nächste (anderer Typ,
+eigene Wortzahl). Die Wörter jeder Prüfung werden **auf die Aufgaben
+verteilt, keines steht in zwei**: Aufgabe 1 nimmt den Rest, reicht er nicht,
+sagt die Seite es laut und springt ins Feld. Ausgebaut ist der Lückentext
+(Antwortform, Wortbank, Punkte je Lücke, Schwierigkeit je Niveau); für die
+anderen acht Typen nennt der Auftrag Typ und Wortzahl, und der Chat fragt
+nach, bevor er anlegt.
+
+#### Was aus eXaminer kommt — `examiner/pruefungen`
+
+Nach „Korrekturen abgleichen" schreibt der Chat
+`examiner/pruefungen {stand, pruefungen:[{id, name, zu_korrigieren, abgegeben, datum}]}`.
+Die Seite zeigt korrigierbar, was bei `zu_korrigieren` mehr als null hat, und
+zählt es am Knopf und am Reiter.
 
 #### Was der Chat darf und was nicht
 
@@ -1687,16 +1728,14 @@ Auftrag; die Seite zeigt es unter „Ergebnis ansehen" mit Kopierknopf.
   Schülern ebenso wenig: Einträge werden mit der Nummer bezeichnet, die
   eXaminer zeigt. Das Auftragsbuch sieht jede Person, mit der die Seite
   geteilt ist.
-* **Eine Prüfung wird angelegt und gespeichert, nicht freigegeben** und
+* **Prüfungen werden angelegt und gespeichert, nicht freigeschaltet** und
   keiner Klasse zugewiesen — das tut die Lehrperson.
 * **Die Korrektur bereitet voreingestellt nur vor**: Punkte mit kurzer
   Begründung als Vorschlag im Auftrag, in eXaminer nichts gespeichert. Erst
-  „Korrigieren und speichern" erlaubt das Speichern; was sich nicht
-  eindeutig bewerten lässt, bleibt auch dann offen und wird aufgelistet.
+  „Korrigieren und speichern" erlaubt das Speichern.
 * Stand, Schritte und Lebenszeichen gelten wie für jeden Auftrag (siehe „Der
-  Wächter"). Die Seite zeigt die eXaminer-Aufträge in ihrer eigenen Spalte,
-  mit demselben Wächter — wer im eXaminer-Bereich steht, sieht den Verlauf
-  der Werkstatt nicht.
+  Wächter"). Die eXaminer-Aufträge stehen in einer eigenen Spalte mit
+  demselben Wächter.
 
 #### Wer die Aufträge ausführen kann
 
@@ -1707,11 +1746,10 @@ Chat-Sitzung, die eXaminer im Browser öffnen darf und dort angemeldet ist
 diese Umgebung, nachdem die Domain in ihrer Netzwerkregel freigegeben ist.
 
 Nimmt eine Sitzung ohne Zugang einen solchen Auftrag an, erledigt sie, was
-ohne eXaminer geht — den Lückentext schreiben und unter `ergebnis.text`
-ablegen —, setzt den Auftrag auf `wartet` und nennt in `schritt` den Grund.
-Er gilt dann nicht als erledigt.
+ohne eXaminer geht — die Texte schreiben und unter `ergebnis.text` ablegen —,
+setzt den Auftrag auf `wartet` und nennt in `schritt` den Grund.
 
-Sechzehn Tests wachen über all das (`tests/test_examiner.py`).
+23 Tests wachen über all das (`tests/test_examiner.py`).
 
 ## Tests
 

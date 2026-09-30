@@ -1611,6 +1611,108 @@ der Horcher aufs Auftragsbuch schweigt nicht mehr, wenn er nichts hört: Ein
 leeres Buch und ein Buch, das sich nicht lesen lässt, sind zwei Dinge, und
 das zweite steht jetzt als Zeile darin.
 
+### eXaminer — ein eigener Bereich
+
+eXaminer (<https://lachenzelg.examiner.cloud>) ist die Prüfungsplattform der
+Schule. Über der Werkstatt stehen deshalb zwei Reiter: **Vokabelwerkstatt**
+und **eXaminer**. Der zweite ist ein eigener Bereich mit drei Knöpfen:
+
+| Knopf | was man wählt | Auftrag (`art`) |
+|---|---|---|
+| **Aufgabe erstellen** | Unit → Vokabelliste → Part → Niveau → Aufgabentyp; die Wörter; Thema, Unterthema, Titel | `examiner-aufgabe` |
+| **Prüfung erstellen** | Name; die eigenen Aufgaben aus eXaminer zum Anhaken, in der Folge des Anhakens | `examiner-pruefung` |
+| **Prüfung korrigieren** | eine Prüfung mit Einträgen unter „Zu korrigieren"; was der Chat tun darf | `examiner-korrektur` |
+
+Dazu kommt **„Abgleich anfordern"** (`examiner-abgleich`): Der Chat liest in
+eXaminer, was die Seite zeigen soll.
+
+**Die Werkstatt bleibt unberührt.** Der Bereich steht ausserhalb von Leiste
+und Arbeitsfläche, hat seinen eigenen Zustand (`ex`) und zeichnet nur sich
+selbst; die Vorlage hat dafür nur Zeilen dazubekommen, keine verloren. Ein
+Vergleich im Browser hat die Werkstatt vor und nach dem Einbau Element für
+Element gleich gefunden. Voreingestellt ist der Reiter der Werkstatt; welcher
+zuletzt offen war, merkt sich der Browser (`localStorage`, nur für diese
+Person), weil die Seite nach dem Auslösen neu lädt.
+
+#### Aufgabe erstellen
+
+Die Wörter sind mit der **Prüfungsauswahl der gewählten Liste** vorbelegt —
+`echt["t<Part><Niveau>"]`, dieselbe Auswahl, die die Werkstatt unter
+„Prüfungen" zeigt. Das Häkchen nimmt ein Wort heraus; tauschen und
+dazunehmen geht **nur mit Wörtern desselben Parts**. Voreingestellt ist die
+neueste Liste mit gebauter Vokabelliste — die, die ausgeteilt wurde.
+
+Thema und Unterthema schlägt die Seite vor: **„EP3_Unit 8"** (Kürzel aus der
+Kennung `EnglishPlus3`, dann die Unit) und **„Niveau A"**; der Titel folgt der
+Wahl (`Unit 8 · V1 · Part I · Niveau A · Lückentext`). Wer eines davon
+ändert, behält es („— von Hand gesetzt").
+
+Die neun Aufgabentypen stehen in der Reihenfolge von eXaminer. **Ausgebaut
+ist der Lückentext**: Antwortform (Eintippen, Hineinziehen, Auswahl),
+Wortbank über dem Text, Punkte je Lücke, Schwierigkeit des Texts (Normallage
+wie in der Werkstatt, A 3.0 / B 1.7). Für die anderen acht nennt der Auftrag
+Typ, Wörter und Ablage; wie die Aufgabe aussieht, schlägt der Chat vor und
+fragt nach, bevor er sie anlegt.
+
+Den **Lückentext schreibt der Chat** — wie jeden Text dieses Repositories: eine
+Lücke je Wort, die Lösung nicht verraten, danach selbst auf Grammatik,
+Natürlichkeit, Niveau und verratene Lösung durchsehen. Bietet eXaminer die
+bestellte Antwortform nicht an, wird nachgefragt, nicht still eine andere
+genommen.
+
+#### Was aus eXaminer kommt — `examiner/`
+
+Die Seite erreicht eXaminer nicht: Sie läuft in einem abgeschotteten
+Rahmen, und eXaminer verlangt eine Anmeldung. Was sie zeigen soll, schreibt
+der Chat nach dem Abgleich — und nach jedem Auftrag, der etwas verändert —
+in zwei Dokumente des Auftragsbuchs:
+
+```
+examiner/aufgaben    {stand, aufgaben:[{id, titel, typ, thema, unterthema}]}
+examiner/pruefungen  {stand, pruefungen:[{id, name, zu_korrigieren, abgegeben, datum}]}
+```
+
+`zu_korrigieren` ist die Zahl der Einträge unter „Zu korrigieren"; die Seite
+zeigt korrigierbar, was dort mehr als null hat, und zählt es am Knopf und am
+Reiter. Solange nichts abgeglichen ist, sagt jede Liste das und bietet den
+Abgleich an — ein leeres Kästchen sähe aus, als gäbe es in eXaminer nichts.
+
+Was der Chat dem Auftrag als Ergebnis mitgibt — den geschriebenen
+Lückentext, die Korrekturvorschläge —, steht unter **`ergebnis.text`** im
+Auftrag; die Seite zeigt es unter „Ergebnis ansehen" mit Kopierknopf.
+
+#### Was der Chat darf und was nicht
+
+* **Zugangsdaten gehören nie ins Auftragsbuch**, Namen von Schülerinnen und
+  Schülern ebenso wenig: Einträge werden mit der Nummer bezeichnet, die
+  eXaminer zeigt. Das Auftragsbuch sieht jede Person, mit der die Seite
+  geteilt ist.
+* **Eine Prüfung wird angelegt und gespeichert, nicht freigegeben** und
+  keiner Klasse zugewiesen — das tut die Lehrperson.
+* **Die Korrektur bereitet voreingestellt nur vor**: Punkte mit kurzer
+  Begründung als Vorschlag im Auftrag, in eXaminer nichts gespeichert. Erst
+  „Korrigieren und speichern" erlaubt das Speichern; was sich nicht
+  eindeutig bewerten lässt, bleibt auch dann offen und wird aufgelistet.
+* Stand, Schritte und Lebenszeichen gelten wie für jeden Auftrag (siehe „Der
+  Wächter"). Die Seite zeigt die eXaminer-Aufträge in ihrer eigenen Spalte,
+  mit demselben Wächter — wer im eXaminer-Bereich steht, sieht den Verlauf
+  der Werkstatt nicht.
+
+#### Wer die Aufträge ausführen kann
+
+**Diese Cloud-Umgebung erreicht eXaminer nicht** — die Netzwerkregel sperrt
+`lachenzelg.examiner.cloud`. Ausführen kann einen eXaminer-Auftrag nur eine
+Chat-Sitzung, die eXaminer im Browser öffnen darf und dort angemeldet ist
+(etwa die Claude-App auf dem eigenen Rechner mit Claude in Chrome), oder
+diese Umgebung, nachdem die Domain in ihrer Netzwerkregel freigegeben ist.
+
+Nimmt eine Sitzung ohne Zugang einen solchen Auftrag an, erledigt sie, was
+ohne eXaminer geht — den Lückentext schreiben und unter `ergebnis.text`
+ablegen —, setzt den Auftrag auf `wartet` und nennt in `schritt` den Grund.
+Er gilt dann nicht als erledigt.
+
+Sechzehn Tests wachen über all das (`tests/test_examiner.py`).
+
 ## Tests
 
 `pytest` und `ruff check src app.py tests werkstatt` müssen grün sein. Die Tests bauen

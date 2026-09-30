@@ -69,3 +69,14 @@ erst `vocabmaster bauen` sie verbindlich trifft.
 
 Beide sind freiwillig: fehlt die Berechtigung, bleibt der Knopf weg und der
 Befehl lässt sich weiterhin kopieren.
+
+## Der Bereich eXaminer
+
+Über der Werkstatt stehen zwei Reiter. **eXaminer** ist ein eigener Bereich
+für die Prüfungsplattform der Schule: Aufgabe erstellen, Prüfung erstellen,
+Prüfung korrigieren. Die Seite erreicht eXaminer nicht selbst — sie legt
+Aufträge ins Auftragsbuch (`examiner-aufgabe`, `examiner-pruefung`,
+`examiner-korrektur`, `examiner-abgleich`), und der Chat schreibt zurück, was
+er in eXaminer liest (`examiner/aufgaben`, `examiner/pruefungen`). Die
+Einzelheiten und die Regeln für den Chat stehen in `CLAUDE.md` unter
+„eXaminer — ein eigener Bereich".

@@ -223,11 +223,11 @@ def test_der_ausloeser_haelt_sich_an_die_datenbank():
     # Beide Auftragsarten gehen durch dieselbe Funktion.
     körper = seite[seite.index("async function ausloesen("):]
     körper = körper[:körper.index("\n}\n")]
-    assert körper.index('db.doc("auftraege/"') < körper.index("selbst.publish("), (
+    assert körper.index('db.doc("auftraege/"') < körper.index("klingle(id)"), (
         "erst ablegen, dann klingeln"
     )
-    # Ohne beide Fähigkeiten muss der Knopf aus sein, statt ins Leere zu greifen.
-    assert "!db || !selbst" in körper
+    # Ohne Buch oder Klingel muss der Knopf es sagen, statt ins Leere zu greifen.
+    assert "!db || !kannKlingeln()" in körper
     for aufrufer in ('$("bauen").addEventListener', "lehrmittelAusloesen"):
         assert aufrufer in seite
 
@@ -592,7 +592,7 @@ def test_erst_die_datei_dann_der_auftrag():
     körper = körper[:körper.index("\n}")]
     assert körper.index("await hochladen(") < körper.index("await ausloesen(")
     # Und ohne Datenbank sagt das Fenster das, statt es zu versuchen.
-    assert "if(!db || !selbst)" in körper
+    assert "if(!db || !kannKlingeln())" in körper
 
 
 # ---------------------------------------------------------------------------
@@ -661,7 +661,28 @@ def test_die_seite_sagt_ob_sie_am_chat_haengt():
     # Grün ist die Farbe für „steht" - sie kommt aus derselben Stelle wie
     # jedes andere Grün der Seite.
     assert ".draht.dran{color:var(--ok)}" in seite
-    assert "function verbunden(){ return Boolean(db && selbst); }" in seite
+    assert "function verbunden(){ return Boolean(db && kannKlingeln()); }" in seite
+
+
+def test_die_klingel_weckt_die_sitzung_direkt():
+    """Eine Neuveröffentlichung weckt die Sitzung nur, wenn der Dienst sie
+    zustellt - zweimal kam sie nicht an. Der Knopf löst deshalb zuerst die
+    Routine aus, die an der Sitzung hängt; die neue Fassung ist nur noch
+    der zweite Weg. Mitgeschickt wird bloss die Kennung: Was gebaut wird,
+    steht im Auftragsbuch."""
+    seite = (WERKSTATT / "vorlage.html").read_text("utf-8")
+    körper = seite[seite.index("async function klingle("):]
+    körper = körper[:körper.index("\n}\n")]
+    assert körper.index("draht.callTool(") < körper.index("selbst.publish("), (
+        "erst direkt, dann über die Seite"
+    )
+    assert 'text:"Auftrag " + id' in körper
+    assert re.search(r'routine:"trig_\w+"', seite)
+    assert 'server:"Claude Code Remote", werkzeug:"fire_trigger"' in seite
+    assert 'use?.("mcp")' in seite and "starteKlingel();" in seite
+    # Nachklingeln nimmt denselben Weg.
+    nach = seite[seite.index("async function nachklingeln("):]
+    assert "await klingle(e.id);" in nach[:nach.index("\n}\n")]
 
 
 def test_der_verlauf_zeigt_die_schritte_des_laufenden_auftrags():

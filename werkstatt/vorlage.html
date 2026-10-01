@@ -2522,7 +2522,7 @@ async function lehrmittelAusloesen(){
   const einwand = lehrmittelEinwand(d);
   if(einwand){ lehrmittelStockt(einwand); return; }
   const knopf = $("dbAusloesen");
-  if(!db || !selbst){
+  if(!db || !kannKlingeln()){
     dbMelde("Auslösen steht in dieser Ansicht nicht zur Verfügung — den " +
             "Befehl stattdessen kopieren und die Datei im Chat anhängen.",
             "fehler");
@@ -3503,7 +3503,7 @@ function zeichneKnopf(a){
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
-let db = null, downloads = null, selbst = null, muster = null;
+let db = null, downloads = null, selbst = null, muster = null, draht = null;
 const buch = [];
 
 /* Wie weit ein Auftrag ist. Der Chat schreibt den Stand in dasselbe
@@ -3666,6 +3666,49 @@ async function starteArtifact(){
   zeichneAusloeser();
 }
 
+/* Die Klingel, direkt. Eine Neuveröffentlichung weckt die Sitzung nur,
+   wenn der Dienst die neue Fassung zustellt - und das kam zweimal nicht
+   an. Der Knopf zieht deshalb selbst an der Glocke: Über den Connector
+   „Claude Code Remote" löst die Seite eine Routine aus, die an dieser
+   Chat-Sitzung hängt und keinen Zeitplan hat. Sie schickt nur die
+   Kennung mit; was gebaut wird, liest der Chat im Auftragsbuch nach.
+
+   Auslösen kann die Routine nur ihr Besitzer - wer die Seite sonst
+   öffnet, bekommt einen Fehler zurück, und dann bleibt die
+   Neuveröffentlichung als zweiter Weg. */
+const KLINGEL = {server:"Claude Code Remote", werkzeug:"fire_trigger",
+                 routine:"trig_01E6qXjkkHoo5rGxtPyx9ohn"};
+
+async function starteKlingel(){
+  try{
+    draht = await window.claude?.use?.("mcp");
+  }catch(e){ draht = null; }
+  zeichneAusloeser();
+}
+
+/* Weckt die Sitzung: erst direkt, sonst über eine neue Fassung der Seite.
+   Gibt zurück, welcher Weg ging ("direkt" oder "seite"); wirft, wenn
+   keiner ging. Kein Wiederholen von selbst: Ein Fehler beim Auslösen
+   heisst nicht sicher, dass nichts ausgelöst wurde - doppelt geweckt
+   schadet aber nicht, der Chat nimmt einen Auftrag nur einmal an. */
+async function klingle(id){
+  let grund = null;
+  if(draht){
+    try{
+      await draht.callTool(KLINGEL.server, KLINGEL.werkzeug,
+        {trigger_id:KLINGEL.routine, text:"Auftrag " + id}, {cache:false});
+      return "direkt";
+    }catch(e){ grund = e; }
+  }
+  if(selbst){
+    await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
+    return "seite";
+  }
+  throw grund || new Error("In dieser Ansicht gibt es keine Klingel.");
+}
+
+function kannKlingeln(){ return Boolean(draht || selbst); }
+
 /* Die Seite baut sich selbst zusammen - in derselben Reihenfolge wie
    `bauen.py`: erst die Daten, dann die eingebettete Vorlage, zuletzt die
    Klingel. Wer die Reihenfolge tauscht, ersetzt den Platzhalter in der
@@ -3690,13 +3733,13 @@ function bauePlatte(klingel){
 /* Hängt die Seite am Chat? Ohne diese Zeile sieht ein Knopf, der nichts
    tun kann, genauso aus wie einer, der gleich etwas tut - und „ich hab
    geklickt, es passiert nichts" ist dann die einzige Rückmeldung. */
-function verbunden(){ return Boolean(db && selbst); }
+function verbunden(){ return Boolean(db && kannKlingeln()); }
 
 function zeichneDraht(){
   const zeile = $("draht");
   const dran = verbunden();
   zeile.className = "draht " + (dran ? "dran" : "ab");
-  const fehlt = [!db && "Auftragsbuch", !selbst && "Veröffentlichen"]
+  const fehlt = [!db && "Auftragsbuch", !kannKlingeln() && "Klingel"]
     .filter(Boolean);
   zeile.innerHTML = '<span class="punkt"></span>' + (dran
     ? "<b>mit claude.ai verbunden</b> — der Auftrag geht direkt an den Chat"
@@ -3704,7 +3747,8 @@ function zeichneDraht(){
       (fehlt.length ? fehlt.join(" und ") + (fehlt.length > 1 ? " fehlen; " : " fehlt; ") : "") +
       "„Befehl kopieren\u201c und im Chat einfügen");
   zeile.title = dran
-    ? "db und artifact stehen bereit."
+    ? (draht ? "Auftragsbuch und direkte Klingel (Connector \u201eClaude Code Remote\u201c) stehen bereit."
+             : "Auftragsbuch steht; geweckt wird über eine neue Fassung der Seite.")
     : "In der Vorschau und in geteilten Ansichten fehlen diese Fähigkeiten.";
 }
 
@@ -3796,14 +3840,14 @@ function anstoss(e){
 }
 
 async function nachklingeln(e, knopf){
-  if(!db || !selbst){ return anstossKopieren(e); }
+  if(!db || !kannKlingeln()){ return anstossKopieren(e); }
   knopf.disabled = true;
   try{
     await db.doc("auftraege/" + e.id).update({
       nachgeklingelt:new Date().toISOString(),
       schritt:"Noch einmal geklingelt \u2026",
     });
-    await selbst.publish(bauePlatte({auftrag:e.id, zeit:new Date().toISOString()}));
+    await klingle(e.id);
     melde("Noch einmal geklingelt. Kommt wieder nichts, den Anstoss kopieren " +
           "und im Chat einfügen.", "ok");
   }catch(fehler){
@@ -4715,7 +4759,7 @@ $("kopieren").addEventListener("click", async () => {
    Bau aus der Leiste und ein neues Lehrmittel - gehen denselben Weg; nur
    was im Auftrag steht, unterscheidet sie. */
 async function ausloesen(auftragsdaten, kennung, knopf, sagen){
-  if(!db || !selbst){
+  if(!db || !kannKlingeln()){
     sagen("Auslösen steht in dieser Ansicht nicht zur Verfügung — " +
           "den Befehl stattdessen kopieren und im Chat einfügen.", "fehler");
     return false;
@@ -4750,9 +4794,10 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   }
   sagen("Abgelegt — wecke die Sitzung …");
   try{
-    await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
-    // Bis hierher kommt die Seite selten - aber wenn, dann stimmt der
-    // zweite Schritt nicht mehr.
+    const weg = await klingle(id);
+    // Direkt geklingelt bleibt die Seite stehen, und der zweite Schritt
+    // wird hier abgehakt. Über eine neue Fassung kommt sie selten bis
+    // hierher - sie lädt dabei neu.
     try{
       await db.doc("auftraege/" + id).update({
         stand:"ausgeloest",
@@ -4765,9 +4810,10 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
         ],
       });
     }catch(nachtrag){ /* die Seite lädt gerade neu - der Stand bleibt */ }
-    // Bis hierher kommt die Seite selten: nach `publish` lädt jede offene
-    // Ansicht die neue Fassung, diese eingeschlossen.
-    sagen("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
+    sagen(weg === "direkt"
+      ? "Ausgelöst — die Chat-Sitzung ist geweckt. Der Auftrag steht im Buch, "
+        + "bis der Chat ihn gebaut hat."
+      : "Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
   }catch(e){
     knopf.disabled = false;
     const code = e && e.code ? e.code : "";
@@ -6241,6 +6287,7 @@ alles();
 zeichneAusloeser();
 starteDb();
 starteArtifact();
+starteKlingel();
 starteDownloads();
 starteSample();
 for(const [kennung, art] of [["vorWort","wort"], ["vorAusdruck","ausdruck"],

@@ -1776,7 +1776,30 @@ diese Umgebung, nachdem die Domain in ihrer Netzwerkregel freigegeben ist.
 
 Nimmt eine Sitzung ohne Zugang einen solchen Auftrag an, erledigt sie, was
 ohne eXaminer geht — die Texte schreiben und unter `ergebnis.text` ablegen —,
-setzt den Auftrag auf `wartet` und nennt in `schritt` den Grund.
+und gibt ihn dann an die Browser-Sitzung weiter (siehe unten). Nur wenn das
+nicht geht, setzt sie den Auftrag auf `wartet` und nennt in `schritt` den
+Grund.
+
+#### Sonderfall eXaminer: zwei Sitzungen, eine Übergabe
+
+Die Klingel („Werkstatt: Auftrag ausgelöst",
+`trig_01E6qXjkkHoo5rGxtPyx9ohn`) weckt **diese** Sitzung — und die erreicht
+eXaminer nicht. Beginnt das Feld `art` des Auftrags mit `examiner`, gilt
+deshalb:
+
+1. **Hier nur, was ohne Browser geht:** die Texte schreiben und gegenlesen,
+   das Ergebnis ins Feld `ergebnis`.
+2. **Weitergeben:** `fire_trigger` mit `trigger_id`
+   `trig_0143SwPXV7RFmLPReMH4aavH` („Werkstatt: eXaminer-Auftrag
+   ausführen") und `text` = `Kennung: <id des Auftrags>`. Diese Routine
+   startet eine Sitzung, die über den Browser auf dem Rechner der
+   Lehrperson arbeitet, dort bei eXaminer angemeldet ist und die Texte aus
+   `ergebnis` unverändert übernimmt.
+3. **Im Auftragsbuch:** `schritt` = „An die Browser-Sitzung übergeben; sie
+   legt Aufgaben und Prüfungen in eXaminer an.", `stand` bleibt `arbeit`,
+   `erledigt` bleibt `false` — den Abschluss meldet die Browser-Sitzung.
+4. **Schlägt `fire_trigger` fehl:** `stand` = `wartet`, der Grund in
+   `schritt`.
 
 Tests in `tests/test_examiner.py` wachen über all das.
 

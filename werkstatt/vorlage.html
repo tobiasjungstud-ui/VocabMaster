@@ -834,6 +834,292 @@ td.satz{color:var(--ink-2); font-size:12.5px}
 }
 .fussnote b{color:var(--ink-2); font-weight:600}
 @media (prefers-reduced-motion:reduce){ *{transition:none!important; animation:none!important} }
+
+/* ---------- Bereiche: Werkstatt und eXaminer ----------
+   Zwei Arbeiten auf einer Seite. Der Reiter schaltet nur um: Die Werkstatt
+   darunter bleibt Zeichen für Zeichen, wie sie war, und der eXaminer-Teil
+   steht daneben, nicht darin. */
+.bereiche{
+  display:flex; flex-wrap:wrap; gap:2px; margin:-14px 0 24px;
+  border-bottom:1px solid var(--line);
+}
+.bereichsreiter{
+  background:none; border:0; border-bottom:2px solid transparent; margin-bottom:-1px;
+  padding:7px 14px 9px; cursor:pointer; display:flex; align-items:baseline; gap:8px;
+  font-family:var(--serif); font-size:15.5px; font-weight:600; color:var(--ink-3);
+}
+.bereichsreiter:hover{color:var(--ink)}
+.bereichsreiter[aria-selected="true"]{color:var(--accent); border-bottom-color:var(--accent)}
+.bereichsreiter .sub{font-family:var(--mono); font-size:10.5px; font-weight:400; color:var(--ink-3)}
+
+/* ---------- eXaminer ----------
+   Drei Knöpfe, drei Formulare, rechts daneben die eigenen Aufträge. Die
+   Seite erreicht eXaminer nicht selbst - sie bestellt, der Chat führt aus,
+   und was er aus eXaminer liest, steht im Auftragsbuch unter `examiner/`. */
+.examiner{display:flex; flex-direction:column; gap:20px}
+.ex-kopf{display:flex; flex-wrap:wrap; gap:10px 24px; align-items:flex-end}
+.ex-kopf h2{font-family:var(--serif); font-size:24px; font-weight:600; letter-spacing:-.01em}
+.ex-kopf p{margin:4px 0 0; font-size:13px; color:var(--ink-2); max-width:68ch}
+.ex-kopf a{color:var(--accent); text-underline-offset:2px}
+.ex-stand{
+  margin-left:auto; display:flex; flex-wrap:wrap; justify-content:flex-end;
+  align-items:center; gap:6px 12px; font-family:var(--mono); font-size:11px;
+  color:var(--ink-3); text-align:right;
+}
+.ex-stand b{color:var(--ink-2); font-weight:600}
+.ex-stand .knopf{padding:5px 11px; font-size:12px; font-family:var(--sans)}
+.ex-aktionen{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px}
+@media (max-width:720px){ .ex-aktionen{grid-template-columns:1fr} }
+.ex-aktion{
+  display:flex; flex-direction:column; align-items:flex-start; gap:3px; text-align:left;
+  padding:13px 16px 14px; cursor:pointer; background:var(--surface);
+  border:1px solid var(--line-2); border-radius:var(--r); box-shadow:var(--shadow);
+}
+.ex-aktion b{font-family:var(--serif); font-size:17px; font-weight:600}
+.ex-aktion .sub{font-size:12px; color:var(--ink-3); line-height:1.4}
+.ex-aktion .zahl{font-family:var(--mono); font-size:11px; color:var(--ink-2); margin-top:3px}
+.ex-aktion .zahl.offen{color:var(--nivB); font-weight:600}
+.ex-aktion:hover{border-color:var(--accent)}
+.ex-aktion[aria-selected="true"]{
+  border-color:var(--accent); background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent);
+}
+.ex-aktion[aria-selected="true"] b{color:var(--accent)}
+.ex-raster{display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:22px; align-items:start}
+@media (max-width:980px){ .ex-raster{grid-template-columns:1fr} }
+.ex-haupt, .ex-seite{display:flex; flex-direction:column; gap:18px; min-width:0}
+.ex-formular{padding:16px 18px 18px; display:flex; flex-direction:column; gap:16px}
+.ex-block{border-top:1px solid var(--line); padding-top:14px; min-width:0}
+.ex-block:first-child{border-top:0; padding-top:0}
+.ex-blockkopf{display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px; margin-bottom:9px}
+.ex-blockkopf .legende{margin:0}
+.ex-blockkopf .waage{margin-left:auto}
+.ex-wahl{display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:12px 14px}
+.ex-feld{min-width:0}
+.ex-feld > label, .ex-feld > .ex-feldname{
+  display:flex; align-items:baseline; gap:6px; font-size:11.5px;
+  color:var(--ink-2); margin-bottom:5px;
+}
+.ex-feld .beilaeufig{font-size:10.5px}
+.ex-feld .zurueck{margin-left:auto}
+.ex-feld select{
+  width:100%; padding:7px 8px; background:var(--paper); border:1px solid var(--line-2);
+  border-radius:var(--r); font-size:13px;
+}
+.ex-feld input[type=text], .ex-feld input[type=number], .ex-feld input[type=search]{
+  width:100%; padding:7px 9px; background:var(--paper); border:1px solid var(--line-2);
+  border-radius:var(--r); font-size:13px;
+}
+.ex-feld input.von-hand{border-color:var(--accent)}
+.ex-felder{display:grid; grid-template-columns:repeat(auto-fit, minmax(190px,1fr)); gap:12px 14px}
+.ex-knoepfe{display:flex; flex-wrap:wrap; gap:6px}
+.ex-chip{position:relative; display:inline-flex}
+.ex-chip input{position:absolute; opacity:0; pointer-events:none}
+.ex-chip span{
+  display:inline-block; padding:6px 11px; cursor:pointer; background:var(--paper);
+  border:1px solid var(--line-2); border-radius:var(--r);
+  font-family:var(--mono); font-size:12.5px; font-variant-numeric:tabular-nums;
+}
+.ex-chip span:hover{border-color:var(--accent)}
+.ex-chip input:checked + span{
+  border-color:var(--accent); background:var(--accent-soft); color:var(--accent); font-weight:600;
+}
+.ex-chip.a input:checked + span{border-color:var(--nivA); background:var(--nivA-soft); color:var(--nivA)}
+.ex-chip.b input:checked + span{border-color:var(--nivB); background:var(--nivB-soft); color:var(--nivB)}
+.ex-chip input:focus-visible + span{outline:2px solid var(--accent); outline-offset:2px}
+.ex-woerter{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:6px;
+}
+@media (max-width:640px){ .ex-woerter{grid-template-columns:1fr} }
+.ex-wort{
+  display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:1px 9px;
+  align-items:center; padding:6px 9px; min-width:0;
+  border:1px solid var(--line); border-radius:var(--r); background:var(--paper);
+}
+.ex-wort input[type=checkbox]{margin:0; accent-color:var(--accent); width:15px; height:15px; cursor:pointer}
+.ex-wort .en{font-weight:500; font-size:13.5px; overflow-wrap:anywhere}
+.ex-wort .sc{
+  font-family:var(--mono); font-size:10.5px; color:var(--ink-3);
+  font-variant-numeric:tabular-nums; text-align:right;
+}
+.ex-wort .de{grid-column:2 / 4; color:var(--ink-3); font-size:11.5px; overflow-wrap:anywhere}
+.ex-wort .statt{grid-column:2 / 4; font-family:var(--mono); font-size:10.5px; color:var(--accent)}
+.ex-wort select{
+  grid-column:2 / 4; margin-top:4px; padding:3px 6px; font-size:11.5px; width:100%;
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+}
+.ex-wort.aus{opacity:.55}
+.ex-wort.aus .en{text-decoration:line-through}
+.ex-wort.getauscht{border-color:var(--accent)}
+.ex-regler{max-width:420px}
+.ex-band{
+  padding:10px 12px; border-radius:var(--r); background:var(--sunk);
+  font-size:12.5px; color:var(--ink-2); line-height:1.5;
+}
+.ex-band b{color:var(--ink); font-weight:600}
+.ex-fuss{display:flex; flex-wrap:wrap; gap:8px 12px; align-items:center}
+.ex-fuss .status{margin:0; flex:1 1 220px}
+.ex-zusammenfassung{
+  font-family:var(--mono); font-size:11.5px; color:var(--ink-2); line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.ex-rahmen{
+  border:1px solid var(--line); border-radius:var(--r); background:var(--paper);
+  max-height:min(440px, 58vh); overflow:auto;
+}
+.ex-auswahl{list-style:none; margin:0; padding:0}
+.ex-zeile{
+  display:flex; gap:10px; align-items:flex-start; padding:8px 11px;
+  border-bottom:1px solid var(--line); cursor:pointer;
+}
+.ex-zeile:last-child{border-bottom:0}
+.ex-zeile input{margin:3px 0 0; accent-color:var(--accent); width:15px; height:15px; flex:none}
+.ex-zeile .inhalt{min-width:0; flex:1 1 auto}
+.ex-zeile .titel{display:block; font-weight:500; font-size:13.5px; overflow-wrap:anywhere}
+.ex-zeile .sub{display:block; font-family:var(--mono); font-size:10.5px; color:var(--ink-3); overflow-wrap:anywhere}
+.ex-zeile .nr{
+  flex:none; min-width:1.8em; text-align:right; font-family:var(--mono);
+  font-size:12px; font-weight:600; color:var(--accent); font-variant-numeric:tabular-nums;
+}
+.ex-zeile:has(input:checked){background:var(--accent-soft)}
+.ex-zeile.entsteht{cursor:default; color:var(--ink-3)}
+.ex-zeile.entsteht .titel{font-weight:400}
+.ex-pille{
+  flex:none; align-self:center; font-family:var(--mono); font-size:10.5px; padding:1px 8px;
+  border-radius:10px; border:1px solid var(--nivB-line); background:var(--nivB-soft);
+  color:var(--nivB); white-space:nowrap; font-variant-numeric:tabular-nums;
+}
+.ex-pille.ruhig{border-color:var(--line); background:var(--sunk); color:var(--ink-3)}
+.ex-leer{padding:14px; font-size:12.5px; color:var(--ink-3); line-height:1.55}
+.ex-leer .knopf{margin-top:9px}
+.ex-weitere{border-top:1px solid var(--line)}
+.ex-weitere > summary{
+  padding:8px 11px; font-size:12px; color:var(--ink-2); list-style:none; cursor:pointer;
+}
+.ex-weitere > summary::-webkit-details-marker{display:none}
+.ex-weitere > summary::before{content:"› "; color:var(--ink-3)}
+.ex-weitere[open] > summary::before{content:"⌄ "}
+.ex-seite .tafel-kopf .draht{margin-left:0; flex-basis:100%; display:block; line-height:1.5}
+.ex-seite .tafel-kopf .draht .punkt{display:inline-block; margin-right:6px; vertical-align:1px}
+.ex-seite .tafel > .auftrag{padding:14px 16px 16px}
+.ex-seite .liste-auftraege{margin-top:0}
+.ex-seite .wache{margin:0 0 10px}
+.ex-uhr{margin:0 0 10px; font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+.ex-uhr b{color:var(--ink-2); font-weight:600}
+.ex-ergebnis{margin-top:8px}
+.ex-ergebnis > summary{cursor:pointer; font-size:12px; color:var(--accent)}
+.ex-ergebnis pre{
+  white-space:pre-wrap; overflow-wrap:anywhere; font-family:var(--mono); font-size:11.5px;
+  background:var(--sunk); border:1px solid var(--line); border-radius:var(--r);
+  padding:8px 10px; margin:6px 0 0; max-height:280px; overflow:auto;
+}
+.ex-ergebnis .knopf{margin-top:6px; padding:4px 10px; font-size:12px}
+.ex-wie{padding:14px 16px 16px; font-size:12.5px; color:var(--ink-2); line-height:1.55}
+.ex-wie ol{margin:0; padding-left:1.2em; display:flex; flex-direction:column; gap:5px}
+.ex-wie p{margin:10px 0 0; color:var(--ink-3); font-size:12px}
+.ex-wie code{font-family:var(--mono); font-size:11.5px}
+.ex-feld input[type=date]{
+  width:100%; padding:6px 9px; background:var(--paper); border:1px solid var(--line-2);
+  border-radius:var(--r); font-size:13px; font-family:var(--mono);
+}
+.ex-vorlagezeile{margin-left:auto; display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px;
+  font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+.ex-vorlagezeile .knopf{padding:5px 11px; font-size:12px; font-family:var(--sans)}
+/* Zwei Prüfungen nebeneinander: dieselbe Liste, zwei Wortwahlen. */
+.ex-paar{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:12px}
+@media (max-width:760px){ .ex-paar{grid-template-columns:1fr} }
+.ex-karte{border:1px solid var(--line); border-radius:var(--r); min-width:0; overflow:hidden}
+.ex-karte.a{border-color:var(--nivA-line)}
+.ex-karte.b{border-color:var(--nivB-line)}
+.ex-kartenkopf{display:flex; align-items:center; gap:8px; padding:8px 10px;
+  font-family:var(--mono); font-size:12px}
+.ex-karte.a .ex-kartenkopf{background:var(--nivA-soft); color:var(--nivA)}
+.ex-karte.b .ex-kartenkopf{background:var(--nivB-soft); color:var(--nivB)}
+.ex-karte .ex-woerter{padding:8px}
+.ex-woerter.einspaltig{grid-template-columns:1fr}
+.ex-kartenfuss{display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:0 8px 8px}
+.ex-kartenfuss select{
+  flex:1 1 160px; min-width:0; padding:5px 7px; font-size:12px;
+  background:var(--paper); border:1px solid var(--line-2); border-radius:var(--r);
+}
+.ex-rolle{
+  font-family:var(--mono); font-size:9.5px; font-weight:400; letter-spacing:.03em;
+  padding:0 5px; border-radius:2px; vertical-align:1px; white-space:nowrap;
+  background:var(--nivB-soft); color:var(--nivB); border:1px solid var(--nivB-line);
+}
+/* Die Aufgaben: jede klappt auf und zu, Aufgabe 1 steht offen. */
+.ex-aufgaben{display:flex; flex-direction:column; gap:8px}
+.ex-aufgabe{border:1px solid var(--line-2); border-radius:var(--r); background:var(--paper)}
+.ex-aufgabe[open]{background:var(--surface)}
+.ex-aufgabe > summary{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; padding:10px 12px;
+}
+.ex-aufgabe > summary::before{
+  content:"›"; display:inline-block; width:.7em; color:var(--ink-3); font-weight:600;
+  transition:transform .15s;
+}
+.ex-aufgabe[open] > summary::before{transform:rotate(90deg)}
+.ex-aufgabe > summary b{font-family:var(--serif); font-size:14.5px; font-weight:600}
+.ex-aufgabe > summary .kurz{
+  flex:1 1 auto; margin:0; font-family:var(--mono); font-size:11px; color:var(--ink-2);
+  white-space:normal;
+}
+.ex-aufgabe[open] > summary > .kurz{display:inline}
+.ex-aufgabenleib{padding:2px 12px 14px; display:flex; flex-direction:column; gap:12px}
+.ex-feld input.fest{border-color:var(--accent); color:var(--accent); font-weight:600}
+.ex-weg{align-self:flex-start; color:var(--crit)}
+.ex-plus{
+  margin-top:8px; width:100%; padding:9px 12px; cursor:pointer; text-align:left;
+  background:none; border:1px dashed var(--line-2); border-radius:var(--r);
+  font-size:13px; font-weight:500; color:var(--accent);
+}
+.ex-plus:hover{border-color:var(--accent); background:var(--accent-soft)}
+.ex-ablage{margin:0; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px 12px}
+@media (max-width:760px){ .ex-ablage{grid-template-columns:1fr} }
+.ex-ablage > div{min-width:0; padding:8px 10px; border-radius:var(--r); background:var(--paper);
+  border:1px solid var(--line)}
+.ex-ablage > div.a{border-color:var(--nivA-line)} .ex-ablage > div.b{border-color:var(--nivB-line)}
+.ex-ablage dt{font-family:var(--mono); font-size:10px; letter-spacing:.06em; text-transform:uppercase;
+  color:var(--ink-3)}
+.ex-ablage dd{margin:2px 0 0; font-size:12.5px; overflow-wrap:anywhere}
+.ex-ablage dd b{display:block; font-weight:500}
+.ex-ablage dd span{font-family:var(--mono); font-size:11px; color:var(--ink-3)}
+/* Zum Austeilen: der Text, wie ihn die Klasse bekommt. */
+.ex-ankuendigung{
+  margin:0; padding:11px 13px; white-space:pre-wrap; overflow-wrap:anywhere;
+  font-family:var(--mono); font-size:12.5px; line-height:1.6; color:var(--ink);
+  background:var(--sunk); border:1px solid var(--line); border-left:3px solid var(--line-2);
+  border-radius:var(--r);
+}
+.ex-austeilen.fertig .ex-ankuendigung{border-left-color:var(--ok)}
+.ex-austeilen .ex-fuss{margin-top:10px}
+.ex-pille.gut{border-color:var(--ok); background:var(--surface); color:var(--ok)}
+dialog#exVorlageFenster{
+  width:min(680px, 94vw); max-height:90vh; padding:0; border:0;
+  border-radius:var(--r); background:var(--surface); color:var(--ink);
+  box-shadow:0 24px 60px -20px rgba(23,26,34,.55);
+  flex-direction:column; overflow:hidden;
+}
+dialog#exVorlageFenster[open]{display:flex}
+dialog#exVorlageFenster::backdrop{background:rgba(23,26,34,.45)}
+dialog#exVorlageFenster .fensterkopf .knopf{margin-left:auto}
+dialog#exVorlageFenster textarea{font-family:var(--mono); font-size:12px}
+.ex-blockkopf .beilaeufig{font-family:var(--mono); font-size:11px}
+.ex-woerterfach > summary{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; padding:9px 12px;
+  border:1px solid var(--line-2); border-radius:var(--r); background:var(--paper);
+}
+.ex-woerterfach > summary::before{
+  content:"›"; display:inline-block; width:.7em; color:var(--ink-3); font-weight:600;
+  transition:transform .15s;
+}
+.ex-woerterfach[open] > summary{margin-bottom:10px}
+.ex-woerterfach[open] > summary::before{transform:rotate(90deg)}
+.ex-woerterkurz{font-family:var(--mono); font-size:12px; color:var(--ink-2); flex:1 1 auto; min-width:0}
+.ex-anpassen{font-size:12px; color:var(--accent); text-decoration:underline; text-underline-offset:2px}
+.ex-woerterfach[open] .ex-anpassen{display:none}
+.ex-merken{animation:aufmerken .25s ease-in-out 2}
 </style>
 
 <div class="wrap">
@@ -843,6 +1129,15 @@ td.satz{color:var(--ink-2); font-size:12.5px}
     </div>
     <div class="quelle" id="quelle"></div>
   </header>
+
+  <!-- Zwei Bereiche. Der Reiter schaltet nur um; die Werkstatt darunter ist
+       dieselbe wie ohne ihn, und eXaminer steht als eigener Bereich daneben. -->
+  <nav class="bereiche" role="tablist" aria-label="Bereich">
+    <button class="bereichsreiter" type="button" role="tab" id="reiterWerkstatt"
+            aria-selected="true">Vokabelwerkstatt<span class="sub">Listen · Prüfungen</span></button>
+    <button class="bereichsreiter" type="button" role="tab" id="reiterExaminer"
+            aria-selected="false" aria-controls="examiner" tabindex="-1">eXaminer<span class="sub" id="reiterExaminerZahl"></span></button>
+  </nav>
 
   <div class="werkbank">
     <!-- ============ Steuerleiste ============ -->
@@ -1156,6 +1451,263 @@ td.satz{color:var(--ink-2); font-size:12.5px}
       </p>
     </main>
   </div>
+
+  <!-- ============ eXaminer ============
+       Ein eigener Bereich, der die Werkstatt nicht berührt. Die Seite
+       erreicht eXaminer nicht selbst: Sie sammelt die Wahl und legt einen
+       Auftrag ins Auftragsbuch, der Chat führt ihn in eXaminer aus. Was er
+       dort liest - die eigenen Aufgaben, die Prüfungen mit Einträgen unter
+       „Zu korrigieren" -, schreibt er nach `examiner/`, und die Seite zeigt es. -->
+  <section class="examiner" id="examiner" role="tabpanel" aria-labelledby="exTitel" hidden>
+    <div class="ex-kopf">
+      <div>
+        <h2 id="exTitel">eXaminer</h2>
+        <p>Prüfungen auf
+          <a href="https://lachenzelg.examiner.cloud" target="_blank" rel="noopener">lachenzelg.examiner.cloud</a>.
+          Die Seite bestellt, der Chat führt in eXaminer aus.</p>
+      </div>
+      <div class="ex-stand">
+        <span id="exStand"></span>
+        <button class="knopf" id="exAbgleich" type="button">Korrekturen abgleichen</button>
+      </div>
+    </div>
+
+    <div class="ex-aktionen" role="tablist" aria-label="Was in eXaminer geschehen soll">
+      <button class="ex-aktion" type="button" role="tab" id="exAufErstellen" aria-controls="exErstellen" aria-selected="true">
+        <b>Prüfung erstellen</b>
+        <span class="sub">Aufgaben und zwei Prüfungen, Niveau A und B, in einem Auftrag.</span>
+        <span class="zahl" id="exZahlErstellen"></span>
+      </button>
+      <button class="ex-aktion" type="button" role="tab" id="exAufKorrektur" aria-controls="exKorrektur" aria-selected="false" tabindex="-1">
+        <b>Prüfung korrigieren</b>
+        <span class="sub">Prüfungen mit Einträgen unter „Zu korrigieren".</span>
+        <span class="zahl" id="exZahlKorrektur"></span>
+      </button>
+    </div>
+
+    <div class="ex-raster">
+      <div class="ex-haupt">
+        <!-- Was fertig ist: der Text zum Austeilen, mit den beiden Links für
+             den Safe Exam Browser, sobald der Chat sie aus eXaminer hat. -->
+        <div class="tafel" id="exBereit" hidden>
+          <div class="tafel-kopf"><h2>Zum Austeilen</h2><span class="note" id="exBereitNote"></span></div>
+          <div class="ex-formular" id="exBereitLeib"></div>
+        </div>
+
+        <!-- Prüfung erstellen: Aufgaben und zwei Prüfungen in einem Auftrag -->
+        <div class="tafel" id="exErstellen" role="tabpanel" aria-labelledby="exAufErstellen">
+          <div class="tafel-kopf"><h2>Prüfung erstellen</h2>
+            <span class="ex-vorlagezeile"><span id="exVorlageName"></span>
+              <button class="zurueck" id="exVorlageAnwenden" type="button" hidden>Vorlage anwenden</button>
+              <button class="knopf" id="exEinstellungen" type="button">Einstellungen</button></span></div>
+          <div class="ex-formular">
+            <div class="ex-block">
+              <div class="ex-wahl">
+                <div class="ex-feld" id="exDbFeld">
+                  <label for="exDb">Lehrmittel</label>
+                  <select id="exDb"></select>
+                </div>
+                <div class="ex-feld">
+                  <label for="exUnit">Unit</label>
+                  <select id="exUnit"></select>
+                </div>
+                <div class="ex-feld">
+                  <span class="ex-feldname" id="exListeName">Vokabelliste</span>
+                  <div class="ex-knoepfe" id="exListe" role="radiogroup" aria-labelledby="exListeName"></div>
+                </div>
+                <div class="ex-feld">
+                  <span class="ex-feldname" id="exTeilName">Part</span>
+                  <div class="ex-knoepfe" role="radiogroup" aria-labelledby="exTeilName">
+                    <label class="ex-chip"><input type="radio" name="exTeil" id="exTeil1" value="1" checked><span>Part I</span></label>
+                    <label class="ex-chip"><input type="radio" name="exTeil" id="exTeil2" value="2"><span>Part II</span></label>
+                  </div>
+                </div>
+                <div class="ex-feld">
+                  <label for="exDatum">Datum der Prüfung</label>
+                  <input type="date" id="exDatum">
+                </div>
+                <div class="ex-feld">
+                  <label for="exAnzahl">Geprüfte Wörter je Prüfung</label>
+                  <input type="number" id="exAnzahl" min="2" max="30" step="1">
+                </div>
+              </div>
+            </div>
+
+            <div class="ex-block">
+              <div class="ex-blockkopf">
+                <span class="legende">Zwei Prüfungen</span>
+                <span class="beilaeufig" id="exWortregel"></span>
+              </div>
+              <!-- Im Preset-Modus steht die Wortwahl zugeklappt da: Die Vorlage
+                   hat gewählt, die Zeile sagt was. Wer anpassen will, klappt auf. -->
+              <details class="ex-woerterfach" id="exWoerterFach">
+              <summary><span class="ex-woerterkurz" id="exWoerterKurz"></span><span class="ex-anpassen">anpassen</span></summary>
+              <div class="ex-paar">
+                <div class="ex-karte a" id="exKarteA">
+                  <div class="ex-kartenkopf"><b>Niveau A</b><span class="waage" id="exWaageA"></span></div>
+                  <ul class="ex-woerter einspaltig" id="exWortlisteA"></ul>
+                  <div class="ex-kartenfuss">
+                    <select id="exZufuegenA" aria-label="Wort für Niveau A dazunehmen"></select>
+                    <button class="zurueck" id="exZurueckA" type="button">Vorbelegung</button>
+                  </div>
+                </div>
+                <div class="ex-karte b" id="exKarteB">
+                  <div class="ex-kartenkopf"><b>Niveau B</b><span class="waage" id="exWaageB"></span></div>
+                  <ul class="ex-woerter einspaltig" id="exWortlisteB"></ul>
+                  <div class="ex-kartenfuss">
+                    <select id="exZufuegenB" aria-label="Wort für Niveau B dazunehmen"></select>
+                    <button class="zurueck" id="exZurueckB" type="button">Vorbelegung</button>
+                  </div>
+                </div>
+              </div>
+              <p class="hinweis" id="exWoerterHinweis"></p>
+              </details>
+            </div>
+
+            <div class="ex-block">
+              <div class="ex-blockkopf">
+                <span class="legende">Aufgaben — für beide Prüfungen gleich</span>
+                <button class="zurueck" id="exVerteilungZurueck" type="button" hidden>Verteilung zurücksetzen</button>
+              </div>
+              <div class="ex-aufgaben" id="exAufgaben"></div>
+              <button class="ex-plus" id="exPlus" type="button">＋ Aufgabe hinzufügen</button>
+              <p class="hinweis">Die geprüften Wörter verteilen sich nach Aufgabentyp: Wo ein Wort schnell
+                geprüft ist, kommen mehr hin, wo es viel Lesezeit kostet, weniger. Keines steht in zwei Aufgaben.
+                Eine getippte Zahl legt die Aufgabe fest, die übrigen teilen sich den Rest.</p>
+            </div>
+
+            <div class="ex-block">
+              <div class="ex-blockkopf"><span class="legende">In eXaminer</span>
+                <span class="beilaeufig">Namen und Ablage kommen aus der Vorlage</span></div>
+              <dl class="ex-ablage" id="exAblage"></dl>
+            </div>
+
+            <div class="ex-block">
+              <div class="ex-feld">
+                <label for="exNotiz">Notiz an den Chat</label>
+                <textarea id="exNotiz" placeholder="Optional: was bei diesen Prüfungen besonders gelten soll"></textarea>
+              </div>
+            </div>
+
+            <div class="ex-fuss">
+              <button class="knopf haupt" id="exErstellenLos" type="button">Prüfungen erstellen</button>
+              <button class="knopf" id="exErstellenKopieren" type="button">Auftrag kopieren</button>
+              <div class="status" id="exErstellenStatus"></div>
+            </div>
+            <div class="ex-zusammenfassung" id="exErstellenKurz"></div>
+          </div>
+        </div>
+
+        <!-- Prüfung korrigieren -->
+        <div class="tafel" id="exKorrektur" role="tabpanel" aria-labelledby="exAufKorrektur" hidden>
+          <div class="tafel-kopf"><h2>Prüfung korrigieren</h2><span class="note" id="exKorrekturNote"></span></div>
+          <div class="ex-formular">
+            <div class="ex-block">
+              <div class="ex-blockkopf"><span class="legende">Korrigierbar</span></div>
+              <div class="ex-rahmen" id="exKorrListe"></div>
+            </div>
+            <div class="ex-block">
+              <div class="ex-feld">
+                <span class="ex-feldname" id="exModusName">Was der Chat tut</span>
+                <div class="ex-knoepfe" role="radiogroup" aria-labelledby="exModusName" id="exModus"></div>
+              </div>
+              <p class="hinweis" id="exModusHinweis"></p>
+            </div>
+            <div class="ex-block">
+              <div class="ex-feld">
+                <label for="exKorrNotiz">Hinweise zur Bewertung</label>
+                <textarea id="exKorrNotiz" placeholder="Optional: wie streng bei Rechtschreibung, halbe Punkte, Sonderfälle"></textarea>
+              </div>
+            </div>
+            <div class="ex-fuss">
+              <button class="knopf haupt" id="exKorrekturLos" type="button">Korrektur bestellen</button>
+              <button class="knopf" id="exKorrekturKopieren" type="button">Auftrag kopieren</button>
+              <div class="status" id="exKorrekturStatus"></div>
+            </div>
+            <div class="ex-zusammenfassung" id="exKorrekturKurz"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-seite">
+        <div class="tafel">
+          <div class="tafel-kopf"><h2>eXaminer-Aufträge</h2><span class="draht" id="exDraht"></span></div>
+          <div class="auftrag">
+            <p class="ex-uhr" id="exUhr" hidden></p>
+            <div class="wache" id="exWache" hidden></div>
+            <ul class="liste-auftraege" id="exBuch"></ul>
+          </div>
+        </div>
+        <div class="tafel">
+          <div class="tafel-kopf"><h2>So läuft ein Auftrag</h2></div>
+          <div class="ex-wie">
+            <ol>
+              <li>Der Knopf legt den Auftrag ins Auftragsbuch und weckt den Chat.</li>
+              <li>Der Chat verteilt die Wörter auf die Aufgaben und schreibt die Inhalte, für Niveau A und B.</li>
+              <li>Er legt die Aufgaben in eXaminer an, dann die zwei Prüfungen, und speichert.</li>
+              <li>Er liest die beiden Links für den Safe Exam Browser aus. Oben steht dann der Text zum Austeilen.</li>
+            </ol>
+            <p>Die Seite selbst kann eXaminer nicht erreichen. Ausführen kann den Auftrag nur eine
+              Chat-Sitzung, die eXaminer im Browser öffnen darf. Zugangsdaten gehören nie ins Auftragsbuch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Die Vorlage: was jede neue Prüfung voreingestellt mitbringt. Sie
+         liegt im Auftragsbuch (`examiner/vorlage`), damit sie auf jedem
+         Gerät gilt und der Chat sie lesen kann. -->
+    <dialog id="exVorlageFenster" aria-labelledby="exVorlageTitel">
+      <div class="fensterkopf">
+        <h2 id="exVorlageTitel">Einstellungen der Vorlage</h2>
+        <button class="knopf" id="exVorlageZu" type="button">Schliessen</button>
+      </div>
+      <div class="fensterleib ex-formular">
+        <div class="ex-block">
+          <div class="ex-blockkopf"><span class="legende">Wörter</span></div>
+          <div class="ex-felder">
+            <div class="ex-feld">
+              <label for="exVWoerter">Wörter je Prüfung</label>
+              <input type="number" id="exVWoerter" min="2" max="30" step="1">
+            </div>
+            <div class="ex-feld">
+              <label for="exVSchwer">Niveau B: davon mittelschwer</label>
+              <input type="number" id="exVSchwer" min="0" max="30" step="1">
+            </div>
+          </div>
+          <p class="hinweis">Niveau A bekommt die schwersten Wörter des Parts. Niveau B bekommt die
+            zugänglichsten und dazu so viele mittelschwere, wie hier steht: die schwersten, die nicht
+            in der Prüfung für Niveau A stehen.</p>
+        </div>
+        <div class="ex-block">
+          <div class="ex-blockkopf"><span class="legende">Aufgaben</span></div>
+          <p class="ex-band" id="exVAufgaben"></p>
+          <button class="knopf" id="exVAufgabenUebernehmen" type="button">Aufgaben von der Seite übernehmen</button>
+        </div>
+        <div class="ex-block">
+          <div class="ex-blockkopf"><span class="legende">Namen und Ablage</span></div>
+          <div class="ex-felder">
+            <div class="ex-feld"><label for="exVName">Name der Prüfung</label><input type="text" id="exVName" autocomplete="off"></div>
+            <div class="ex-feld"><label for="exVThema">Thema</label><input type="text" id="exVThema" autocomplete="off"></div>
+            <div class="ex-feld"><label for="exVUnterthema">Unterthema</label><input type="text" id="exVUnterthema" autocomplete="off"></div>
+          </div>
+        </div>
+        <div class="ex-block">
+          <div class="ex-feld">
+            <label for="exVText">Text zum Austeilen</label>
+            <textarea id="exVText" rows="6"></textarea>
+          </div>
+          <p class="hinweis">Platzhalter: <code>{kuerzel}</code> <code>{unit}</code> <code>{part}</code>
+            <code>{niveau}</code> <code>{datum}</code>, im Text dazu <code>{link_A}</code> und <code>{link_B}</code>.</p>
+        </div>
+        <div class="ex-fuss">
+          <button class="knopf haupt" id="exVSpeichern" type="button">Vorlage speichern</button>
+          <button class="knopf" id="exVStandard" type="button">Auf Standard zurücksetzen</button>
+          <div class="status" id="exVStatus"></div>
+        </div>
+      </div>
+    </dialog>
+  </section>
 </div>
 
 <dialog id="lehrmittel" aria-labelledby="lehrmittelTitel">
@@ -1970,7 +2522,7 @@ async function lehrmittelAusloesen(){
   const einwand = lehrmittelEinwand(d);
   if(einwand){ lehrmittelStockt(einwand); return; }
   const knopf = $("dbAusloesen");
-  if(!db || !selbst){
+  if(!db || !kannKlingeln()){
     dbMelde("Auslösen steht in dieser Ansicht nicht zur Verfügung — den " +
             "Befehl stattdessen kopieren und die Datei im Chat anhängen.",
             "fehler");
@@ -2951,7 +3503,7 @@ function zeichneKnopf(a){
 }
 
 /* ---------------- Auftragsbuch (db) ---------------- */
-let db = null, downloads = null, selbst = null, muster = null;
+let db = null, downloads = null, selbst = null, muster = null, draht = null;
 const buch = [];
 
 /* Wie weit ein Auftrag ist. Der Chat schreibt den Stand in dasselbe
@@ -2981,6 +3533,8 @@ function auftragsTitel(e){
   if(e.art === "umbenennen")
     return "Umbenennen " + (e.alt || "") +
            (e.name && e.name !== e.alt ? " → " + e.name : "");
+  if(istExaminerAuftrag(e))
+    return e.kurztitel || "eXaminer";
   return "Unit " + e.unit;
 }
 
@@ -3007,6 +3561,7 @@ function zeichneBuch(){
   const kasten = $("auftragsbuch");
   kasten.innerHTML = "";
   zeichneVerlauf();
+  zeichneExAuftraege();
   if(!buch.length) return;
   // Der Auftrag, der oben gross unter „Was gerade läuft" steht, steht nicht
   // ein zweites Mal im Buch - zweimal dieselben Schritte sagen nichts mehr.
@@ -3111,6 +3666,49 @@ async function starteArtifact(){
   zeichneAusloeser();
 }
 
+/* Die Klingel, direkt. Eine Neuveröffentlichung weckt die Sitzung nur,
+   wenn der Dienst die neue Fassung zustellt - und das kam zweimal nicht
+   an. Der Knopf zieht deshalb selbst an der Glocke: Über den Connector
+   „Claude Code Remote" löst die Seite eine Routine aus, die an dieser
+   Chat-Sitzung hängt und keinen Zeitplan hat. Sie schickt nur die
+   Kennung mit; was gebaut wird, liest der Chat im Auftragsbuch nach.
+
+   Auslösen kann die Routine nur ihr Besitzer - wer die Seite sonst
+   öffnet, bekommt einen Fehler zurück, und dann bleibt die
+   Neuveröffentlichung als zweiter Weg. */
+const KLINGEL = {server:"Claude Code Remote", werkzeug:"fire_trigger",
+                 routine:"trig_01E6qXjkkHoo5rGxtPyx9ohn"};
+
+async function starteKlingel(){
+  try{
+    draht = await window.claude?.use?.("mcp");
+  }catch(e){ draht = null; }
+  zeichneAusloeser();
+}
+
+/* Weckt die Sitzung: erst direkt, sonst über eine neue Fassung der Seite.
+   Gibt zurück, welcher Weg ging ("direkt" oder "seite"); wirft, wenn
+   keiner ging. Kein Wiederholen von selbst: Ein Fehler beim Auslösen
+   heisst nicht sicher, dass nichts ausgelöst wurde - doppelt geweckt
+   schadet aber nicht, der Chat nimmt einen Auftrag nur einmal an. */
+async function klingle(id){
+  let grund = null;
+  if(draht){
+    try{
+      await draht.callTool(KLINGEL.server, KLINGEL.werkzeug,
+        {trigger_id:KLINGEL.routine, text:"Auftrag " + id}, {cache:false});
+      return "direkt";
+    }catch(e){ grund = e; }
+  }
+  if(selbst){
+    await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
+    return "seite";
+  }
+  throw grund || new Error("In dieser Ansicht gibt es keine Klingel.");
+}
+
+function kannKlingeln(){ return Boolean(draht || selbst); }
+
 /* Die Seite baut sich selbst zusammen - in derselben Reihenfolge wie
    `bauen.py`: erst die Daten, dann die eingebettete Vorlage, zuletzt die
    Klingel. Wer die Reihenfolge tauscht, ersetzt den Platzhalter in der
@@ -3135,13 +3733,13 @@ function bauePlatte(klingel){
 /* Hängt die Seite am Chat? Ohne diese Zeile sieht ein Knopf, der nichts
    tun kann, genauso aus wie einer, der gleich etwas tut - und „ich hab
    geklickt, es passiert nichts" ist dann die einzige Rückmeldung. */
-function verbunden(){ return Boolean(db && selbst); }
+function verbunden(){ return Boolean(db && kannKlingeln()); }
 
 function zeichneDraht(){
   const zeile = $("draht");
   const dran = verbunden();
   zeile.className = "draht " + (dran ? "dran" : "ab");
-  const fehlt = [!db && "Auftragsbuch", !selbst && "Veröffentlichen"]
+  const fehlt = [!db && "Auftragsbuch", !kannKlingeln() && "Klingel"]
     .filter(Boolean);
   zeile.innerHTML = '<span class="punkt"></span>' + (dran
     ? "<b>mit claude.ai verbunden</b> — der Auftrag geht direkt an den Chat"
@@ -3149,7 +3747,8 @@ function zeichneDraht(){
       (fehlt.length ? fehlt.join(" und ") + (fehlt.length > 1 ? " fehlen; " : " fehlt; ") : "") +
       "„Befehl kopieren\u201c und im Chat einfügen");
   zeile.title = dran
-    ? "db und artifact stehen bereit."
+    ? (draht ? "Auftragsbuch und direkte Klingel (Connector \u201eClaude Code Remote\u201c) stehen bereit."
+             : "Auftragsbuch steht; geweckt wird über eine neue Fassung der Seite.")
     : "In der Vorschau und in geteilten Ansichten fehlen diese Fähigkeiten.";
 }
 
@@ -3241,14 +3840,14 @@ function anstoss(e){
 }
 
 async function nachklingeln(e, knopf){
-  if(!db || !selbst){ return anstossKopieren(e); }
+  if(!db || !kannKlingeln()){ return anstossKopieren(e); }
   knopf.disabled = true;
   try{
     await db.doc("auftraege/" + e.id).update({
       nachgeklingelt:new Date().toISOString(),
       schritt:"Noch einmal geklingelt \u2026",
     });
-    await selbst.publish(bauePlatte({auftrag:e.id, zeit:new Date().toISOString()}));
+    await klingle(e.id);
     melde("Noch einmal geklingelt. Kommt wieder nichts, den Anstoss kopieren " +
           "und im Chat einfügen.", "ok");
   }catch(fehler){
@@ -4160,7 +4759,7 @@ $("kopieren").addEventListener("click", async () => {
    Bau aus der Leiste und ein neues Lehrmittel - gehen denselben Weg; nur
    was im Auftrag steht, unterscheidet sie. */
 async function ausloesen(auftragsdaten, kennung, knopf, sagen){
-  if(!db || !selbst){
+  if(!db || !kannKlingeln()){
     sagen("Auslösen steht in dieser Ansicht nicht zur Verfügung — " +
           "den Befehl stattdessen kopieren und im Chat einfügen.", "fehler");
     return false;
@@ -4195,9 +4794,10 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
   }
   sagen("Abgelegt — wecke die Sitzung …");
   try{
-    await selbst.publish(bauePlatte({auftrag:id, zeit:new Date().toISOString()}));
-    // Bis hierher kommt die Seite selten - aber wenn, dann stimmt der
-    // zweite Schritt nicht mehr.
+    const weg = await klingle(id);
+    // Direkt geklingelt bleibt die Seite stehen, und der zweite Schritt
+    // wird hier abgehakt. Über eine neue Fassung kommt sie selten bis
+    // hierher - sie lädt dabei neu.
     try{
       await db.doc("auftraege/" + id).update({
         stand:"ausgeloest",
@@ -4210,9 +4810,10 @@ async function ausloesen(auftragsdaten, kennung, knopf, sagen){
         ],
       });
     }catch(nachtrag){ /* die Seite lädt gerade neu - der Stand bleibt */ }
-    // Bis hierher kommt die Seite selten: nach `publish` lädt jede offene
-    // Ansicht die neue Fassung, diese eingeschlossen.
-    sagen("Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
+    sagen(weg === "direkt"
+      ? "Ausgelöst — die Chat-Sitzung ist geweckt. Der Auftrag steht im Buch, "
+        + "bis der Chat ihn gebaut hat."
+      : "Ausgelöst. Der Auftrag steht im Buch, bis der Chat ihn gebaut hat.", "ok");
   }catch(e){
     knopf.disabled = false;
     const code = e && e.code ? e.code : "";
@@ -4268,6 +4869,1414 @@ $("herunterladen").addEventListener("click", async () => {
   }catch(e){ melde("Nicht gesichert.", "fehler"); }
 });
 
+/* ======================================================================
+   eXaminer
+   ----------------------------------------------------------------------
+   Ein eigener Bereich neben der Werkstatt. Er liest dieselben Daten -
+   Units, Listen, die Prüfungsauswahl je Part und Niveau - und bestellt
+   über dasselbe Auftragsbuch. Was die Werkstatt einstellt, fasst er nicht
+   an: Er hat seinen eigenen Zustand (`ex`), seine eigenen Felder und
+   zeichnet nur sich selbst.
+
+   Ein Auftrag, zwei Prüfungen: Aufgaben schreiben, in eXaminer anlegen,
+   daraus eine Prüfung für Niveau A und eine für Niveau B machen, und die
+   beiden Links für den Safe Exam Browser zurückgeben. Die Reihenfolge
+   kennt der Chat; die Seite sammelt nur, was er dafür braucht.
+
+   Die Seite erreicht eXaminer nicht. Sie läuft in einem abgeschotteten
+   Rahmen, und eXaminer verlangt eine Anmeldung. Was der Chat dort liest,
+   schreibt er ins Auftragsbuch, und die Seite zeigt es.
+   ====================================================================== */
+const EX_ADRESSE = "https://lachenzelg.examiner.cloud";
+
+/* Die Aufgabentypen von eXaminer, in der Reihenfolge seiner Auswahl.
+   Ausgebaut ist der Lückentext; bei den anderen nennt der Auftrag Typ und
+   Wörter, und wie die Aufgabe im Einzelnen aussieht, klärt der Chat.
+
+   `gewicht` sagt, wie viele Wörter ein Typ bei der Verteilung bekommt:
+   Wo ein Wort schnell geprüft ist - hinschreiben, einsetzen, zuordnen -,
+   passen mehr hinein; wo eines viel Lesezeit kostet - vier Aussagen bei
+   K-Prim, ein ganzer Aufsatz -, weniger. `mindestens` ist, was der Typ
+   braucht, um überhaupt eine Aufgabe zu sein: Eine Wortbank mit einem
+   Wort verrät es, eine Zuordnung mit zwei Paaren löst sich von selbst. */
+const EX_TYPEN = [
+  {kennung:"lueckentext",     name:"Lückentext", ausgebaut:true, gewicht:2, mindestens:2},
+  {kennung:"text",            name:"Text",            gewicht:3, mindestens:1},
+  {kennung:"aufsatz",         name:"Aufsatz",         gewicht:1, mindestens:2},
+  {kennung:"single_choice",   name:"Single Choice",   gewicht:2, mindestens:1},
+  {kennung:"multiple_choice", name:"Multiple Choice", gewicht:2, mindestens:1},
+  {kennung:"k_prim",          name:"K-Prim",          gewicht:1, mindestens:1},
+  {kennung:"zuordnung",       name:"Zuordnung",       gewicht:2, mindestens:3},
+  {kennung:"reihenfolge",     name:"Reihenfolge",     gewicht:1, mindestens:3},
+  {kennung:"aufgabengruppe",  name:"Aufgabengruppe",  gewicht:2, mindestens:1},
+];
+
+/* Wie eine Lücke gefüllt wird. Welche dieser Formen eXaminer beim
+   Lückentext anbietet, entscheidet eXaminer - geht eine nicht, sagt der
+   Chat das, statt still eine andere zu nehmen. */
+const EX_ANTWORTEN = [
+  {kennung:"eintippen", name:"Eintippen",    satz:"die Lösung wird in die Lücke getippt"},
+  {kennung:"ziehen",    name:"Hineinziehen", satz:"die Wörter werden in die Lücken gezogen"},
+  {kennung:"auswahl",   name:"Auswahl",      satz:"je Lücke eine Auswahl aus den Wörtern der Aufgabe"},
+];
+
+/* Was der Chat bei einer Korrektur tun darf. Voreingestellt ist das
+   Vorbereiten: Eine Note, die ohne Blick der Lehrperson in eXaminer steht,
+   ist schneller geschrieben als zurückgenommen. */
+const EX_MODI = [
+  {kennung:"vorbereiten", name:"Vorschläge vorbereiten",
+   hinweis:"Der Chat schlägt je Antwort Punkte mit kurzer Begründung vor und schreibt sie hierher. " +
+           "In eXaminer speichert er nichts - das tun Sie nach dem Durchsehen selbst."},
+  {kennung:"speichern",   name:"Korrigieren und speichern",
+   hinweis:"Der Chat korrigiert und speichert die Punkte in eXaminer. Was sich nicht eindeutig " +
+           "bewerten lässt, lässt er offen und listet es auf."},
+];
+
+/* Die Vorlage, wie sie ohne eigene Einstellungen gilt. Zwölf Wörter je
+   Prüfung; Niveau A die schwersten, Niveau B die zugänglichsten und dazu
+   drei mittelschwere. Eine Aufgabe: der Lückentext. Der Text zum
+   Austeilen hat genau die Form, die die Klasse bekommt. */
+const EX_VORLAGE_STANDARD = {
+  woerter:12, schwer:3,
+  aufgaben:[{typ:"lueckentext", fest:null, antwort:"eintippen", wortbank:true, punkte:1}],
+  name:"English Vocabulary Test {kuerzel} Unit {unit} Part {part} – Niveau {niveau}",
+  thema:"{kuerzel}_Unit {unit}",
+  unterthema:"Niveau {niveau}",
+  text:"English Vocabulary Test (Datum: {datum}). Unit {unit} Part {part}.\n" +
+       "If you are Niveau A, copy this link into your browser:\n{link_A}\n" +
+       "If you are Niveau B, copy this link into your browser:\n{link_B}",
+};
+
+const ex = {
+  bereich:"werkstatt", aktion:"erstellen",
+  vorlage:null, vorlageQuelle:"standard", vorlageStand:"", vorlageNeu:false,
+  // Die Wahl von oben nach unten.
+  db:"", unit:null, version:null, teil:1, datum:"",
+  // Die Wörter der beiden Prüfungen: vorbelegt nach der Vorlage, danach
+  // abgewählt (`an: false`), getauscht (`statt`) oder dazugenommen (`dazu`).
+  woerter:{A:[], B:[]},
+  // Wie viele Wörter je Prüfung geprüft werden - voreingestellt aus der
+  // Vorlage, auf der Seite änderbar.
+  anzahl:12,
+  // Die Aufgaben, für beide Prüfungen gleich. Die Wörter verteilen sich
+  // nach Typ darauf; eine getippte Zahl nagelt fest.
+  aufgaben:[], offen:new Set([0]),
+  // Hat jemand an der Wahl gedreht? Dann überschreibt eine Vorlage, die
+  // gerade aus dem Auftragsbuch kommt, das Formular nicht mehr.
+  beruehrt:false,
+  // Prüfung korrigieren.
+  korrWahl:"", modus:"vorbereiten",
+  // Was der Chat aus eXaminer gelesen hat. null heisst: noch nie abgeglichen.
+  pruefungen:null, lesbar:null, quelle:null,
+  wacheSchluessel:"",
+};
+
+function istExaminerAuftrag(e){ return String((e && e.art) || "").indexOf("examiner-") === 0; }
+
+/* Welcher Bereich und welcher Knopf zuletzt offen war - nur eine
+   Bequemlichkeit für diese Person. Nach dem Auslösen lädt die Seite neu,
+   und ohne das stünde man danach wieder in der Werkstatt. */
+function exMerken(schluessel, wert){
+  try{ localStorage.setItem("werkstatt." + schluessel, wert); }catch(e){ /* geht auch ohne */ }
+}
+function exGemerkt(schluessel){
+  try{ return localStorage.getItem("werkstatt." + schluessel); }catch(e){ return null; }
+}
+
+/* ---------------- Die Vorlage ----------------
+   Sie kommt aus dem Auftragsbuch und damit von aussen: Jeder Wert wird
+   geprüft, bevor er gilt. Was nicht passt, fällt auf den Standard zurück. */
+function exZahl(wert, min, max, sonst){
+  const n = Math.round(Number(wert));
+  return isFinite(n) && n >= min && n <= max ? n : sonst;
+}
+function exZeile(wert, sonst, laenge){
+  return typeof wert === "string" && wert.trim() ? wert.slice(0, laenge || 200) : sonst;
+}
+function exAufgabePruefen(a){
+  const typ = EX_TYPEN.some(t => t.kennung === (a && a.typ)) ? a.typ : "lueckentext";
+  return {
+    typ:typ,
+    // Eine festgenagelte Wortzahl, sonst null: dann verteilt die Seite.
+    fest:a && a.fest != null ? exZahl(a.fest, 1, 30, null) : null,
+    antwort:EX_ANTWORTEN.some(x => x.kennung === (a && a.antwort)) ? a.antwort : "eintippen",
+    wortbank:!(a && a.wortbank === false),
+    punkte:(() => { const p = Number(a && a.punkte); return isFinite(p) && p > 0 && p <= 10 ? p : 1; })(),
+  };
+}
+function exVorlagePruefen(roh){
+  const s = EX_VORLAGE_STANDARD, r = roh && typeof roh === "object" ? roh : {};
+  const woerter = exZahl(r.woerter, 2, 30, s.woerter);
+  const aufgaben = Array.isArray(r.aufgaben) && r.aufgaben.length
+    ? r.aufgaben.slice(0, 6).map(a => exAufgabePruefen(a))
+    : s.aufgaben.map(a => exAufgabePruefen(a));
+  return {
+    woerter:woerter, schwer:exZahl(r.schwer, 0, woerter, Math.min(s.schwer, woerter)),
+    aufgaben:aufgaben,
+    name:exZeile(r.name, s.name), thema:exZeile(r.thema, s.thema),
+    unterthema:exZeile(r.unterthema, s.unterthema), text:exZeile(r.text, s.text, 2000),
+  };
+}
+/* Platzhalter einsetzen: {unit}, {part}, ... Unbekannte bleiben stehen. */
+function exSetze(muster, werte){
+  return String(muster).replace(/\{(\w+)\}/g, (ganz, name) =>
+    Object.hasOwn(werte, name) ? String(werte[name]) : ganz);
+}
+
+/* ---------------- Was zur Wahl steht ---------------- */
+function exDatenbanken(){ return DATA.datenbanken || []; }
+function exDatenbank(){
+  return exDatenbanken().find(d => d.name === ex.db) || exDatenbanken()[0] || null;
+}
+function exEinheiten(){ const d = exDatenbank(); return (d && d.units) || []; }
+function exUnit(){ return exEinheiten().find(u => u.unit === ex.unit) || null; }
+function exListe(){
+  const u = exUnit();
+  if(!u || !u.listen || !u.listen.length) return null;
+  return u.listen.find(l => l.version === ex.version) || null;
+}
+function exTyp(kennung){ return EX_TYPEN.find(t => t.kennung === kennung) || EX_TYPEN[0]; }
+function exTeilname(teil){ return teil === 1 ? "Part I" : "Part II"; }
+function exUnitname(u){ return u ? (u.unit === 0 ? "Starter Unit" : "Unit " + u.unit) : ""; }
+function exKuerzel(){
+  const d = exDatenbank();
+  const m = /^EnglishPlus(\d+)$/i.exec(d ? d.name : "");
+  return m ? "EP" + m[1] : (d ? d.name : "");
+}
+function exDatum(){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ex.datum || "");
+  return m ? m[3] + "." + m[2] + "." + m[1] : "";
+}
+function exHeute(){
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" +
+         String(d.getDate()).padStart(2, "0");
+}
+function exWerte(niveau){
+  const u = exUnit();
+  return {kuerzel:exKuerzel(), unit:u ? u.unit : "", part:ex.teil === 1 ? "I" : "II",
+          niveau:niveau || "", datum:exDatum()};
+}
+
+/* Voreingestellt ist die Liste, die ausgeteilt wurde - die neueste mit
+   gebauter Vokabelliste, sonst die neueste überhaupt. */
+function exStandardliste(u){
+  const listen = (u.listen || []).slice().sort((a, b) => b.version - a.version);
+  const gebaut = listen.find(l => l.liste_blatt && istGebaut(l.liste_blatt));
+  return (gebaut || listen[0] || {version:null}).version;
+}
+function exUnitWaehlen(nummer){
+  const mit = exEinheiten().filter(u => u.listen && u.listen.length);
+  const u = mit.find(x => x.unit === nummer) || mit[0] || null;
+  ex.unit = u ? u.unit : null;
+  ex.version = u ? exStandardliste(u) : null;
+  exNeuBelegen();
+}
+
+/* ---------------- Welche Wörter in welche Prüfung ----------------
+   Eine reine Rechnung, ohne Seite drumherum - so lässt sie sich für sich
+   prüfen. `teil` sind die Wörter des Parts, `echtA`/`echtB` die
+   Prüfungsauswahl der Anwendung für Niveau A und B (sie hält Kognate und
+   Wortfamilien schon draussen), `n` die Wortzahl, `k` die mittelschweren
+   für Niveau B.
+
+   Niveau A: die n schwersten, zuerst aus der Auswahl für A.
+   Niveau B: die n - k zugänglichsten, zuerst aus der Auswahl für B, und
+   dazu k mittelschwere - die schwersten, die nicht in A stehen. So ist B
+   kein Ausschnitt von A, und keine Prüfung verrät die andere. */
+function exWortwahl(teil, echtA, echtB, n, k){
+  const nach = new Map(teil.map(w => [w.en, w]));
+  const schwer = (a, b) => b.score - a.score || a.en.localeCompare(b.en);
+  const leicht = (a, b) => a.score - b.score || a.en.localeCompare(b.en);
+  const ausA = echtA.map(en => nach.get(en)).filter(Boolean).sort(schwer);
+  const wahlA = ausA.concat(teil.filter(w => !ausA.includes(w)).sort(schwer)).slice(0, n);
+  const inA = new Set(wahlA.map(w => w.en));
+  k = Math.max(0, Math.min(k, n));
+  const ausB = echtB.map(en => nach.get(en)).filter(w => w && !inA.has(w.en)).sort(leicht);
+  const leichte = ausB.concat(teil.filter(w => !inA.has(w.en) && !ausB.includes(w)).sort(leicht))
+    .slice(0, n - k);
+  const vergeben = new Set([...inA, ...leichte.map(w => w.en)]);
+  const mittel = teil.filter(w => !vergeben.has(w.en)).sort(schwer).slice(0, k);
+  // Hat der Part nicht genug Wörter für zwei getrennte Prüfungen, bekommt
+  // B die zugänglichsten aus A dazu - ein Überschnitt ist erlaubt, eine
+  // kürzere Prüfung für B wäre es nicht.
+  const fehlt = n - leichte.length - mittel.length;
+  const geteilt = fehlt > 0 ? wahlA.slice().sort(leicht).slice(0, fehlt) : [];
+  return {
+    A:wahlA.map(w => w.en),
+    B:mittel.concat(leichte, geteilt).sort(schwer).map(w => w.en),
+    mittel:mittel.map(w => w.en),
+    geteilt:geteilt.map(w => w.en),
+  };
+}
+
+function exPart(){ const li = exListe(); return li ? li.woerter.filter(w => w.test === ex.teil) : []; }
+function exEcht(niveau){
+  const li = exListe(), e = li && (li.echt || {})["t" + ex.teil + niveau];
+  return e && Array.isArray(e.woerter) ? e.woerter : [];
+}
+function exVorbelegung(niveau){
+  const teil = exPart();
+  if(!teil.length) return [];
+  const wahl = exWortwahl(teil, exEcht("A"), exEcht("B"), ex.anzahl, Math.min(ex.vorlage.schwer, ex.anzahl));
+  const nach = new Map(teil.map(w => [w.en, w])), mittel = new Set(wahl.mittel);
+  return wahl[niveau].map(en => nach.get(en)).map(w => ({
+    en:w.en, de:w.de, score:w.score, an:true, statt:null, dazu:false,
+    mittel:niveau === "B" && mittel.has(w.en),
+  }));
+}
+function exNeuBelegen(){ ex.woerter = {A:exVorbelegung("A"), B:exVorbelegung("B")}; }
+function exGeprueft(niveau){ return ex.woerter[niveau].filter(w => w.an); }
+function exWieVorbelegt(niveau){
+  const vor = exVorbelegung(niveau).map(w => w.en).join("|");
+  return ex.woerter[niveau].every(w => w.an) && vor === ex.woerter[niveau].map(w => w.en).join("|");
+}
+/* Die übrigen Wörter desselben Parts - zum Tauschen und Dazunehmen. */
+function exPool(niveau){
+  const drin = new Set(ex.woerter[niveau].map(w => w.en));
+  return exPart().filter(w => !drin.has(w.en))
+    .sort((a, b) => b.score - a.score || a.en.localeCompare(b.en));
+}
+
+/* ---------------- Die Aufgaben ----------------
+   Für beide Prüfungen gleich. Die Wörter einer Prüfung verteilen sich nach
+   dem Gewicht ihres Typs auf die Aufgaben; eine getippte Zahl nagelt fest
+   und kommt aus der Gesamtzahl, nicht obendrauf. Kein Wort steht in zwei
+   Aufgaben - welches wohin gehört, entscheidet der Chat beim Schreiben. */
+
+/* Eine reine Rechnung, damit sie sich für sich prüfen lässt. Festes zuerst,
+   der Rest proportional zum Gewicht, übrige Wörter nach dem grössten
+   Bruchteil; was dann unter seiner Mindestzahl liegt, wird angehoben -
+   genommen von der freien Aufgabe, die am weitesten über ihrer liegt.
+   Zweimal dieselbe Eingabe gibt zweimal dasselbe. */
+function exVerteilen(gesamt, aufgaben){
+  const zahl = aufgaben.map(a => a.fest == null ? 0 : a.fest);
+  const frei = aufgaben.map((a, i) => i).filter(i => aufgaben[i].fest == null);
+  const rest = gesamt - zahl.reduce((s, z) => s + z, 0);
+  if(!frei.length || rest <= 0) return zahl;
+  const summe = frei.reduce((s, i) => s + aufgaben[i].gewicht, 0);
+  const anteile = frei.map(i => ({i:i, roh:rest * aufgaben[i].gewicht / summe}));
+  anteile.forEach(x => { zahl[x.i] = Math.floor(x.roh); });
+  let uebrig = rest - anteile.reduce((s, x) => s + Math.floor(x.roh), 0);
+  anteile.slice().sort((x, y) => (y.roh - Math.floor(y.roh)) - (x.roh - Math.floor(x.roh)) || x.i - y.i)
+    .forEach(x => { if(uebrig > 0){ zahl[x.i]++; uebrig--; } });
+  for(const i of frei){
+    while(zahl[i] < aufgaben[i].mindestens){
+      const geber = frei.filter(j => j !== i && zahl[j] > aufgaben[j].mindestens)
+        .sort((x, y) => (zahl[y] - aufgaben[y].mindestens) - (zahl[x] - aufgaben[x].mindestens) || x - y)[0];
+      if(geber === undefined) break;
+      zahl[geber]--; zahl[i]++;
+    }
+  }
+  return zahl;
+}
+function exVerteilung(niveau){
+  return exVerteilen(exGeprueft(niveau).length, ex.aufgaben.map(a => {
+    const typ = exTyp(a.typ);
+    return {gewicht:typ.gewicht || 1, mindestens:typ.mindestens || 1, fest:a.fest};
+  }));
+}
+function exNeueAufgabe(a){
+  const p = exAufgabePruefen(a || {});
+  p.textstufe = {A:null, B:null};
+  return p;
+}
+function exAufgabenAusVorlage(){
+  ex.aufgaben = ex.vorlage.aufgaben.map(a => exNeueAufgabe(a));
+  ex.offen = new Set([0]);
+}
+function exTextstufe(a, niveau){
+  return a.textstufe[niveau] === null ? normalText(niveau) : a.textstufe[niveau];
+}
+function exAufgabeKurz(a, i){
+  const zA = exVerteilung("A")[i], zB = exVerteilung("B")[i];
+  const zahl = zA === zB ? zA + (zA === 1 ? " Wort" : " Wörter") : "A " + zA + " · B " + zB + " Wörter";
+  return exTyp(a.typ).name + " · " + zahl + (a.fest == null ? "" : " (fest)");
+}
+
+/* ---------------- Zeichnen ---------------- */
+function exChip(name, id, wert, text, an, klasse){
+  return '<label class="ex-chip' + (klasse ? " " + klasse : "") + '"><input type="radio" name="' +
+    name + '" id="' + id + '" value="' + esc(wert) + '"' + (an ? " checked" : "") +
+    "><span>" + esc(text) + "</span></label>";
+}
+
+function zeichneExVorlage(){
+  const quelle = {standard:"Vorlage: Standard",
+                  gespeichert:"Vorlage: eigene" + (ex.vorlageStand ? ", gespeichert " + ex.vorlageStand : ""),
+                  browser:"Vorlage: eigene (nur in diesem Browser)"}[ex.vorlageQuelle] || "Vorlage";
+  $("exVorlageName").textContent = quelle;
+  $("exVorlageAnwenden").hidden = !ex.vorlageNeu;
+  const v = ex.vorlage;
+  $("exWortregel").textContent = "Vorlage: je " + v.woerter + " Wörter · A die schwersten · B " +
+    (v.woerter - v.schwer) + " zugängliche" + (v.schwer ? " + " + v.schwer + " mittelschwere" : "");
+}
+
+function zeichneExWahl(){
+  const dbs = exDatenbanken();
+  const dbWahl = $("exDb");
+  if(!dbWahl.options.length)
+    dbWahl.innerHTML = dbs.map(d => '<option value="' + esc(d.name) + '">' +
+      esc(d.titel || d.name) + "</option>").join("");
+  dbWahl.value = ex.db;
+  $("exDbFeld").hidden = dbs.length < 2;
+
+  const unitWahl = $("exUnit");
+  if(unitWahl.dataset.fuer !== ex.db){
+    unitWahl.dataset.fuer = ex.db;
+    unitWahl.innerHTML = exEinheiten().map(u => {
+      const hat = u.listen && u.listen.length;
+      return '<option value="' + u.unit + '"' + (hat ? "" : " disabled") + ">" +
+        esc(exUnitname(u) + (u.thema ? " — " + u.thema : "") +
+            (hat ? "" : " (noch keine Liste)")) + "</option>";
+    }).join("");
+  }
+  if(ex.unit !== null) unitWahl.value = String(ex.unit);
+
+  const u = exUnit(), kasten = $("exListe");
+  const schluessel = ex.db + "|" + ex.unit;
+  if(kasten.dataset.fuer !== schluessel){
+    kasten.dataset.fuer = schluessel;
+    kasten.innerHTML = u && u.listen && u.listen.length
+      ? u.listen.map(li => exChip("exListe", "exListeV" + li.version, li.version,
+          "V" + li.version, li.version === ex.version)).join("")
+      : '<span class="hinweis">keine Liste</span>';
+    kasten.querySelectorAll("label").forEach((el, i) => {
+      const li = u.listen[i];
+      el.title = li.woerter.length + " Wörter · Abdruck " + (li.abdruck || "–") +
+        (li.liste_blatt && istGebaut(li.liste_blatt) ? " · als Word-Datei gebaut" : "");
+    });
+  }
+  kasten.querySelectorAll("input").forEach(el => { el.checked = Number(el.value) === ex.version; });
+  $("exTeil" + ex.teil).checked = true;
+  if(document.activeElement !== $("exDatum")) $("exDatum").value = ex.datum;
+}
+
+function zeichneExWoerter(){
+  const fokus = document.activeElement && document.activeElement.id;
+  for(const niv of ["A", "B"]){
+    const pool = exPool(niv);
+    const optionen = pool.map(p => '<option value="' + esc(p.en) + '">' + esc(p.en) + " · " +
+      Number(p.score || 0).toFixed(1) + "</option>").join("");
+    $("exWortliste" + niv).innerHTML = ex.woerter[niv].map((w, i) =>
+      '<li class="ex-wort' + (w.an ? "" : " aus") + (w.statt || w.dazu ? " getauscht" : "") + '">' +
+        '<input type="checkbox" id="exWort' + niv + i + '" data-niv="' + niv + '" data-i="' + i + '"' +
+          (w.an ? " checked" : "") + ">" +
+        '<label class="en" for="exWort' + niv + i + '">' + esc(w.en) +
+          (w.mittel ? ' <span class="ex-rolle">mittelschwer</span>' : "") + "</label>" +
+        '<span class="sc" title="Prüfnote 0–10">' + Number(w.score || 0).toFixed(1) + "</span>" +
+        '<span class="de">' + esc(w.de) + "</span>" +
+        (w.statt ? '<span class="statt">statt ' + esc(w.statt) + "</span>"
+                 : w.dazu ? '<span class="statt">dazugenommen</span>' : "") +
+        (pool.length ? '<select id="exTausch' + niv + i + '" data-niv="' + niv + '" data-tausch="' + i +
+          '" aria-label="' + esc(w.en) + ' tauschen"><option value="">tauschen gegen …</option>' +
+          optionen + "</select>" : "") +
+      "</li>").join("");
+    const dazu = $("exZufuegen" + niv);
+    dazu.innerHTML = pool.length
+      ? '<option value="">Wort dazunehmen …</option>' + optionen
+      : '<option value="">Alle Wörter des Parts sind dabei.</option>';
+    dazu.hidden = !exListe();
+    const n = exGeprueft(niv).length;
+    const waage = $("exWaage" + niv);
+    waage.textContent = n + (n === 1 ? " Wort" : " Wörter");
+    waage.className = "waage " + (n ? "passt" : "knapp");
+    $("exZurueck" + niv).hidden = exWieVorbelegt(niv);
+  }
+  if(fokus && $(fokus)) $(fokus).focus();
+  const li = exListe();
+  const mittel = ex.woerter.B.filter(w => w.an && w.mittel).length;
+  const inA = new Set(exGeprueft("A").map(w => w.en));
+  const geteilt = exGeprueft("B").filter(w => inA.has(w.en)).length;
+  const geaendert = !exWieVorbelegt("A") || !exWieVorbelegt("B");
+  $("exWoerterKurz").textContent = !li ? "Keine Vokabelliste gewählt."
+    : "Niveau A: " + exGeprueft("A").length + " Wörter · Niveau B: " + exGeprueft("B").length +
+      " Wörter" + (mittel ? ", davon " + mittel + " mittelschwer" : "") +
+      (geteilt ? ", " + geteilt + " auch in A (der Part reicht nicht für zwei getrennte)" : "") +
+      (geaendert ? " · von Hand angepasst" : " · wie die Vorlage");
+  $("exWoerterHinweis").textContent = !li
+    ? "Diese Unit hat noch keine Vokabelliste. Zuerst in der Werkstatt eine bauen."
+    : "Aus V" + li.version + " · " + exTeilname(ex.teil) + ": Niveau A die schwersten Wörter, " +
+      "Niveau B die zugänglichsten" + (ex.vorlage.schwer ? " und " + ex.vorlage.schwer +
+      " mittelschwere, die nicht in A stehen" : "") +
+      ". Das Häkchen nimmt ein Wort heraus; tauschen und dazunehmen geht mit den übrigen Wörtern dieses Parts.";
+}
+
+/* Die Aufgaben werden nur neu gebaut, wenn sich ihr Gerüst ändert - eine
+   dazu, eine weg, ein anderer Typ. Eine getippte Zahl zieht nur die
+   Zeilen nach, sonst verlöre das Feld unter dem Finger den Fokus. */
+function zeichneExAufgaben(){
+  const kasten = $("exAufgaben");
+  kasten.innerHTML = ex.aufgaben.map((a, i) => {
+    const typ = exTyp(a.typ), luecken = a.typ === "lueckentext";
+    return '<details class="ex-aufgabe" data-i="' + i + '"' + (ex.offen.has(i) ? " open" : "") + ">" +
+      '<summary><b>Aufgabe ' + (i + 1) + '</b><span class="kurz" id="exAufgabeKurz' + i + '"></span></summary>' +
+      '<div class="ex-aufgabenleib">' +
+        '<div class="ex-felder">' +
+          '<div class="ex-feld"><label for="exTyp' + i + '">Aufgabentyp</label><select id="exTyp' + i +
+            '" data-i="' + i + '" data-feld="typ">' + EX_TYPEN.map(t => '<option value="' + t.kennung + '"' +
+            (t.kennung === a.typ ? " selected" : "") + ">" + esc(t.name) + "</option>").join("") + "</select></div>" +
+          '<div class="ex-feld"><label for="exZahl' + i + '">Wörter <span class="beilaeufig" id="exZahlWie' + i +
+            '"></span></label><input type="number" id="exZahl' + i + '" data-i="' + i +
+            '" data-feld="woerter" min="1" max="30"></div>' +
+        "</div>" +
+        (luecken
+          ? '<div class="ex-felder">' +
+              '<div class="ex-feld"><span class="ex-feldname">Antwortform</span><div class="ex-knoepfe" data-i="' + i +
+                '" data-feld="antwort">' + EX_ANTWORTEN.map(x => exChip("exAntwort" + i, "exAntwort" + i + x.kennung,
+                x.kennung, x.name, x.kennung === a.antwort)).join("") + "</div></div>" +
+              '<div class="ex-feld"><label for="exPunkte' + i + '">Punkte je Lücke</label><input type="number" id="exPunkte' +
+                i + '" data-i="' + i + '" data-feld="punkte" min="0.5" max="10" step="0.5" value="' + a.punkte + '"></div>' +
+            "</div>" +
+            '<label class="tick" data-wortbank="' + i + '"' + (a.antwort === "eintippen" ? "" : " hidden") +
+              '><input type="checkbox" id="exWortbank' + i + '" data-i="' + i + '" data-feld="wortbank"' +
+              (a.wortbank ? " checked" : "") + '><span>Wortbank über dem Text<span class="sub">die Wörter der ' +
+              "Lücken stehen gemischt über dem Text, wie auf dem Blatt</span></span></label>" +
+            '<div class="ex-felder">' + ["A", "B"].map(niv =>
+              '<div class="ex-feld ex-regler"><label for="exText' + niv + i + '">Schwierigkeit des Texts, Niveau ' + niv +
+                ' <span class="beilaeufig" id="exTextWert' + niv + i + '"></span>' +
+                '<button class="zurueck" type="button" data-i="' + i + '" data-feld="normal" data-niv="' + niv +
+                '" id="exTextNormal' + niv + i + '">normal</button></label>' +
+                '<input type="range" id="exText' + niv + i + '" data-i="' + i + '" data-feld="text" data-niv="' + niv +
+                '" min="0" max="10" step="0.1" value="' + exTextstufe(a, niv) + '"></div>').join("") +
+            "</div>"
+          : '<p class="ex-band"><b>' + esc(typ.name) + "</b> ist auf dieser Seite noch nicht ausgebaut. " +
+            "Der Auftrag nennt Typ und Wortzahl; wie die Aufgabe aussieht, schlägt der Chat vor und fragt nach, " +
+            "bevor er sie anlegt. Was schon feststeht, gehört in die Notiz.</p>") +
+        (i > 0 ? '<button class="zurueck ex-weg" type="button" data-i="' + i + '" data-feld="weg">Aufgabe ' +
+          (i + 1) + " entfernen</button>" : "") +
+      "</div></details>";
+  }).join("");
+  zeichneExAufgabenZeilen();
+}
+function zeichneExAufgabenZeilen(){
+  ex.aufgaben.forEach((a, i) => {
+    const kurz = $("exAufgabeKurz" + i);
+    if(kurz) kurz.textContent = exAufgabeKurz(a, i);
+    for(const niv of ["A", "B"]){
+      const wert = $("exTextWert" + niv + i);
+      if(!wert) continue;
+      wert.textContent = exTextstufe(a, niv).toFixed(1) + (a.textstufe[niv] === null ? " · normal" : "");
+      $("exTextNormal" + niv + i).hidden = a.textstufe[niv] === null;
+    }
+  });
+  const vA = exVerteilung("A"), vB = exVerteilung("B");
+  ex.aufgaben.forEach((a, i) => {
+    const feld = $("exZahl" + i), wie = $("exZahlWie" + i);
+    if(!feld) return;
+    if(document.activeElement !== feld) feld.value = a.fest == null ? vA[i] : a.fest;
+    feld.classList.toggle("fest", a.fest != null);
+    wie.textContent = a.fest != null ? "— festgelegt" :
+      vA[i] === vB[i] ? "— verteilt" : "— verteilt (B: " + vB[i] + ")";
+  });
+  $("exVerteilungZurueck").hidden = !ex.aufgaben.some(a => a.fest != null);
+  if(document.activeElement !== $("exAnzahl")) $("exAnzahl").value = ex.anzahl;
+}
+
+function zeichneExAblage(){
+  $("exAblage").innerHTML = ["A", "B"].map(niv => {
+    const w = exWerte(niv), v = ex.vorlage;
+    return '<div class="' + niv.toLowerCase() + '"><dt>Niveau ' + niv + "</dt><dd><b>" +
+      esc(exSetze(v.name, w)) + "</b><span>" + esc(exSetze(v.thema, w)) + " / " +
+      esc(exSetze(v.unterthema, w)) + "</span></dd></div>";
+  }).join("");
+}
+
+/* ---------------- Der Auftrag: Aufgaben und zwei Prüfungen ---------------- */
+function exPruefungDaten(niveau){
+  const w = exWerte(niveau), v = ex.vorlage;
+  return {
+    niveau:niveau, cefr:NIV[niveau].cefr,
+    name:exSetze(v.name, w), thema:exSetze(v.thema, w), unterthema:exSetze(v.unterthema, w),
+    woerter:exGeprueft(niveau).map(x => Object.assign({en:x.en, de:x.de, score:x.score},
+      x.mittel ? {mittelschwer:true} : {})),
+    vorbelegung:exVorbelegung(niveau).map(x => x.en),
+    abgewaehlt:ex.woerter[niveau].filter(x => !x.an).map(x => x.en),
+    getauscht:ex.woerter[niveau].filter(x => x.an && x.statt).map(x => ({neu:x.en, statt:x.statt})),
+    dazugenommen:ex.woerter[niveau].filter(x => x.an && x.dazu).map(x => x.en),
+  };
+}
+
+function exErstellenDaten(){
+  const d = exDatenbank() || {}, u = exUnit(), li = exListe();
+  const werte = exWerte("");
+  const aufgaben = ex.aufgaben.map((a, i) => ({
+    nr:i + 1, typ:a.typ, typname:exTyp(a.typ).name, ausgebaut:!!exTyp(a.typ).ausgebaut,
+    woerter:{A:exVerteilung("A")[i], B:exVerteilung("B")[i]},
+    festgelegt:a.fest != null,
+    lueckentext:a.typ === "lueckentext" ? {
+      antwortform:a.antwort, wortbank:a.antwort === "eintippen" && a.wortbank, punkte:a.punkte,
+      textstufe:{A:exTextstufe(a, "A"), B:exTextstufe(a, "B")},
+      textNormal:{A:normalText("A"), B:normalText("B")},
+    } : null,
+  }));
+  // Der Text zum Austeilen: alles eingesetzt ausser den Links - die
+  // bringt der Chat, sobald es sie gibt.
+  const ankuendigung = exSetze(ex.vorlage.text, Object.assign({}, werte,
+    {niveau:"{niveau}", link_A:"{link_A}", link_B:"{link_B}"}));
+  const a = {
+    art:"examiner-pruefungen", plattform:EX_ADRESSE,
+    datenbank:d.name || "", lehrmittel:d.titel || d.name || "",
+    unit:u ? u.unit : null, teil:ex.teil, datum:exDatum(),
+    liste:li ? {version:li.version, datei:li.datei, abdruck:li.abdruck} : null,
+    pruefungen:{A:exPruefungDaten("A"), B:exPruefungDaten("B")},
+    aufgaben:aufgaben, ankuendigung:ankuendigung,
+    anzahl:ex.anzahl,
+    vorlage:{woerter:ex.vorlage.woerter, schwer:ex.vorlage.schwer, quelle:ex.vorlageQuelle},
+    notiz:$("exNotiz").value.trim(),
+    erzeugt:new Date().toISOString(),
+  };
+  a.kurztitel = "eXaminer: Prüfungen " + exUnitname(u) + " " + exTeilname(ex.teil) +
+                " · Niveau A und B" + (a.datum ? " · " + a.datum : "");
+  a.teile = [{text:aufgaben.map(x => x.typname).join(" + ") + " · 2 Prüfungen"}];
+  a.befehl = exErstellenBefehl(a);
+  return a;
+}
+
+function exErstellenBefehl(a){
+  const z = [];
+  const wortzeile = p => p.woerter.map(w => w.en + " = " + w.de + (w.mittelschwer ? " (mittelschwer)" : "")).join("; ");
+  const aenderung = p => [p.abgewaehlt.length ? "abgewählt: " + p.abgewaehlt.join(", ") : "",
+    p.getauscht.length ? "getauscht: " + p.getauscht.map(t => t.neu + " statt " + t.statt).join(", ") : "",
+    p.dazugenommen.length ? "dazugenommen: " + p.dazugenommen.join(", ") : ""].filter(Boolean).join("; ");
+  z.push("eXaminer — zwei Prüfungen erstellen: Unit " + a.unit + " " + exTeilname(a.teil) +
+         ", Niveau A und Niveau B" + (a.datum ? ", Prüfungsdatum " + a.datum : "") + ".");
+  z.push("Lehrmittel " + a.datenbank + " (" + a.lehrmittel + ")" +
+         (a.liste ? ", Vokabelliste V" + a.liste.version + " (kuratiert/" + a.liste.datei +
+                    ", Abdruck " + a.liste.abdruck + ")" : "") + ".");
+  for(const niv of ["A", "B"]){
+    const p = a.pruefungen[niv];
+    z.push("Niveau " + niv + " (" + p.cefr + "), «" + p.name + "», " + p.woerter.length + " Wörter: " +
+           wortzeile(p) + "." + (aenderung(p) ? " Von Hand " + aenderung(p) + "." : ""));
+  }
+  z.push("Aufgaben, für beide Prüfungen gleich. Die Wörter jeder Prüfung werden darauf verteilt — " +
+         "kein Wort in zwei Aufgaben:");
+  for(const x of a.aufgaben){
+    let zeile = x.nr + ". " + x.typname + ", Niveau A " + x.woerter.A + " / Niveau B " + x.woerter.B + " Wörter";
+    if(x.lueckentext){
+      const l = x.lueckentext;
+      const form = EX_ANTWORTEN.find(f => f.kennung === l.antwortform) || EX_ANTWORTEN[0];
+      zeile += ": eine Lücke je Wort, Antwortform " + form.name + " — " + form.satz +
+               (l.wortbank ? ", Wortbank gemischt über dem Text" : "") + ", " + l.punkte +
+               (l.punkte === 1 ? " Punkt" : " Punkte") + " je Lücke, Textstufe A " + l.textstufe.A.toFixed(1) +
+               " / B " + l.textstufe.B.toFixed(1) + " (Normallage A " + l.textNormal.A.toFixed(1) +
+               " / B " + l.textNormal.B.toFixed(1) + ").";
+    } else {
+      zeile += ": auf der Seite noch nicht ausgebaut — die Ausgestaltung vorschlagen und nachfragen, " +
+               "bevor angelegt wird.";
+    }
+    z.push(zeile);
+  }
+  const pa = a.pruefungen.A, pb = a.pruefungen.B;
+  z.push("Reihenfolge:");
+  z.push("1. Je Niveau die Wörter auf die Aufgaben verteilen und die Inhalte im Chat schreiben. Die Texte " +
+         "verraten die Lösung nicht; danach selbst auf Grammatik, Natürlichkeit, Niveau und verratene " +
+         "Lösung durchsehen. Bietet eXaminer eine bestellte Form nicht an: nachfragen, nicht ersetzen.");
+  z.push("2. In eXaminer (" + EX_ADRESSE + ") die Aufgaben anlegen und speichern — Titel «<Name der " +
+         "Prüfung> · Aufgabe n», Thema «" + pa.thema + "», Unterthema «" + pa.unterthema + "» bzw. «" +
+         pb.unterthema + "».");
+  z.push("3. Zwei Prüfungen anlegen und speichern: «" + pa.name + "» mit den Aufgaben für Niveau A, «" +
+         pb.name + "» mit denen für Niveau B, jeweils in der Reihenfolge oben.");
+  z.push("4. Je Prüfung den Link für den Safe Exam Browser auslesen und unter ergebnis.links.A und " +
+         "ergebnis.links.B in diesen Auftrag schreiben. Nicht freischalten: Entsteht der Link erst beim " +
+         "Freischalten, den Auftrag auf «wartet» setzen und in schritt sagen, dass die beiden Prüfungen " +
+         "zum Freischalten bereitstehen.");
+  z.push("5. Die geschriebenen Texte unter ergebnis.text ablegen.");
+  z.push("Zugangsdaten gehören nie ins Auftragsbuch.");
+  if(a.notiz) z.push("Notiz: " + a.notiz);
+  z.push("Erwartet: 2 Prüfungen in eXaminer und ihre zwei Links für den Safe Exam Browser in diesem Auftrag.");
+  return z.join("\n");
+}
+
+function exErstellenEinwand(a){
+  if(!a.liste) return {feld:"exUnit", text:"Diese Unit hat noch keine Vokabelliste — zuerst in der Werkstatt eine bauen."};
+  if(!a.datum) return {feld:"exDatum", text:"Das Datum fehlt — es steht im Text zum Austeilen."};
+  for(const niv of ["A", "B"])
+    if(!a.pruefungen[niv].woerter.length)
+      return {feld:"exZufuegen" + niv, text:"Die Prüfung für Niveau " + niv + " hat kein Wort."};
+  for(const niv of ["A", "B"]){
+    const gesamt = a.pruefungen[niv].woerter.length, v = exVerteilung(niv);
+    const summe = v.reduce((s, z) => s + z, 0);
+    const fest = ex.aufgaben.findIndex(x => x.fest != null);
+    if(summe !== gesamt)
+      return {feld:fest >= 0 ? "exZahl" + fest : "exAnzahl",
+              text:"Niveau " + niv + ": Die Aufgaben prüfen " + summe + " Wörter, die Prüfung hat " + gesamt +
+                   ". Festgelegte Zahlen anpassen oder „Verteilung zurücksetzen“."};
+    for(const [i, x] of ex.aufgaben.entries()){
+      const min = exTyp(x.typ).mindestens || 1;
+      if(v[i] < min)
+        return {feld:"exZahl" + i, text:"Aufgabe " + (i + 1) + " (" + exTyp(x.typ).name + ") bekommt bei Niveau " +
+                niv + " nur " + v[i] + (v[i] === 1 ? " Wort" : " Wörter") + " und braucht mindestens " + min +
+                ". Mehr Wörter prüfen oder eine Aufgabe weniger."};
+    }
+  }
+  for(const [i, x] of ex.aufgaben.entries()){
+    if(x.typ === "lueckentext" && !(x.punkte > 0))
+      return {feld:"exPunkte" + i, text:"Punkte je Lücke müssen grösser als 0 sein."};
+  }
+  return null;
+}
+
+function zeichneExErstellenKurz(){
+  const li = exListe();
+  if(!li){ $("exErstellenKurz").textContent = ""; return; }
+  $("exErstellenKurz").textContent = "Bestellt werden: 2 Prüfungen · Niveau A " + exGeprueft("A").length +
+    " Wörter, Niveau B " + exGeprueft("B").length + " Wörter · " +
+    ex.aufgaben.map((a, i) => (i + 1) + ". " + exAufgabeKurz(a, i)).join(" · ") +
+    (exDatum() ? " · " + exDatum() : "");
+}
+
+/* ---------------- Zum Austeilen ----------------
+   Der Text mit den beiden Links, zum Kopieren. Die Links schreibt der
+   Chat in den Auftrag (`ergebnis.links.A`/`.B`), oder in einen späteren
+   Auftrag „Links holen" mit `bezug` auf diesen. Ein Link kommt von aussen:
+   Er wird als Text gezeigt, nie als Verweis, und nur eine Zeile lang. */
+function exLink(wert){
+  if(typeof wert !== "string") return "";
+  const zeile = wert.trim();
+  return zeile && zeile.length <= 2000 && !/[\s<>"]/.test(zeile) ? zeile : "";
+}
+function exLinks(e){
+  const links = {A:"", B:""};
+  const lies = quelle => {
+    const l = quelle && quelle.ergebnis && quelle.ergebnis.links;
+    if(!l || typeof l !== "object") return;
+    for(const niv of ["A", "B"]) if(!links[niv]) links[niv] = exLink(l[niv]);
+  };
+  lies(e);
+  buch.filter(x => x.art === "examiner-links" && x.bezug === e.id).forEach(lies);
+  return links;
+}
+function exAnkuendigung(e, links){
+  return String(e.ankuendigung || "")
+    .replace("{link_A}", () => links.A || "(Link für Niveau A folgt)")
+    .replace("{link_B}", () => links.B || "(Link für Niveau B folgt)");
+}
+function exLinksHolenDaten(e){
+  const p = e.pruefungen || {};
+  const d = {
+    art:"examiner-links", plattform:EX_ADRESSE, bezug:e.id,
+    kurztitel:"eXaminer: Links holen · " + String(e.kurztitel || "").replace(/^eXaminer: /, ""),
+    teile:[{text:"Links für den Safe Exam Browser"}], erzeugt:new Date().toISOString(),
+  };
+  d.befehl = [
+    "eXaminer — Links holen für den Auftrag " + e.id + ".",
+    "In eXaminer (" + EX_ADRESSE + ") bei den Prüfungen «" + ((p.A && p.A.name) || "") + "» und «" +
+      ((p.B && p.B.name) || "") + "» den Link für den Safe Exam Browser auslesen und unter " +
+      "ergebnis.links.A und ergebnis.links.B in den Auftrag " + e.id + " schreiben.",
+    "Nichts freischalten und nichts ändern. Gibt es den Link noch nicht, den Auftrag auf «wartet» setzen und es sagen.",
+    "Zugangsdaten gehören nie ins Auftragsbuch.",
+    "Erwartet: die zwei Links im Auftrag " + e.id + ".",
+  ].join("\n");
+  return d;
+}
+
+function zeichneExBereit(){
+  const karte = $("exBereit");
+  if(!karte) return;
+  const liste = buch.filter(e => e.art === "examiner-pruefungen" && !e.ausgeblendet).slice(0, 3);
+  karte.hidden = !liste.length;
+  if(!liste.length) return;
+  const leib = $("exBereitLeib");
+  leib.innerHTML = "";
+  let bereit = 0;
+  liste.forEach((e, i) => {
+    const links = exLinks(e), fertig = Boolean(links.A && links.B), stand = standVon(e);
+    if(fertig) bereit++;
+    const block = document.createElement("div");
+    block.className = "ex-block ex-austeilen" + (fertig ? " fertig" : "");
+    block.innerHTML = '<div class="ex-blockkopf"><span class="legende"></span>' +
+      '<span class="ex-pille' + (fertig ? " gut" : " ruhig") + '"></span></div>' +
+      '<pre class="ex-ankuendigung"></pre><div class="ex-fuss"></div>';
+    block.querySelector(".legende").textContent = String(e.kurztitel || "").replace(/^eXaminer: /, "");
+    block.querySelector(".ex-pille").textContent = fertig ? "Links da" :
+      stand === "erledigt" || stand === "wartet" ? "Links fehlen" : STAENDE[stand].text;
+    block.querySelector("pre").textContent = exAnkuendigung(e, links);
+    const fuss = block.querySelector(".ex-fuss");
+    const kopieren = document.createElement("button");
+    kopieren.type = "button";
+    kopieren.className = "knopf" + (fertig ? " haupt" : "");
+    kopieren.textContent = "Text kopieren";
+    const status = document.createElement("div");
+    status.className = "status";
+    status.id = "exBereitStatus" + i;
+    kopieren.addEventListener("click", async () => {
+      try{
+        await navigator.clipboard.writeText(exAnkuendigung(e, links));
+        exMelde(status.id, fertig ? "Kopiert — bereit zum Einfügen."
+                                  : "Kopiert, aber die Links fehlen noch.", fertig ? "ok" : "fehler");
+      }catch(f){ exMelde(status.id, "Kopieren hat der Browser abgelehnt — den Text oben markieren.", "fehler"); }
+    });
+    fuss.appendChild(kopieren);
+    if(!fertig && stand !== "arbeit" && stand !== "abgelegt" && stand !== "ausgeloest"){
+      const holen = document.createElement("button");
+      holen.type = "button";
+      holen.className = "knopf";
+      holen.textContent = "Links holen";
+      holen.addEventListener("click", () =>
+        exBestellen(exLinksHolenDaten(e), null, "ex-links", holen, status.id));
+      fuss.appendChild(holen);
+    }
+    fuss.appendChild(status);
+    leib.appendChild(block);
+  });
+  $("exBereitNote").textContent = bereit + " von " + liste.length + " bereit";
+}
+
+/* ---------------- Prüfung korrigieren ---------------- */
+function exPruefungsliste(){
+  const d = ex.pruefungen;
+  return d && Array.isArray(d.pruefungen)
+    ? d.pruefungen.filter(p => p && typeof p === "object" && (p.id || p.name)) : [];
+}
+function exPruefKennung(p){ return String(p.id || p.name); }
+function exOffen(p){ const n = Number(p.zu_korrigieren); return isFinite(n) && n > 0 ? n : 0; }
+function exKorrigierbar(){
+  return exPruefungsliste().filter(exOffen).sort((a, b) => exOffen(b) - exOffen(a));
+}
+
+/* Solange nichts aus eXaminer da ist, sagt die Liste, warum - ein leeres
+   Kästchen sähe aus, als gäbe es in eXaminer nichts. */
+function exLeer(){
+  if(ex.lesbar === false)
+    return '<div class="ex-leer">Ohne Auftragsbuch sieht die Seite nicht, was in eXaminer liegt. ' +
+      "„Auftrag kopieren“ und im Chat einfügen geht trotzdem.</div>";
+  if(!ex.pruefungen)
+    return '<div class="ex-leer">Noch kein Abgleich mit eXaminer. Der Chat liest Ihre Prüfungen und ' +
+      'was darin zu korrigieren ist, und schreibt es hierher.<br>' +
+      '<button class="knopf" type="button" data-abgleich>Korrekturen abgleichen</button></div>';
+  return '<div class="ex-leer">Beim letzten Abgleich war in keiner Prüfung etwas zu korrigieren. ' +
+    '<button class="zurueck" type="button" data-abgleich>neu abgleichen</button></div>';
+}
+
+function zeichneExKorrektur(){
+  const alle = exPruefungsliste(), offen = exKorrigierbar();
+  const ruhig = alle.filter(p => !exOffen(p));
+  if(ex.korrWahl && !offen.some(p => exPruefKennung(p) === ex.korrWahl)) ex.korrWahl = "";
+  if(!ex.korrWahl && offen.length === 1) ex.korrWahl = exPruefKennung(offen[0]);
+  const sub = p => [p.datum, p.abgegeben != null && p.abgegeben !== "" ? p.abgegeben + " abgegeben" : ""]
+    .filter(Boolean).join(" · ");
+  const kasten = $("exKorrListe");
+  if(!offen.length){
+    kasten.innerHTML = exLeer();
+  } else {
+    kasten.innerHTML = '<ul class="ex-auswahl">' + offen.map(p => {
+      const k = exPruefKennung(p);
+      return '<li><label class="ex-zeile"><input type="radio" name="exKorr" value="' + esc(k) + '"' +
+        (k === ex.korrWahl ? " checked" : "") + '><span class="inhalt"><span class="titel">' +
+        esc(p.name || k) + '</span><span class="sub">' + esc(sub(p)) + "</span></span>" +
+        '<span class="ex-pille">' + exOffen(p) + " zu korrigieren</span></label></li>";
+    }).join("") + "</ul>";
+  }
+  if(ruhig.length)
+    kasten.innerHTML += '<details class="ex-weitere"><summary>' + ruhig.length +
+      (ruhig.length === 1 ? " Prüfung" : " Prüfungen") + " ohne offene Einträge</summary>" +
+      '<ul class="ex-auswahl">' + ruhig.map(p =>
+        '<li><div class="ex-zeile entsteht"><span class="inhalt"><span class="titel">' +
+        esc(p.name || exPruefKennung(p)) + '</span><span class="sub">' + esc(sub(p)) +
+        '</span></span><span class="ex-pille ruhig">0</span></div></li>').join("") + "</ul></details>";
+  $("exModus").querySelectorAll("input").forEach(el => { el.checked = el.value === ex.modus; });
+  $("exModusHinweis").textContent = (EX_MODI.find(m => m.kennung === ex.modus) || EX_MODI[0]).hinweis;
+  $("exKorrekturNote").textContent = ex.pruefungen ? offen.length + " korrigierbar" : "noch kein Abgleich";
+  const d = exKorrekturDaten();
+  $("exKorrekturKurz").textContent = d.pruefung
+    ? "Bestellt wird: «" + d.pruefung.name + "» · " + d.pruefung.zu_korrigieren + " Einträge · " +
+      (EX_MODI.find(m => m.kennung === d.modus) || EX_MODI[0]).name : "";
+}
+
+function exKorrekturDaten(){
+  const p = exKorrigierbar().find(x => exPruefKennung(x) === ex.korrWahl) || null;
+  const modus = EX_MODI.find(m => m.kennung === ex.modus) || EX_MODI[0];
+  const d = {
+    art:"examiner-korrektur", plattform:EX_ADRESSE,
+    pruefung:p ? {id:String(p.id || ""), name:String(p.name || ""), zu_korrigieren:exOffen(p)} : null,
+    modus:modus.kennung, hinweis:$("exKorrNotiz").value.trim(),
+    kurztitel:"eXaminer: Korrektur «" + (p ? p.name || exPruefKennung(p) : "–") + "»",
+    teile:[{text:(p ? exOffen(p) : 0) + " zu korrigieren · " + modus.name}],
+    erzeugt:new Date().toISOString(),
+  };
+  const z = ["eXaminer — Prüfung korrigieren: «" + (d.pruefung ? d.pruefung.name : "") + "»" +
+             (d.pruefung && d.pruefung.id ? " [" + d.pruefung.id + "]" : "") + ", " +
+             (d.pruefung ? d.pruefung.zu_korrigieren : 0) + " Einträge unter «Zu korrigieren»."];
+  z.push(modus.kennung === "vorbereiten"
+    ? "Nur vorbereiten: je Antwort Punkte mit kurzer Begründung vorschlagen und die Vorschläge unter " +
+      "ergebnis.text in den Auftrag schreiben. In eXaminer nichts speichern — die Lehrperson sieht " +
+      "die Vorschläge durch und speichert selbst."
+    : "Korrigieren und in eXaminer speichern. Was sich nicht eindeutig bewerten lässt, offen lassen " +
+      "und unter ergebnis.text auflisten, zusammen mit der Zahl der gespeicherten Einträge.");
+  z.push("Einträge mit der Nummer bezeichnen, die eXaminer zeigt — keine Namen von Schülerinnen und " +
+         "Schülern ins Auftragsbuch. Zugangsdaten ebenso wenig.");
+  if(d.hinweis) z.push("Hinweise zur Bewertung: " + d.hinweis);
+  z.push("Danach examiner/pruefungen im Auftragsbuch nachführen.");
+  z.push("Erwartet: " + (modus.kennung === "vorbereiten" ? "Korrekturvorschläge im Auftrag, nichts in eXaminer gespeichert."
+                                                           : "die Korrektur in eXaminer gespeichert."));
+  d.befehl = z.join("\n");
+  return d;
+}
+
+function exKorrekturEinwand(d){
+  if(!d.pruefung)
+    return {feld:ex.pruefungen ? "exKorrListe" : "exAbgleich",
+            text:ex.pruefungen ? "Keine Prüfung gewählt — oben eine mit offenen Einträgen anklicken."
+                               : "Noch nichts aus eXaminer da — zuerst „Korrekturen abgleichen“."};
+  return null;
+}
+
+/* ---------------- Abgleich ---------------- */
+function exAbgleichDaten(){
+  const d = {
+    art:"examiner-abgleich", plattform:EX_ADRESSE,
+    kurztitel:"eXaminer: Korrekturen abgleichen", teile:[{text:"Prüfungen und offene Korrekturen lesen"}],
+    erzeugt:new Date().toISOString(),
+  };
+  d.befehl = [
+    "eXaminer — Abgleich: in eXaminer (" + EX_ADRESSE + ") lesen, nichts ändern.",
+    "Die Prüfungen nach examiner/pruefungen schreiben: {stand, pruefungen:[{id, name, zu_korrigieren, abgegeben, datum}]} — " +
+      "zu_korrigieren ist die Zahl der Einträge unter «Zu korrigieren».",
+    "Keine Namen von Schülerinnen und Schülern, keine Zugangsdaten ins Auftragsbuch.",
+    "Erwartet: die Liste im Auftragsbuch, mit Stand.",
+  ].join("\n");
+  return d;
+}
+
+/* ---------------- Bestellen ----------------
+   Derselbe Weg wie jeder Auftrag der Werkstatt: `ausloesen` legt ab und
+   klingelt. Ohne Verbindung wird kopiert, statt den Klick verfallen zu
+   lassen - und kein Knopf wird abgeschaltet, ein Einwand antwortet laut. */
+function exMelde(id, text, art){
+  const s = $(id);
+  if(!s) return;
+  s.textContent = text;
+  s.className = "status" + (art ? " " + art : "");
+}
+function exStockt(einwand, statusId){
+  exMelde(statusId, einwand.text, "fehler");
+  const s = $(statusId);
+  s.classList.remove("ex-merken"); void s.offsetWidth; s.classList.add("ex-merken");
+  const feld = $(einwand.feld);
+  if(feld){
+    for(let d = feld.closest && feld.closest("details"); d; d = d.parentElement && d.parentElement.closest("details"))
+      d.open = true;
+    feld.scrollIntoView({block:"center", behavior:"smooth"});
+    feld.focus();
+  }
+}
+async function exKopieren(befehl, statusId){
+  try{
+    await navigator.clipboard.writeText(befehl);
+    exMelde(statusId, "Auftrag kopiert — im Chat einfügen und abschicken.", "ok");
+  }catch(e){
+    exMelde(statusId, "Kopieren hat der Browser abgelehnt.", "fehler");
+  }
+}
+async function exBestellen(daten, einwand, kennung, knopf, statusId){
+  if(einwand){ exStockt(einwand, statusId); return; }
+  const sagen = (text, art) => exMelde(statusId, text, art);
+  if(!verbunden()){
+    try{
+      await navigator.clipboard.writeText(daten.befehl);
+      sagen("Nicht mit claude.ai verbunden — der Auftrag ist kopiert. Im Chat einfügen und abschicken.", "ok");
+    }catch(e){
+      sagen("Nicht verbunden, und der Browser hat das Kopieren abgelehnt.", "fehler");
+    }
+    return;
+  }
+  await ausloesen(daten, kennung, knopf, sagen);
+}
+
+/* ---------------- Was im Auftragsbuch unter examiner/ liegt ----------------
+   `examiner/vorlage` - die Vorlage, geschrieben von dieser Seite.
+   `examiner/pruefungen` - was der Chat beim Abgleich in eXaminer liest.
+   Beides kommt von aussen: Es wird geprüft und gezeigt, nie ausgeführt. */
+async function starteExaminerDaten(){
+  let quelle = null;
+  try{ quelle = await window.claude?.use?.("db"); }catch(e){ quelle = null; }
+  if(!quelle){ ex.lesbar = false; zeichneExaminer(); return; }
+  ex.lesbar = true;
+  ex.quelle = quelle;
+  quelle.collection("examiner").onSnapshot(schnappschuss => {
+    ex.pruefungen = null;
+    let vorlage = null;
+    schnappschuss.docs.forEach(doc => {
+      if(!doc.exists) return;
+      if(doc.id === "pruefungen") ex.pruefungen = doc.data() || null;
+      if(doc.id === "vorlage") vorlage = doc.data() || null;
+    });
+    if(vorlage) exVorlageUebernehmen(exVorlagePruefen(vorlage), "gespeichert", vorlage.geaendert);
+    zeichneExaminer();
+  }, fehler => {
+    ex.lesbar = false;
+    exMelde("exErstellenStatus", "Was im Auftragsbuch unter eXaminer liegt, lässt sich gerade nicht lesen" +
+            (fehler && fehler.message ? " (" + fehler.message + ")" : "") + ".", "fehler");
+    zeichneExaminer();
+  });
+}
+
+/* Eine neue Vorlage gilt sofort - für das Formular aber nur, solange
+   niemand daran gedreht hat. Sonst stünde plötzlich etwas anderes da als
+   das, was man gerade eingestellt hat; dann bietet die Seite an, sie
+   anzuwenden. */
+function exVorlageUebernehmen(vorlage, quelle, geaendert){
+  const gleich = JSON.stringify(vorlage) === JSON.stringify(ex.vorlage);
+  ex.vorlage = vorlage;
+  ex.vorlageQuelle = quelle;
+  const t = zeit(geaendert);
+  ex.vorlageStand = t ? exZeit(t) : "";
+  if(gleich) return;
+  if(ex.beruehrt){ ex.vorlageNeu = true; return; }
+  exVorlageAnwenden();
+}
+function exVorlageAnwenden(){
+  ex.vorlageNeu = false;
+  ex.beruehrt = false;
+  ex.anzahl = ex.vorlage.woerter;
+  exNeuBelegen();
+  exAufgabenAusVorlage();
+  if(ex.bereich === "examiner") zeichneExAufgaben();
+  zeichneExaminer();
+}
+
+function exZeit(ms){
+  const d = new Date(ms);
+  return d.toLocaleDateString("de-CH", {day:"2-digit", month:"2-digit"}) + " " +
+         d.toLocaleTimeString("de-CH", {hour:"2-digit", minute:"2-digit"});
+}
+
+function zeichneExStand(){
+  const p = exPruefungsliste(), offen = exKorrigierbar();
+  const stand = zeit(ex.pruefungen && ex.pruefungen.stand);
+  $("exStand").innerHTML = ex.lesbar === false
+    ? "ohne Auftragsbuch — kein Stand aus eXaminer"
+    : !stand ? "noch kein Abgleich mit eXaminer"
+    : "<b>" + p.length + "</b> Prüfungen · Stand " + exZeit(stand);
+  const laufend = buch.filter(e => e.art === "examiner-pruefungen" && !e.erledigt && !e.ausgeblendet).length;
+  $("exZahlErstellen").textContent = laufend
+    ? laufend + (laufend === 1 ? " Auftrag läuft" : " Aufträge laufen") : "";
+  const zk = $("exZahlKorrektur");
+  zk.textContent = offen.length
+    ? offen.length + (offen.length === 1 ? " Prüfung" : " Prüfungen") + " mit offenen Einträgen"
+    : ex.pruefungen ? "nichts zu korrigieren" : "noch kein Abgleich";
+  zk.classList.toggle("offen", offen.length > 0);
+  $("reiterExaminerZahl").textContent = offen.length ? offen.length + " zu korrigieren" : "";
+}
+
+/* ---------------- Die eigenen Aufträge, samt Wächter ----------------
+   Dieselben Zeilen wie im Auftragsbuch der Werkstatt, nur die eXaminer-
+   Aufträge. Der Wächter misst mit denselben Fristen: Wer im eXaminer-
+   Bereich steht, sieht die Werkstatt nicht und muss trotzdem sehen, wenn
+   ein Auftrag hängt. */
+function exErgebnis(e){
+  const erg = e && e.ergebnis;
+  const text = erg && typeof erg.text === "string" ? erg.text.trim() : "";
+  if(!text) return null;
+  const kasten = document.createElement("details");
+  kasten.className = "ex-ergebnis";
+  kasten.innerHTML = "<summary>Ergebnis ansehen</summary><pre></pre>" +
+    '<button class="knopf" type="button">kopieren</button>';
+  kasten.querySelector("pre").textContent = text;
+  kasten.querySelector("button").addEventListener("click", async ev => {
+    try{ await navigator.clipboard.writeText(text); ev.target.textContent = "kopiert"; }
+    catch(f){ ev.target.textContent = "Kopieren abgelehnt — Text markieren"; }
+  });
+  return kasten;
+}
+
+function zeichneExAuftraege(){
+  const kasten = $("exBuch");
+  if(!kasten) return;
+  kasten.innerHTML = "";
+  const liste = buch.filter(e => istExaminerAuftrag(e) && !e.ausgeblendet);
+  if(!liste.length){
+    const li = document.createElement("li");
+    li.className = "buchfuss";
+    li.textContent = "Noch kein eXaminer-Auftrag. Was hier bestellt wird, steht danach mit jedem Schritt in dieser Spalte.";
+    kasten.appendChild(li);
+  }
+  for(const e of liste.slice(0, 6)){
+    const zeile = auftragszeile(e);
+    const erg = exErgebnis(e);
+    if(erg) zeile.appendChild(erg);
+    kasten.appendChild(zeile);
+  }
+  ex.wacheSchluessel = "";
+  zeichneExUhr();
+  zeichneExStand();
+  zeichneExBereit();
+}
+
+function exLaufender(){
+  return buch.find(e => istExaminerAuftrag(e) && !e.ausgeblendet && !e.erledigt) || null;
+}
+
+let exDrahtStand = null;
+function zeichneExDraht(){
+  const dran = verbunden();
+  if(exDrahtStand === dran) return;
+  exDrahtStand = dran;
+  const zeile = $("exDraht");
+  zeile.className = "draht " + (dran ? "dran" : "ab");
+  zeile.innerHTML = '<span class="punkt"></span>' + (dran
+    ? "<b>mit claude.ai verbunden</b> — Aufträge gehen direkt an den Chat"
+    : "<b>nicht verbunden</b> — „Auftrag kopieren“ und im Chat einfügen");
+  for(const id of ["exErstellenLos", "exKorrekturLos", "exAbgleich"])
+    $(id).title = dran ? "Legt den Auftrag ab und weckt die Chat-Sitzung."
+                       : "Ohne Verbindung wird der Auftrag stattdessen kopiert.";
+}
+
+function zeichneExUhr(){
+  if(ex.bereich !== "examiner") return;
+  zeichneExDraht();
+  const e = exLaufender(), uhr = $("exUhr"), feld = $("exWache");
+  if(!e){ uhr.hidden = true; feld.hidden = true; ex.wacheSchluessel = ""; return; }
+  const jetzt = Date.now(), start = zeit(e.erzeugt) || jetzt;
+  const zeichen = zeit(e.lebenszeichen) || zeit(e.angenommen);
+  uhr.hidden = false;
+  uhr.innerHTML = "Läuft: ausgelöst vor <b>" + dauer(jetzt - start) + "</b> · " +
+    (e.angenommen ? "angenommen" : "noch nicht angenommen") +
+    (zeichen ? " · letztes Lebenszeichen vor " + dauer(jetzt - zeichen) : "");
+  const w = wache(e, jetzt);
+  if(!w){ feld.hidden = true; ex.wacheSchluessel = ""; return; }
+  const schluessel = e.id + w.art + w.schwer;
+  if(schluessel !== ex.wacheSchluessel){
+    ex.wacheSchluessel = schluessel;
+    feld.innerHTML = '<p class="wachtext"></p><div class="knopfreihe">' +
+      '<button class="knopf" type="button" data-tun="klingeln">Noch einmal klingeln</button>' +
+      '<button class="knopf haupt" type="button" data-tun="kopieren">Anstoss kopieren</button>' +
+      '</div><div class="status" id="exWacheStatus"></div>';
+    feld.querySelector('[data-tun="klingeln"]').addEventListener("click", async ev => {
+      const auftrag = exLaufender();
+      if(!auftrag) return;
+      await nachklingeln(auftrag, ev.currentTarget);
+      exMelde("exWacheStatus", $("status").textContent,
+              $("status").classList.contains("fehler") ? "fehler" : "ok");
+    });
+    feld.querySelector('[data-tun="kopieren"]').addEventListener("click", async () => {
+      const auftrag = exLaufender();
+      if(!auftrag) return;
+      try{
+        await navigator.clipboard.writeText(anstoss(auftrag));
+        exMelde("exWacheStatus", "Kopiert — im Chat einfügen und abschicken. Das geht immer.", "ok");
+      }catch(f){
+        exMelde("exWacheStatus", "Kopieren ging nicht. Im Chat schreiben: " + anstoss(auftrag), "fehler");
+      }
+    });
+  }
+  feld.className = "wache" + (w.schwer ? " schwer" : "");
+  feld.hidden = false;
+  feld.querySelector(".wachtext").innerHTML = w.text + " Der Anstoss, im Chat eingefügt, geht immer.";
+}
+setInterval(zeichneExUhr, 1000);
+
+/* ---------------- Einstellungen der Vorlage ---------------- */
+function exVorlageFensterFuellen(v){
+  $("exVWoerter").value = v.woerter;
+  $("exVSchwer").value = v.schwer;
+  $("exVName").value = v.name;
+  $("exVThema").value = v.thema;
+  $("exVUnterthema").value = v.unterthema;
+  $("exVText").value = v.text;
+  exVorlageFensterAufgaben(v.aufgaben);
+}
+function exVorlageFensterAufgaben(aufgaben){
+  $("exVAufgaben").dataset.aufgaben = JSON.stringify(aufgaben);
+  $("exVAufgaben").textContent = aufgaben.map((a, i) => (i + 1) + ". " + exTyp(a.typ).name +
+    (a.fest == null ? " (verteilt)" : " (" + a.fest + (a.fest === 1 ? " Wort, fest)" : " Wörter, fest)"))).join(" · ");
+}
+function exVorlageAusFenster(){
+  let aufgaben = [];
+  try{ aufgaben = JSON.parse($("exVAufgaben").dataset.aufgaben || "[]"); }catch(e){ aufgaben = []; }
+  return exVorlagePruefen({
+    woerter:$("exVWoerter").value, schwer:$("exVSchwer").value, aufgaben:aufgaben,
+    name:$("exVName").value, thema:$("exVThema").value, unterthema:$("exVUnterthema").value,
+    text:$("exVText").value,
+  });
+}
+async function exVorlageSpeichern(){
+  const rohW = Number($("exVWoerter").value), rohS = Number($("exVSchwer").value);
+  if(!(Number.isInteger(rohW) && rohW >= 2 && rohW <= 30)){
+    exStockt({feld:"exVWoerter", text:"Wörter je Prüfung: eine ganze Zahl von 2 bis 30."}, "exVStatus"); return;
+  }
+  if(!(Number.isInteger(rohS) && rohS >= 0 && rohS <= rohW)){
+    exStockt({feld:"exVSchwer", text:"Mittelschwere: eine ganze Zahl von 0 bis " + rohW + "."}, "exVStatus"); return;
+  }
+  const v = exVorlageAusFenster();
+  if(!/\{link_A\}/.test(v.text) || !/\{link_B\}/.test(v.text)){
+    exStockt({feld:"exVText", text:"Der Text braucht {link_A} und {link_B} — dort stehen später die Links."}, "exVStatus");
+    return;
+  }
+  const geaendert = new Date().toISOString();
+  if(ex.quelle){
+    try{
+      await ex.quelle.doc("examiner/vorlage").set(Object.assign({}, v, {geaendert:geaendert}));
+      exMelde("exVStatus", "Gespeichert — gilt auf jedem Gerät, das diese Seite öffnet.", "ok");
+    }catch(fehler){
+      exMelde("exVStatus", "Speichern ging nicht" + (fehler && fehler.message ? " (" + fehler.message + ")" : "") +
+              ". Die Vorlage gilt vorerst nur hier.", "fehler");
+    }
+  } else {
+    try{ localStorage.setItem("werkstatt.examiner.vorlage", JSON.stringify(v)); }catch(e){ /* nur hier */ }
+    exMelde("exVStatus", "Ohne Auftragsbuch gespeichert: gilt nur in diesem Browser.", "ok");
+  }
+  ex.beruehrt = false;
+  exVorlageUebernehmen(v, ex.quelle ? "gespeichert" : "browser", geaendert);
+  exVorlageAnwenden();
+}
+
+/* ---------------- Bereich und Knopf ---------------- */
+function zeichneExaminer(){
+  if(ex.bereich !== "examiner") return;
+  zeichneExVorlage();
+  zeichneExWahl();
+  zeichneExWoerter();
+  zeichneExAufgabenZeilen();
+  zeichneExAblage();
+  zeichneExErstellenKurz();
+  zeichneExKorrektur();
+  zeichneExStand();
+  zeichneExBereit();
+  zeichneExUhr();
+}
+
+function zeigeBereich(bereich, merken){
+  ex.bereich = bereich === "examiner" ? "examiner" : "werkstatt";
+  const auf = ex.bereich === "examiner";
+  document.querySelector(".werkbank").hidden = auf;
+  $("examiner").hidden = !auf;
+  for(const [id, an] of [["reiterWerkstatt", !auf], ["reiterExaminer", auf]]){
+    $(id).setAttribute("aria-selected", String(an));
+    $(id).tabIndex = an ? 0 : -1;
+  }
+  if(merken) exMerken("bereich", ex.bereich);
+  if(auf){ exDrahtStand = null; zeichneExAufgaben(); zeichneExaminer(); } else leisteEinpassen();
+}
+
+const EX_AKTIONEN = {
+  erstellen:["exAufErstellen", "exErstellen"],
+  korrektur:["exAufKorrektur", "exKorrektur"],
+};
+function zeigeAktion(aktion, merken){
+  ex.aktion = EX_AKTIONEN[aktion] ? aktion : "erstellen";
+  for(const [name, [knopf, tafel]] of Object.entries(EX_AKTIONEN)){
+    const an = name === ex.aktion;
+    $(knopf).setAttribute("aria-selected", String(an));
+    $(knopf).tabIndex = an ? 0 : -1;
+    $(tafel).hidden = !an;
+  }
+  if(merken) exMerken("examiner.aktion", ex.aktion);
+  zeichneExaminer();
+}
+
+/* Pfeiltasten in einer Reiterzeile, wie man es von Reitern kennt. */
+function exPfeile(ids, waehlen){
+  ids.forEach((id, i) => $(id).addEventListener("keydown", ev => {
+    const schritt = ev.key === "ArrowRight" ? 1 : ev.key === "ArrowLeft" ? -1 : 0;
+    if(!schritt) return;
+    ev.preventDefault();
+    const ziel = ids[(i + schritt + ids.length) % ids.length];
+    waehlen(ziel);
+    $(ziel).focus();
+  }));
+}
+
+/* ---------------- Verdrahtung ---------------- */
+$("reiterWerkstatt").addEventListener("click", () => zeigeBereich("werkstatt", true));
+$("reiterExaminer").addEventListener("click", () => zeigeBereich("examiner", true));
+exPfeile(["reiterWerkstatt", "reiterExaminer"],
+         id => zeigeBereich(id === "reiterExaminer" ? "examiner" : "werkstatt", true));
+for(const [aktion, [knopf]] of Object.entries(EX_AKTIONEN))
+  $(knopf).addEventListener("click", () => zeigeAktion(aktion, true));
+exPfeile(Object.values(EX_AKTIONEN).map(([knopf]) => knopf), id =>
+  zeigeAktion(Object.keys(EX_AKTIONEN).find(k => EX_AKTIONEN[k][0] === id), true));
+
+function exGedreht(){ ex.beruehrt = true; }
+$("exDb").addEventListener("change", e => {
+  ex.db = e.target.value; exUnitWaehlen(null); zeichneExaminer();
+});
+$("exUnit").addEventListener("change", e => {
+  exUnitWaehlen(Number(e.target.value)); zeichneExaminer();
+});
+$("exListe").addEventListener("change", e => {
+  if(e.target.name !== "exListe") return;
+  ex.version = Number(e.target.value); exNeuBelegen(); zeichneExaminer();
+});
+document.querySelectorAll('input[name="exTeil"]').forEach(el => el.addEventListener("change", e => {
+  ex.teil = Number(e.target.value); exNeuBelegen(); zeichneExaminer();
+}));
+$("exDatum").addEventListener("input", e => { ex.datum = e.target.value; zeichneExaminer(); });
+/* Die Zahl der geprüften Wörter wählt die Wörter neu - von beiden Seiten:
+   A die schwersten, B die zugänglichsten samt den mittelschweren - und
+   verteilt sie neu auf die Aufgaben. */
+$("exAnzahl").addEventListener("input", e => {
+  const n = Math.round(Number(e.target.value));
+  if(!(n >= 2 && n <= 30)) return;
+  ex.anzahl = n; exGedreht(); exNeuBelegen(); zeichneExaminer();
+});
+$("exVerteilungZurueck").addEventListener("click", () => {
+  ex.aufgaben.forEach(a => { a.fest = null; }); exGedreht(); zeichneExaminer();
+});
+for(const niv of ["A", "B"]){
+  $("exWortliste" + niv).addEventListener("change", e => {
+    const el = e.target, li = exListe(), liste = ex.woerter[niv];
+    if(el.dataset.i !== undefined){
+      liste[Number(el.dataset.i)].an = el.checked;
+    } else if(el.dataset.tausch !== undefined && el.value && li){
+      const i = Number(el.dataset.tausch), alt = liste[i];
+      const neu = li.woerter.find(w => w.en === el.value);
+      if(!neu) return;
+      const statt = alt.dazu ? null : (alt.statt || alt.en);
+      liste[i] = {en:neu.en, de:neu.de, score:neu.score, an:true,
+                  statt:statt === neu.en ? null : statt, dazu:alt.dazu, mittel:false};
+    } else return;
+    exGedreht(); zeichneExaminer();
+  });
+  $("exZufuegen" + niv).addEventListener("change", e => {
+    const li = exListe(), neu = li && li.woerter.find(w => w.en === e.target.value);
+    if(!neu) return;
+    ex.woerter[niv].push({en:neu.en, de:neu.de, score:neu.score, an:true, statt:null, dazu:true, mittel:false});
+    exGedreht(); zeichneExaminer();
+  });
+  $("exZurueck" + niv).addEventListener("click", () => {
+    ex.woerter[niv] = exVorbelegung(niv); zeichneExaminer();
+  });
+}
+
+/* Eine Fehlermeldung gilt, bis man etwas ändert - danach stünde sie
+   über einem Formular, auf das sie nicht mehr zutrifft. */
+$("exErstellen").addEventListener("input", () => {
+  if($("exErstellenStatus").classList.contains("fehler")) exMelde("exErstellenStatus", "");
+});
+
+/* Die Aufgaben: ein Horcher für alle, über `data-feld`. */
+$("exAufgaben").addEventListener("toggle", e => {
+  const d = e.target.closest && e.target.closest("details.ex-aufgabe");
+  if(!d) return;
+  const i = Number(d.dataset.i);
+  d.open ? ex.offen.add(i) : ex.offen.delete(i);
+}, true);
+function exAufgabenFeld(e){
+  const el = e.target, i = Number(el.dataset.i ?? (el.closest("[data-i]") || {dataset:{}}).dataset.i);
+  const feld = el.dataset.feld || (el.closest("[data-feld]") || {dataset:{}}).dataset.feld;
+  const a = ex.aufgaben[i];
+  if(!a || !feld) return;
+  exGedreht();
+  if(feld === "typ"){ a.typ = el.value; zeichneExAufgaben(); }
+  else if(feld === "woerter"){
+    // Eine getippte Zahl nagelt fest; ein leeres Feld gibt die Aufgabe frei.
+    const n = Math.round(Number(el.value));
+    a.fest = el.value === "" ? null : isFinite(n) && n >= 0 ? n : 0;
+  }
+  else if(feld === "antwort"){
+    a.antwort = el.value;
+    const wb = $("exAufgaben").querySelector('[data-wortbank="' + i + '"]');
+    if(wb) wb.hidden = a.antwort !== "eintippen";
+  }
+  else if(feld === "wortbank") a.wortbank = el.checked;
+  else if(feld === "punkte"){ const p = Number(el.value); a.punkte = isFinite(p) ? p : 0; }
+  else if(feld === "text") a.textstufe[el.dataset.niv] = Math.round(Number(el.value) * 10) / 10;
+  zeichneExAufgabenZeilen(); zeichneExErstellenKurz();
+}
+// `input` kommt von jedem Feld - Auswahl, Häkchen, Knopf, Zahl, Regler.
+$("exAufgaben").addEventListener("input", exAufgabenFeld);
+$("exAufgaben").addEventListener("click", e => {
+  const knopf = e.target.closest("button[data-feld]");
+  if(!knopf) return;
+  const i = Number(knopf.dataset.i), a = ex.aufgaben[i];
+  if(!a) return;
+  exGedreht();
+  if(knopf.dataset.feld === "weg"){
+    ex.aufgaben.splice(i, 1);
+    ex.offen = new Set([...ex.offen].filter(x => x !== i).map(x => x > i ? x - 1 : x));
+    zeichneExAufgaben();
+  } else if(knopf.dataset.feld === "normal"){
+    a.textstufe[knopf.dataset.niv] = null;
+    const regler = $("exText" + knopf.dataset.niv + i);
+    if(regler) regler.value = exTextstufe(a, knopf.dataset.niv);
+    zeichneExAufgabenZeilen();
+  }
+  zeichneExErstellenKurz();
+});
+$("exPlus").addEventListener("click", () => {
+  exGedreht();
+  const vorige = ex.aufgaben[ex.aufgaben.length - 1];
+  const typ = EX_TYPEN.find(t => t.kennung !== (vorige && vorige.typ)) || EX_TYPEN[0];
+  ex.aufgaben.push(exNeueAufgabe({typ:typ.kennung}));
+  ex.offen.add(ex.aufgaben.length - 1);
+  zeichneExAufgaben(); zeichneExErstellenKurz();
+  const neu = $("exTyp" + (ex.aufgaben.length - 1));
+  if(neu) neu.focus();
+});
+$("exVorlageAnwenden").addEventListener("click", exVorlageAnwenden);
+$("exErstellenLos").addEventListener("click", () => {
+  const a = exErstellenDaten();
+  exBestellen(a, exErstellenEinwand(a), "ex-pruefungen", $("exErstellenLos"), "exErstellenStatus");
+});
+$("exErstellenKopieren").addEventListener("click", () => exKopieren(exErstellenDaten().befehl, "exErstellenStatus"));
+
+$("exEinstellungen").addEventListener("click", () => {
+  exVorlageFensterFuellen(ex.vorlage);
+  exMelde("exVStatus", "");
+  const f = $("exVorlageFenster");
+  if(!f.open) f.showModal();
+});
+$("exVorlageZu").addEventListener("click", () => $("exVorlageFenster").close());
+$("exVAufgabenUebernehmen").addEventListener("click", () => {
+  exVorlageFensterAufgaben(ex.aufgaben.map(a => exAufgabePruefen(a)));
+  exMelde("exVStatus", "Die Aufgaben der Seite sind übernommen — mit „Vorlage speichern“ gelten sie.", "ok");
+});
+$("exVStandard").addEventListener("click", () => {
+  exVorlageFensterFuellen(exVorlagePruefen(EX_VORLAGE_STANDARD));
+  exMelde("exVStatus", "Der Standard steht im Fenster — mit „Vorlage speichern“ gilt er.", "ok");
+});
+$("exVSpeichern").addEventListener("click", exVorlageSpeichern);
+
+$("exKorrListe").addEventListener("change", e => {
+  if(e.target.name !== "exKorr") return;
+  ex.korrWahl = e.target.value; zeichneExKorrektur();
+});
+$("exModus").addEventListener("change", e => { ex.modus = e.target.value; zeichneExKorrektur(); });
+$("exKorrNotiz").addEventListener("input", zeichneExKorrektur);
+$("exKorrekturLos").addEventListener("click", () => {
+  const d = exKorrekturDaten();
+  exBestellen(d, exKorrekturEinwand(d), "ex-korrektur", $("exKorrekturLos"), "exKorrekturStatus");
+});
+$("exKorrekturKopieren").addEventListener("click", () => exKopieren(exKorrekturDaten().befehl, "exKorrekturStatus"));
+
+/* „Korrekturen abgleichen" steht oben und in der leeren Liste - beide
+   gehen denselben Weg. Die Meldung erscheint dort, wo man gerade arbeitet. */
+function exStatusHier(){ return ex.aktion === "korrektur" ? "exKorrekturStatus" : "exErstellenStatus"; }
+$("exAbgleich").addEventListener("click", ev =>
+  exBestellen(exAbgleichDaten(), null, "ex-abgleich", ev.currentTarget, exStatusHier()));
+$("examiner").addEventListener("click", ev => {
+  const knopf = ev.target.closest("[data-abgleich]");
+  if(knopf) exBestellen(exAbgleichDaten(), null, "ex-abgleich", knopf, exStatusHier());
+});
+
+function starteExaminer(){
+  // Die Vorlage: zuerst der Standard, dann - falls es kein Auftragsbuch
+  // gibt - eine in diesem Browser gespeicherte. Die aus dem Auftragsbuch
+  // kommt später und gilt dann.
+  ex.vorlage = exVorlagePruefen(EX_VORLAGE_STANDARD);
+  try{
+    const hier = localStorage.getItem("werkstatt.examiner.vorlage");
+    if(hier){ ex.vorlage = exVorlagePruefen(JSON.parse(hier)); ex.vorlageQuelle = "browser"; }
+  }catch(e){ /* dann der Standard */ }
+  ex.db = DATA.aktive_datenbank || (exDatenbanken()[0] || {}).name || "";
+  ex.datum = exHeute();
+  ex.anzahl = ex.vorlage.woerter;
+  exUnitWaehlen(null);
+  exAufgabenAusVorlage();
+  $("exModus").innerHTML = EX_MODI.map(m =>
+    exChip("exModus", "exModus_" + m.kennung, m.kennung, m.name, m.kennung === ex.modus)).join("");
+  const bereich = location.hash === "#examiner" ? "examiner" : exGemerkt("bereich");
+  zeigeAktion(exGemerkt("examiner.aktion") || "erstellen", false);
+  zeigeBereich(bereich === "examiner" ? "examiner" : "werkstatt", false);
+  // Die eigene Spalte zeichnet sich auch ohne Auftragsbuch - dann sagt
+  // sie, was dort erscheinen wird, statt leer dazustehen.
+  zeichneExAuftraege();
+  starteExaminerDaten();
+}
+starteExaminer();
+
 vorgabenSetzen();
 textVorgabenSetzen();
 $("wertA").textContent = state.ziel.A.toFixed(1);
@@ -4278,6 +6287,7 @@ alles();
 zeichneAusloeser();
 starteDb();
 starteArtifact();
+starteKlingel();
 starteDownloads();
 starteSample();
 for(const [kennung, art] of [["vorWort","wort"], ["vorAusdruck","ausdruck"],

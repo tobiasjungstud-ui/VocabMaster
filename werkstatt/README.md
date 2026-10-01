@@ -69,3 +69,14 @@ erst `vocabmaster bauen` sie verbindlich trifft.
 
 Beide sind freiwillig: fehlt die Berechtigung, bleibt der Knopf weg und der
 Befehl lässt sich weiterhin kopieren.
+
+## Der Bereich eXaminer
+
+Über der Werkstatt stehen zwei Reiter. **eXaminer** ist ein eigener Bereich
+für die Prüfungsplattform der Schule. „Prüfung erstellen" bestellt in einem
+Auftrag die Aufgaben und **zwei Prüfungen**, Niveau A und B, nach der
+Vorlage (unter „Einstellungen" änderbar); sobald der Chat die Links für den
+Safe Exam Browser zurückgibt, steht oben der Text zum Austeilen.
+„Prüfung korrigieren" bleibt daneben. Die Seite erreicht eXaminer nicht
+selbst — die Einzelheiten und die Regeln für den Chat stehen in `CLAUDE.md`
+unter „eXaminer — ein eigener Bereich".
